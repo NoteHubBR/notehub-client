@@ -1,0 +1,61 @@
+@mixin navigate-logo($border, $borderRadius, $onHoverBgColor, $onHoverBorderColor) {
+    z-index: 1;
+    position: relative;
+    transition: ease-in-out .35s;
+
+    &:before {
+        content: '';
+        z-index: -1;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 0%;
+        height: 100%;
+        border-radius: $borderRadius;
+        transition: all ease-in-out .35s;
+    }
+
+    &:hover,
+    &:focus-visible {
+
+        border: $border solid $onHoverBorderColor;
+        box-shadow: 0 0 50px #7c3aed;
+
+        &:before {
+            left: 0;
+            width: 100%;
+            background-color: $onHoverBgColor;
+        }
+    }
+
+}
+
+@mixin request-btn($borderRadius, $onHoverBgColor, $onHoverColor) {
+    z-index: 1;
+    position: relative;
+    transition: ease-in-out .25s;
+
+    &:before {
+        content: '';
+        z-index: -1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 100%;
+        border-radius: $borderRadius;
+        background-color: $onHoverBgColor;
+        transition: width ease-in-out .25s;
+    }
+
+    &:hover,
+    &:focus-visible {
+
+        color: $onHoverColor;
+
+        &:before {
+            width: 100%;
+        }
+    }
+
+}

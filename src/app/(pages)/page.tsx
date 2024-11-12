@@ -1,5 +1,5 @@
 export default function Home() {
   return (
-    <div>Vasco da Gama</div>
+    <h1>Vasco da Gama</h1>
   );
 }
