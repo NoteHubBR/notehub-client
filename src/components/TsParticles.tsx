@@ -10,7 +10,7 @@ import {
 import { loadSlim } from "@tsparticles/slim";
 import { useTheme } from "@/data/hooks/useTheme";
 
-const TsParticles = () => {
+export const TsParticles = () => {
 
   const [init, setInit] = useState(false);
 
@@ -109,5 +109,3 @@ const TsParticles = () => {
   return <></>;
 
 };
-
-export default TsParticles;
