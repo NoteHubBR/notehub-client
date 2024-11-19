@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@/data/context/ThemeContext";
+import { ThemeProvider } from "@/data/contexts/ThemeContext";
 
 import Page from "@/components/template/Page";
 

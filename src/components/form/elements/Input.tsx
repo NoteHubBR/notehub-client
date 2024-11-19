@@ -1,11 +1,13 @@
 import { InputHTMLAttributes, useState } from "react";
 import { IconEye, IconEyeClosed } from "@tabler/icons-react";
+import { useFormContext } from "react-hook-form";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    name: string;
     icon?: React.ReactNode;
 };
 
-const Input = ({ icon, type = "text", ...rest }: InputProps) => {
+const Input = ({ name, icon, type = "text", ...rest }: InputProps) => {
 
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
@@ -15,10 +17,14 @@ const Input = ({ icon, type = "text", ...rest }: InputProps) => {
 
     const inputType = (type === "password" && isPasswordVisible) ? "text" : type;
 
+    const { register } = useFormContext();
+
     return (
         <div className="flex items-center justify-between">
             <input
+                id={name}
                 type={inputType}
+                {...register(name)}
                 className="
                     outline-none
                     peer

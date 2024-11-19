@@ -8,7 +8,7 @@ import {
   OutMode,
 } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
-import { useTheme } from "@/data/hooks/useTheme";
+import { useTheme } from "@/data/hooks";
 
 export const TsParticles = () => {
 

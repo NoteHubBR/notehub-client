@@ -12,7 +12,7 @@ const ThemeContext = createContext<ThemeProps>({} as any);
 
 export const ThemeProvider = (props: any) => {
 
-    const [isDarkMode, setIsDarkMode] = useState<boolean>(() => window.matchMedia("(prefers-color-scheme: dark)").matches);
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
     const applyDarkMode = () => setIsDarkMode(true);
 
@@ -20,6 +20,7 @@ export const ThemeProvider = (props: any) => {
 
     useEffect(() => {
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+        setIsDarkMode(mediaQuery.matches);
         const handleChange = (e: MediaQueryListEvent) => {
             setIsDarkMode(e.matches);
         };
