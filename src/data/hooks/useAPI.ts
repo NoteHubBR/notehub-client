@@ -17,7 +17,7 @@ export const useAPI = () => {
         const uri = `${baseUrl}${endpoint}`;
 
         const { useProgress } = options || {}
-        useProgress && setOnProgress(true);
+        if (useProgress) setOnProgress(true);
 
         try {
 
@@ -37,7 +37,7 @@ export const useAPI = () => {
             return await response.json();
 
         } finally {
-            useProgress && setOnProgress(false);
+            if (useProgress) setOnProgress(false);
         }
 
     }, []);
