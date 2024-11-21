@@ -1,5 +1,5 @@
-import { InputHTMLAttributes, useState } from "react";
 import { IconEye, IconEyeClosed } from "@tabler/icons-react";
+import { InputHTMLAttributes, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -10,10 +10,6 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 const Input = ({ name, icon, type = "text", ...rest }: InputProps) => {
 
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-
-    const toggleFieldVisibility = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault(); setIsPasswordVisible(!isPasswordVisible);
-    };
 
     const inputType = (type === "password" && isPasswordVisible) ? "text" : type;
 
@@ -50,14 +46,19 @@ const Input = ({ name, icon, type = "text", ...rest }: InputProps) => {
                     {icon}
                 </div>
                 :
-                <button className="
-                    p-1 
-                    text-slate-100
-                    border-2 border-transparent rounded-e-md 
-                    dark:bg-violet-600/25 bg-violet-600/35
-                    dark:peer-focus:bg-violet-600 dark:peer-valid:bg-violet-600 dark:focus-visible:bg-violet-600
-                    peer-focus:bg-violet-600 peer-valid:bg-violet-600 focus-visible:bg-violet-600
-                " onClick={toggleFieldVisibility} tabIndex={1}>
+                <button
+                    tabIndex={1}
+                    type="button"
+                    className="
+                        p-1 
+                        text-slate-100
+                        border-2 border-transparent rounded-e-md 
+                        dark:bg-violet-600/25 bg-violet-600/35
+                        dark:peer-focus:bg-violet-600 dark:peer-valid:bg-violet-600 dark:focus-visible:bg-violet-600
+                        peer-focus:bg-violet-600 peer-valid:bg-violet-600 focus-visible:bg-violet-600
+                    "
+                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                >
                     {isPasswordVisible
                         ?
                         <>

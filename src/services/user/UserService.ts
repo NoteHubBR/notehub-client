@@ -9,7 +9,7 @@ export const UserService = () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { repeatPassword, ...output } = data;
         try {
-            const response = await httpPost('/users/register', output);
+            const response = await httpPost('/users/register', output, { useProgress: true });
             return response;
         } catch (error) {
             throw error;
