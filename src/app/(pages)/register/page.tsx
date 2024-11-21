@@ -5,6 +5,8 @@ import { Form } from "@/components/form";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconMail, IconAt, IconSignature } from "@tabler/icons-react";
 import { TsParticles } from "@/components/TsParticles";
+import { useProgress } from "@/data/hooks";
+import { useRouter } from "next/navigation";
 import { useServices } from "@/data/hooks";
 import { useState } from "react";
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,14 +23,21 @@ const FormSection = () => {
 
     const [isRequesting, setIsRequesting] = useState<boolean>(false);
 
+    const { setOnProgress } = useProgress();
+
+    const router = useRouter();
+
     const onSubmit = async (data: CreateUserFormData) => {
         setIsRequesting(true);
+        setOnProgress(true)
         try {
             await createUser(data);
+            router.push('/')
         } catch (errors) {
             if (Array.isArray(errors)) handleFieldErrors(errors, setError)
         } finally {
             setIsRequesting(false);
+            setOnProgress(false)
         }
     }
 

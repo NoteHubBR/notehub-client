@@ -4,7 +4,7 @@ import Image from "next/image";
 const Header = () => {
     return (
         <header>
-            <Link href="/" target="blank" as={"image"} className="
+            <Link href="/" target="blank" className="
                 block
                 navigate-logo
                 w-fit p-2 m-auto 

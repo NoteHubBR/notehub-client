@@ -57,7 +57,7 @@ const Input = ({ name, icon, type = "text", ...rest }: InputProps) => {
                     dark:bg-violet-600/25 bg-violet-600/35
                     dark:peer-focus:bg-violet-600 dark:peer-valid:bg-violet-600 dark:focus-visible:bg-violet-600
                     peer-focus:bg-violet-600 peer-valid:bg-violet-600 focus-visible:bg-violet-600
-                " onClick={toggleFieldVisibility} >
+                " onClick={toggleFieldVisibility} tabIndex={1}>
                     {isPasswordVisible
                         ?
                         <>
