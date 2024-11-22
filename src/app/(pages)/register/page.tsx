@@ -1,5 +1,6 @@
 'use client';
 
+import { Container } from "@/components/template/Container";
 import { CreateUserFormData, createUserFormSchema, handleFieldErrors } from "@/core";
 import { Form } from "@/components/form";
 import { FormProvider, useForm } from "react-hook-form";
@@ -28,7 +29,7 @@ const FormSection = () => {
         setIsRequesting(true)
         try {
             await createUser(data);
-            router.push('/')
+            router.push('/verify')
         } catch (errors) {
             if (Array.isArray(errors)) handleFieldErrors(errors, setError)
         } finally {
@@ -77,10 +78,10 @@ const FormSection = () => {
 
 const Page = () => {
     return (
-        <div className="w-screen max-w-full min-h-screen insm:min-h-svh p-2 flex items-center justify-center">
+        <Container className="flex items-center justify-center p-2">
             <TsParticles />
             <FormSection />
-        </div>
+        </Container>
     );
 }
 
