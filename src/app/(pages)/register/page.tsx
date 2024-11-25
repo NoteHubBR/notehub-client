@@ -29,7 +29,7 @@ const FormSection = () => {
         setIsRequesting(true)
         try {
             await createUser(data);
-            router.push('/verify')
+            router.push('/sent')
         } catch (errors) {
             if (Array.isArray(errors)) handleFieldErrors(errors, setError)
         } finally {

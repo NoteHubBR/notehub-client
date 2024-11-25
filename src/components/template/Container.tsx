@@ -4,7 +4,7 @@ interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Container = ({ className, ...rest }: ContainerProps) => {
     return (
-        <div
+        <section
             className={`w-screen max-w-full min-h-screen inmd:min-h-svh ${className}`}
             {...rest} />
     )
