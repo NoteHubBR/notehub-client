@@ -23,10 +23,10 @@ const Page = () => {
             <SVG className="absolute" />
             <header>
                 <Link href={'/'} target="blank" className="z-[1] relative">
-                    <Image src="/logo.png" alt="Logo" priority width={277} height={277} className="w-auto h-auto drop-shadow-md" />
+                    <Image src="/logo.png" alt="Logo" priority width={300} height={0} />
                 </Link>
             </header>
-            <section className="z-[1] flex items-center justify-center gap-1">
+            <section className="z-[1] flex items-center justify-center px-1">
                 <div className={`
                     relative
                     p-3 border-2 rounded-full
@@ -59,17 +59,18 @@ const Page = () => {
                         transition-all duration-300
                         ${isMessageOpen && "rotate-180"} 
                     `} />
-                    <IconClick size={40} fill="#7c3aed" className={`
-                            ${count < 1 ? "opacity-100" : "opacity-0"}
+                    {count < 1 &&
+                        <IconClick size={40} fill="#7c3aed" className={`
                             absolute top-0 left-0 
                             text-violet-600 
                             transition-all
                             animate-click
                     `} />
+                    }
                 </button>
                 <aside className={`
                     ${isMessageOpen ? "w-fit" : "w-0"}
-                    ${isMessageOpen && "py-5 px-2 border-2"} rounded-2xl
+                    ${isMessageOpen && "py-5 px-1 border-2"} rounded-2xl
                     dark:bg-neutral-900  dark:border-neutral-800
                     bg-neutral-50/70 border-neutral-100
                     backdrop-blur-sm

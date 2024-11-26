@@ -49,7 +49,7 @@ button {
 
 @keyframes click-animation {
   0% {
-    left: 300%;
+    left: 275%;
   }
 
   100% {

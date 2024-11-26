@@ -1,7 +1,11 @@
 @use 'mixins.scss';
 
-.navigate-logo {
-    @include mixins.navigate-logo(2px, 0.75rem, #fafafa, rgb(71 85 105 / 0.5));
+.dark-navigate-logo {
+    @include mixins.navigate-logo(2px, 0.75rem, #fafafa, rgb(71 85 105 / 0.5), #7c3aed);
+}
+
+.light-navigate-logo {
+    @include mixins.navigate-logo(2px, 0.75rem, rgb(167 139 250 / 0.25), #fafafa, transparent);
 }
 
 .request-btn {

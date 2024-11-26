@@ -1,4 +1,4 @@
-@mixin navigate-logo($border, $borderRadius, $onHoverBgColor, $onHoverBorderColor) {
+@mixin navigate-logo($border, $borderRadius, $onHoverBgColor, $onHoverBorderColor, $onHoverBoxShadowColor) {
     z-index: 1;
     position: relative;
     transition: ease-in-out .35s;
@@ -19,7 +19,7 @@
     &:focus-visible {
 
         border: $border solid $onHoverBorderColor;
-        box-shadow: 0 0 50px #7c3aed;
+        box-shadow: 0 0 50px $onHoverBoxShadowColor;
 
         &:before {
             left: 0;
