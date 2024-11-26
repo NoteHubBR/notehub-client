@@ -9,7 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        'note-title': ['Playwrite GB S', 'sans-serif']
+        'playwrite': ['Playwrite GB S', 'sans-serif'],
+        'faculty': ['Faculty Glyphic', 'serif']
       },
       colors: {
         background: "var(--background)",

@@ -10,7 +10,7 @@ const Button = ({ isRequesting, ...rest }: ButtonProps) => {
                 ${isRequesting && "cursor-not-allowed"}
                 ${!isRequesting && "request-btn"}
                 ${!isRequesting && "relative active:top-[1px]"}
-                w-full m-auto py-1
+                w-full m-auto py-2
                 rounded-md
                 text-md text-slate-100 font-semibold 
                 ${isRequesting ? "dark:bg-white/25 bg-black/25" : "dark:bg-slate-100/5 bg-neutral-900/25"}
