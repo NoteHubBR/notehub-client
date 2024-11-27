@@ -3,19 +3,26 @@ import { useAPI } from '@/data/hooks';
 
 export const UserService = () => {
 
-    const { httpPost } = useAPI();
+    const { httpPost, httpGet } = useAPI();
 
     const createUser = async (data: CreateUserFormData) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { repeatPassword, ...output } = data;
         try {
-            const response = await httpPost('/users/register', output, { useProgress: true });
-            return response;
+            return await httpPost('/users/register', output, { useProgress: true });
         } catch (error) {
             throw error;
         }
     }
 
-    return { createUser };
+    const activateUser = async (token: string) => {
+        try {
+            return await httpGet('/users/activate', { useProgress: true, useToken: token });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    return { createUser, activateUser };
 
 };
