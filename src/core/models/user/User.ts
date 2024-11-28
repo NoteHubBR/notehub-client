@@ -1,19 +1,16 @@
-import { Hosts } from "./Hosts";
 import { UUID } from "crypto";
 
 export default interface User {
     id: UUID;
     email: string;
     username: string;
-    displayName: string;
+    display_name: string;
     avatar: string;
     banner: string;
     message: string;
     password: string;
-    host: Hosts;
-    profilePrivate: boolean;
+    profile_private: boolean;
     sponsor: boolean;
     score: number;
-    createdAt: string;
-    token: string;
-};
+    created_at: string;
+}

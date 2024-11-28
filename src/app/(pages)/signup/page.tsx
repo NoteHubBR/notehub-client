@@ -38,7 +38,7 @@ const FormSection = () => {
     }
 
     return (
-        <div>
+        <main>
             <FormProvider {...createUserForm}>
                 <Form.Tag onSubmit={handleSubmit(onSubmit)}>
                     <Form.Header />
@@ -71,7 +71,7 @@ const FormSection = () => {
                     <Form.Button isRequesting={isRequesting}>Cadastrar</Form.Button>
                 </Form.Tag>
             </FormProvider>
-        </div>
+        </main>
     );
 
 };

@@ -1,4 +1,4 @@
-import { CreateUserFormData } from '@/core';
+import { CreateUserFormData, LoginUserFormData } from '@/core';
 import { useAPI } from '@/data/hooks';
 
 export const UserService = () => {
@@ -23,6 +23,14 @@ export const UserService = () => {
         }
     }
 
-    return { createUser, activateUser };
+    const loginUserByDefault = async (data: LoginUserFormData) => {
+        try {
+            return await httpPost('/auth/login', data, { useProgress: true });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    return { createUser, activateUser, loginUserByDefault };
 
 };

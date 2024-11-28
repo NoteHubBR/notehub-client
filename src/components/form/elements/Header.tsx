@@ -16,7 +16,7 @@ const Header = () => {
                 w-fit p-2 m-auto 
                 bg-violet-600/5 border-2 dark:border-violet-600/10 border-violet-600/40 rounded-xl
             `}>
-                <Image src="/logo.png" alt="Logo" priority width={125} height={0} />
+                <Image src="/imgs/logo.png" alt="Logo" priority width={125} height={0} />
             </Link>
         </header>
     );

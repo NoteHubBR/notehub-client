@@ -23,7 +23,7 @@ const Page = () => {
             <SVG className="absolute" />
             <header>
                 <Link href={'/'} target="blank" className="z-[1] relative">
-                    <Image src="/logo.png" alt="Logo" priority width={300} height={0} />
+                    <Image src="/imgs/logo.png" alt="Logo" priority width={300} height={0} />
                 </Link>
             </header>
             <section className="z-[1] flex items-center justify-center px-1">
