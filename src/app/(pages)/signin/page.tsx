@@ -67,6 +67,7 @@ const FormSection = () => {
                         rounded-md
                         dark:bg-neutral-900/75 bg-neutral-50/75
                         dark:hover:bg-violet-600 hover:bg-violet-600 hover:text-neutral-50
+                        dark:focus:bg-violet-600 focus:bg-violet-600 focus:text-neutral-50
                         transition-all
                     '>
                         Criar conta

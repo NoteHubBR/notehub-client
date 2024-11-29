@@ -25,12 +25,20 @@ export const UserService = () => {
 
     const loginUserByDefault = async (data: LoginUserFormData) => {
         try {
-            return await httpPost('/auth/login', data, { useProgress: true });
+            return await httpPost('/auth/login', data, { useProgress: true, useCredentials: true });
         } catch (error) {
             throw error;
         }
     }
 
-    return { createUser, activateUser, loginUserByDefault };
+    const refreshUser = async () => {
+        try {
+            return await httpGet("/auth/refresh", { useCredentials: true })
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    return { createUser, activateUser, loginUserByDefault, refreshUser };
 
 };

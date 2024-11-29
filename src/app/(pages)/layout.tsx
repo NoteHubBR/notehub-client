@@ -1,22 +1,22 @@
 import { ProgressBar } from "@/components/ProgressBar";
 import { ProgressBarProvider } from "@/data/contexts/ProgressContext";
 import { ThemeProvider } from "@/data/contexts/ThemeContext";
-import Page from "@/components/template/Page";
 import { UserContextProvider } from "@/data/contexts/UserContext";
+import Page from "@/components/template/Page";
 
 const layout = (props: any) => {
 
     return (
-        <UserContextProvider>
-            <ThemeProvider>
-                <ProgressBarProvider>
-                    <ProgressBar />
+        <ThemeProvider>
+            <ProgressBarProvider>
+                <ProgressBar />
+                <UserContextProvider>
                     <Page>
                         {props.children}
                     </Page>
-                </ProgressBarProvider>
-            </ThemeProvider>
-        </UserContextProvider>
+                </UserContextProvider>
+            </ProgressBarProvider>
+        </ThemeProvider>
     );
 
 };
