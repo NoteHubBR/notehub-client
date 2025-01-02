@@ -13,4 +13,7 @@ export default interface User {
     sponsor: boolean;
     score: number;
     created_at: string;
+    notifications: number;
+    followers_count: number;
+    following_count: number;
 }

@@ -26,14 +26,15 @@ export const UserContextProvider = (props: any) => {
         setTokenSate(token);
     };
 
+    const fetchUser = async () => {
+        const { user, ...token } = await refreshUser();
+        setUser(user, token);
+    }
+
     const pathname = usePathname();
 
     useEffect(() => {
         if (shouldUseUserContext(pathname)) {
-            const fetchUser = async () => {
-                const { user, ...token } = await refreshUser();
-                setUser(user, token);
-            }
             fetchUser();
         }
     }, [])
