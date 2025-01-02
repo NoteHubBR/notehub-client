@@ -3,14 +3,18 @@ export enum Routes {
     SIGNUP = '/signup',
     SIGNIN = '/signin',
     SENT = '/sent',
+    ACTIVATE = '/activate/:jwt'
 };
 
-enum NotUserUserContextRoutes {
+enum NotUserContextRoutes {
     SIGNUP = '/signup',
     SIGNIN = '/signin',
     SENT = '/sent',
-}
+    ACTIVATE = '/activate/:jwt'
+};
 
 export const shouldUseUserContext = (pathname: string): boolean => {
-    return !Object.values(NotUserUserContextRoutes).includes(pathname as NotUserUserContextRoutes)
+    const getStaticRoute = (route: string) => { return route.split('/:')[0] }
+    const ignoredRoutes = Object.values(NotUserContextRoutes).map(getStaticRoute)
+    return !ignoredRoutes.some(prefix => pathname.startsWith(prefix))
 };
