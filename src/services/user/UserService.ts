@@ -35,7 +35,7 @@ export const UserService = () => {
 
     const refreshUser = async () => {
         try {
-            return await httpGet("/auth/refresh", { useProgress: true, useCredentials: true })
+            return await httpGet("/auth/refresh", { useLoading: true, useProgress: true, useCredentials: true })
         } catch (error) {
             throw error;
         }
