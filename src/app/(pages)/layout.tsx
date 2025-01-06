@@ -1,3 +1,4 @@
+import { Aside } from "@/components/aside";
 import { Loading } from "@/components/Loading";
 import { LoadingProvider } from "@/data/contexts/LoadingContext";
 import { ProgressBar } from "@/components/ProgressBar";
@@ -15,6 +16,7 @@ const layout = (props: any) => {
                 <ProgressBarProvider>
                     <ProgressBar />
                     <UserContextProvider>
+                        <Aside/>
                         <Page>
                             {props.children}
                         </Page>

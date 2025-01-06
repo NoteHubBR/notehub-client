@@ -27,7 +27,7 @@ export default function Home() {
   }
 
   return (
-    <>
+    <Container>
       {isLoaded &&
         <>
           {isFirstTime &&
@@ -39,11 +39,11 @@ export default function Home() {
           }
           {user &&
             <>
-              <h1>{user.username}</h1>
+              {/* <h1>{user.username}</h1>
               <h1>{user.email}</h1>
               <h1>{user.notifications}</h1>
               <h1>{user.followers_count}</h1>
-              <h1>{user.following_count}</h1>
+              <h1>{user.following_count}</h1> */}
               {/* <button onClick={() => getNotifications(token.access_token)}>ver notificações</button> */}
             </>
           }
@@ -57,7 +57,7 @@ export default function Home() {
           }
         </>
       }
-    </>
+    </Container>
   );
 
 }
