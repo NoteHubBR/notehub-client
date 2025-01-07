@@ -27,37 +27,35 @@ export default function Home() {
   }
 
   return (
-    <Container>
+    <div className="flex flex-col items-center justify-center gap-4">
       {isLoaded &&
         <>
           {isFirstTime &&
-            <Container className="flex flex-col items-center justify-center gap-4">
+            <>
               <div>be welcome</div>
               <Link href={'/signin'} className="request-btn">Logar</Link>
               <button onClick={initAsGuest} className="request-btn">Explorar</button>
-            </Container>
+            </>
           }
           {user &&
             <>
-              {/* <h1>{user.username}</h1>
+              <h1>{user.username}</h1>
               <h1>{user.email}</h1>
               <h1>{user.notifications}</h1>
               <h1>{user.followers_count}</h1>
-              <h1>{user.following_count}</h1> */}
+              <h1>{user.following_count}</h1>
               {/* <button onClick={() => getNotifications(token.access_token)}>ver notificações</button> */}
             </>
           }
           {isGuest &&
             <>
-              <Container className="flex flex-col items-center justify-center gap-4">
-                <h1>Hello Guest!</h1>
-                <Link href={'/signin'} className="request-btn">Logar</Link>
-              </Container>
+              <h1>Hello Guest!</h1>
+              <Link href={'/signin'} className="request-btn">Logar</Link>
             </>
           }
         </>
       }
-    </Container>
+    </div>
   );
 
 }
