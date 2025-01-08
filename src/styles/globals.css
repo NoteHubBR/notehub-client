@@ -62,3 +62,13 @@ button {
   -moz-animation: click-animation 1.666s ease-in-out infinite;
   animation: click-animation 1.666s ease-in-out infinite;
 }
+
+.scrollbar {
+  scrollbar-color: transparent transparent;
+  scrollbar-width: thin;
+  transition: scrollbar-color ease-in-out .15s;
+}
+
+.scrollbar:hover {
+  scrollbar-color: #7c3aed transparent;
+}

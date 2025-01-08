@@ -1,11 +1,11 @@
 import Image from "next/image";
 
-interface UserProps extends React.HTMLAttributes<HTMLDivElement> {
+interface UserLinkProps extends React.HTMLAttributes<HTMLDivElement> {
     avatar: string;
     username: string;
 }
 
-export const User = (props: UserProps) => {
+export const UserLink = (props: UserLinkProps) => {
 
     const { avatar, username, ...rest } = props;
 

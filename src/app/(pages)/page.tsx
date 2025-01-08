@@ -2,6 +2,7 @@
 
 import { Container } from "@/components/template/Container";
 import { useLoading, useServices, useUser } from "@/data/hooks";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {

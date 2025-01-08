@@ -8,29 +8,35 @@ import { Link } from "./elements/Link";
 import { Note } from "./elements/Note";
 import { Section } from "./elements/Section";
 import { Shortcut } from "./elements/Shortcut";
+import { shouldUseUserContext } from "@/core";
 import { useMenu } from "@/data/hooks";
-import { User } from "./elements/User";
+import { usePathname } from "next/navigation";
+import { UserLink } from "./elements/UserLink";
 
 export const Sidebar = (props: React.HTMLAttributes<HTMLDivElement>) => {
+
+    const pathname = usePathname();
+
+    const shouldRender = shouldUseUserContext(pathname);
 
     const { isOpen } = useMenu();
 
     const Minimized = () => {
         return (
-            <aside className="overflow-y-scroll w-fit h-screen inmd:h-svh p-2 flex flex-col bg-neutral-900">
+            <aside className="fixed w-[88px] h-full p-2 flex flex-col gap-2 bg-neutral-900">
                 <Shortcut href="/" icon={<IconHome size={27} />} text="Início" />
-                <Shortcut href="/" icon={<IconUserCircle size={27} />} text="Você" />
-                <Shortcut href="/" icon={<IconNotes size={27} />} text="Notas" />
-                <Shortcut href="/" icon={<IconUsers size={27} />} text="Seguindo" />
+                <Shortcut href="/x" icon={<IconUserCircle size={27} />} text="Você" />
+                <Shortcut href="/x" icon={<IconNotes size={27} />} text="Notas" />
+                <Shortcut href="/x" icon={<IconUsers size={27} />} text="Seguindo" />
             </aside>
         )
     }
 
     const Maximized = () => {
         return (
-            <aside className="overflow-y-scroll w-fit h-screen inmd:h-svh p-4 flex flex-col gap-3 bg-neutral-900" {...props} >
+            <aside className="fixed scrollbar overflow-y-auto w-[240px] h-full p-4 flex flex-col gap-3 bg-neutral-900" {...props} >
                 <Section>
-                    <Field><Link href={'/'} icon={<IconHome size={27} />} text="Início" strong /></Field>
+                    <Field href="/"><Link href={'/'} icon={<IconHome size={27} />} text="Início" strong /></Field>
                 </Section>
                 <Section>
                     <Field><Link href={'/'} icon={<IconArrowRight size={20} />} text="Você" strong reverse /></Field>
@@ -39,42 +45,19 @@ export const Sidebar = (props: React.HTMLAttributes<HTMLDivElement>) => {
                 </Section>
                 <Section>
                     <Field><Link href={'/'} text="Seguindo" strong reverse /></Field>
-                    <Field><User avatar="/imgs/avatar.png" username="Lucas Aguiar de Moraes" /></Field>
+                    <Field><UserLink avatar="/imgs/avatar.png" username="Lucas Aguiar de Moraes" /></Field>
                     <Field><Button icon={<IconChevronDown size={27} />} text="Mostrar mais" /></Field>
                 </Section>
                 <Section>
                     <Field><Link href={'/'} icon={<IconPlus size={24} />} text="Nova nota" strong /></Field>
                     <Input type="text" required />
                     <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Field><Note avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-
                     <Button text="Mostrar mais" className="w-fit flex items-center gap-3 py-1 cursor-pointer hover:text-violet-500 transition-colors" />
                 </Section>
             </aside>
         )
     }
 
-    return <>{isOpen ? <Maximized /> : <Minimized />}</>
+    return <>{shouldRender && <>{isOpen ? <Maximized /> : <Minimized />}</>}</>
 
 }

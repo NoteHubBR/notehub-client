@@ -1,3 +1,4 @@
+import { Container } from "@/components/template/Container";
 import { Loading } from "@/components/Loading";
 import { LoadingProvider } from "@/data/contexts/LoadingContext";
 import { MenuProvider } from "@/data/contexts/MenuContext";
@@ -8,7 +9,6 @@ import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/data/contexts/ThemeContext";
 import { UserContextProvider } from "@/data/contexts/UserContext";
 import Page from "@/components/template/Page";
-import { Container } from "@/components/template/Container";
 
 const layout = (props: any) => {
 
@@ -20,13 +20,15 @@ const layout = (props: any) => {
                     <MenuProvider>
                         <ProgressBar />
                         <UserContextProvider>
-                            <Page>
+                            <Container className="flex flex-col">
                                 <Navbar />
-                                <Container className="flex">
+                                <div className="flex h-full">
                                     <Sidebar />
-                                    {props.children}
-                                </Container>
-                            </Page>
+                                    <Page>
+                                        {props.children}
+                                    </Page>
+                                </div>
+                            </Container>
                         </UserContextProvider>
                     </MenuProvider>
                 </ProgressBarProvider>
