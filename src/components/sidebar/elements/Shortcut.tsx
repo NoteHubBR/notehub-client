@@ -22,7 +22,7 @@ export const Shortcut = (props: ShortcutProps) => {
                     py-3 px-1 
                     flex flex-col items-center gap-1 
                     rounded-xl 
-                    ${pathname === href ? 'bg-violet-600' : 'hover:bg-neutral-50/15'}
+                    ${pathname === href ? 'text-neutral-50 bg-violet-600' : 'hover:dark:bg-neutral-50/15 hover:bg-neutral-900/15'}
                     transition-colors 
                 `}
             >

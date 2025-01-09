@@ -1,8 +1,7 @@
 'use client';
 
-import { Container } from "@/components/template/Container";
+import { User } from "@/core";
 import { useLoading, useServices, useUser } from "@/data/hooks";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -27,6 +26,19 @@ export default function Home() {
     setIsGuest(true);
   }
 
+  const Elements = (user: User) => {
+    return (
+      <>
+        <h1>{user.username}</h1>
+        <h1>{user.email}</h1>
+        <h1>{user.notifications}</h1>
+        <h1>{user.followers_count}</h1>
+        <h1>{user.following_count}</h1>
+        {/* <button onClick={() => getNotifications(token.access_token)}>ver notificações</button> */}
+      </>
+    )
+  }
+
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       {isLoaded &&
@@ -40,12 +52,7 @@ export default function Home() {
           }
           {user &&
             <>
-              <h1>{user.username}</h1>
-              <h1>{user.email}</h1>
-              <h1>{user.notifications}</h1>
-              <h1>{user.followers_count}</h1>
-              <h1>{user.following_count}</h1>
-              {/* <button onClick={() => getNotifications(token.access_token)}>ver notificações</button> */}
+              <Elements {...user} />
             </>
           }
           {isGuest &&

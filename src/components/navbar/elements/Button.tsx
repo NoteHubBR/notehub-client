@@ -8,7 +8,7 @@ export const Button = (props: ButtonProps) => {
     const { tooltip, children, ...rest } = props;
 
     return (
-        <button className="relative group p-1 rounded-full hover:bg-neutral-50/15 transition-colors" {...rest}>
+        <button className="relative group p-1 rounded-full hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10 transition-colors" {...rest}>
             {tooltip &&
                 <span
                     className="

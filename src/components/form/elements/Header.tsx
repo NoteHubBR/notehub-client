@@ -10,7 +10,7 @@ const Header = () => {
 
     return (
         <header>
-            <Link href="/" target="blank" className={`
+            <Link href="/" className={`
                 block
                 ${isDarkMode ? "dark-navigate-logo" : "light-navigate-logo"}
                 w-fit p-2 m-auto 

@@ -83,3 +83,28 @@
         background: linear-gradient(222deg, $gradientSideColor 10%, transparent 50%, $gradientSideColor 90%);
     }
 }
+
+@mixin resize-btn {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -.5rem;
+        right: 0;
+        width: 0;
+        height: .2rem;
+        border-radius: 9999px;
+        background-color: #7c3aed;
+        transition: width ease-in-out .25s;
+    }
+
+    &:hover {
+        &::after {
+            pointer-events: none;
+            width: 100%;
+            left: 0;
+        }
+    }
+
+}

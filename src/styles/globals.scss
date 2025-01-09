@@ -13,9 +13,13 @@
 }
 
 .dark-checkered-background {
-    @include mixins.checkered-background(#fafafa, #171717)
+    @include mixins.checkered-background(#fafafa, #171717);
 }
 
 .light-checkered-background {
-    @include mixins.checkered-background(#171717, #fafafa)
+    @include mixins.checkered-background(#171717, #fafafa);
+}
+
+.resize-btn {
+    @include mixins.resize-btn;
 }

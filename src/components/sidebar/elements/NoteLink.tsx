@@ -1,12 +1,12 @@
 import Image from "next/image";
 
-interface NoteProps extends React.HTMLAttributes<HTMLDivElement> {
+interface NoteLinkProps extends React.HTMLAttributes<HTMLDivElement> {
     avatar: string;
     username: string;
     title: string;
 }
 
-export const Note = (props: NoteProps) => {
+export const NoteLink = (props: NoteLinkProps) => {
 
     const { avatar, username, title, ...rest } = props;
 

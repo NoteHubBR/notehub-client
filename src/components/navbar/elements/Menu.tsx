@@ -9,7 +9,7 @@ export const Menu = (props: React.HTMLAttributes<HTMLButtonElement>) => {
 
     return (
         <button
-            className="p-1 rounded-full hover:bg-neutral-50/15 transition-colors"
+            className="p-1 rounded-full hover:dark:bg-neutral-50/10 hover:bg-neutral-900/15 transition-colors"
             onClick={() => setIsOpen(!isOpen)}
             {...props}
         >
