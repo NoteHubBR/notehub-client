@@ -3,16 +3,17 @@
 import { createContext, useEffect, useState } from "react";
 import { useLoading, useServices } from "../hooks";
 import { usePathname } from "next/navigation";
-import { User, Token, shouldUseUserContext } from "@/core";
+import { User, shouldUseUserContext } from "@/core";
 
 export interface UserContextProps {
     isFirstTime: boolean;
     isGuest: boolean;
+    token: string | null;
     user: User | null;
-    token: Token | null;
+    following: Partial<User>[] | [];
     setIsFirstTime: (boolean: boolean) => void;
     setIsGuest: (boolean: boolean) => void;
-    setUser: (user: User, token: Token,) => void;
+    setUser: (token: string, user: User) => void;
 };
 
 const UserContext = createContext<UserContextProps>({} as any);
@@ -25,33 +26,47 @@ export const UserContextProvider = (props: any) => {
 
     const [isGuest, setIsGuest] = useState<boolean>(false);
 
-    const { userService: { refreshUser } } = useServices();
+    const { userService: { refreshUser, getUserFollowing } } = useServices();
+
+    const [token, setTokenSate] = useState<string | null>(null);
 
     const [user, setUserState] = useState<User | null>(null);
 
-    const [token, setTokenSate] = useState<Token | null>(null);
+    const [following, setFollowing] = useState<Partial<User>[]>([]);
 
-    const setUser = (user: User, token: Token) => {
-        setUserState(user);
+    const setUser = (token: string, user: User,) => {
         setTokenSate(token);
+        setUserState(user);
     };
 
-    const fetchUser = async () => {
-        const { user, ...token } = await refreshUser();
-        setUser(user, token);
+    const fetchUser = async (): Promise<{ access_token: string, user: User }> => {
+        const { access_token, user } = await refreshUser();
+        setUser(access_token, user);
+        return { access_token, user };
+    }
+
+    const fetchFollowing = async (token: string, username: string) => {
+        const { content } = await getUserFollowing(token, username);
+        return setFollowing(content);
     }
 
     const pathname = usePathname();
 
     useEffect(() => {
-        setIsFirstTime(() => { return localStorage.getItem('isGuest') === null });
-        setIsGuest(() => { return localStorage.getItem('isGuest') === 'true' });
-        if (isFirstTime || isGuest) setIsLoaded(true);
-        if (shouldUseUserContext(pathname) && !isFirstTime && !isGuest) fetchUser();
+        const init = async () => {
+            setIsFirstTime(() => { return localStorage.getItem('isGuest') === null });
+            setIsGuest(() => { return localStorage.getItem('isGuest') === 'true' });
+            if (isFirstTime || isGuest) setIsLoaded(true);
+            if (shouldUseUserContext(pathname) && !isFirstTime && !isGuest) {
+                const { access_token, user } = await fetchUser();
+                fetchFollowing(access_token, user.username);
+            };
+        }
+        init();
     }, [isFirstTime, isGuest])
 
     return (
-        <UserContext.Provider value={{ isFirstTime, isGuest, user, token, setIsFirstTime, setIsGuest, setUser }}>
+        <UserContext.Provider value={{ isFirstTime, isGuest, token, user, following, setIsFirstTime, setIsGuest, setUser }}>
             {props.children}
         </UserContext.Provider>
     )

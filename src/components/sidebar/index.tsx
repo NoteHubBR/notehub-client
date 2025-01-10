@@ -19,7 +19,7 @@ export const Sidebar = (props: React.HTMLAttributes<HTMLDivElement>) => {
 
     const shouldRender = shouldUseUserContext(pathname);
 
-    const { user } = useUser();
+    const { user, following } = useUser();
 
     const { isOpen } = useMenu();
 
@@ -63,7 +63,11 @@ export const Sidebar = (props: React.HTMLAttributes<HTMLDivElement>) => {
                         </Section>
                         <Section>
                             <Field><Link href={'/'} text="Seguindo" strong reverse /></Field>
-                            <Field><UserLink avatar="/imgs/avatar.png" username="Lucas Aguiar de Moraes" /></Field>
+                            {following.map(user =>
+                                user.avatar && user.username && (
+                                    <Field key={user.username}><UserLink avatar={user.avatar} username={user.username} /></Field>
+                                )
+                            )}
                             <Field><Button icon={<IconChevronDown size={27} />} text="Mostrar mais" /></Field>
                         </Section>
                         <Section>

@@ -12,7 +12,7 @@ export const UserLink = (props: UserLinkProps) => {
     return (
         <div className="flex items-center gap-3" {...rest}>
             <Image src={avatar} alt={`avatar de ${username}`} width={27} height={27} className="rounded-full" />
-            <span>{username.slice(0, 14)}...</span>
+            <span>{username.length > 17 ? `${username.slice(0, 14)}...` : username}</span>
         </div>
     )
 

@@ -1,4 +1,4 @@
-import { CreateUserFormData, LoginUserFormData } from '@/core';
+import { CreateUserFormData, LoginUserFormData, Page, User } from '@/core';
 import { useAPI, useUser } from '@/data/hooks';
 
 export const UserService = () => {
@@ -25,7 +25,7 @@ export const UserService = () => {
         }
     }
 
-    const loginUserByDefault = async (data: LoginUserFormData) => {
+    const loginUserByDefault = async (data: LoginUserFormData): Promise<{ access_token: string, user: User }> => {
         try {
             return await httpPost('/auth/login', data, { useProgress: true, useCredentials: true });
         } catch (error) {
@@ -33,7 +33,7 @@ export const UserService = () => {
         }
     }
 
-    const refreshUser = async () => {
+    const refreshUser = async (): Promise<{ access_token: string, user: User }> => {
         try {
             return await httpGet("/auth/refresh", { useLoading: true, useProgress: true, useCredentials: true })
         } catch (error) {
@@ -43,15 +43,15 @@ export const UserService = () => {
 
     const handleExpiredToken = async (error: any, func: (token: string) => Promise<any>) => {
         if (error.message === 'Token inválido.') {
-            const { user, ...token } = await refreshUser();
-            setUser(user, token);
-            return await func(token.access_token);
+            const { access_token, user } = await refreshUser();
+            setUser(access_token, user);
+            return await func(access_token);
         }
         else throw error;
     };
 
-    const getUserNotifications = async (token: string) => {
-        const endpoint: string = `/notifications`;
+    const getUserFollowing = async (token: string, username: string): Promise<Page> => {
+        const endpoint: string = `/users/${username}/following`;
         try {
             return await httpGet(endpoint, { useToken: token });
         } catch (error: any) {
@@ -59,6 +59,6 @@ export const UserService = () => {
         }
     };
 
-    return { createUser, activateUser, loginUserByDefault, refreshUser, getUserNotifications };
+    return { createUser, activateUser, loginUserByDefault, refreshUser, getUserFollowing };
 
 };
