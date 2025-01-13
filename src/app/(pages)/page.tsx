@@ -1,29 +1,19 @@
 'use client';
 
+import { useLoading, useUser } from "@/data/hooks";
 import { User } from "@/core";
-import { useLoading, useServices, useUser } from "@/data/hooks";
 import Link from "next/link";
 
 export default function Home() {
 
   const { isLoaded } = useLoading();
 
-  const { isFirstTime, isGuest, user, setIsGuest } = useUser();
-
-  const { userService: { getUserNotifications } } = useServices();
-
-  const getNotifications = async (token: string) => {
-    try {
-      const array = await getUserNotifications(token)
-      console.log(array)
-    } catch (errors) {
-      console.log(errors)
-    }
-  }
+  const { isFirstTime, isGuest, user, setIsFirstTime, setIsGuest } = useUser();
 
   const initAsGuest = () => {
     localStorage.setItem('isGuest', 'true');
     setIsGuest(true);
+    setIsFirstTime(false);
   }
 
   const Elements = (user: User) => {
@@ -39,28 +29,26 @@ export default function Home() {
     )
   }
 
+  if (!isLoaded) return <></>
+
   return (
     <div className="flex flex-col items-center justify-center gap-4">
-      {isLoaded &&
+      {isFirstTime &&
         <>
-          {isFirstTime &&
-            <>
-              <div>be welcome</div>
-              <Link href={'/signin'} className="request-btn">Logar</Link>
-              <button onClick={initAsGuest} className="request-btn">Explorar</button>
-            </>
-          }
-          {user &&
-            <>
-              <Elements {...user} />
-            </>
-          }
-          {isGuest &&
-            <>
-              <h1>Hello Guest!</h1>
-              <Link href={'/signin'} className="request-btn">Logar</Link>
-            </>
-          }
+          <div>be welcome</div>
+          <Link href={'/signin'} className="request-btn">Logar</Link>
+          <button onClick={initAsGuest} className="request-btn">Explorar</button>
+        </>
+      }
+      {user &&
+        <>
+          <Elements {...user} />
+        </>
+      }
+      {isGuest &&
+        <>
+          <h1>Hello Guest!</h1>
+          <Link href={'/signin'} className="request-btn">Logar</Link>
         </>
       }
     </div>

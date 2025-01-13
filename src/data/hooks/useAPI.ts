@@ -1,9 +1,7 @@
 import { useCallback } from "react";
 import { useProgress } from "./useProgress";
-import { useLoading } from "./useLoading";
 
 interface HttpOptions {
-    useLoading?: boolean;
     useProgress?: boolean;
     useToken?: string;
     useCredentials?: boolean;
@@ -30,20 +28,16 @@ const handleResponse = async (response: Response) => {
 
 export const useAPI = () => {
 
-    const { setIsLoaded } = useLoading();
-
     const { setOnProgress } = useProgress();
 
     const request = useCallback(async (method: string, endpoint: string, body?: any, options?: HttpOptions) => {
 
-        const { useLoading: showLoading, useProgress: showProgress, useToken, useCredentials } = options || {};
+        const { useProgress: showProgress, useToken, useCredentials } = options || {};
 
         const uri = `${baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 
         const headers = createHeaders(useToken);
 
-        if (showLoading) setIsLoaded(false);
-        
         if (showProgress) setOnProgress(true);
 
         const config: RequestInit = {
@@ -57,7 +51,6 @@ export const useAPI = () => {
             const response = await fetch(uri, config);
             return await handleResponse(response);
         } finally {
-            if (showLoading) setIsLoaded(true);
             if (showProgress) setOnProgress(false);
         }
 

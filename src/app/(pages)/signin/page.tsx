@@ -32,8 +32,8 @@ const FormSection = () => {
     const onSubmit = async (data: LoginUserFormData) => {
         setIsRequesting(true);
         try {
-            const { user, ...token } = await loginUserByDefault(data);
-            setUser(user, token);
+            const { access_token, user } = await loginUserByDefault(data);
+            setUser(access_token, user);
             setIsFirstTime(false);
             setIsGuest(false);
             localStorage.setItem('isFirstTime', 'false');

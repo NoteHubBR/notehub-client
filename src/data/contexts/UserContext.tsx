@@ -20,18 +20,17 @@ const UserContext = createContext<UserContextProps>({} as any);
 
 export const UserContextProvider = (props: any) => {
 
-    const { setIsLoaded } = useLoading();
-
-    const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
-
-    const [isGuest, setIsGuest] = useState<boolean>(false);
-
     const { userService: { refreshUser, getUserFollowing } } = useServices();
 
+    const pathname = usePathname();
+
+    const { setIsLoaded } = useLoading();
+
+    const [isFirstTime, setIsFirstTime] = useState<boolean>(false);
+    const [isGuest, setIsGuest] = useState<boolean>(false);
+    const [isSetted, setIsSetted] = useState<boolean>(false);
     const [token, setTokenSate] = useState<string | null>(null);
-
     const [user, setUserState] = useState<User | null>(null);
-
     const [following, setFollowing] = useState<Partial<User>[]>([]);
 
     const setUser = (token: string, user: User,) => {
@@ -50,20 +49,26 @@ export const UserContextProvider = (props: any) => {
         return setFollowing(content);
     }
 
-    const pathname = usePathname();
+    useEffect(() => {
+        if (!shouldUseUserContext(pathname)) setIsLoaded(true);
+        setIsFirstTime(() => { return localStorage.getItem('isGuest') === null });
+        setIsGuest(() => { return localStorage.getItem('isGuest') === 'true' });
+        setIsSetted(() => { return true });
+    }, [])
 
     useEffect(() => {
         const init = async () => {
-            setIsFirstTime(() => { return localStorage.getItem('isGuest') === null });
-            setIsGuest(() => { return localStorage.getItem('isGuest') === 'true' });
-            if (isFirstTime || isGuest) setIsLoaded(true);
-            if (shouldUseUserContext(pathname) && !isFirstTime && !isGuest) {
-                const { access_token, user } = await fetchUser();
-                fetchFollowing(access_token, user.username);
-            };
+            if (isSetted) {
+                if (isFirstTime || isGuest) setIsLoaded(true);
+                if (shouldUseUserContext(pathname) && !isFirstTime && !isGuest) {
+                    const { access_token, user } = await fetchUser();
+                    fetchFollowing(access_token, user.username);
+                    setIsLoaded(true);
+                };
+            }
         }
         init();
-    }, [isFirstTime, isGuest])
+    }, [isSetted])
 
     return (
         <UserContext.Provider value={{ isFirstTime, isGuest, token, user, following, setIsFirstTime, setIsGuest, setUser }}>
