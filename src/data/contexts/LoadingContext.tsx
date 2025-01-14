@@ -7,7 +7,7 @@ interface LoadingProps {
     setIsLoaded: (boolean: boolean) => void;
 }
 
-const LoadingContext = createContext<LoadingProps>({} as any);
+const LoadingContext = createContext<LoadingProps>({} as LoadingProps);
 
 export const LoadingProvider = (props: any) => {
 

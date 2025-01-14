@@ -7,7 +7,7 @@ interface MenuProps {
     setIsOpen: (boolean: boolean) => void;
 }
 
-const MenuContext = createContext<MenuProps>({} as any);
+const MenuContext = createContext<MenuProps>({} as MenuProps);
 
 export const MenuProvider = (props: any) => {
 

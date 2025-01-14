@@ -16,7 +16,7 @@ export interface UserContextProps {
     setUser: (token: string, user: User) => void;
 };
 
-const UserContext = createContext<UserContextProps>({} as any);
+const UserContext = createContext<UserContextProps>({} as UserContextProps);
 
 export const UserContextProvider = (props: any) => {
 
@@ -26,16 +26,17 @@ export const UserContextProvider = (props: any) => {
 
     const { setIsLoaded } = useLoading();
 
-    const [isFirstTime, setIsFirstTime] = useState<boolean>(false);
-    const [isGuest, setIsGuest] = useState<boolean>(false);
-    const [isSetted, setIsSetted] = useState<boolean>(false);
-    const [token, setTokenSate] = useState<string | null>(null);
-    const [user, setUserState] = useState<User | null>(null);
-    const [following, setFollowing] = useState<Partial<User>[]>([]);
+    const [state, setState] = useState({
+        isFirstTime: false,
+        isGuest: false,
+        isSetted: false,
+        token: null as string | null,
+        user: null as User | null,
+        following: [] as Partial<User>[]
+    });
 
-    const setUser = (token: string, user: User,) => {
-        setTokenSate(token);
-        setUserState(user);
+    const setUser = (token: string, user: User): void => {
+        return setState(prev => ({ ...prev, token: token, user: user }))
     };
 
     const fetchUser = async (): Promise<{ access_token: string, user: User }> => {
@@ -44,34 +45,47 @@ export const UserContextProvider = (props: any) => {
         return { access_token, user };
     }
 
-    const fetchFollowing = async (token: string, username: string) => {
+    const fetchFollowing = async (token: string, username: string): Promise<void> => {
         const { content } = await getUserFollowing(token, username);
-        return setFollowing(content);
+        return setState(prev => ({ ...prev, following: content }));
     }
 
     useEffect(() => {
-        if (!shouldUseUserContext(pathname)) setIsLoaded(true);
-        setIsFirstTime(() => { return localStorage.getItem('isGuest') === null });
-        setIsGuest(() => { return localStorage.getItem('isGuest') === 'true' });
-        setIsSetted(() => { return true });
+        if (!shouldUseUserContext(pathname)) return setIsLoaded(true);
+        const stored = localStorage.getItem('isGuest');
+        return setState(prev => ({
+            ...prev,
+            isFirstTime: stored === null,
+            isGuest: stored === 'true',
+            isSetted: true
+        }));
     }, [])
 
     useEffect(() => {
         const init = async () => {
-            if (isSetted) {
-                if (isFirstTime || isGuest) setIsLoaded(true);
-                if (shouldUseUserContext(pathname) && !isFirstTime && !isGuest) {
-                    const { access_token, user } = await fetchUser();
-                    fetchFollowing(access_token, user.username);
-                    setIsLoaded(true);
-                };
-            }
+            const { isFirstTime, isGuest, isSetted } = state;
+            if (!isSetted) return;
+            if (isFirstTime || isGuest) setIsLoaded(true);
+            if (shouldUseUserContext(pathname) && !isFirstTime && !isGuest) {
+                const { access_token, user } = await fetchUser();
+                await fetchFollowing(access_token, user.username);
+                setIsLoaded(true);
+            };
         }
         init();
-    }, [isSetted])
+    }, [state.isSetted])
 
     return (
-        <UserContext.Provider value={{ isFirstTime, isGuest, token, user, following, setIsFirstTime, setIsGuest, setUser }}>
+        <UserContext.Provider value={{
+            isFirstTime: state.isFirstTime,
+            isGuest: state.isGuest,
+            token: state.token,
+            user: state.user,
+            following: state.following,
+            setIsFirstTime: (isFirstTime: boolean) => setState(prev => ({ ...prev, isFirstTime })),
+            setIsGuest: (isGuest: boolean) => setState(prev => ({ ...prev, isGuest })),
+            setUser
+        }}>
             {props.children}
         </UserContext.Provider>
     )

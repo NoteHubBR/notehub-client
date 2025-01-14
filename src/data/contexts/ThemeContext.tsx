@@ -8,7 +8,7 @@ interface ThemeProps {
     applyLightMode: () => void;
 };
 
-const ThemeContext = createContext<ThemeProps>({} as any);
+const ThemeContext = createContext<ThemeProps>({} as ThemeProps);
 
 export const ThemeProvider = (props: any) => {
 

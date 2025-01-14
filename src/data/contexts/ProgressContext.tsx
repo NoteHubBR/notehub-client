@@ -7,7 +7,7 @@ interface ProgressProps {
     setOnProgress: (boolean: boolean) => void;
 }
 
-const ProgressContext = createContext<ProgressProps>({} as any);
+const ProgressContext = createContext<ProgressProps>({} as ProgressProps);
 
 export const ProgressBarProvider = (props: any) => {
 
