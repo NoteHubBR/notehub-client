@@ -39,41 +39,38 @@ export const UserContextProvider = (props: any) => {
         return setState(prev => ({ ...prev, token: token, user: user }))
     };
 
-    const fetchUser = async (): Promise<{ access_token: string, user: User }> => {
+    const fetchUser = async (): Promise<void> => {
         const { access_token, user } = await refreshUser();
-        setUser(access_token, user);
-        return { access_token, user };
+        return setUser(access_token, user);
     }
 
-    const fetchFollowing = async (token: string, username: string): Promise<void> => {
+    const fetchUserData = async (token: string, username: string): Promise<void> => {
         const { content } = await getUserFollowing(token, username);
         return setState(prev => ({ ...prev, following: content }));
     }
 
     useEffect(() => {
-        if (!shouldUseUserContext(pathname)) return setIsLoaded(true);
-        const stored = localStorage.getItem('isGuest');
-        return setState(prev => ({
-            ...prev,
-            isFirstTime: stored === null,
-            isGuest: stored === 'true',
-            isSetted: true
-        }));
-    }, [])
-
-    useEffect(() => {
         const init = async () => {
-            const { isFirstTime, isGuest, isSetted } = state;
-            if (!isSetted) return;
+            if (!shouldUseUserContext(pathname)) return setIsLoaded(true);
+            const stored = localStorage.getItem('isGuest');
+            const isFirstTime = stored === null;
+            const isGuest = stored === 'true';
+            setState(prev => ({ ...prev, isFirstTime: isFirstTime, isGuest: isGuest }));
             if (isFirstTime || isGuest) setIsLoaded(true);
-            if (shouldUseUserContext(pathname) && !isFirstTime && !isGuest) {
-                const { access_token, user } = await fetchUser();
-                await fetchFollowing(access_token, user.username);
-                setIsLoaded(true);
-            };
+            if (shouldUseUserContext(pathname) && !isFirstTime && !isGuest) await fetchUser();
         }
         init();
-    }, [state.isSetted])
+    }, [state.isGuest])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const { token, user } = state;
+            if (!token || !user) return
+            await fetchUserData(token, user.username);
+            setIsLoaded(true);
+        }
+        fetchData();
+    }, [state.user])
 
     return (
         <UserContext.Provider value={{
