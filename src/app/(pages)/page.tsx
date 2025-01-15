@@ -8,13 +8,9 @@ export default function Home() {
 
   const { isLoaded } = useLoading();
 
-  const { isFirstTime, isGuest, user, setIsFirstTime, setIsGuest } = useUser();
+  const { store, setStore, user } = useUser();
 
-  const initAsGuest = () => {
-    localStorage.setItem('isGuest', 'true');
-    setIsGuest(true);
-    setIsFirstTime(false);
-  }
+  const initAsGuest = () => { setStore({ isFirstTimer: false, isGuest: true }); }
 
   const Elements = (user: User) => {
     return (
@@ -29,11 +25,11 @@ export default function Home() {
     )
   }
 
-  if (!isLoaded) return <></>
+  if (!isLoaded || !store) return <></>
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
-      {isFirstTime &&
+      {store.isFirstTimer &&
         <>
           <div>be welcome</div>
           <Link href={'/signin'} className="request-btn">Logar</Link>
@@ -45,7 +41,7 @@ export default function Home() {
           <Elements {...user} />
         </>
       }
-      {isGuest &&
+      {store.isGuest &&
         <>
           <h1>Hello Guest!</h1>
           <Link href={'/signin'} className="request-btn">Logar</Link>

@@ -13,13 +13,13 @@ import Page from "@/components/template/Page";
 const layout = (props: any) => {
 
     return (
-        <ThemeProvider>
+        <ProgressBarProvider>
             <LoadingProvider>
-                <Loading />
-                <ProgressBarProvider>
-                    <MenuProvider>
-                        <ProgressBar />
-                        <UserContextProvider>
+                <UserContextProvider>
+                    <ThemeProvider>
+                        <MenuProvider>
+                            <ProgressBar />
+                            <Loading />
                             <Container className="flex flex-col">
                                 <Navbar />
                                 <div className="flex h-full">
@@ -29,11 +29,11 @@ const layout = (props: any) => {
                                     </Page>
                                 </div>
                             </Container>
-                        </UserContextProvider>
-                    </MenuProvider>
-                </ProgressBarProvider>
+                        </MenuProvider>
+                    </ThemeProvider>
+                </UserContextProvider>
             </LoadingProvider>
-        </ThemeProvider>
+        </ProgressBarProvider>
     );
 
 };

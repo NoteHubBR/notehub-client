@@ -1,45 +1,29 @@
 'use client';
 
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect } from "react";
+import { useUser } from "../hooks";
 
-interface ThemeProps {
-    isDarkMode: boolean;
-    applyDarkMode: () => void;
-    applyLightMode: () => void;
-};
-
-const ThemeContext = createContext<ThemeProps>({} as ThemeProps);
+const ThemeContext = createContext({} as any);
 
 export const ThemeProvider = (props: any) => {
 
-    const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
-
-    const applyDarkMode = () => setIsDarkMode(true);
-
-    const applyLightMode = () => setIsDarkMode(false);
+    const { store, setStore } = useUser();
 
     useEffect(() => {
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-        setIsDarkMode(mediaQuery.matches);
         const handleChange = (e: MediaQueryListEvent) => {
-            setIsDarkMode(e.matches);
+            setStore({ isDarkModeUser: e.matches })
         };
         mediaQuery.addEventListener("change", handleChange);
         return () => mediaQuery.removeEventListener("change", handleChange);
     }, []);
 
     useEffect(() => {
-        document.documentElement.classList.toggle("dark", isDarkMode);
-    }, [isDarkMode]);
+        document.documentElement.classList.toggle("dark", store?.isDarkModeUser);
+    }, [store?.isDarkModeUser]);
 
     return (
-        <ThemeContext.Provider
-            value={{
-                isDarkMode,
-                applyDarkMode,
-                applyLightMode
-            }}
-        >
+        <ThemeContext.Provider value={{}}>
             {props.children}
         </ThemeContext.Provider>
     );

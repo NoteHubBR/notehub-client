@@ -17,7 +17,7 @@ const FormSection = () => {
 
     const { userService: { loginUserByDefault } } = useServices();
 
-    const { setUser, setIsFirstTime, setIsGuest } = useUser();
+    const { setStore, setUser } = useUser();
 
     const loginUserForm = useForm<LoginUserFormData>({
         resolver: zodResolver(loginUserFormSchema)
@@ -34,10 +34,7 @@ const FormSection = () => {
         try {
             const { access_token, user } = await loginUserByDefault(data);
             setUser(access_token, user);
-            setIsFirstTime(false);
-            setIsGuest(false);
-            localStorage.setItem('isFirstTime', 'false');
-            localStorage.setItem('isGuest', 'false');
+            setStore({ isFirstTimer: false, isGuest: false });
             router.push('/');
         } catch (errors) {
             if (Array.isArray(errors)) handleFieldErrors(errors, setError)

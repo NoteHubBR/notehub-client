@@ -1,14 +1,10 @@
 'use client';
 
-import { useEffect, useMemo, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
-import {
-  type ISourceOptions,
-  MoveDirection,
-  OutMode,
-} from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
-import { useTheme } from "@/data/hooks";
+import { type ISourceOptions, MoveDirection, OutMode, } from "@tsparticles/engine";
+import { useEffect, useMemo, useState } from "react";
+import { useUser } from "@/data/hooks";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
 
 export const TsParticles = () => {
 
@@ -24,13 +20,13 @@ export const TsParticles = () => {
 
   const particlesLoaded = async (): Promise<void> => { return; };
 
-  const { isDarkMode } = useTheme();
+  const { store: { isDarkModeUser } } = useUser();
 
   const options: ISourceOptions = useMemo(
     () => ({
       background: {
         color: {
-          value: `${isDarkMode ? "#171717" : "#fafafa"}`,
+          value: `${isDarkModeUser ? "#171717" : "#fafafa"}`,
         },
       },
       fpsLimit: 60,
@@ -93,7 +89,7 @@ export const TsParticles = () => {
         },
       },
       detectRetina: true,
-    }), [isDarkMode]);
+    }), [isDarkModeUser]);
 
   if (init) {
     return (
