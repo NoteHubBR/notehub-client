@@ -8,8 +8,8 @@ import { NotesScope } from "./elements/NotesScope";
 import { Section } from "./elements/Section";
 import { Shortcut } from "./elements/Shortcut";
 import { shouldUseUserContext } from "@/core";
-import { useMenu, useUser } from "@/data/hooks";
 import { usePathname } from "next/navigation";
+import { useUser } from "@/data/hooks";
 
 export const Sidebar = (props: React.HTMLAttributes<HTMLDivElement>) => {
 
@@ -17,9 +17,7 @@ export const Sidebar = (props: React.HTMLAttributes<HTMLDivElement>) => {
 
     const shouldRender = shouldUseUserContext(pathname);
 
-    const { user } = useUser();
-
-    const { isOpen } = useMenu();
+    const { store: { isMenuOpen }, user } = useUser();
 
     if (!shouldRender || !user) return null;
 
@@ -80,6 +78,6 @@ export const Sidebar = (props: React.HTMLAttributes<HTMLDivElement>) => {
         )
     }
 
-    return <>{isOpen ? <Maximized /> : <Minimized />}</>;
+    return <>{isMenuOpen ? <Maximized /> : <Minimized />}</>;
 
 }

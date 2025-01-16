@@ -102,6 +102,6 @@ export const TsParticles = () => {
     );
   }
 
-  return <></>;
+  return null;
 
 };

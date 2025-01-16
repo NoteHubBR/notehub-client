@@ -38,6 +38,7 @@ export const UserContextProvider = (props: any) => {
             isFirstTimer: data.isFirstTimer ?? state.store?.isFirstTimer ?? false,
             isGuest: data.isGuest ?? state.store?.isGuest ?? false,
             isDarkModeUser: data.isDarkModeUser ?? state.store?.isDarkModeUser ?? false,
+            isMenuOpen: data.isMenuOpen ?? state.store.isMenuOpen ?? false,
             searches: data.searches ?? state.store?.searches ?? []
         }
         localStorage.setItem('store', JSON.stringify(store));

@@ -25,7 +25,7 @@ export default function Home() {
     )
   }
 
-  if (!isLoaded || !store) return <></>
+  if (!isLoaded || !store) return null;
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
