@@ -12,7 +12,7 @@ export const Link = (props: LinkProps) => {
     const { icon, text, strong, reverse, ...rest } = props;
 
     return (
-        <NextLink className="flex items-center gap-3 "{...rest}>
+        <NextLink className="py-1 px-2 flex items-center gap-3 "{...rest}>
             {!reverse
                 ?
                 <>
