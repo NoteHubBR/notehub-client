@@ -1,12 +1,10 @@
 'use client';
 
-import { Button } from "./elements/Button";
 import { Field } from "./elements/Field";
 import { FollowingScope } from "./elements/FollowingScope";
 import { IconArrowRight, IconCompass, IconFlame, IconHome, IconNotes, IconPlus, IconUserCircle, IconUsers } from "@tabler/icons-react";
-import { Input } from "./elements/Input";
 import { Link } from "./elements/Link";
-import { NoteLink } from "./elements/NoteLink";
+import { NotesScope } from "./elements/NotesScope";
 import { Section } from "./elements/Section";
 import { Shortcut } from "./elements/Shortcut";
 import { shouldUseUserContext } from "@/core";
@@ -76,9 +74,7 @@ export const Sidebar = (props: React.HTMLAttributes<HTMLDivElement>) => {
                     <Field href={'/new'}>
                         <Link href={'/new'} icon={<IconPlus size={24} />} text="Nova nota" strong />
                     </Field>
-                    <Input type="text" required />
-                    <Field><NoteLink avatar="/imgs/avatar.png" username="lucas-adm" title="Vasco da Gama" /></Field>
-                    <Button text="Mostrar mais" className="w-fit flex items-center gap-3 py-1 cursor-pointer hover:text-violet-500 transition-colors" />
+                    <NotesScope />
                 </Section>
             </aside>
         )

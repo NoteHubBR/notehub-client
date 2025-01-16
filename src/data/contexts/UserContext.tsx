@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useEffect, useState } from "react";
-import { Store, storeData, User, shouldUseUserContext } from "@/core";
+import { Store, storeData, User, shouldUseUserContext, LowDetailNote } from "@/core";
 import { useLoading, useServices } from "../hooks";
 import { usePathname } from "next/navigation";
 
@@ -10,6 +10,7 @@ export interface UserContextProps {
     token: string | null;
     user: User | null;
     following: Partial<User>[] | [];
+    notes: LowDetailNote[] | [];
     setStore: (data: Partial<Store>) => void;
     setUser: (token: string, user: User) => void;
 };
@@ -18,7 +19,7 @@ const UserContext = createContext<UserContextProps>({} as UserContextProps);
 
 export const UserContextProvider = (props: any) => {
 
-    const { userService: { refreshUser, getUserFollowing } } = useServices();
+    const { userService: { refreshUser, getUserFollowing, getUserNotes } } = useServices();
 
     const pathname = usePathname();
 
@@ -28,7 +29,8 @@ export const UserContextProvider = (props: any) => {
         store: {} as Store,
         token: null as string | null,
         user: null as User | null,
-        following: [] as Partial<User>[]
+        following: [] as Partial<User>[],
+        notes: [] as LowDetailNote[],
     });
 
     const setStore = (data: Partial<Store>): void => {
@@ -52,8 +54,9 @@ export const UserContextProvider = (props: any) => {
     }
 
     const fetchUserData = async (token: string, username: string): Promise<void> => {
-        const { content } = await getUserFollowing(token, username);
-        return setState(prev => ({ ...prev, following: content }));
+        const { content: following } = await getUserFollowing(token, username);
+        const { content: notes } = await getUserNotes(token);
+        return setState(prev => ({ ...prev, following: following, notes: notes }));
     }
 
     useEffect(() => {
@@ -85,6 +88,7 @@ export const UserContextProvider = (props: any) => {
             token: state.token,
             user: state.user,
             following: state.following,
+            notes: state.notes,
             setStore,
             setUser
         }}>
