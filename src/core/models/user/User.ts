@@ -1,6 +1,6 @@
 import { UUID } from "crypto";
 
-export default interface User {
+export interface User {
     id: UUID;
     email: string;
     username: string;
@@ -17,3 +17,5 @@ export default interface User {
     followers_count: number;
     following_count: number;
 }
+
+export type LowDetailUser = Omit<User, 'id' | 'email' | 'password' | 'score' | 'notifications'>;

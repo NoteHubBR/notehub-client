@@ -1,22 +1,9 @@
-import { LowDetailNote } from "../note";
-import { User } from "../user";
-
-export interface UsersPage {
+export interface Page<T> {
     totalPages: number;
     totalElements: number;
     size: number;
     page: number;
     first: boolean;
     last: boolean;
-    content: Partial<User>[];
-}
-
-export interface NotesPage {
-    totalPages: number;
-    totalElements: number;
-    size: number;
-    page: number;
-    first: boolean;
-    last: boolean;
-    content: LowDetailNote[];
+    content: T[];
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useEffect, useState } from "react";
-import { Store, storeData, User, shouldUseUserContext, LowDetailNote } from "@/core";
+import { Store, storeData, User, shouldUseUserContext, LowDetailUser, LowDetailNote } from "@/core";
 import { useLoading, useServices } from "../hooks";
 import { usePathname } from "next/navigation";
 
@@ -9,7 +9,7 @@ export interface UserContextProps {
     store: Store;
     token: string | null;
     user: User | null;
-    following: Partial<User>[] | [];
+    following: LowDetailUser[] | [];
     notes: LowDetailNote[] | [];
     setStore: (data: Partial<Store>) => void;
     setUser: (token: string, user: User) => void;
@@ -29,7 +29,7 @@ export const UserContextProvider = (props: any) => {
         store: {} as Store,
         token: null as string | null,
         user: null as User | null,
-        following: [] as Partial<User>[],
+        following: [] as LowDetailUser[],
         notes: [] as LowDetailNote[],
     });
 

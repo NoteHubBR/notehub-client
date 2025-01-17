@@ -1,4 +1,4 @@
-import { CreateUserFormData, LoginUserFormData, User, UsersPage, NotesPage } from '@/core';
+import { CreateUserFormData, LoginUserFormData, User, Page, LowDetailUser, LowDetailNote } from '@/core';
 import { useAPI, useUser } from '@/data/hooks';
 
 export const UserService = () => {
@@ -50,7 +50,7 @@ export const UserService = () => {
         else throw error;
     };
 
-    const getUserFollowing = async (token: string, username: string): Promise<UsersPage> => {
+    const getUserFollowing = async (token: string, username: string): Promise<Page<LowDetailUser>> => {
         const endpoint: string = `/users/${username}/following?size=9999&sort=username,asc`;
         try {
             return await httpGet(endpoint, { useToken: token });
@@ -59,7 +59,7 @@ export const UserService = () => {
         }
     };
 
-    const getUserNotes = async (token: string): Promise<NotesPage> => {
+    const getUserNotes = async (token: string): Promise<Page<LowDetailNote>> => {
         const endpoint: string = '/notes/private?size=9999&sort=createdAt,desc';
         try {
             return await httpGet(endpoint, { useToken: token })

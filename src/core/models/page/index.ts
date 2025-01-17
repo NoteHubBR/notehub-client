@@ -1,3 +1,3 @@
-import { UsersPage, NotesPage } from "./Page";
+import { Page } from "./Page";
 
-export type { UsersPage, NotesPage };
+export type { Page };

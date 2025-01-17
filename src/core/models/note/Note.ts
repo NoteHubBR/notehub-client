@@ -9,20 +9,10 @@ export interface Note {
     created_at: string;
     modified: false;
     closed: false;
+    hidden: boolean;
+    markdown: string;
     comments_count: number;
     flames_count: number;
 }
 
-export interface LowDetailNote {
-    id: UUID,
-    title: string;
-    tags: string[];
-    user: User;
-    created_at: string;
-    modified: false;
-    closed: false;
-    hidden?: boolean;
-    markdown?: string;
-    comments_count: number;
-    flames_count: number;
-}
+export type LowDetailNote = Omit<Note, 'hidden' | 'markdown'>;

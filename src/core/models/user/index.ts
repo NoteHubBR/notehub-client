@@ -1,3 +1,3 @@
-import User from "./User";
+import { User, LowDetailUser } from "./User";
 
-export type { User };
+export type { User, LowDetailUser };
