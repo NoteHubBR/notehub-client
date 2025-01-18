@@ -7,8 +7,8 @@ import { Input } from "./elements/Input";
 import { Menu } from "./elements/Menu";
 import { Picture } from "./elements/Picture";
 import { shouldUseUserContext } from "@/core";
+import { useLoading, useUser } from "@/data/hooks"
 import { usePathname } from "next/navigation";
-import { useUser } from "@/data/hooks"
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,9 +18,11 @@ export const Navbar = () => {
 
     const shouldRender = shouldUseUserContext(pathname);
 
-    const { user } = useUser();
+    const { isLoaded } = useLoading();
 
-    if (!shouldRender) return null;
+    const { user } = useUser();
+    
+    if (!isLoaded || !shouldRender) return null;
 
     return (
         <nav className="

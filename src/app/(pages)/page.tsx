@@ -1,12 +1,10 @@
 'use client';
 
-import { useLoading, useUser } from "@/data/hooks";
 import { User } from "@/core";
+import { useUser } from "@/data/hooks";
 import Link from "next/link";
 
 export default function Home() {
-
-  const { isLoaded } = useLoading();
 
   const { store, setStore, user } = useUser();
 
@@ -25,7 +23,7 @@ export default function Home() {
     )
   }
 
-  if (!isLoaded || !store) return null;
+  if (!store) return null;
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">

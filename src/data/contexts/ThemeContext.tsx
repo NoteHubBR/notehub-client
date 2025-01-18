@@ -19,8 +19,16 @@ export const ThemeProvider = (props: any) => {
     }, []);
 
     useEffect(() => {
-        document.documentElement.classList.toggle("dark", store?.isDarkModeUser);
+        if (store?.isDarkModeUser) {
+            document.documentElement.classList.add("dark");
+            document.documentElement.classList.remove("light");
+        } else {
+            document.documentElement.classList.add("light");
+            document.documentElement.classList.remove("dark");
+        }
     }, [store?.isDarkModeUser]);
+
+
 
     return (
         <ThemeContext.Provider value={{}}>

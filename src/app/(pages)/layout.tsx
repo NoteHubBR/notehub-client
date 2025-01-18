@@ -1,11 +1,11 @@
 import { Container } from "@/components/template/Container";
-import { Loading } from "@/components/Loading";
 import { LoadingProvider } from "@/data/contexts/LoadingContext";
 import { MenuProvider } from "@/data/contexts/MenuContext";
 import { Navbar } from "@/components/navbar";
 import { ProgressBar } from "@/components/ProgressBar";
 import { ProgressBarProvider } from "@/data/contexts/ProgressContext";
 import { Sidebar } from "@/components/sidebar";
+import { SplashScreen } from "@/components/SplashScreen";
 import { ThemeProvider } from "@/data/contexts/ThemeContext";
 import { UserContextProvider } from "@/data/contexts/UserContext";
 import Page from "@/components/template/Page";
@@ -19,7 +19,7 @@ const layout = (props: any) => {
                     <ThemeProvider>
                         <MenuProvider>
                             <ProgressBar />
-                            <Loading />
+                            <SplashScreen />
                             <Container className="flex flex-col">
                                 <Navbar />
                                 <div className="flex h-full">
