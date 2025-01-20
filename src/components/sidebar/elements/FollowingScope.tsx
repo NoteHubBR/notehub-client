@@ -2,8 +2,8 @@ import { Button } from "./Button";
 import { Field } from "./Field";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { LowDetailUser } from "@/core";
+import { Target } from "./Target";
 import { useCallback, useState } from "react";
-import { UserLink } from "./UserLink";
 import { useUser } from "@/data/hooks";
 import Link from "next/link";
 
@@ -26,7 +26,7 @@ export const FollowingScope = () => {
             {listState.map(user => (
                 <Field key={user.username}>
                     <Link href={`/${user.username}`}>
-                        <UserLink avatar={user.avatar} username={user.username} />
+                        <Target user={user} />
                     </Link>
                 </Field>
             ))}
@@ -41,5 +41,5 @@ export const FollowingScope = () => {
             )}
         </div>
     );
-    
+
 }

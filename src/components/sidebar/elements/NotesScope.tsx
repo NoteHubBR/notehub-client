@@ -2,7 +2,7 @@ import { Button } from "./Button";
 import { Field } from "./Field";
 import { Filter, LowDetailNote } from "@/core";
 import { Input } from "./Input";
-import { NoteLink } from "./NoteLink";
+import { Target } from "./Target";
 import { useCallback, useEffect, useState } from "react";
 import { useUser } from "@/data/hooks";
 import Link from "next/link";
@@ -46,7 +46,7 @@ export const NotesScope = () => {
             {list.map(note =>
                 <Field key={note.id}>
                     <Link href={`/${note.user.username}/${note.id}`}>
-                        <NoteLink avatar={note.user.avatar} username={note.user.username} title={note.title} />
+                        <Target user={note.user} note={note} />
                     </Link>
                 </Field>
             )}
