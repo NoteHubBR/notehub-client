@@ -1,4 +1,4 @@
-import { CreateUserFormData, LoginUserFormData, User, Page, LowDetailUser, LowDetailNote } from '@/core';
+import { CreateUserFormData, LoginUserFormData, Token, User, Cookies, Page, LowDetailUser, LowDetailNote } from '@/core';
 import { useAPI, useUser } from '@/data/hooks';
 
 export const UserService = () => {
@@ -25,17 +25,17 @@ export const UserService = () => {
         }
     }
 
-    const loginUserByDefault = async (data: LoginUserFormData): Promise<{ access_token: string, user: User }> => {
+    const loginUserByDefault = async (data: LoginUserFormData): Promise<{ token: Token, user: User }> => {
         try {
-            return await httpPost('/auth/login', data, { useProgress: true, useCredentials: true });
+            return await httpPost('/auth/login', data, { useProgress: true });
         } catch (error) {
             throw error;
         }
     }
 
-    const refreshUser = async (): Promise<{ access_token: string, user: User }> => {
+    const refreshUser = async (): Promise<{ token: Token, user: User }> => {
         try {
-            return await httpGet("/auth/refresh", { useProgress: true, useCredentials: true })
+            return await httpGet(`/auth/refresh?token=${Cookies.get('rtoken')}`, { useProgress: true });
         } catch (error) {
             throw error;
         }
@@ -43,12 +43,12 @@ export const UserService = () => {
 
     const handleExpiredToken = async (error: any, func: (token: string) => Promise<any>) => {
         if (error.message === 'Token inválido.') {
-            const { access_token, user } = await refreshUser();
-            setUser(access_token, user);
-            return await func(access_token);
+            const { token, user } = await refreshUser();
+            setUser(token, user);
+            return await func(token.access_token);
         }
         else throw error;
-    };
+    }
 
     const getUserFollowing = async (token: string, username: string): Promise<Page<LowDetailUser>> => {
         const endpoint: string = `/users/${username}/following?size=9999&sort=username,asc`;
@@ -57,7 +57,7 @@ export const UserService = () => {
         } catch (error: any) {
             return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useToken: newToken }));
         }
-    };
+    }
 
     const getUserNotes = async (token: string): Promise<Page<LowDetailNote>> => {
         const endpoint: string = '/notes/private?size=9999&sort=createdAt,desc';
@@ -70,4 +70,4 @@ export const UserService = () => {
 
     return { createUser, activateUser, loginUserByDefault, refreshUser, getUserFollowing, getUserNotes };
 
-};
+}

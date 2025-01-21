@@ -8,6 +8,8 @@ export default function Home() {
 
   const { store, setStore, user } = useUser();
 
+  const { isFirstTimer, isGuest } = store;
+
   const initAsGuest = () => { setStore({ isFirstTimer: false, isGuest: true }); }
 
   const Elements = (user: User) => {
@@ -27,11 +29,17 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
-      {store.isFirstTimer &&
+      {isFirstTimer &&
         <>
           <div>be welcome</div>
           <Link href={'/signin'} className="request-btn">Logar</Link>
           <button onClick={initAsGuest} className="request-btn">Explorar</button>
+        </>
+      }
+      {isGuest &&
+        <>
+          <h1>Hello Guest!</h1>
+          <Link href={'/signin'} className="request-btn">Logar</Link>
         </>
       }
       {user &&
@@ -39,13 +47,13 @@ export default function Home() {
           <Elements {...user} />
         </>
       }
-      {store.isGuest &&
+      {!isFirstTimer && !isGuest && !user &&
         <>
-          <h1>Hello Guest!</h1>
+          <h1>Sua sessão expirou!</h1>
           <Link href={'/signin'} className="request-btn">Logar</Link>
         </>
       }
-    </div>
+    </div >
   );
 
 }

@@ -4,7 +4,6 @@ import { useProgress } from "./useProgress";
 interface HttpOptions {
     useProgress?: boolean;
     useToken?: string;
-    useCredentials?: boolean;
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -32,7 +31,7 @@ export const useAPI = () => {
 
     const request = useCallback(async (method: string, endpoint: string, body?: any, options?: HttpOptions) => {
 
-        const { useProgress: showProgress, useToken, useCredentials } = options || {};
+        const { useProgress: showProgress, useToken } = options || {};
 
         const uri = `${baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 
@@ -44,7 +43,6 @@ export const useAPI = () => {
             method,
             headers,
             body: body ? JSON.stringify(body) : undefined,
-            ...(useCredentials && { credentials: 'include' })
         };
 
         try {

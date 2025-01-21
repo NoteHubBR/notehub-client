@@ -22,9 +22,9 @@ const layout = (props: any) => {
                             <SplashScreen />
                             <Container className="flex flex-col">
                                 <Navbar />
-                                <div className="flex h-full">
+                                <div className="h-full flex">
                                     <Sidebar />
-                                    <Page>
+                                    <Page className="w-full">
                                         {props.children}
                                     </Page>
                                 </div>

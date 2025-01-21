@@ -14,7 +14,7 @@ export const createUserFormSchema = z.object({
         .min(4, 'Mínimo de 4 caracteres.')
         .max(24, 'Máximo de 24 caracteres.'),
     avatar: z
-        .string().default("/avatar.png"),
+        .string().default("/imgs/avatar.png"),
     password: z
         .string()
         .min(4, 'Mínimo de 4 caracteres.')

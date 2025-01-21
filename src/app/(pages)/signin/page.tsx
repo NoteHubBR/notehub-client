@@ -3,7 +3,7 @@
 import { Container } from '@/components/template/Container';
 import { Form } from '@/components/form';
 import { FormProvider, useForm } from 'react-hook-form';
-import { handleFieldErrors } from '@/core';
+import { Cookies, handleFieldErrors } from '@/core';
 import { IconAt } from '@tabler/icons-react';
 import { LoginUserFormData, loginUserFormSchema } from '@/core/schemas/user/LoginUser';
 import { TsParticles } from '@/components/TsParticles';
@@ -21,7 +21,7 @@ const FormSection = () => {
 
     const loginUserForm = useForm<LoginUserFormData>({
         resolver: zodResolver(loginUserFormSchema)
-    });
+    })
 
     const { handleSubmit, setError } = loginUserForm;
 
@@ -32,9 +32,11 @@ const FormSection = () => {
     const onSubmit = async (data: LoginUserFormData) => {
         setIsRequesting(true);
         try {
-            const { access_token, user } = await loginUserByDefault(data);
-            setUser(access_token, user);
+            const response = await loginUserByDefault(data);
+            const { token, user } = response;
+            setUser(token, user);
             setStore({ isFirstTimer: false, isGuest: false });
+            Cookies.set('rtoken', token.refresh_token, token.expires_at);
             router.push('/');
         } catch (errors) {
             if (Array.isArray(errors)) handleFieldErrors(errors, setError)
