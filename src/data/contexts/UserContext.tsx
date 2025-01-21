@@ -9,6 +9,7 @@ export interface UserContextProps {
     store: Store;
     token: Token | null;
     user: User | null;
+    notifications: number;
     following: LowDetailUser[] | [];
     notes: LowDetailNote[] | [];
     setStore: (data: Partial<Store>) => void;
@@ -29,6 +30,7 @@ export const UserContextProvider = (props: any) => {
         store: {} as Store,
         token: null as Token | null,
         user: null as User | null,
+        notifications: 0 as number,
         following: [] as LowDetailUser[],
         notes: [] as LowDetailNote[],
     })
@@ -46,7 +48,7 @@ export const UserContextProvider = (props: any) => {
     }, [state.store])
 
     const setUser = useCallback((token: Token | null, user: User | null): void => {
-        return setState(prev => ({ ...prev, token: token, user: user }))
+        return setState(prev => ({ ...prev, token: token, user: user }));
     }, [])
 
     const fetchUser = async (): Promise<void> => {
@@ -57,9 +59,15 @@ export const UserContextProvider = (props: any) => {
         } catch {
             Cookies.remove('rtoken');
             setUser(null, null);
-            return setIsLoaded(true)
+            return setIsLoaded(true);
         }
     }
+
+    const setTitle = useCallback((notifications: number): string => {
+        setState((prev) => ({ ...prev, notifications: notifications }));
+        const title = `${notifications > 0 ? `( ${notifications} ) XYZ` : 'XYZ'}`;
+        return document.title = title;
+    }, [])
 
     const fetchUserData = async (accessToken: string, username: string): Promise<void> => {
         const { content: following } = await getUserFollowing(accessToken, username);
@@ -76,7 +84,7 @@ export const UserContextProvider = (props: any) => {
             if (shouldUseUserContext(pathname) && !isFirstTimer && !isGuest) {
                 return await fetchUser();
             }
-            else return setIsLoaded(true)
+            else return setIsLoaded(true);
         }
         init();
     }, [])
@@ -84,22 +92,28 @@ export const UserContextProvider = (props: any) => {
     useEffect(() => {
         const fetchData = async () => {
             const { token, user } = state;
-            if (!token || !user) return
+            if (!token || !user) return;
             await fetchUserData(token.access_token, user.username);
+            setTitle(user.notifications);
             setIsLoaded(true);
         }
         fetchData();
     }, [state.user])
+
+    useEffect(() => {
+        setTitle(state.notifications);
+    }, [state.notifications])
 
     return (
         <UserContext.Provider value={{
             store: state.store,
             token: state.token,
             user: state.user,
+            notifications: state.notifications,
             following: state.following,
             notes: state.notes,
             setStore,
-            setUser
+            setUser,
         }}>
             {props.children}
         </UserContext.Provider>
