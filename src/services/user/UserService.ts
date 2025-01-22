@@ -1,11 +1,12 @@
-import { CreateUserFormData, LoginUserFormData, Token, User, Cookies, Page, LowDetailUser, LowDetailNote } from '@/core';
-import { useAPI, useUser } from '@/data/hooks';
+import { CreateUserFormData, Page, LowDetailUser } from '@/core';
+import { useAPI } from '@/data/hooks';
+import { AuthService } from '../auth';
 
 export const UserService = () => {
 
-    const { setUser } = useUser();
-
     const { httpPost, httpGet } = useAPI();
+
+    const handleExpiredToken = AuthService().handleExpiredToken;
 
     const createUser = async (data: CreateUserFormData) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -25,31 +26,6 @@ export const UserService = () => {
         }
     }
 
-    const loginUserByDefault = async (data: LoginUserFormData): Promise<{ token: Token, user: User }> => {
-        try {
-            return await httpPost('/auth/login', data, { useProgress: true });
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    const refreshUser = async (): Promise<{ token: Token, user: User }> => {
-        try {
-            return await httpGet(`/auth/refresh?token=${Cookies.get('rtoken')}`, { useProgress: true });
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    const handleExpiredToken = async (error: any, func: (token: string) => Promise<any>) => {
-        if (error.message === 'Token inválido.') {
-            const { token, user } = await refreshUser();
-            setUser(token, user);
-            return await func(token.access_token);
-        }
-        else throw error;
-    }
-
     const getUserFollowing = async (token: string, username: string): Promise<Page<LowDetailUser>> => {
         const endpoint: string = `/users/${username}/following?size=9999&sort=username,asc`;
         try {
@@ -59,15 +35,6 @@ export const UserService = () => {
         }
     }
 
-    const getUserNotes = async (token: string): Promise<Page<LowDetailNote>> => {
-        const endpoint: string = '/notes/private?size=9999&sort=createdAt,desc';
-        try {
-            return await httpGet(endpoint, { useToken: token })
-        } catch (error: any) {
-            return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useToken: newToken }));
-        }
-    }
-
-    return { createUser, activateUser, loginUserByDefault, refreshUser, getUserFollowing, getUserNotes };
+    return { createUser, activateUser, getUserFollowing }
 
 }

@@ -20,7 +20,11 @@ const UserContext = createContext<UserContextProps>({} as UserContextProps);
 
 export const UserContextProvider = (props: any) => {
 
-    const { userService: { refreshUser, getUserFollowing, getUserNotes } } = useServices();
+    const {
+        authService: { refreshUser },
+        userService: { getUserFollowing },
+        noteService: { getUserNotes }
+    } = useServices();
 
     const pathname = usePathname();
 

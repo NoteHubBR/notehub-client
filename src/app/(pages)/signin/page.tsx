@@ -1,9 +1,9 @@
 'use client'
 
 import { Container } from '@/components/template/Container';
+import { Cookies, handleFieldErrors } from '@/core';
 import { Form } from '@/components/form';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Cookies, handleFieldErrors } from '@/core';
 import { IconAt } from '@tabler/icons-react';
 import { LoginUserFormData, loginUserFormSchema } from '@/core/schemas/user/LoginUser';
 import { TsParticles } from '@/components/TsParticles';
@@ -15,7 +15,7 @@ import Link from 'next/link';
 
 const FormSection = () => {
 
-    const { userService: { loginUserByDefault } } = useServices();
+    const { authService: { loginUserByDefault } } = useServices();
 
     const { setStore, setUser } = useUser();
 

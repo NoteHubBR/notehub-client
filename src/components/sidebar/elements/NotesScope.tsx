@@ -50,7 +50,7 @@ export const NotesScope = () => {
                     </Link>
                 </Field>
             )}
-            {!isSearching &&
+            {!isSearching && notes.length > sliced.length &&
                 <Button
                     className="w-fit flex items-center gap-3 py-1 cursor-pointer hover:text-violet-500 transition-colors"
                     text={isExpanded ? "Mostrar menos" : "Mostrar mais"}
