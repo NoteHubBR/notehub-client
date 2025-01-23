@@ -7,7 +7,7 @@ import { Input } from "./elements/Input";
 import { Menu } from "./elements/Menu";
 import { Picture } from "./elements/Picture";
 import { shouldUseUserContext } from "@/core";
-import { useLoading, useUser } from "@/data/hooks"
+import { useLoading, useScreen, useUser } from "@/data/hooks"
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,11 +18,13 @@ export const Navbar = () => {
 
     const shouldRender = shouldUseUserContext(pathname);
 
+    const { onDesktop } = useScreen();
+
     const { isLoaded } = useLoading();
 
     const { user } = useUser();
-    
-    if (!isLoaded || !shouldRender) return null;
+
+    if (!shouldRender || !onDesktop || !isLoaded) return null;
 
     return (
         <nav className="
@@ -36,7 +38,9 @@ export const Navbar = () => {
                 <>
                     <div className="pl-2 flex gap-4 w-fit">
                         <Menu />
-                        <Link href={'/'}><Image src={'/imgs/logo.png'} width={125} height={0} alt="Logo" className="px-2" /></Link>
+                        <Link href={'/'} className="flex items-center justify-center">
+                            <Image src={'/imgs/logo.png'} width={99} height={0} alt="Logo" className="px-2" />
+                        </Link>
                     </div>
                     <div>
                         <Input type="text" placeholder="Pesquisar" required />
@@ -50,15 +54,16 @@ export const Navbar = () => {
                 :
                 <>
                     <div className="pl-2 flex gap-4 w-fit">
-                        <Link href={'/'}><Image src={'/imgs/logo.png'} width={125} height={0} alt="Logo" className="px-2" /></Link>
+                        <Link href={'/'} className="flex items-center justify-center">
+                            <Image src={'/imgs/logo.png'} width={99} height={0} alt="Logo" className="px-2" />
+                        </Link>
                     </div>
                     <div>
                         <Input type="text" placeholder="Pesquisar" required />
                     </div>
-                    <div className="pr-2 flex gap-8 w-fit">
-                        <Link href={'/x'} className="resize-btn font-semibold">Explorar</Link>
-                        <Link href={'/signin'} className="resize-btn font-semibold">Entrar</Link>
-                        <Link href={'/signup'} className="resize-btn font-semibold">Cadastrar</Link>
+                    <div className="pr-2 flex items-center justify-center gap-8 w-fit">
+                        <Link href={'/x'} className="resize-btn font-semibold py-2">Explorar</Link>
+                        <Link href={'/signin'} className="resize-btn font-semibold py-2 px-4 rounded-md bg-violet-600">Entrar</Link>
                     </div>
                 </>
             }

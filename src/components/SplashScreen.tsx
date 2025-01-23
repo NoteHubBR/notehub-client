@@ -1,15 +1,31 @@
 'use client';
 
 import { Container } from "./template/Container";
-import { useLoading } from "@/data/hooks";
+import { shouldUseUserContext } from "@/core";
+import { useEffect } from "react";
+import { useLoading, useScreen, useWidth } from "@/data/hooks";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 export const SplashScreen = () => {
 
-    const { isLoaded } = useLoading();
+    const { onDesktop } = useScreen();
+
+    const { width } = useWidth();
+
+    const pathname = usePathname();
+
+    const shouldRender = shouldUseUserContext(pathname);
+
+    const { isLoaded, setIsLoaded } = useLoading();
+
+    useEffect(() => {
+        if (onDesktop && width <= 768 && shouldRender) setIsLoaded(false)
+        else setIsLoaded(true)
+    }, [onDesktop, width, setIsLoaded, shouldRender])
 
     if (isLoaded) return null;
-    
+
     return (
         <Container className="z-[998] absolute top-0 left-0 flex items-center justify-center">
             <Image
