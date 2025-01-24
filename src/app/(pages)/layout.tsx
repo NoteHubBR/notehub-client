@@ -1,12 +1,12 @@
 import { Container } from "@/components/template/Container";
+import { Desktop } from "@/components/desktop";
 import { LoadingProvider } from "@/data/contexts/LoadingContext";
 import { MenuProvider } from "@/data/contexts/MenuContext";
-import { Navbar } from "@/components/navbar";
+import { Mobile } from "@/components/mobile";
 import { ProgressBar } from "@/components/ProgressBar";
 import { ProgressBarProvider } from "@/data/contexts/ProgressContext";
 import { ScreenProvider } from "@/data/contexts/ScreenContext";
 import { ScreenWidthProvider } from "@/data/contexts/ScreenWidthContext";
-import { Sidebar } from "@/components/sidebar";
 import { SplashScreen } from "@/components/SplashScreen";
 import { ThemeProvider } from "@/data/contexts/ThemeContext";
 import { UserContextProvider } from "@/data/contexts/UserContext";
@@ -25,9 +25,10 @@ const layout = (props: any) => {
                                     <ProgressBar />
                                     <SplashScreen />
                                     <Container className="flex flex-col">
-                                        <Navbar />
+                                        <Desktop.Navbar />
+                                        <Mobile.Navbar />
                                         <div className="h-full flex">
-                                            <Sidebar />
+                                            <Desktop.Sidebar />
                                             <Page className="w-full">
                                                 {props.children}
                                             </Page>

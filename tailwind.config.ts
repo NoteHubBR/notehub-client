@@ -22,6 +22,9 @@ const config: Config = {
         'inlg': { max: '1024px' },
         'inmd': { max: '768px' },
         'insm': { max: '640px' },
+      },
+      fontSize: {
+        '2xs': '0.55rem'
       }
     },
   },

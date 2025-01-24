@@ -62,8 +62,8 @@ export const Navbar = () => {
                         <Input type="text" placeholder="Pesquisar" required />
                     </div>
                     <div className="pr-2 flex items-center justify-center gap-8 w-fit">
-                        <Link href={'/x'} className="resize-btn font-semibold py-2">Explorar</Link>
-                        <Link href={'/signin'} className="resize-btn font-semibold py-2 px-4 rounded-md bg-violet-600">Entrar</Link>
+                        <Link href={'/explore'} className="underline-onhover font-semibold hover:text-violet-600 transition-colors">Explorar</Link>
+                        <Link href={'/signin'} className="underline-onhover font-semibold hover:text-violet-600 transition-colors">Entrar</Link>
                     </div>
                 </>
             }

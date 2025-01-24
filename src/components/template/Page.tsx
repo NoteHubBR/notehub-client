@@ -15,18 +15,23 @@ const Page = (props: PageProps) => {
 
     const pathname = usePathname();
 
-    const { store: { isMenuOpen }, user } = useUser();
+    const shouldUseMargin = shouldUseUserContext(pathname);
 
-    const { onDesktop } = useScreen();
+    const { onDesktop, onMobile } = useScreen();
 
     const { isLoaded } = useLoading();
 
+    const { store: { isMenuOpen }, user } = useUser();
+
     if (!isLoaded) return null;
 
-    const shouldUseMargin = shouldUseUserContext(pathname);
-
     return (
-        <div className={`${shouldUseMargin && onDesktop && user ? `${isMenuOpen ? "pl-[240px]" : "pl-[88px]"}` : ''} ${className}`}
+        <div
+            className={`
+                ${shouldUseMargin && onDesktop && user ? `${isMenuOpen ? "pl-[240px]" : "pl-[88px]"}` : ''}
+                ${shouldUseMargin && onMobile ? 'pb-[45px]' : ''}
+                ${className}`
+            }
             {...rest}
         >
             {children}

@@ -16,8 +16,8 @@ export const Button = (props: ButtonProps) => {
                         group-hover:opacity-100 group-hover:visible transition-all
                         invisible opacity-0 
                         absolute break-keep top-[150%] left-1/2 -translate-x-1/2
-                        w-max p-1 
-                        rounded-md 
+                        w-max p-1
+                        rounded-md
                         text-sm 
                         bg-neutral-500 text-white
                     "

@@ -20,6 +20,10 @@
     @include mixins.checkered-background(#171717, #fafafa);
 }
 
-.resize-btn {
-    @include mixins.resize-btn;
+.underlined {
+    @include mixins.underline;
+}
+
+.underline-onhover {
+    @include mixins.underline-onhover;
 }
