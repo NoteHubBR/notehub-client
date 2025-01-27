@@ -2,6 +2,7 @@
 
 import { Bell } from "./elements/Bell";
 import { Button } from "./elements/Button";
+import { Dropdown } from "./elements/dropdown";
 import { IconPlus } from "@tabler/icons-react";
 import { Input } from "./elements/Input";
 import { Menu } from "./elements/Menu";
@@ -47,8 +48,13 @@ export const Navbar = () => {
                     </div>
                     <div className="pr-2 flex gap-4 w-fit">
                         <Button tooltip="Criar nova nota"><Link href={'/'}><IconPlus size={27} /></Link></Button>
-                        <Button tooltip="Ver notificações"><Bell user={user} /></Button>
-                        <Button><Picture user={user} /></Button>
+                        <Button tooltip="Ver notificações">
+                            <Bell user={user} />
+                        </Button>
+                        <Button >
+                            <Picture user={user} />
+                            <Dropdown user={user} />
+                        </Button>
                     </div>
                 </>
                 :
