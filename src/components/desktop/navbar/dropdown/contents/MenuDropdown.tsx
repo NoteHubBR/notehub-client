@@ -1,17 +1,13 @@
-import { Field } from "./elements/Field";
-import { Header } from "./elements/Header";
-import { IconBrandGithub, IconBrandGoogleFilled, IconHelp, IconLogout, IconMessageReport, IconMoon, IconSettings, IconUsers } from "@tabler/icons-react";
-import { Picture } from "../Picture";
-import { Section } from "./elements/Section";
-import { User } from "@/core";
+import { Field } from '../elements/Field';
+import { Header } from '../elements/Header';
+import { IconBrandGithub, IconBrandGoogleFilled, IconHelp, IconLogout, IconMessageReport, IconMoon, IconSettings, IconUsers } from '@tabler/icons-react';
+import { Picture } from '../../elements/Picture';
+import { Section } from '../elements/Section';
+import { User } from '@/core';
 
-interface DropdownProps {
-    user: User
-}
-
-export const Dropdown = ({ user }: DropdownProps) => {
+export const MenuDropdown = ({ user }: { user: User }) => {
     return (
-        <div className="absolute top-full right-0 w-[300px] rounded-xl dark:bg-neutral-800 bg-neutral-200">
+        <>
             <Section>
                 <Header user={user}>
                     <Picture user={user} size={50} className="self-start" />
@@ -28,9 +24,13 @@ export const Dropdown = ({ user }: DropdownProps) => {
                 <Field.Button text="Configurações"><IconSettings /></Field.Button>
             </Section>
             <Section>
-                <Field.Link href={'mailto:suporte@xisyz.xyz'} text="Ajuda"><IconHelp /></Field.Link>
-                <Field.Link href={'mailto:contato@xisyz.xyz'} text="Enviar feedback"><IconMessageReport /></Field.Link>
+                <a href="mailto:suporte@xisyz.xyz" className="w-full">
+                    <Field.Button text="Ajuda"><IconHelp /></Field.Button>
+                </a>
+                <a href="mailto:contato@xisyz.xyz" className="w-full">
+                    <Field.Button text="Enviar feedback"><IconMessageReport /></Field.Button>
+                </a>
             </Section>
-        </div>
+        </>
     )
 }

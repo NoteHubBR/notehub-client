@@ -2,14 +2,16 @@
 
 import { Bell } from "./elements/Bell";
 import { Button } from "./elements/Button";
-import { Dropdown } from "./elements/dropdown";
+import { Dropdown } from "./dropdown";
 import { IconPlus } from "@tabler/icons-react";
 import { Input } from "./elements/Input";
 import { Menu } from "./elements/Menu";
+import { MenuDropdown } from "./dropdown/contents/MenuDropdown";
 import { Picture } from "./elements/Picture";
 import { shouldUseUserContext } from "@/core";
 import { useLoading, useScreen, useUser } from "@/data/hooks"
 import { usePathname } from "next/navigation";
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -24,6 +26,8 @@ export const Navbar = () => {
     const { isLoaded } = useLoading();
 
     const { user } = useUser();
+
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
     if (!shouldRender || !onDesktop || !isLoaded) return null;
 
@@ -51,9 +55,9 @@ export const Navbar = () => {
                         <Button tooltip="Ver notificações">
                             <Bell user={user} />
                         </Button>
-                        <Button >
+                        <Button ref={buttonRef}>
                             <Picture user={user} />
-                            <Dropdown user={user} />
+                            <Dropdown buttonRef={buttonRef} ><MenuDropdown user={user} /></Dropdown>
                         </Button>
                     </div>
                 </>
