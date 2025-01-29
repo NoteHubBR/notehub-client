@@ -14,6 +14,7 @@ export interface UserContextProps {
     notes: LowDetailNote[] | [];
     setStore: (data: Partial<Store>) => void;
     setUser: (token: Token, user: User) => void;
+    clearUser: () => void;
 };
 
 const UserContext = createContext<UserContextProps>({} as UserContextProps);
@@ -55,6 +56,12 @@ export const UserContextProvider = (props: any) => {
         return setState(prev => ({ ...prev, token: token, user: user }));
     }, [])
 
+    const clearUser = useCallback(() => {
+        setState((prev) => ({ ...prev, token: null, user: null, notifications: 0 }));
+        setStore({ isGuest: true });
+        return Cookies.remove('rtoken');
+    }, [setStore])
+
     const fetchUser = async (): Promise<void> => {
         try {
             const { token, user } = await refreshUser();
@@ -69,7 +76,7 @@ export const UserContextProvider = (props: any) => {
 
     const setTitle = useCallback((notifications: number): string => {
         setState((prev) => ({ ...prev, notifications: notifications }));
-        const title = `${notifications > 0 ? `( ${notifications} ) XYZ` : 'XYZ'}`;
+        const title = `${notifications > 0 ? `(${notifications}) XYZ` : 'XYZ'}`;
         return document.title = title;
     }, [])
 
@@ -106,7 +113,7 @@ export const UserContextProvider = (props: any) => {
 
     useEffect(() => {
         setTitle(state.notifications);
-    }, [state.notifications])
+    }, [setTitle, state.notifications])
 
     return (
         <UserContext.Provider value={{
@@ -118,6 +125,7 @@ export const UserContextProvider = (props: any) => {
             notes: state.notes,
             setStore,
             setUser,
+            clearUser
         }}>
             {props.children}
         </UserContext.Provider>

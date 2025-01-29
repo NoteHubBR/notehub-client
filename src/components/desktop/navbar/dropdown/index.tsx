@@ -63,8 +63,8 @@ export const Dropdown = ({ buttonRef, children }: DropdownProps) => {
 
     if (buttonRef.current) return createPortal(
         <div
-            className="absolute w-[300px] rounded-xl dark:bg-neutral-800 bg-neutral-200"
-            style={{ top: position.top, right: position.right }}
+            className="absolute w-[300px] rounded-xl dark:bg-neutral-800 bg-neutral-50"
+            style={{ top: position.top, right: position.right, filter: 'drop-shadow(0 0 2px rgba(0, 0, 0, .25))' }}
             ref={portalRef}
         >
             {children}

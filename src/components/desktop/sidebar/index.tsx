@@ -2,7 +2,7 @@
 
 import { Field } from "./elements/Field";
 import { FollowingScope } from "./elements/FollowingScope";
-import { IconArrowRight, IconCompass, IconFlame, IconHome, IconNotes, IconPlus, IconUserCircle, IconUsers } from "@tabler/icons-react";
+import { IconArrowRight, IconCompass, IconFlame, IconHome, IconNotes, IconPlus, IconUserCircle } from "@tabler/icons-react";
 import { Link } from "./elements/Link";
 import { NotesScope } from "./elements/NotesScope";
 import { Section } from "./elements/Section";
@@ -35,7 +35,7 @@ export const Sidebar = (props: React.HTMLAttributes<HTMLDivElement>) => {
             ">
                 <Shortcut href="/" icon={<IconHome size={27} />} text="Início" />
                 <Shortcut href={`/${user.username}`} icon={<IconUserCircle size={27} />} text="Você" />
-                <Shortcut href={`/${user.username}/following`} icon={<IconUsers size={27} />} text="Seguindo" />
+                <Shortcut href={`/${user.username}/notes`} icon={<IconNotes size={27} />} text="Notas" />
                 <Shortcut href="/explore" icon={<IconCompass size={27} />} text="Explorar" />
             </aside>
         )
