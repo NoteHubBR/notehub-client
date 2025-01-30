@@ -13,7 +13,7 @@ export const ChangeThemeDropdown = ({ setterToClose }: ChangeThemeProps) => {
     const { store: { isDarkModeUser }, setStore } = useUser();
 
     return (
-        <>
+        <div className="w-[300px]">
             <OptionHeader title="Aparência" onClick={setterToClose} />
             <Section>
                 <Field.Button text='Tema escuro' onClick={() => setStore({ isDarkModeUser: true })}>
@@ -23,7 +23,7 @@ export const ChangeThemeDropdown = ({ setterToClose }: ChangeThemeProps) => {
                     <IconCheck className={`${isDarkModeUser ? 'invisible' : ''}`} />
                 </Field.Button>
             </Section>
-        </>
+        </div>
     )
 
 }

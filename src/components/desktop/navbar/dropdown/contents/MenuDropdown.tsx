@@ -17,7 +17,7 @@ export const MenuDropdown = ({ user }: { user: User }) => {
     if (isChangingTheme) return <ChangeThemeDropdown setterToClose={() => { return setIsChangingTheme(false) }} />
 
     return (
-        <>
+        <div className='w-[300px]'>
             <Header user={user}>
                 <Picture user={user} size={50} className="self-start" />
             </Header>
@@ -56,7 +56,7 @@ export const MenuDropdown = ({ user }: { user: User }) => {
                     <Field.Button text="Enviar feedback"><IconMessageReport /></Field.Button>
                 </a>
             </Section>
-        </>
+        </div>
     )
 
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useCallback, useEffect, useState } from "react";
-import { Store, storeData, Token, User, Cookies, shouldUseUserContext, LowDetailUser, LowDetailNote } from "@/core";
+import { Store, storeData, Token, User, Cookies, shouldUseUserContext, LowDetailUser, LowDetailNote, Notification, Page } from "@/core";
 import { useLoading, useServices } from "../hooks";
 import { usePathname } from "next/navigation";
 
@@ -9,12 +9,15 @@ export interface UserContextProps {
     store: Store;
     token: Token | null;
     user: User | null;
-    notifications: number;
+    notificationsCount: number;
+    notificationsPage: Partial<Page<Notification>> | null
+    notifications: Notification[] | [];
     following: LowDetailUser[] | [];
     notes: LowDetailNote[] | [];
     setStore: (data: Partial<Store>) => void;
     setUser: (token: Token, user: User) => void;
     clearUser: () => void;
+    setNotifications: (page: Page<Notification>) => void;
 };
 
 const UserContext = createContext<UserContextProps>({} as UserContextProps);
@@ -23,7 +26,7 @@ export const UserContextProvider = (props: any) => {
 
     const {
         authService: { refreshUser },
-        userService: { getUserFollowing },
+        userService: { getUserNotifications, getUserFollowing },
         noteService: { getUserNotes }
     } = useServices();
 
@@ -35,7 +38,9 @@ export const UserContextProvider = (props: any) => {
         store: {} as Store,
         token: null as Token | null,
         user: null as User | null,
-        notifications: 0 as number,
+        notificationsCount: 0 as number,
+        notificationsPage: {} as Partial<Page<Notification>>,
+        notifications: [] as Notification[],
         following: [] as LowDetailUser[],
         notes: [] as LowDetailNote[],
     })
@@ -57,10 +62,19 @@ export const UserContextProvider = (props: any) => {
     }, [])
 
     const clearUser = useCallback(() => {
-        setState((prev) => ({ ...prev, token: null, user: null, notifications: 0 }));
+        setState((prev) => ({ ...prev, token: null, user: null, notificationsCount: 0 }));
         setStore({ isGuest: true });
         return Cookies.remove('rtoken');
     }, [setStore])
+
+    const setNotifications = useCallback((page: Page<Notification>): void => {
+        const { content, ...rest } = page;
+        return setState((prev) => ({
+            ...prev,
+            notificationsPage: rest,
+            notifications: [...prev.notifications, ...content]
+        }))
+    }, [])
 
     const fetchUser = async (): Promise<void> => {
         try {
@@ -74,16 +88,17 @@ export const UserContextProvider = (props: any) => {
         }
     }
 
-    const setTitle = useCallback((notifications: number): string => {
-        setState((prev) => ({ ...prev, notifications: notifications }));
-        const title = `${notifications > 0 ? `(${notifications}) XYZ` : 'XYZ'}`;
+    const setTitle = useCallback((notificationsPage: number): string => {
+        setState((prev) => ({ ...prev, notificationsCount: notificationsPage }));
+        const title = `${notificationsPage > 0 ? `(${notificationsPage}) XYZ` : 'XYZ'}`;
         return document.title = title;
     }, [])
 
     const fetchUserData = async (accessToken: string, username: string): Promise<void> => {
+        const { content: notifications, ...page } = await getUserNotifications(accessToken)
         const { content: following } = await getUserFollowing(accessToken, username);
         const { content: notes } = await getUserNotes(accessToken);
-        return setState(prev => ({ ...prev, following: following, notes: notes }));
+        return setState(prev => ({ ...prev, notificationsPage: page, notifications: notifications, following: following, notes: notes }));
     }
 
     useEffect(() => {
@@ -112,20 +127,23 @@ export const UserContextProvider = (props: any) => {
     }, [state.user])
 
     useEffect(() => {
-        setTitle(state.notifications);
-    }, [setTitle, state.notifications])
+        setTitle(state.notificationsCount);
+    }, [setTitle, state.notificationsCount])
 
     return (
         <UserContext.Provider value={{
             store: state.store,
             token: state.token,
             user: state.user,
+            notificationsPage: state.notificationsPage,
+            notificationsCount: state.notificationsCount,
             notifications: state.notifications,
             following: state.following,
             notes: state.notes,
             setStore,
             setUser,
-            clearUser
+            clearUser,
+            setNotifications
         }}>
             {props.children}
         </UserContext.Provider>

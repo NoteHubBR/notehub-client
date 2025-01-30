@@ -14,6 +14,7 @@ import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { BellDropdown } from "./dropdown/contents/BellDropdown";
 
 export const Navbar = () => {
 
@@ -27,7 +28,9 @@ export const Navbar = () => {
 
     const { user } = useUser();
 
-    const buttonRef = useRef<HTMLButtonElement>(null);
+    const menuButton = useRef<HTMLButtonElement>(null);
+
+    const bellButton = useRef<HTMLButtonElement>(null);
 
     if (!shouldRender || !onDesktop || !isLoaded) return null;
 
@@ -52,12 +55,13 @@ export const Navbar = () => {
                     </div>
                     <div className="pr-2 flex gap-4 w-fit">
                         <Button tooltip="Criar nova nota"><Link href={'/'}><IconPlus size={27} /></Link></Button>
-                        <Button tooltip="Ver notificações">
+                        <Button ref={bellButton} tooltip="Ver notificações">
                             <Bell user={user} />
+                            <Dropdown buttonRef={bellButton}><BellDropdown /></Dropdown>
                         </Button>
-                        <Button ref={buttonRef}>
+                        <Button ref={menuButton}>
                             <Picture user={user} />
-                            <Dropdown buttonRef={buttonRef} ><MenuDropdown user={user} /></Dropdown>
+                            <Dropdown buttonRef={menuButton} ><MenuDropdown user={user} /></Dropdown>
                         </Button>
                     </div>
                 </>

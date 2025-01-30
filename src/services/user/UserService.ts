@@ -1,6 +1,6 @@
-import { CreateUserFormData, Page, LowDetailUser } from '@/core';
-import { useAPI } from '@/data/hooks';
 import { AuthService } from '../auth';
+import { CreateUserFormData, Page, LowDetailUser, Notification } from '@/core';
+import { useAPI } from '@/data/hooks';
 
 export const UserService = () => {
 
@@ -35,6 +35,15 @@ export const UserService = () => {
         }
     }
 
-    return { createUser, activateUser, getUserFollowing }
+    const getUserNotifications = async (token: string, parameters: string = 'size=2'): Promise<Page<Notification>> => {
+        const endpoint: string = `/notifications?${parameters}`;
+        try {
+            return await httpGet(endpoint, { useToken: token });
+        } catch (error: any) {
+            return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useToken: newToken }));
+        }
+    }
+
+    return { createUser, activateUser, getUserFollowing, getUserNotifications }
 
 }
