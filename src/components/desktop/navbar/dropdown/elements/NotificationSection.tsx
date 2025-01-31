@@ -15,3 +15,5 @@ export const Section = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLUList
         <ul className="flex flex-col gap-2" {...props} />
     </section>
 ))
+
+Section.displayName = 'Section';

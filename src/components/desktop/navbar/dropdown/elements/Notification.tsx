@@ -1,5 +1,5 @@
 import { IconFlame } from "@tabler/icons-react";
-import { Notification as PropsType, Type } from "@/core";
+import { Notification as PropsType, toRelativeTime, Type } from "@/core";
 import { Picture } from "../../elements/Picture";
 import Link from "next/link";
 
@@ -24,6 +24,8 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
         text.split(' ').filter(word => !word.startsWith('@')).join(' ')
     ]
 
+    const relativeTime = toRelativeTime(notification.created_at);
+
     return (
         <Link
             href={`${href}`}
@@ -42,7 +44,7 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
                 </div>
             </div>
             <div className="w-full flex justify-end">
-                <span className="pr-2 text-xs dark:text-neutral-50/50 text-neutral-900/50">há 1 semana</span>
+                <span className="pr-2 text-xs dark:text-neutral-50/50 text-neutral-900/50">{relativeTime}</span>
             </div>
         </Link>
     )

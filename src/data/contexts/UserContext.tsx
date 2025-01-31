@@ -10,7 +10,7 @@ export interface UserContextProps {
     token: Token | null;
     user: User | null;
     notificationsCount: number;
-    notificationsPage: Partial<Page<Notification>> | null
+    notificationsPage: Omit<Page<Notification>, 'content'>;
     notifications: Notification[] | [];
     following: LowDetailUser[] | [];
     notes: LowDetailNote[] | [];
@@ -39,7 +39,7 @@ export const UserContextProvider = (props: any) => {
         token: null as Token | null,
         user: null as User | null,
         notificationsCount: 0 as number,
-        notificationsPage: {} as Partial<Page<Notification>>,
+        notificationsPage: {} as Omit<Page<Notification>, 'content'>,
         notifications: [] as Notification[],
         following: [] as LowDetailUser[],
         notes: [] as LowDetailNote[],

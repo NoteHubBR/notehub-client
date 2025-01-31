@@ -35,7 +35,7 @@ export const UserService = () => {
         }
     }
 
-    const getUserNotifications = async (token: string, parameters: string = 'size=2'): Promise<Page<Notification>> => {
+    const getUserNotifications = async (token: string, parameters?: string): Promise<Page<Notification>> => {
         const endpoint: string = `/notifications?${parameters}`;
         try {
             return await httpGet(endpoint, { useToken: token });
