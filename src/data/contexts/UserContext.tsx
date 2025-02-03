@@ -26,7 +26,7 @@ export const UserContextProvider = (props: any) => {
 
     const {
         authService: { refreshUser },
-        userService: { getUserNotifications, getUserFollowing },
+        userService: { getUserFollowing },
         noteService: { getUserNotes }
     } = useServices();
 
@@ -72,7 +72,8 @@ export const UserContextProvider = (props: any) => {
         return setState((prev) => ({
             ...prev,
             notificationsPage: rest,
-            notifications: [...prev.notifications, ...content]
+            notifications: [...prev.notifications, ...content],
+            notificationsCount: [...prev.notifications, ...content].filter(n => !n.read).length
         }))
     }, [])
 
@@ -83,8 +84,7 @@ export const UserContextProvider = (props: any) => {
             return setUser(token, user);
         } catch {
             Cookies.remove('rtoken');
-            setUser(null, null);
-            return setIsLoaded(true);
+            return setUser(null, null);
         }
     }
 
@@ -95,10 +95,13 @@ export const UserContextProvider = (props: any) => {
     }, [])
 
     const fetchUserData = async (accessToken: string, username: string): Promise<void> => {
-        const { content: notifications, ...page } = await getUserNotifications(accessToken)
-        const { content: following } = await getUserFollowing(accessToken, username);
-        const { content: notes } = await getUserNotes(accessToken);
-        return setState(prev => ({ ...prev, notificationsPage: page, notifications: notifications, following: following, notes: notes }));
+        try {
+            const { content: following } = await getUserFollowing(accessToken, username);
+            const { content: notes } = await getUserNotes(accessToken);
+            return setState(prev => ({ ...prev, following: following, notes: notes }));
+        } finally {
+            setIsLoaded(true);
+        }
     }
 
     useEffect(() => {
@@ -110,7 +113,6 @@ export const UserContextProvider = (props: any) => {
             if (shouldUseUserContext(pathname) && !isFirstTimer && !isGuest) {
                 return await fetchUser();
             }
-            else return setIsLoaded(true);
         }
         init();
     }, [])
@@ -121,7 +123,6 @@ export const UserContextProvider = (props: any) => {
             if (!token || !user) return;
             await fetchUserData(token.access_token, user.username);
             setTitle(user.notifications);
-            setIsLoaded(true);
         }
         fetchData();
     }, [state.user])

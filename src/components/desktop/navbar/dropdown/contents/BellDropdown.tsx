@@ -6,32 +6,50 @@ import { useServices, useUser } from "@/data/hooks";
 
 export const BellDropdown = () => {
 
-    const { token, notificationsPage: pages, notifications, setNotifications } = useUser();
+    const {
+        token,
+        notificationsPage: page, notifications, setNotifications
+    } = useUser();
 
     const { userService: { getUserNotifications } } = useServices();
 
     const [isFetching, setisFetching] = useState<boolean>(false);
-    
+
     const isFetchingRef = useRef<boolean>(false);
 
     const sectionRef = useRef<HTMLDivElement>(null);
 
+    const init = async () => {
+        if (isFetchingRef.current || notifications.length > 0) return;
+        try {
+            if (token) {
+                isFetchingRef.current = true;
+                setisFetching(true);
+                setNotifications(await getUserNotifications(token.access_token))
+            }
+        } finally {
+            isFetchingRef.current = false;
+            setisFetching(false);
+        }
+    }
+
     const handleScroll = useCallback(async () => {
-        if (!token || pages.last || !sectionRef.current || isFetchingRef.current) return;
+        if (!token || page.last || !sectionRef.current || isFetchingRef.current) return;
         const { scrollTop, scrollHeight, clientHeight } = sectionRef.current;
         if (scrollTop + clientHeight >= scrollHeight) {
             try {
                 isFetchingRef.current = true;
                 setisFetching(true);
-                setNotifications(await getUserNotifications(token.access_token, `page=${pages.page + 1}`));
+                setNotifications(await getUserNotifications(token.access_token, `page=${page.page + 1}`));
             } finally {
                 isFetchingRef.current = false;
                 setisFetching(false);
             }
         }
-    }, [pages]);
+    }, [page]);
 
     useEffect(() => {
+        init();
         const section = sectionRef.current;
         if (!section) return;
         section.addEventListener("scroll", handleScroll);

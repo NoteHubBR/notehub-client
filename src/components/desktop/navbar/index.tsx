@@ -1,6 +1,7 @@
 'use client';
 
 import { Bell } from "./elements/Bell";
+import { BellDropdown } from "./dropdown/contents/BellDropdown";
 import { Button } from "./elements/Button";
 import { Dropdown } from "./dropdown";
 import { IconPlus } from "@tabler/icons-react";
@@ -14,7 +15,6 @@ import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BellDropdown } from "./dropdown/contents/BellDropdown";
 
 export const Navbar = () => {
 
@@ -56,7 +56,7 @@ export const Navbar = () => {
                     <div className="pr-2 flex gap-4 w-fit">
                         <Button tooltip="Criar nova nota"><Link href={'/'}><IconPlus size={27} /></Link></Button>
                         <Button ref={bellButton} tooltip="Ver notificações">
-                            <Bell user={user} />
+                            <Bell />
                             <Dropdown buttonRef={bellButton}><BellDropdown /></Dropdown>
                         </Button>
                         <Button ref={menuButton}>

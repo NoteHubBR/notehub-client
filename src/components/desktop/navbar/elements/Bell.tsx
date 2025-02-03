@@ -1,23 +1,19 @@
 import { IconBell } from "@tabler/icons-react";
-import { User } from "@/core";
+import { useUser } from "@/data/hooks";
 
-interface BellProps {
-    user: User;
-}
+export const Bell = () => {
 
-export const Bell = (props: BellProps) => {
-
-    const { user } = props;
+    const { notificationsCount: notifications } = useUser();
 
     return (
-        <div>
+        <>
             <IconBell size={30} />
-            {user.notifications > 0 &&
+            {notifications > 0 &&
                 <span className="absolute top-0 left-0 w-5 h-5 flex items-center justify-center rounded-full text-sm text-neutral-50 bg-violet-600">
-                    {user.notifications}
+                    {notifications}
                 </span>
             }
-        </div>
+        </>
     )
 
 }
