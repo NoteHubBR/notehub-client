@@ -9,6 +9,7 @@ import { ScreenProvider } from "@/data/contexts/ScreenContext";
 import { ScreenWidthProvider } from "@/data/contexts/ScreenWidthContext";
 import { SplashScreen } from "@/components/SplashScreen";
 import { ThemeProvider } from "@/data/contexts/ThemeContext";
+import { UserFollowingProvider } from "@/data/contexts/UserFollowingContext";
 import { UserNotesProvider } from "@/data/contexts/UserNotesContext";
 import { UserNotificationsProvider } from "@/data/contexts/UserNotificationsContext";
 import { UserPreferencesProvider } from "@/data/contexts/UserPreferencesContext";
@@ -25,28 +26,30 @@ const layout = (props: any) => {
                     <LoadingProvider>
                         <UserPreferencesProvider>
                             <UserStoreProvider>
-                                <UserNotesProvider>
-                                    <UserProvider>
-                                        <UserNotificationsProvider>
-                                            <ThemeProvider>
-                                                <MenuProvider>
-                                                    <ProgressBar />
-                                                    <SplashScreen />
-                                                    <Container className="flex flex-col">
-                                                        <Desktop.Navbar />
-                                                        <Mobile.Navbar />
-                                                        <div className="h-full flex">
-                                                            <Desktop.Sidebar />
-                                                            <Page className="w-full">
-                                                                {props.children}
-                                                            </Page>
-                                                        </div>
-                                                    </Container>
-                                                </MenuProvider>
-                                            </ThemeProvider>
-                                        </UserNotificationsProvider>
-                                    </UserProvider>
-                                </UserNotesProvider>
+                                <UserFollowingProvider>
+                                    <UserNotesProvider>
+                                        <UserProvider>
+                                            <UserNotificationsProvider>
+                                                <ThemeProvider>
+                                                    <MenuProvider>
+                                                        <ProgressBar />
+                                                        <SplashScreen />
+                                                        <Container className="flex flex-col">
+                                                            <Desktop.Navbar />
+                                                            <Mobile.Navbar />
+                                                            <div className="h-full flex">
+                                                                <Desktop.Sidebar />
+                                                                <Page className="w-full">
+                                                                    {props.children}
+                                                                </Page>
+                                                            </div>
+                                                        </Container>
+                                                    </MenuProvider>
+                                                </ThemeProvider>
+                                            </UserNotificationsProvider>
+                                        </UserProvider>
+                                    </UserNotesProvider>
+                                </UserFollowingProvider>
                             </UserStoreProvider>
                         </UserPreferencesProvider>
                     </LoadingProvider>

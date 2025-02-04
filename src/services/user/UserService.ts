@@ -27,7 +27,7 @@ export const UserService = () => {
     }
 
     const getUserFollowing = async (token: string, username: string): Promise<Page<LowDetailUser>> => {
-        const endpoint: string = `/users/${username}/following?size=9999&sort=username,asc`;
+        const endpoint: string = `/users/${username}/followers?size=9999&sort=username,asc`;
         try {
             return await httpGet(endpoint, { useToken: token });
         } catch (error: any) {

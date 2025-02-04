@@ -4,6 +4,7 @@ export * from './usePreferences';
 export * from './useStore';
 export * from './useUser';
 export * from './useNotifications';
+export * from './useFollowing';
 export * from './useNotes';
 export * from './useProgress';
 export * from './useLoading';

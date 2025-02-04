@@ -4,12 +4,12 @@ import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { LowDetailUser } from "@/core";
 import { Target } from "./Target";
 import { useCallback, useState } from "react";
-import { useUser } from "@/data/hooks";
+import { useFollowing } from "@/data/hooks";
 import Link from "next/link";
 
 export const FollowingScope = () => {
 
-    const { following } = useUser();
+    const { users: following } = useFollowing();
 
     const sliced = following.slice(0, 6);
 
