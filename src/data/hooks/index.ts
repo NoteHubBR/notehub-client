@@ -3,6 +3,7 @@ export * from './useServices';
 export * from './useUser';
 export * from './useStore';
 export * from './useNotifications';
+export * from './useNotes';
 export * from './useProgress';
 export * from './useLoading';
 export * from './useScreen';

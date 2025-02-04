@@ -1,15 +1,14 @@
 'use client';
 
 import { createContext, useCallback, useEffect, useState } from "react";
-import { Token, User, Cookies, shouldUseUserContext, LowDetailUser, LowDetailNote } from "@/core";
-import { useLoading, useServices, useStore } from "../hooks";
+import { Token, User, Cookies, shouldUseUserContext, LowDetailUser } from "@/core";
+import { useLoading, useNotes, useServices, useStore } from "../hooks";
 import { usePathname } from "next/navigation";
 
 export interface UserContextProps {
     token: Token | null;
     user: User | null;
     following: LowDetailUser[] | [];
-    notes: LowDetailNote[] | [];
     setUser: (token: Token, user: User) => void;
     clearUser: () => void;
 };
@@ -26,6 +25,8 @@ export const UserProvider = (props: any) => {
 
     const { isStoreReady, store, setStore } = useStore();
 
+    const { setNotes } = useNotes();
+
     const pathname = usePathname();
 
     const { setIsLoaded } = useLoading();
@@ -34,7 +35,6 @@ export const UserProvider = (props: any) => {
         token: null as Token | null,
         user: null as User | null,
         following: [] as LowDetailUser[],
-        notes: [] as LowDetailNote[],
     })
 
     const setUser = useCallback((token: Token | null, user: User | null): void => {
@@ -62,8 +62,8 @@ export const UserProvider = (props: any) => {
     const fetchUserData = async (accessToken: string, username: string): Promise<void> => {
         try {
             const { content: following } = await getUserFollowing(accessToken, username);
-            const { content: notes } = await getUserNotes(accessToken);
-            return setState(prev => ({ ...prev, following: following, notes: notes }));
+            setNotes(await getUserNotes(accessToken));
+            return setState(prev => ({ ...prev, following: following }));
         } finally {
             setIsLoaded(true);
         }
@@ -93,7 +93,6 @@ export const UserProvider = (props: any) => {
             token: state.token,
             user: state.user,
             following: state.following,
-            notes: state.notes,
             setUser,
             clearUser,
         }}>

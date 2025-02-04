@@ -4,12 +4,12 @@ import { Filter, LowDetailNote } from "@/core";
 import { Input } from "./Input";
 import { Target } from "./Target";
 import { useCallback, useEffect, useState } from "react";
-import { useUser } from "@/data/hooks";
+import { useNotes } from "@/data/hooks";
 import Link from "next/link";
 
 export const NotesScope = () => {
 
-    const { notes } = useUser();
+    const { notes } = useNotes();
 
     const sliced = notes.slice(0, 6);
 
