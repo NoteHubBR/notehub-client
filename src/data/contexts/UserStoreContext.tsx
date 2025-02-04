@@ -22,7 +22,6 @@ export const UserStoreProvider = (props: any) => {
             isFirstTimer: data.isFirstTimer ?? store.isFirstTimer ?? false,
             isGuest: data.isGuest ?? store.isGuest ?? false,
             isExpired: data.isExpired ?? store.isExpired ?? false,
-            isDarkModeUser: data.isDarkModeUser ?? store.isDarkModeUser ?? false,
             isMenuOpen: data.isMenuOpen ?? store.isMenuOpen ?? false,
             searches: data.searches ?? store.searches ?? []
         }

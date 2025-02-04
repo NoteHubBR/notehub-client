@@ -2,7 +2,7 @@ import { Field } from "../../elements/Field";
 import { IconCheck } from "@tabler/icons-react";
 import { OptionHeader } from "../../elements/OptionHeader";
 import { Section } from "../../elements/Section";
-import { useStore } from "@/data/hooks";
+import { usePref } from "@/data/hooks";
 
 interface ChangeThemeProps {
     setterToClose: () => void;
@@ -10,17 +10,17 @@ interface ChangeThemeProps {
 
 export const ChangeThemeDropdown = ({ setterToClose }: ChangeThemeProps) => {
 
-    const { store: { isDarkModeUser }, setStore } = useStore();
+    const { pref: { useDarkTheme }, setTheme } = usePref();
 
     return (
         <div className="w-[300px]">
             <OptionHeader title="Aparência" onClick={setterToClose} />
             <Section>
-                <Field.Button text='Tema escuro' onClick={() => setStore({ isDarkModeUser: true })}>
-                    <IconCheck className={`${isDarkModeUser ? '' : 'invisible'}`} />
+                <Field.Button text='Tema escuro' onClick={() => setTheme('dark')}>
+                    <IconCheck className={`${useDarkTheme ? '' : 'invisible'}`} />
                 </Field.Button>
-                <Field.Button text='Tema claro' onClick={() => setStore({ isDarkModeUser: false })}>
-                    <IconCheck className={`${isDarkModeUser ? 'invisible' : ''}`} />
+                <Field.Button text='Tema claro' onClick={() => setTheme('light')}>
+                    <IconCheck className={`${useDarkTheme ? 'invisible' : ''}`} />
                 </Field.Button>
             </Section>
         </div>

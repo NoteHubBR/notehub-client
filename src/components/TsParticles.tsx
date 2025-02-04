@@ -3,7 +3,7 @@
 import { loadSlim } from "@tsparticles/slim";
 import { type ISourceOptions, MoveDirection, OutMode, } from "@tsparticles/engine";
 import { useEffect, useMemo, useState } from "react";
-import { useStore } from "@/data/hooks";
+import { usePref } from "@/data/hooks";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 
 export const TsParticles = () => {
@@ -20,13 +20,13 @@ export const TsParticles = () => {
 
   const particlesLoaded = async (): Promise<void> => { return; };
 
-  const { store: { isDarkModeUser } } = useStore();
+  const { pref: { useDarkTheme } } = usePref();
 
   const options: ISourceOptions = useMemo(
     () => ({
       background: {
         color: {
-          value: `${isDarkModeUser ? "#171717" : "#fafafa"}`,
+          value: `${useDarkTheme ? "#171717" : "#fafafa"}`,
         },
       },
       fpsLimit: 60,
@@ -89,7 +89,7 @@ export const TsParticles = () => {
         },
       },
       detectRetina: true,
-    }), [isDarkModeUser]);
+    }), [useDarkTheme]);
 
   if (init) {
     return (

@@ -4,13 +4,13 @@ import { Container } from "@/components/template/Container";
 import { IconChevronRight, IconClick, IconMailCheck } from "@tabler/icons-react";
 import { SVG } from "@/components/SVG";
 import { useState } from "react";
-import { useStore } from "@/data/hooks";
+import { usePref } from "@/data/hooks";
 import Image from "next/image";
 import Link from "next/link";
 
 const Page = () => {
 
-    const { store: { isDarkModeUser } } = useStore();
+    const { pref: { useDarkTheme } } = usePref();
 
     const [isMessageOpen, setIsMessageOpen] = useState<boolean>(false);
 
@@ -19,7 +19,7 @@ const Page = () => {
     const toggle = () => { setCount(1); setIsMessageOpen(prev => !prev); }
 
     return (
-        <Container className={`flex flex-col gap-8 items-center justify-center ${isDarkModeUser ? "dark-checkered-background" : "light-checkered-background"}`}>
+        <Container className={`flex flex-col gap-8 items-center justify-center ${useDarkTheme ? "dark-checkered-background" : "light-checkered-background"}`}>
             <SVG className="absolute" />
             <header>
                 <Link href={'/'} target="blank" className="z-[1] relative">
@@ -54,7 +54,7 @@ const Page = () => {
                     <IconMailCheck size={45} className="px-1 rounded-full text-slate-50 bg-violet-600" />
                 </div>
                 <button className="relative" onClick={toggle}>
-                    <IconChevronRight size={30} fill={isDarkModeUser ? "#fafafa" : "#171717"} className={`
+                    <IconChevronRight size={30} fill={useDarkTheme ? "#fafafa" : "#171717"} className={`
                         dark:text-neutral-50 text-neutral-900 
                         transition-all duration-300
                         ${isMessageOpen && "rotate-180"} 

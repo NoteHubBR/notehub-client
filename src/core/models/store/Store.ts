@@ -2,7 +2,6 @@ export default interface Store {
     isFirstTimer: boolean;
     isGuest: boolean;
     isExpired: boolean;
-    isDarkModeUser: boolean;
     isMenuOpen: boolean;
     searches: string[];
 }
@@ -13,7 +12,6 @@ export function storeData() {
             isFirstTimer: true,
             isGuest: false,
             isExpired: false,
-            isDarkModeUser: window.matchMedia("(prefers-color-scheme: dark)").matches,
             isMenuOpen: false,
             searches: []
         }

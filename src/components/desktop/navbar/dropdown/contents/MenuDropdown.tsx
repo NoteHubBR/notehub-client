@@ -4,13 +4,13 @@ import { Header } from '../elements/Header';
 import { IconBrandGithub, IconBrandGoogleFilled, IconHelp, IconLogout, IconMessageReport, IconSettings, IconUsers, IconYinYangFilled } from '@tabler/icons-react';
 import { Picture } from '../../elements/Picture';
 import { Section } from '../elements/Section';
+import { usePref, useUser } from '@/data/hooks';
 import { User } from '@/core';
 import { useState } from 'react';
-import { useStore, useUser } from '@/data/hooks';
 
 export const MenuDropdown = ({ user }: { user: User }) => {
 
-    const { store: { isDarkModeUser } } = useStore();
+    const { pref: { useDarkTheme } } = usePref();
 
     const { clearUser } = useUser();
 
@@ -43,7 +43,7 @@ export const MenuDropdown = ({ user }: { user: User }) => {
             </Section>
             <Section>
                 <Field.Button
-                    text={`Aparência: ${isDarkModeUser ? 'escura' : ' clara'}`} useChevron
+                    text={`Aparência: ${useDarkTheme ? 'escura' : ' clara'}`} useChevron
                     onClick={() => setIsChangingTheme(true)}
                 >
                     <IconYinYangFilled />
