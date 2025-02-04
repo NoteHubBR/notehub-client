@@ -3,7 +3,7 @@
 import { loadSlim } from "@tsparticles/slim";
 import { type ISourceOptions, MoveDirection, OutMode, } from "@tsparticles/engine";
 import { useEffect, useMemo, useState } from "react";
-import { useUser } from "@/data/hooks";
+import { useStore } from "@/data/hooks";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 
 export const TsParticles = () => {
@@ -20,7 +20,7 @@ export const TsParticles = () => {
 
   const particlesLoaded = async (): Promise<void> => { return; };
 
-  const { store: { isDarkModeUser } } = useUser();
+  const { store: { isDarkModeUser } } = useStore();
 
   const options: ISourceOptions = useMemo(
     () => ({

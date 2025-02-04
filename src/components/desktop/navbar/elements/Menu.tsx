@@ -1,11 +1,11 @@
 'use client';
 
 import { IconMenu2 } from "@tabler/icons-react";
-import { useUser } from "@/data/hooks";
+import { useStore } from "@/data/hooks";
 
 export const Menu = (props: React.HTMLAttributes<HTMLButtonElement>) => {
 
-    const { store, setStore } = useUser();
+    const { store, setStore } = useStore();
 
     return (
         <button

@@ -6,11 +6,13 @@ import { Picture } from '../../elements/Picture';
 import { Section } from '../elements/Section';
 import { User } from '@/core';
 import { useState } from 'react';
-import { useUser } from '@/data/hooks';
+import { useStore, useUser } from '@/data/hooks';
 
 export const MenuDropdown = ({ user }: { user: User }) => {
 
-    const { store: { isDarkModeUser }, clearUser } = useUser();
+    const { store: { isDarkModeUser } } = useStore();
+
+    const { clearUser } = useUser();
 
     const [isChangingTheme, setIsChangingTheme] = useState<boolean>(false);
 

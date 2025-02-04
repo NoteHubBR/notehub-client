@@ -2,16 +2,15 @@ import { Loading } from "../elements/Loading";
 import { Notification } from "../elements/Notification";
 import { Section } from "../elements/NotificationSection";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useServices, useUser } from "@/data/hooks";
+import { useNotifications, useServices, useUser } from "@/data/hooks";
 
 export const BellDropdown = () => {
 
-    const {
-        token,
-        notificationsPage: page, notifications, setNotifications
-    } = useUser();
-
     const { userService: { getUserNotifications } } = useServices();
+    
+    const { token } = useUser();
+    
+    const { notificationsPage: page, notifications, setNotifications } = useNotifications();
 
     const [isFetching, setisFetching] = useState<boolean>(false);
 

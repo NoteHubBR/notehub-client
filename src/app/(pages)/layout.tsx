@@ -9,7 +9,9 @@ import { ScreenProvider } from "@/data/contexts/ScreenContext";
 import { ScreenWidthProvider } from "@/data/contexts/ScreenWidthContext";
 import { SplashScreen } from "@/components/SplashScreen";
 import { ThemeProvider } from "@/data/contexts/ThemeContext";
-import { UserContextProvider } from "@/data/contexts/UserContext";
+import { UserNotificationsProvider } from "@/data/contexts/UserNotificationsContext";
+import { UserProvider } from "@/data/contexts/UserContext";
+import { UserStoreProvider } from "@/data/contexts/UserStoreContext";
 import Page from "@/components/template/Page";
 
 const layout = (props: any) => {
@@ -19,24 +21,28 @@ const layout = (props: any) => {
             <ScreenWidthProvider>
                 <ProgressBarProvider>
                     <LoadingProvider>
-                        <UserContextProvider>
-                            <ThemeProvider>
-                                <MenuProvider>
-                                    <ProgressBar />
-                                    <SplashScreen />
-                                    <Container className="flex flex-col">
-                                        <Desktop.Navbar />
-                                        <Mobile.Navbar />
-                                        <div className="h-full flex">
-                                            <Desktop.Sidebar />
-                                            <Page className="w-full">
-                                                {props.children}
-                                            </Page>
-                                        </div>
-                                    </Container>
-                                </MenuProvider>
-                            </ThemeProvider>
-                        </UserContextProvider>
+                        <UserStoreProvider>
+                            <UserProvider>
+                                <UserNotificationsProvider>
+                                    <ThemeProvider>
+                                        <MenuProvider>
+                                            <ProgressBar />
+                                            <SplashScreen />
+                                            <Container className="flex flex-col">
+                                                <Desktop.Navbar />
+                                                <Mobile.Navbar />
+                                                <div className="h-full flex">
+                                                    <Desktop.Sidebar />
+                                                    <Page className="w-full">
+                                                        {props.children}
+                                                    </Page>
+                                                </div>
+                                            </Container>
+                                        </MenuProvider>
+                                    </ThemeProvider>
+                                </UserNotificationsProvider>
+                            </UserProvider>
+                        </UserStoreProvider>
                     </LoadingProvider>
                 </ProgressBarProvider>
             </ScreenWidthProvider>

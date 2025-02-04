@@ -1,14 +1,16 @@
 'use client';
 
 import { User } from "@/core";
-import { useUser } from "@/data/hooks";
+import { useStore, useUser } from "@/data/hooks";
 import Link from "next/link";
 
 export default function Home() {
 
-  const { store, setStore, user } = useUser();
+  const { store, setStore } = useStore();
 
-  const { isFirstTimer, isGuest } = store;
+  const { user } = useUser();
+
+  const { isFirstTimer, isGuest, isExpired } = store;
 
   const initAsGuest = () => { setStore({ isFirstTimer: false, isGuest: true }); }
 
@@ -47,7 +49,7 @@ export default function Home() {
           <Elements {...user} />
         </>
       }
-      {!isFirstTimer && !isGuest && !user &&
+      {isExpired &&
         <>
           <h1>Sua sessão expirou!</h1>
           <Link href={'/signin'} className="request-btn">Logar</Link>

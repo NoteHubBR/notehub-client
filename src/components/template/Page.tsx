@@ -1,7 +1,7 @@
 'use client';
 
 import { shouldUseUserContext } from "@/core";
-import { useLoading, useScreen, useUser } from "@/data/hooks";
+import { useLoading, useScreen, useStore, useUser } from "@/data/hooks";
 import { usePathname } from "next/navigation";
 
 export interface PageProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -21,7 +21,9 @@ const Page = (props: PageProps) => {
 
     const { isLoaded } = useLoading();
 
-    const { store: { isMenuOpen }, user } = useUser();
+    const { store: { isMenuOpen } } = useStore();
+
+    const { user } = useUser();
 
     if (!isLoaded) return null;
 

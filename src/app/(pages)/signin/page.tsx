@@ -8,7 +8,7 @@ import { IconAt } from '@tabler/icons-react';
 import { LoginUserFormData, loginUserFormSchema } from '@/core/schemas/user/LoginUser';
 import { TsParticles } from '@/components/TsParticles';
 import { useRouter } from 'next/navigation';
-import { useServices, useUser } from '@/data/hooks';
+import { useServices, useStore, useUser } from '@/data/hooks';
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
@@ -17,7 +17,9 @@ const FormSection = () => {
 
     const { authService: { loginUserByDefault } } = useServices();
 
-    const { setStore, setUser } = useUser();
+    const { setStore } = useStore();
+
+    const { setUser } = useUser();
 
     const loginUserForm = useForm<LoginUserFormData>({
         resolver: zodResolver(loginUserFormSchema)

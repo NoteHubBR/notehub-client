@@ -1,9 +1,9 @@
 import { IconBell } from "@tabler/icons-react";
-import { useUser } from "@/data/hooks";
+import { useNotifications } from "@/data/hooks";
 
 export const Bell = () => {
 
-    const { notificationsCount: notifications } = useUser();
+    const { notificationsCount: notifications } = useNotifications();
 
     return (
         <>

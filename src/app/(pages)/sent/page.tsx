@@ -4,13 +4,13 @@ import { Container } from "@/components/template/Container";
 import { IconChevronRight, IconClick, IconMailCheck } from "@tabler/icons-react";
 import { SVG } from "@/components/SVG";
 import { useState } from "react";
-import { useUser } from "@/data/hooks";
+import { useStore } from "@/data/hooks";
 import Image from "next/image";
 import Link from "next/link";
 
 const Page = () => {
 
-    const { store: { isDarkModeUser } } = useUser();
+    const { store: { isDarkModeUser } } = useStore();
 
     const [isMessageOpen, setIsMessageOpen] = useState<boolean>(false);
 

@@ -1,12 +1,12 @@
 'use client'
 
-import { useUser } from "@/data/hooks";
+import { useStore } from "@/data/hooks";
 import Image from "next/image";
 import Link from "next/link";
 
 const Header = () => {
 
-    const { store: { isDarkModeUser } } = useUser();
+    const { store: { isDarkModeUser } } = useStore();
 
     return (
         <header>

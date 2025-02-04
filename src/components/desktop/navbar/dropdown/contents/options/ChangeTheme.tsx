@@ -2,7 +2,7 @@ import { Field } from "../../elements/Field";
 import { IconCheck } from "@tabler/icons-react";
 import { OptionHeader } from "../../elements/OptionHeader";
 import { Section } from "../../elements/Section";
-import { useUser } from "@/data/hooks";
+import { useStore } from "@/data/hooks";
 
 interface ChangeThemeProps {
     setterToClose: () => void;
@@ -10,7 +10,7 @@ interface ChangeThemeProps {
 
 export const ChangeThemeDropdown = ({ setterToClose }: ChangeThemeProps) => {
 
-    const { store: { isDarkModeUser }, setStore } = useUser();
+    const { store: { isDarkModeUser }, setStore } = useStore();
 
     return (
         <div className="w-[300px]">

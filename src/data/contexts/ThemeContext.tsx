@@ -1,13 +1,13 @@
 'use client';
 
 import { createContext, useEffect } from "react";
-import { useUser } from "../hooks";
+import { useStore } from "../hooks";
 
 const ThemeContext = createContext({} as any);
 
 export const ThemeProvider = (props: any) => {
 
-    const { store, setStore } = useUser();
+    const { store, setStore } = useStore();
 
     useEffect(() => {
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
