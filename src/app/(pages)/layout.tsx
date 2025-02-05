@@ -17,47 +17,63 @@ import { UserProvider } from "@/data/contexts/UserContext";
 import { UserStoreProvider } from "@/data/contexts/UserStoreContext";
 import Page from "@/components/template/Page";
 
-const layout = (props: any) => {
+const UserProviders = ({ children }: { children: React.ReactNode }) => {
+    return (
+        <UserPreferencesProvider>
+            <UserStoreProvider>
+                <UserFollowingProvider>
+                    <UserNotesProvider>
+                        <UserProvider>
+                            <UserNotificationsProvider>
+                                {children}
+                            </UserNotificationsProvider>
+                        </UserProvider>
+                    </UserNotesProvider>
+                </UserFollowingProvider>
+            </UserStoreProvider>
+        </UserPreferencesProvider>
 
+    )
+}
+
+const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
         <ScreenProvider>
             <ScreenWidthProvider>
                 <ProgressBarProvider>
                     <LoadingProvider>
-                        <UserPreferencesProvider>
-                            <UserStoreProvider>
-                                <UserFollowingProvider>
-                                    <UserNotesProvider>
-                                        <UserProvider>
-                                            <UserNotificationsProvider>
-                                                <ThemeProvider>
-                                                    <MenuProvider>
-                                                        <ProgressBar />
-                                                        <SplashScreen />
-                                                        <Container className="flex flex-col">
-                                                            <Desktop.Navbar />
-                                                            <Mobile.Navbar />
-                                                            <div className="h-full flex">
-                                                                <Desktop.Sidebar />
-                                                                <Page className="w-full">
-                                                                    {props.children}
-                                                                </Page>
-                                                            </div>
-                                                        </Container>
-                                                    </MenuProvider>
-                                                </ThemeProvider>
-                                            </UserNotificationsProvider>
-                                        </UserProvider>
-                                    </UserNotesProvider>
-                                </UserFollowingProvider>
-                            </UserStoreProvider>
-                        </UserPreferencesProvider>
+                        <UserProviders>
+                            <ThemeProvider>
+                                <MenuProvider>
+                                    {children}
+                                </MenuProvider >
+                            </ThemeProvider>
+                        </UserProviders>
                     </LoadingProvider>
                 </ProgressBarProvider>
             </ScreenWidthProvider>
         </ScreenProvider>
-    );
 
-};
+    )
+}
+
+const layout = (props: any) => {
+    return (
+        <Providers>
+            <ProgressBar />
+            <SplashScreen />
+            <Container className="flex flex-col">
+                <Desktop.Navbar />
+                <Mobile.Navbar />
+                <div className="h-full flex">
+                    <Desktop.Sidebar />
+                    <Page className="w-full">
+                        {props.children}
+                    </Page>
+                </div>
+            </Container>
+        </Providers>
+    )
+}
 
 export default layout;

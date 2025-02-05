@@ -37,7 +37,7 @@ const FormSection = () => {
             const response = await loginUserByDefault(data);
             const { token, user } = response;
             setUser(token, user);
-            setStore({ isFirstTimer: false, isGuest: false });
+            setStore({ isFirstTimer: false, isGuest: false, isExpired: false });
             Cookies.set('rtoken', token.refresh_token, token.expires_at);
             router.push('/');
         } catch (errors) {

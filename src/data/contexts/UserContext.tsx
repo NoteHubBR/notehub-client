@@ -23,9 +23,7 @@ export const UserProvider = (props: any) => {
     } = useServices();
 
     const { isStoreReady, store, setStore } = useStore();
-
     const { setFollowing } = useFollowing();
-
     const { setNotes } = useNotes();
 
     const pathname = usePathname();

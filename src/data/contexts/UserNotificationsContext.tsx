@@ -5,8 +5,8 @@ import { Page, Notification } from "@/core";
 import { useUser } from "../hooks";
 
 interface UserNotificationsProps {
-    notificationsCount: number;
-    notificationsPage: Omit<Page<Notification>, 'content'>;
+    count: number;
+    page: Omit<Page<Notification>, 'content'>;
     notifications: Notification[] | [];
     setNotifications: (page: Page<Notification>) => void;
 }
@@ -18,8 +18,8 @@ export const UserNotificationsProvider = (props: any) => {
     const { user } = useUser();
 
     const [state, setState] = useState({
-        notificationsCount: 0 as number,
-        notificationsPage: {} as Omit<Page<Notification>, 'content'>,
+        count: 0 as number,
+        page: {} as Omit<Page<Notification>, 'content'>,
         notifications: [] as Notification[],
     })
 
@@ -27,14 +27,14 @@ export const UserNotificationsProvider = (props: any) => {
         const { content, ...rest } = page;
         return setState((prev) => ({
             ...prev,
-            notificationsPage: rest,
+            page: rest,
             notifications: [...prev.notifications, ...content],
-            notificationsCount: [...prev.notifications, ...content].filter(n => !n.read).length
+            count: [...prev.notifications, ...content].filter(n => !n.read).length
         }))
     }, [])
 
     const setTitle = useCallback((count: number): string => {
-        setState((prev) => ({ ...prev, notificationsCount: count }));
+        setState((prev) => ({ ...prev, count: count }));
         const title = `${count > 0 ? `(${count}) XYZ` : 'XYZ'}`;
         return document.title = title;
     }, [])
@@ -45,13 +45,13 @@ export const UserNotificationsProvider = (props: any) => {
     }, [setTitle, user])
 
     useEffect(() => {
-        setTitle(state.notificationsCount);
-    }, [setTitle, state.notificationsCount])
+        setTitle(state.count);
+    }, [setTitle, state.count])
 
     return (
         <UserNotificationsContext.Provider value={{
-            notificationsCount: state.notificationsCount,
-            notificationsPage: state.notificationsPage,
+            count: state.count,
+            page: state.page,
             notifications: state.notifications,
             setNotifications
         }}>
