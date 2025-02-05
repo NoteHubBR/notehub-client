@@ -8,7 +8,7 @@ import { IconPlus } from "@tabler/icons-react";
 import { Input } from "./elements/Input";
 import { Menu } from "./elements/Menu";
 import { MenuDropdown } from "./dropdown/contents/MenuDropdown";
-import { Picture } from "./elements/Picture";
+import { Photo } from "@/components/Photo";
 import { shouldUseUserContext } from "@/core";
 import { useLoading, useScreen, useUser } from "@/data/hooks"
 import { usePathname } from "next/navigation";
@@ -60,7 +60,7 @@ export const Navbar = () => {
                             <Dropdown buttonRef={bellButton}><BellDropdown /></Dropdown>
                         </Button>
                         <Button ref={menuButton}>
-                            <Picture user={user} />
+                            <Photo user={user} />
                             <Dropdown buttonRef={menuButton} ><MenuDropdown user={user} /></Dropdown>
                         </Button>
                     </div>

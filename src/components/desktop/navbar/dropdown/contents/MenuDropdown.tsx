@@ -2,7 +2,7 @@ import { ChangeThemeDropdown } from './options/ChangeTheme';
 import { Field } from '../elements/Field';
 import { Header } from '../elements/Header';
 import { IconBrandGithub, IconBrandGoogleFilled, IconHelp, IconLogout, IconMessageReport, IconSettings, IconUsers, IconYinYangFilled } from '@tabler/icons-react';
-import { Picture } from '../../elements/Picture';
+import { Photo } from '@/components/Photo';
 import { Section } from '../elements/Section';
 import { usePref, useUser } from '@/data/hooks';
 import { User } from '@/core';
@@ -21,7 +21,7 @@ export const MenuDropdown = ({ user }: { user: User }) => {
     return (
         <div className='w-[300px]'>
             <Header user={user}>
-                <Picture user={user} size={50} className="self-start" />
+                <Photo user={user} size={50} className="self-start" />
             </Header>
             <Section>
                 {user.host === 'Google' &&

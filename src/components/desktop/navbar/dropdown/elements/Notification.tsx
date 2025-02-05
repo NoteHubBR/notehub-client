@@ -1,6 +1,6 @@
 import { IconFlame } from "@tabler/icons-react";
 import { Notification as PropsType, toRelativeTime, Type } from "@/core";
-import { Picture } from "../../elements/Picture";
+import { Photo } from "@/components/Photo";
 import Link from "next/link";
 
 export const Notification = ({ notification }: { notification: PropsType }) => {
@@ -33,7 +33,7 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
         >
             <div className="w-full flex items-center">
                 <div className="px-2 border-r text-sm dark:border-r-neutral-50/20 border-r-neutral-900/20">
-                    <Picture user={user} size={55} />
+                    <Photo user={user} size={55} />
                 </div>
                 <div className="px-2">
                     <p>

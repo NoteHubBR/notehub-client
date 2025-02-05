@@ -3,7 +3,7 @@
 import { IconCompass, IconHome, IconPlus, IconUserCircle, IconUsers } from "@tabler/icons-react"
 import { Item } from "./elements/Item";
 import { List } from "./elements/List";
-import { Picture } from "./elements/Picture";
+import { Photo } from "@/components/Photo";
 import { shouldUseUserContext } from "@/core";
 import { useLoading, useScreen, useUser } from "@/data/hooks";
 import { usePathname } from "next/navigation";
@@ -57,7 +57,7 @@ export const Navbar = () => {
                 <Item href='/explore' text="Explorar"><IconCompass size={22} /></Item>
                 <Item href='/new'><IconPlus size={22} /></Item>
                 <Item href={`/${user.username}/following`} text="Seguindo"><IconUsers size={22} /></Item>
-                <Item href={`/${user.username}`} text="Você"><Picture user={user} /></Item>
+                <Item href={`/${user.username}`} text="Você"><Photo user={user} /></Item>
             </List>
         </Nav>
     )

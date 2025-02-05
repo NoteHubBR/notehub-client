@@ -1,5 +1,5 @@
 import { LowDetailNote, LowDetailUser } from "@/core";
-import Image from "next/image";
+import { Photo } from "@/components/Photo";
 
 interface TargetProps extends React.HTMLAttributes<HTMLDivElement> {
     user: LowDetailUser;
@@ -12,7 +12,7 @@ export const Target = (props: TargetProps) => {
 
     return (
         <div className="py-1 px-2 flex items-center gap-3" {...rest}>
-            <Image src={user.avatar} alt={`avatar de ${user.username}`} width={27} height={27} className="rounded-full" />
+            <Photo user={user} />
             {note
                 ?
                 <span className="overflow-hidden whitespace-nowrap text-ellipsis text-sm">{note.title}</span>

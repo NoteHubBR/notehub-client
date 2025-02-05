@@ -7,10 +7,10 @@ import { useNotifications, useServices, useUser } from "@/data/hooks";
 export const BellDropdown = () => {
 
     const { userService: { getUserNotifications } } = useServices();
-    
+
     const { token } = useUser();
-    
-    const { notificationsPage: page, notifications, setNotifications } = useNotifications();
+
+    const { page, notifications, setNotifications } = useNotifications();
 
     const [isFetching, setisFetching] = useState<boolean>(false);
 
