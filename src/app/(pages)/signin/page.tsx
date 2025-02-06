@@ -1,12 +1,13 @@
 'use client'
 
 import { Container } from '@/components/template/Container';
-import { Cookies, handleFieldErrors } from '@/core';
+import { Cookies, handleFieldErrors, Token, User } from '@/core';
 import { Form } from '@/components/form';
 import { FormProvider, useForm } from 'react-hook-form';
 import { IconAt } from '@tabler/icons-react';
 import { LoginUserFormData, loginUserFormSchema } from '@/core/schemas/user/LoginUser';
 import { TsParticles } from '@/components/TsParticles';
+import { useGoogleLogin } from '@react-oauth/google';
 import { useRouter } from 'next/navigation';
 import { useServices, useStore, useUser } from '@/data/hooks';
 import { useState } from 'react';
@@ -15,10 +16,9 @@ import Link from 'next/link';
 
 const FormSection = () => {
 
-    const { authService: { loginUserByDefault } } = useServices();
+    const { authService: { loginUserByDefault, loginUserByGoogle } } = useServices();
 
     const { setStore } = useStore();
-
     const { setUser } = useUser();
 
     const loginUserForm = useForm<LoginUserFormData>({
@@ -27,25 +27,42 @@ const FormSection = () => {
 
     const { handleSubmit, setError } = loginUserForm;
 
-    const [isRequesting, setIsRequesting] = useState<boolean>(false);
+    const [state, setState] = useState({
+        isRequesting: false,
+        isGoogleAuthInProgress: false
+    });
 
     const router = useRouter();
 
+    const login = ({ token, user }: { token: Token, user: User }): void => {
+        setUser(token, user);
+        setStore({ isFirstTimer: false, isGuest: false, isExpired: false });
+        Cookies.set('rtoken', token.refresh_token, token.expires_at);
+        return router.push('/');
+    }
+
     const onSubmit = async (data: LoginUserFormData) => {
-        setIsRequesting(true);
+        setState((prev) => ({ ...prev, isRequesting: true }))
         try {
-            const response = await loginUserByDefault(data);
-            const { token, user } = response;
-            setUser(token, user);
-            setStore({ isFirstTimer: false, isGuest: false, isExpired: false });
-            Cookies.set('rtoken', token.refresh_token, token.expires_at);
-            router.push('/');
+            login(await loginUserByDefault(data));
         } catch (errors) {
             if (Array.isArray(errors)) handleFieldErrors(errors, setError)
         } finally {
-            setIsRequesting(false);
+            setState((prev) => ({ ...prev, isRequesting: false }))
         }
     }
+
+    const googleLogin = useGoogleLogin({
+        onSuccess: res => {
+            const submit = async () => {
+                login(await loginUserByGoogle({ token: res.access_token }))
+            }
+            submit();
+            setState((prev) => ({ ...prev, isGoogleAuthInProgress: false }));
+        },
+        onError: () => setState(({ isRequesting: false, isGoogleAuthInProgress: false })),
+        onNonOAuthError: () => setState(({ isRequesting: false, isGoogleAuthInProgress: false }))
+    });
 
     return (
         <main>
@@ -65,37 +82,24 @@ const FormSection = () => {
                             <span className='request-btn underline p-1 font-semibold text-sm text-indigo-500'>Esqueceu a senha?</span>
                         </Link>
                     </Form.Field>
-                    <Form.Button isRequesting={isRequesting}>Entrar</Form.Button>
-                    <Link href={'/signup'} className='
-                        p-2
-                        font-semibold text-md text-center dark:text-neutral-50 text-neutral-900
-                        rounded-md
-                        dark:bg-neutral-900/75 bg-neutral-50/75
-                        dark:hover:bg-violet-600 hover:bg-violet-600 hover:text-neutral-50
-                        dark:focus:bg-violet-600 focus:bg-violet-600 focus:text-neutral-50
-                        transition-all
-                    '>
-                        Criar conta
-                    </Link>
-                    <div className='flex flex-col gap-4'>
-                        <div className='flex items-center justify-between gap-4 my-4'>
-                            <hr className='w-full border-s border-violet-600/50' />
-                            <span className='break-keep font-bold text-sm'>OU</span>
-                            <hr className='w-full border-s border-violet-600/50' />
-                        </div>
-                        <Form.OAuthButton
-                            src='/svgs/github-icon.svg'
-                            alt='GitHub Logo'
-                            brand='GitHub'
-                            isRequesting={isRequesting}
-                        />
-                        <Form.OAuthButton
-                            src='/svgs/google-icon.svg'
-                            alt='Google Logo'
-                            brand='Google'
-                            isRequesting={isRequesting}
-                        />
-                    </div>
+                    <Form.Button isRequesting={state.isRequesting}>Entrar</Form.Button>
+                    <Form.Link href={'/signup'}>Criar conta</Form.Link>
+                    <Form.Separator />
+                    <Form.OAuthButton
+                        src='/svgs/google-icon.svg'
+                        alt='Google Logo'
+                        brand='Google'
+                        isRequesting={state.isRequesting}
+                        isGoogleAuthInProgress={state.isGoogleAuthInProgress}
+                        onClick={() => { setState(({ isRequesting: true, isGoogleAuthInProgress: true })); googleLogin() }}
+                    />
+                    <Form.OAuthButton
+                        src='/svgs/github-icon.svg'
+                        alt='GitHub Logo'
+                        brand='GitHub'
+                        isRequesting={state.isRequesting}
+                        onClick={() => { return }}
+                    />
                 </Form.Tag>
             </FormProvider>
         </main>

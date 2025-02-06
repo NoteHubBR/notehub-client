@@ -15,6 +15,14 @@ export const AuthService = () => {
         }
     }
 
+    const loginUserByGoogle = async (token: { token: string }): Promise<{ token: Token, user: User }> => {
+        try {
+            return await httpPost('/auth/login/oauth2/google', token, { useProgress: true });
+        } catch (error) {
+            throw error;
+        }
+    }
+
     const refreshUser = async (): Promise<{ token: Token, user: User }> => {
         try {
             return await httpGet(`/auth/refresh?token=${Cookies.get('rtoken')}`, { useProgress: true });
@@ -32,6 +40,6 @@ export const AuthService = () => {
         else throw error;
     }
 
-    return { loginUserByDefault, refreshUser, handleExpiredToken }
+    return { loginUserByDefault, loginUserByGoogle, refreshUser, handleExpiredToken }
 
 }

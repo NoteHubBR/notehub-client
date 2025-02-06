@@ -1,5 +1,6 @@
 import { Container } from "@/components/template/Container";
 import { Desktop } from "@/components/desktop";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { LoadingProvider } from "@/data/contexts/LoadingContext";
 import { MenuProvider } from "@/data/contexts/MenuContext";
 import { Mobile } from "@/components/mobile";
@@ -19,20 +20,21 @@ import Page from "@/components/template/Page";
 
 const UserProviders = ({ children }: { children: React.ReactNode }) => {
     return (
-        <UserPreferencesProvider>
-            <UserStoreProvider>
-                <UserFollowingProvider>
-                    <UserNotesProvider>
-                        <UserProvider>
-                            <UserNotificationsProvider>
-                                {children}
-                            </UserNotificationsProvider>
-                        </UserProvider>
-                    </UserNotesProvider>
-                </UserFollowingProvider>
-            </UserStoreProvider>
-        </UserPreferencesProvider>
-
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_CLIENT_ID ?? "vascodagama"}>
+            <UserPreferencesProvider>
+                <UserStoreProvider>
+                    <UserFollowingProvider>
+                        <UserNotesProvider>
+                            <UserProvider>
+                                <UserNotificationsProvider>
+                                    {children}
+                                </UserNotificationsProvider>
+                            </UserProvider>
+                        </UserNotesProvider>
+                    </UserFollowingProvider>
+                </UserStoreProvider>
+            </UserPreferencesProvider>
+        </GoogleOAuthProvider>
     )
 }
 

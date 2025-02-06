@@ -5,29 +5,37 @@ interface OAuthButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
     alt: string;
     brand: string;
     isRequesting: boolean;
+    isGoogleAuthInProgress?: boolean;
+    isGitHubAuthInProgress?: boolean;
 }
 
-const OAuthButton = ({ src, alt, brand, isRequesting, ...rest }: OAuthButtonProps) => {
+const OAuthButton = (props: OAuthButtonProps) => {
+
+    const { src, alt, brand, isRequesting, isGoogleAuthInProgress, isGitHubAuthInProgress, ...rest } = props;
+
+    const disabled = isRequesting || isGoogleAuthInProgress || isGitHubAuthInProgress;
+
     return (
         <button type='button' className={`
-            request-btn
+            ${disabled ? 'cursor-not-allowed' : 'request-btn'}
             select-none
             w-full
             flex items-center justify-center gap-4
             p-2 rounded-md
-            dark:bg-slate-100/5 bg-neutral-900/25
             ${isRequesting ? "dark:bg-white/25 bg-black/25" : "dark:bg-slate-100/5 bg-neutral-900/25"}
+            ${isGoogleAuthInProgress || isGitHubAuthInProgress ? "dark:bg-violet-600 bg-violet-600" : "dark:bg-slate-100/5 bg-neutral-900/25"}
             transition-all
-        `} disabled={isRequesting} {...rest}>
+        `} disabled={disabled} {...rest}>
             <Image
                 src={src}
-                width={24} height={0}
+                width={25} height={0}
                 priority
                 alt={alt}
             />
             <span className='font-faculty text-md text-neutral-50'>Continuar com o {brand}</span>
         </button>
     )
+
 }
 
 export default OAuthButton;

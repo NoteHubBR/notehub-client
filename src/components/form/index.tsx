@@ -5,6 +5,8 @@ import Input from "./elements/Input";
 import Strength from "./elements/Strength";
 import Error from "./elements/Error";
 import Button from "./elements/Button";
+import Link from "./elements/Link";
+import Separator from "./elements/Separator";
 import OAuthButton from "./elements/OAuthButton";
 
 interface TagProps extends React.HTMLAttributes<HTMLFormElement> {
@@ -26,4 +28,4 @@ export const Tag = ({ children, ...rest }: TagProps) => {
     );
 };
 
-export const Form = { Tag, Header, Field, Label, Input, Strength, Error, Button, OAuthButton };
+export const Form = { Tag, Header, Field, Label, Input, Strength, Error, Button, Link, Separator, OAuthButton };
