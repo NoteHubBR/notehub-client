@@ -23,8 +23,8 @@ export const UserProvider = (props: any) => {
     } = useServices();
 
     const { isStoreReady, store, setStore } = useStore();
-    const { setFollowing } = useFollowing();
-    const { setNotes } = useNotes();
+    const { clearFollowing, setFollowing } = useFollowing();
+    const { clearNotes, setNotes } = useNotes();
 
     const pathname = usePathname();
 
@@ -57,8 +57,11 @@ export const UserProvider = (props: any) => {
         }
     }
 
+    const clearData = useCallback(async () => { clearFollowing(); clearNotes(); }, [clearFollowing, clearNotes])
+
     const fetchUserData = async (accessToken: string, username: string): Promise<void> => {
         try {
+            await clearData();
             setFollowing(await getUserFollowing(accessToken, username))
             setNotes(await getUserNotes(accessToken));
             return;

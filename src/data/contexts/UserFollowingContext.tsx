@@ -7,16 +7,21 @@ interface UserFollowingProps {
     page: Omit<Page<LowDetailUser>, 'content'>;
     users: LowDetailUser[] | [];
     setFollowing: (page: Page<LowDetailUser>) => void;
+    clearFollowing: () => void;
 }
 
 const UserFollowingContext = createContext<UserFollowingProps>({} as any);
 
 export const UserFollowingProvider = (props: any) => {
 
-    const [state, setState] = useState({
+    const initialState = {
         page: {} as Omit<Page<LowDetailUser>, 'content'>,
         users: [] as LowDetailUser[],
-    });
+    }
+
+    const [state, setState] = useState(initialState);
+    
+    const clear = useCallback(() => { return setState(initialState) }, []);
 
     const setter = useCallback((page: Page<LowDetailUser>): void => {
         const { content, ...rest } = page;
@@ -30,7 +35,8 @@ export const UserFollowingProvider = (props: any) => {
         <UserFollowingContext.Provider value={{
             page: state.page,
             users: state.users,
-            setFollowing: setter
+            setFollowing: setter,
+            clearFollowing: clear
         }}>
             {props.children}
         </UserFollowingContext.Provider>
