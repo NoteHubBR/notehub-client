@@ -53,9 +53,9 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
                         <Photo user={user} size={55} />
                     </figure>
                     <section className="px-2">
-                        <p>
+                        <p className="text-sm">
                             <span>{emote ? emote : <IconFlame fill="#6d28d9" color="#7c3aed" />} </span>
-                            <span className="font-semibold text-violet-600">{username} </span>
+                            <span className="font-extrabold text-violet-600">{username} </span>
                             {message}
                         </p>
                     </section>

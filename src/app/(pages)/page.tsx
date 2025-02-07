@@ -1,14 +1,14 @@
 'use client';
 
 import { User } from "@/core";
-import { useStore, useUser } from "@/data/hooks";
+import { useNotifications, useStore, useUser } from "@/data/hooks";
 import Link from "next/link";
 
 export default function Home() {
 
   const { store, setStore } = useStore();
-
   const { user } = useUser();
+  const { count } = useNotifications();
 
   const { isFirstTimer, isGuest, isExpired } = store;
 
@@ -19,9 +19,9 @@ export default function Home() {
       <>
         <h1>{user.username}</h1>
         <h1>{user.email}</h1>
-        <h1>{user.notifications}</h1>
-        <h1>{user.followers_count}</h1>
-        <h1>{user.following_count}</h1>
+        <h1>notifications: {count}</h1>
+        <h1>followers: {user.followers_count}</h1>
+        <h1>following: {user.following_count}</h1>
         {/* <button onClick={() => getNotifications(token.access_token)}>ver notificações</button> */}
       </>
     )

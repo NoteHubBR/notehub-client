@@ -9,6 +9,7 @@ interface UserNotificationsProps {
     page: Omit<Page<Notification>, 'content'>;
     notifications: Notification[] | [];
     setNotifications: (page: Page<Notification>) => void;
+    clearNotifications: () => void;
 }
 
 const UserNotificationsContext = createContext<UserNotificationsProps>({} as any);
@@ -17,11 +18,15 @@ export const UserNotificationsProvider = (props: any) => {
 
     const { user } = useUser();
 
-    const [state, setState] = useState({
+    const initialState = {
         count: 0 as number,
         page: {} as Omit<Page<Notification>, 'content'>,
         notifications: [] as Notification[],
-    })
+    }
+
+    const [state, setState] = useState(initialState)
+
+    const clearNotifications = useCallback(() => setState(initialState), []);
 
     const setNotifications = useCallback((page: Page<Notification>): void => {
         const { content, ...rest } = page;
@@ -40,6 +45,7 @@ export const UserNotificationsProvider = (props: any) => {
     }, [])
 
     useEffect(() => {
+        clearNotifications();
         if (user) setTitle(user.notifications);
         else setTitle(0);
     }, [setTitle, user])
@@ -53,7 +59,8 @@ export const UserNotificationsProvider = (props: any) => {
             count: state.count,
             page: state.page,
             notifications: state.notifications,
-            setNotifications
+            setNotifications,
+            clearNotifications
         }}>
             {props.children}
         </UserNotificationsContext.Provider>
