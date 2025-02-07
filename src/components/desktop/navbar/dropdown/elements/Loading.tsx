@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import Image from 'next/image';
 
 interface LoadingProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -7,8 +8,12 @@ interface LoadingProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Loading = ({ state, ...rest }: LoadingProps) => {
     return (
         <div
-            className={`w-full py-2 flex items-center justify-center select-none pointer-events-none ${state ? '' : 'hidden'}`}
-            {...rest}>
+            className={clsx(
+                state ? '' : 'hidden',
+                'w-full py-2 flex items-center justify-center select-none pointer-events-none'
+            )}
+            {...rest}
+        >
             <Image
                 src={'/svgs/infinite-spinner.svg'}
                 width={50} height={0}

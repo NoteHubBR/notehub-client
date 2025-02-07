@@ -17,12 +17,10 @@ const Button = ({ children, text, useChevron, ...rest }: ButtonProps) => {
     return (
         <li>
             <button
-                className="
-                        w-full py-2 px-4
-                        flex items-center justify-between gap-4 
-                        hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10
-                        transition-colors
-                    "
+                className="w-full py-2 px-4
+                    flex items-center justify-between gap-4 
+                    hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10
+                    transition-colors"
                 {...rest}
             >
                 <div className="flex items-center justify-center">
@@ -39,12 +37,10 @@ const Link = ({ target, children, text, useChevron, ...rest }: LinkProps) => {
     return (
         <li>
             <NextLink
-                className="
-                        w-full py-2 px-4
-                        flex items-center justify-between gap-4 
-                        hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10
-                        transition-colors
-                    "
+                className="w-full py-2 px-4
+                    flex items-center justify-between gap-4
+                    hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10
+                    transition-colors"
                 target={target}
                 {...rest}
             >

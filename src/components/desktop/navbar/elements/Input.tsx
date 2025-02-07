@@ -6,8 +6,7 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
         <div className="flex items-center justify-between">
             <input
                 {...props}
-                className="
-                    outline-none
+                className="outline-none
                     peer
                     inlg:w-[333px] w-[444px] py-[6px] px-4
                     text-md dark:text-neutral-50 text-neutral-900
@@ -16,18 +15,15 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
                     dark:focus:border-violet-600 dark:valid:border-violet-600
                     focus:border-violet-600 valid:border-violet-600
                     dark:placeholder:text-neutral-100/30
-                    transition-colors
-                "
+                    transition-colors"
             />
-            <div className="
-                    cursor-pointer
+            <div className="cursor-pointer
                     py-[6px] px-4
                     border-2 border-transparent rounded-e-3xl
                     dark:bg-neutral-50/15 bg-neutral-900/15
                     dark:peer-focus:bg-violet-600 dark:peer-valid:bg-violet-600
                     peer-focus:bg-violet-600 peer-valid:bg-violet-600
-                    transition-colors
-                "
+                    transition-colors"
             >
                 <IconSearch className="text-white" />
             </div>

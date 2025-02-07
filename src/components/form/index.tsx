@@ -15,14 +15,15 @@ interface TagProps extends React.HTMLAttributes<HTMLFormElement> {
 
 export const Tag = ({ children, ...rest }: TagProps) => {
     return (
-        <form className="
-                w-[444px] insm:w-full
+        <form
+            className="w-[444px] insm:w-full
                 p-4
                 flex flex-col gap-4
                 rounded-md
                 backdrop-blur-sm
-                dark:bg-violet-600/20 bg-indigo-600/10
-            " {...rest}>
+                dark:bg-violet-600/20 bg-indigo-600/10"
+            {...rest}
+        >
             {children}
         </form>
     );

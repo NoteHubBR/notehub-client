@@ -44,13 +44,12 @@ const Page = () => {
                         <h1 className="font-faculty font-light text-lg">
                             Conta ativada,{" "}
                             <span className="dark:text-neutral-50 text-neutral-900">
-                                <Link href={'/signin'} className="
-                                    underline
+                                <Link href={'/signin'} className="underline
                                     p-1 rounded-lg
                                     font-normal
                                     transition-colors duration-300
-                                    hover:bg-violet-600 hover:text-neutral-50
-                                ">
+                                    hover:bg-violet-600 hover:text-neutral-50"
+                                >
                                     acesse
                                 </Link>.
                             </span>

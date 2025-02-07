@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -17,14 +18,16 @@ export const Shortcut = (props: ShortcutProps) => {
         <div {...rest}>
             <Link
                 href={href}
-                className={`
-                    cursor-pointer
-                    py-3 px-1 
-                    flex flex-col items-center gap-1 
-                    rounded-xl 
-                    ${pathname === href ? 'text-neutral-50 bg-violet-600' : 'hover:dark:bg-neutral-50/15 hover:bg-neutral-900/15'}
-                    transition-colors 
-                `}
+                className={clsx(
+                    'cursor-pointer',
+                    'py-3 px-1',
+                    'flex flex-col items-center gap-1',
+                    'rounded-xl',
+                    pathname === href
+                        ? 'text-neutral-50 bg-violet-600'
+                        : 'hover:dark:bg-neutral-50/15 hover:bg-neutral-900/15',
+                    'transition-colors'
+                )}
             >
                 {icon}
                 <span className="text-center text-sm">{text}</span>

@@ -21,42 +21,37 @@ const Input = ({ name, icon, type = "text", ...rest }: InputProps) => {
                 id={name}
                 type={inputType}
                 {...register(name)}
-                className="
-                    outline-none
+                className="outline-none
                     peer
                     w-full py-1 px-2
                     text-md text-violet-500 font-semibold
                     border-2 dark:border-violet-600/40 border-violet-600/40 rounded-s-md
                     dark:bg-neutral-900 bg-neutral-100
                     dark:focus:border-violet-600 dark:valid:border-violet-600
-                    focus:border-violet-600 valid:border-violet-600
-                "
+                    focus:border-violet-600 valid:border-violet-600"
                 {...rest}
             />
             {type !== "password"
                 ?
-                <div className="
-                    p-1 
+                <div className="p-1
                     text-slate-100
-                    border-2 border-transparent rounded-e-md 
+                    border-2 border-transparent rounded-e-md
                     dark:bg-violet-600/25 bg-violet-600/35
                     dark:peer-focus:bg-violet-600 dark:peer-valid:bg-violet-600
-                    peer-focus:bg-violet-600 peer-valid:bg-violet-600
-                ">
+                    peer-focus:bg-violet-600 peer-valid:bg-violet-600"
+                >
                     {icon}
                 </div>
                 :
                 <button
                     tabIndex={1}
                     type="button"
-                    className="
-                        p-1 
+                    className="p-1
                         text-slate-100
-                        border-2 border-transparent rounded-e-md 
+                        border-2 border-transparent rounded-e-md
                         dark:bg-violet-600/25 bg-violet-600/35
                         dark:peer-focus:bg-violet-600 dark:peer-valid:bg-violet-600 dark:focus-visible:bg-violet-600
-                        peer-focus:bg-violet-600 peer-valid:bg-violet-600 focus-visible:bg-violet-600
-                    "
+                        peer-focus:bg-violet-600 peer-valid:bg-violet-600 focus-visible:bg-violet-600"
                     onClick={() => setIsPasswordVisible(!isPasswordVisible)}
                 >
                     {isPasswordVisible

@@ -1,5 +1,6 @@
 'use client';
 
+import { clsx } from "clsx";
 import { shouldUseUserContext } from "@/core";
 import { useLoading, useScreen, useStore, useUser } from "@/data/hooks";
 import { usePathname } from "next/navigation";
@@ -29,11 +30,11 @@ const Page = (props: PageProps) => {
 
     return (
         <div
-            className={`
-                ${shouldUseMargin && onDesktop && user ? `${isMenuOpen ? "pl-[240px]" : "pl-[88px]"}` : ''}
-                ${shouldUseMargin && onMobile ? 'pb-[45px]' : ''}
-                ${className}`
-            }
+            className={clsx(
+                shouldUseMargin && onDesktop && user ? `${isMenuOpen ? "pl-[240px]" : "pl-[88px]"}` : '',
+                shouldUseMargin && onMobile ? 'pb-[45px]' : '',
+                className
+            )}
             {...rest}
         >
             {children}

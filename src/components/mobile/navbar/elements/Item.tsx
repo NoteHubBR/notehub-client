@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -22,12 +23,12 @@ export const Item = (props: ItemProps) => {
         >
             <Link
                 href={href}
-                className={`
-                    py-1
-                    flex flex-col items-center 
-                    rounded-full
-                    ${IconPlus ? 'px-1 dark:bg-neutral-50/10 bg-neutral-900/10' : ''}
-                `}
+                className={clsx(
+                    'py-1',
+                    'flex flex-col items-center',
+                    'rounded-full',
+                    IconPlus ? 'px-1 dark:bg-neutral-50/10 bg-neutral-900/10' : ''
+                )}
             >
                 {children}
                 <span className="text-2xs">{text}</span>

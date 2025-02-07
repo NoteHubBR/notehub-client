@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
 
 interface FieldProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -12,14 +13,16 @@ export const Field = (props: FieldProps) => {
 
     return (
         <div
-            className={`
-                cursor-pointer
-                rounded-md
-                ${pathname === href ? 'text-neutral-50 bg-violet-600' : 'hover:dark:bg-neutral-50/15 hover:bg-neutral-900/15'}   
-                transition-colors
-            `}
+            className={clsx(
+                'cursor-pointer',
+                'rounded-md',
+                pathname === href
+                    ? 'text-neutral-50 bg-violet-600'
+                    : 'hover:dark:bg-neutral-50/15 hover:bg-neutral-900/15',
+                'transition-colors'
+            )}
             {...props}
         />
     )
-    
+
 }

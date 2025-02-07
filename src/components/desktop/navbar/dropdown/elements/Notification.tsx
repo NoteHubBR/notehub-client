@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import { IconFlame } from "@tabler/icons-react";
 import { Notification as PropsType, toRelativeTime, Type } from "@/core";
 import { Photo } from "@/components/Photo";
@@ -64,13 +65,13 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
                         className="flex gap-2 px-2 text-xs dark:text-neutral-50/50 text-neutral-900/50"
                     >
                         <span
-                            className={`
-                            ${isMouseOnDateField ? 'opacity-100' : 'opacity-0'} 
-                            px-2 rounded-full 
-                            font-semibold dark:text-white text-black
-                            dark:bg-black bg-white
-                            transition-opacity duration-200
-                        `}
+                            className={clsx(
+                                isMouseOnDateField ? 'opacity-100' : 'opacity-0',
+                                'px-2 rounded-full',
+                                'font-semibold dark:text-white text-black',
+                                'dark:bg-black bg-white',
+                                'transition-opacity duration-200'
+                            )}
                         >
                             {notification.created_at}h
                         </span>

@@ -1,12 +1,10 @@
 export const Section = (props: React.HTMLAttributes<HTMLUListElement>) => {
     return (
         <section
-            className="
-                cursor-auto
+            className="cursor-auto
                 pt-2
                 border-t dark:border-t-neutral-50/20 border-t-neutral-900/20
-                first:pt-0 pb-2 first:dark:border-t-transparent first:border-t-transparent
-            "
+                first:pt-0 pb-2 first:dark:border-t-transparent first:border-t-transparent"
         >
             <ul className="flex flex-col gap-2" {...props} />
         </section>

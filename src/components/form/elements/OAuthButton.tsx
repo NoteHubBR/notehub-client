@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import Image from "next/image";
 
 interface OAuthButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
@@ -16,16 +17,17 @@ const OAuthButton = (props: OAuthButtonProps) => {
     const disabled = isRequesting || isGoogleAuthInProgress || isGitHubAuthInProgress;
 
     return (
-        <button type='button' className={`
-            ${disabled ? 'cursor-not-allowed' : 'request-btn'}
-            select-none
-            w-full
-            flex items-center justify-center gap-4
-            p-2 rounded-md
-            ${isRequesting ? "dark:bg-white/25 bg-black/25" : "dark:bg-slate-100/5 bg-neutral-900/25"}
-            ${isGoogleAuthInProgress || isGitHubAuthInProgress ? "dark:bg-violet-600 bg-violet-600" : "dark:bg-slate-100/5 bg-neutral-900/25"}
-            transition-all
-        `} disabled={disabled} {...rest}>
+        <button type='button' className={clsx(
+            disabled ? 'cursor-not-allowed' : 'request-btn',
+            'select-none',
+            'w-full',
+            'flex items-center justify-center gap-4',
+            'p-2 rounded-md',
+            isGoogleAuthInProgress || isGitHubAuthInProgress
+                ? "dark:bg-violet-600 bg-violet-600"
+                : "dark:bg-slate-100/5 bg-neutral-900/25",
+            'transition-all'
+        )} disabled={disabled} {...rest}>
             <Image
                 src={src}
                 width={25} height={0}
