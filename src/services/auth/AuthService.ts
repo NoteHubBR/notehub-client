@@ -17,7 +17,15 @@ export const AuthService = () => {
 
     const loginUserByGoogle = async (token: { token: string }): Promise<{ token: Token, user: User }> => {
         try {
-            return await httpPost('/auth/login/oauth2/google', token, { useProgress: true });
+            return await httpPost('/auth/login/google', token, { useProgress: true });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    const loginUserByGitHub = async (code: { code: string }): Promise<{ token: Token, user: User }> => {
+        try {
+            return await httpPost('/auth/login/github', code, { useProgress: true });
         } catch (error) {
             throw error;
         }
@@ -40,6 +48,6 @@ export const AuthService = () => {
         else throw error;
     }
 
-    return { loginUserByDefault, loginUserByGoogle, refreshUser, handleExpiredToken }
+    return { loginUserByDefault, loginUserByGoogle, loginUserByGitHub, refreshUser, handleExpiredToken }
 
 }

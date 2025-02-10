@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { Container } from '@/components/template/Container';
 import { Cookies, handleFieldErrors, Token, User } from '@/core';
@@ -7,16 +7,16 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { IconAt } from '@tabler/icons-react';
 import { LoginUserFormData, loginUserFormSchema } from '@/core/schemas/user/LoginUser';
 import { TsParticles } from '@/components/TsParticles';
+import { useEffect, useRef, useState } from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useServices, useStore, useUser } from '@/data/hooks';
-import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 
 const FormSection = () => {
 
-    const { authService: { loginUserByDefault, loginUserByGoogle } } = useServices();
+    const { authService: { loginUserByDefault, loginUserByGoogle, loginUserByGitHub } } = useServices();
 
     const { setStore } = useStore();
     const { setUser } = useUser();
@@ -29,7 +29,8 @@ const FormSection = () => {
 
     const [state, setState] = useState({
         isRequesting: false,
-        isGoogleAuthInProgress: false
+        isGoogleAuthInProgress: false,
+        isGitHubAuthInProgress: false
     });
 
     const router = useRouter();
@@ -42,27 +43,45 @@ const FormSection = () => {
     }
 
     const onSubmit = async (data: LoginUserFormData) => {
-        setState((prev) => ({ ...prev, isRequesting: true }))
+        setState((prev) => ({ ...prev, isRequesting: true }));
         try {
             login(await loginUserByDefault(data));
         } catch (errors) {
-            if (Array.isArray(errors)) handleFieldErrors(errors, setError)
+            if (Array.isArray(errors)) handleFieldErrors(errors, setError);
         } finally {
-            setState((prev) => ({ ...prev, isRequesting: false }))
+            setState((prev) => ({ ...prev, isRequesting: false }));
         }
     }
 
     const googleLogin = useGoogleLogin({
         onSuccess: res => {
             const submit = async () => {
-                login(await loginUserByGoogle({ token: res.access_token }))
+                login(await loginUserByGoogle({ token: res.access_token }));
             }
             submit();
-            setState((prev) => ({ ...prev, isGoogleAuthInProgress: false }));
+            setState((prev) => ({ ...prev, isRequesting: false, isGoogleAuthInProgress: false }));
         },
-        onError: () => setState(({ isRequesting: false, isGoogleAuthInProgress: false })),
-        onNonOAuthError: () => setState(({ isRequesting: false, isGoogleAuthInProgress: false }))
+        onError: () => setState((prev) => ({ ...prev, isGoogleAuthInProgress: false })),
+        onNonOAuthError: () => setState((prev) => ({ ...prev, isRequesting: false, isGoogleAuthInProgress: false }))
     });
+
+    const GHCI = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
+    const gitHubLogin = () => router.push(`https://github.com/login/oauth/authorize?client_id=${GHCI}`);
+    const params = useSearchParams();
+    const isFetching = useRef<boolean>(false);
+    useEffect(() => {
+        const code = params.get('code');
+        if (isFetching.current) return;
+        if (code) {
+            isFetching.current = true;
+            setState((prev) => ({ ...prev, isRequesting: true }));
+            const submit = async () => {
+                login(await loginUserByGitHub({ code: code }).finally(() => isFetching.current = false));
+            }
+            submit();
+            setState((prev) => ({ ...prev, isRequesting: false }));
+        }
+    }, [params])
 
     return (
         <main>
@@ -91,14 +110,15 @@ const FormSection = () => {
                         brand='Google'
                         isRequesting={state.isRequesting}
                         isGoogleAuthInProgress={state.isGoogleAuthInProgress}
-                        onClick={() => { setState(({ isRequesting: true, isGoogleAuthInProgress: true })); googleLogin() }}
+                        onClick={() => { setState((prev) => ({ ...prev, isRequesting: true, isGoogleAuthInProgress: true })); googleLogin() }}
                     />
                     <Form.OAuthButton
                         src='/svgs/github-icon.svg'
                         alt='GitHub Logo'
                         brand='GitHub'
                         isRequesting={state.isRequesting}
-                        onClick={() => { return }}
+                        isGitHubAuthInProgress={state.isGitHubAuthInProgress}
+                        onClick={() => { setState((prev) => ({ ...prev, isRequesting: true, isGitHubAuthInProgress: true })); gitHubLogin() }}
                     />
                 </Form.Tag>
             </FormProvider>

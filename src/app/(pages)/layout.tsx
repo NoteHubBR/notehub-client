@@ -19,8 +19,9 @@ import { UserStoreProvider } from "@/data/contexts/UserStoreContext";
 import Page from "@/components/template/Page";
 
 const UserProviders = ({ children }: { children: React.ReactNode }) => {
+    const GCI = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
     return (
-        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_CLIENT_ID ?? "vascodagama"}>
+        <GoogleOAuthProvider clientId={GCI ?? 'GCI'}>
             <UserPreferencesProvider>
                 <UserStoreProvider>
                     <UserFollowingProvider>
