@@ -19,10 +19,9 @@ const handleResponse = async (response: Response) => {
         const errors = await response.json();
         throw errors;
     }
-    if (response.headers.get('Content-Length') === '0') {
-        return null;
-    }
-    return response.json();
+    if (response.status === 204) return null;
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
 };
 
 export const useAPI = () => {
@@ -62,6 +61,10 @@ export const useAPI = () => {
         return request('GET', endpoint, undefined, options);
     }, []);
 
-    return { httpPost, httpGet };
+    const httpDelete = useCallback((endpoint: string, options?: HttpOptions) => {
+        return request('DELETE', endpoint, undefined, options);
+    }, []);
+
+    return { httpPost, httpGet, httpDelete };
 
 };

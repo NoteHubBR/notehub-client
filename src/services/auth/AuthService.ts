@@ -3,7 +3,7 @@ import { useAPI, useUser } from "@/data/hooks";
 
 export const AuthService = () => {
 
-    const { httpPost, httpGet } = useAPI();
+    const { httpPost, httpGet, httpDelete } = useAPI();
 
     const { setUser } = useUser();
 
@@ -48,6 +48,21 @@ export const AuthService = () => {
         else throw error;
     }
 
-    return { loginUserByDefault, loginUserByGoogle, loginUserByGitHub, refreshUser, handleExpiredToken }
+    const logoutUser = async (token: string): Promise<void> => {
+        try {
+            return await httpDelete('/auth/logout', { useToken: token, useProgress: true });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    return {
+        loginUserByDefault,
+        loginUserByGoogle,
+        loginUserByGitHub,
+        refreshUser,
+        handleExpiredToken,
+        logoutUser
+    }
 
 }

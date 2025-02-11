@@ -17,7 +17,7 @@ const UserContext = createContext<UserContextProps>({} as UserContextProps);
 export const UserProvider = (props: any) => {
 
     const {
-        authService: { refreshUser },
+        authService: { refreshUser, logoutUser },
         userService: { getUserFollowing },
         noteService: { getUserNotes }
     } = useServices();
@@ -39,7 +39,8 @@ export const UserProvider = (props: any) => {
         return setState(prev => ({ ...prev, token: token, user: user }));
     }, [])
 
-    const clearUser = useCallback(() => {
+    const clearUser = useCallback(async () => {
+        if (state.token) await logoutUser(state.token.access_token);
         setState((prev) => ({ ...prev, token: null, user: null }));
         setStore({ isGuest: true });
         return Cookies.remove('rtoken');
