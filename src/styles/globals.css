@@ -76,7 +76,7 @@ button {
 .scrollbar {
   scrollbar-color: transparent transparent;
   scrollbar-width: thin;
-  transition: scrollbar-color ease-in-out .15s;
+  transition: all ease-in-out .15s;
 }
 
 .scrollbar:hover {
