@@ -49,7 +49,7 @@ export const Navbar = () => {
                             <Image src={'/imgs/logo.png'} width={99} height={0} alt="Logo" className="px-2" />
                         </Link>
                     </div>
-                    <Input type="text" placeholder="Pesquisar" required />
+                    <Input type="text" placeholder="Pesquisar" />
                     <div className="pr-2 flex gap-4 w-fit">
                         <Button tooltip="Criar nova nota"><Link href={'/'}><IconPlus size={27} /></Link></Button>
                         <Button ref={bellButton} tooltip="Ver notificações">
@@ -69,7 +69,7 @@ export const Navbar = () => {
                             <Image src={'/imgs/logo.png'} width={99} height={0} alt="Logo" className="px-2" />
                         </Link>
                     </div>
-                    <Input type="text" placeholder="Pesquisar" required />
+                    <Input type="text" placeholder="Pesquisar" />
                     <div className="pr-2 flex items-center justify-center gap-8 w-fit">
                         <Link href={'/explore'} className="underline-onhover font-semibold hover:text-violet-600 transition-colors">Explorar</Link>
                         <Link href={'/signin'} className="underline-onhover font-semibold hover:text-violet-600 transition-colors">Entrar</Link>
