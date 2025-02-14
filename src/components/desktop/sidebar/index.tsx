@@ -21,7 +21,7 @@ export const Sidebar = (props: React.HTMLAttributes<HTMLDivElement>) => {
 
     const { isLoaded } = useLoading();
 
-    const { store: { isMenuOpen } } = useStore();
+    const { isMenuOpen } = useStore();
 
     const { user } = useUser();
 
@@ -82,6 +82,6 @@ export const Sidebar = (props: React.HTMLAttributes<HTMLDivElement>) => {
         )
     }
 
-    return <>{isMenuOpen ? <Maximized /> : <Minimized />}</>;
+    return <>{isMenuOpen(user) ? <Maximized /> : <Minimized />}</>;
 
 }

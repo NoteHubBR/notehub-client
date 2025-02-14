@@ -22,7 +22,7 @@ export const UserProvider = (props: any) => {
         noteService: { getUserNotes }
     } = useServices();
 
-    const { isStoreReady, store, setStore } = useStore();
+    const { isStoreReady, store, setStore, setActions } = useStore();
     const { clearFollowing, setFollowing } = useFollowing();
     const { clearNotes, setNotes } = useNotes();
 
@@ -36,8 +36,13 @@ export const UserProvider = (props: any) => {
     })
 
     const setUser = useCallback((token: Token | null, user: User | null): void => {
+        const username = user?.username ?? 'Guest';
+        setActions({
+            isMenuOpen: store.actions[username]?.isMenuOpen ?? false,
+            searches: store.actions[username]?.searches ?? []
+        }, username)
         return setState(prev => ({ ...prev, token: token, user: user }));
-    }, [])
+    }, [store.actions, setActions])
 
     const clearUser = useCallback(async () => {
         if (state.token) await logoutUser(state.token.access_token);

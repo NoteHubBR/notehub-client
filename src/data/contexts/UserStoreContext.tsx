@@ -1,11 +1,14 @@
 'use client';
 
 import { createContext, useCallback, useEffect, useState } from "react";
-import { Store, storeData } from "@/core";
+import { Store, storeData, User } from "@/core";
 
 export interface UserStoreProps {
     store: Store;
-    setStore: (data: Partial<Store>) => void;
+    setStore: (data: Partial<Store>, username?: string) => void;
+    setActions: (data: Partial<{ isMenuOpen: boolean, searches: string[] }>, username?: string) => void;
+    isMenuOpen: (user: User | null) => boolean;
+    searches: (user: User | null) => string[];
     isStoreReady: boolean;
 }
 
@@ -17,27 +20,60 @@ export const UserStoreProvider = (props: any) => {
 
     const [isReady, setIsReady] = useState<boolean>(false);
 
-    const setter = useCallback((data: Partial<Store>): void => {
-        const stored: Store = {
-            isFirstTimer: data.isFirstTimer ?? store.isFirstTimer ?? false,
-            isGuest: data.isGuest ?? store.isGuest ?? false,
-            isExpired: data.isExpired ?? store.isExpired ?? false,
-            isMenuOpen: data.isMenuOpen ?? store.isMenuOpen ?? false,
-            searches: data.searches ?? store.searches ?? []
+    const setter = useCallback((data: Partial<Store>, username?: string): void => {
+        const stored: Store = JSON.parse(localStorage.getItem('store') ?? '{}') as Store;
+        const index = username ?? 'Guest';
+        const updated: Store = {
+            ...stored,
+            ...data,
+            actions: {
+                ...stored.actions,
+                [index]: {
+                    ...(stored.actions[index] || { isMenuOpen: false, searches: [] }),
+                    ...data.actions?.[index]
+                }
+            }
         }
-        localStorage.setItem('store', JSON.stringify(stored));
-        return setStore(stored);
-    }, [store])
+        localStorage.setItem('store', JSON.stringify(updated));
+        return setStore(updated);
+    }, [])
+
+    const setActions = useCallback((data: Partial<{ isMenuOpen: boolean, searches: string[] }>, username?: string): void => {
+        return setter({
+            actions: {
+                [username ?? 'Guest']: {
+                    ...store.actions[username ?? 'Guest'],
+                    ...data
+                }
+            }
+        }, username)
+    }, [store.actions, setter])
+
+    const isMenuOpen = (user: User | null): boolean => {
+        return user ? store.actions[user.username].isMenuOpen : false;
+    }
+
+    const searches = (user: User | null): string[] => {
+        return user ? store.actions[user.username].searches : store.actions['Guest'].searches;
+    }
 
     useEffect(() => {
         storeData();
-        const store: Store = JSON.parse(localStorage.getItem('store') ?? '{}');
+        const store: Store = JSON.parse(localStorage.getItem('store') ?? '{}') as Store;
         setStore(store);
         setIsReady(true);
     }, [])
 
     return (
-        <UserStoreContext.Provider value={{ store, setStore: setter, isStoreReady: isReady }}>
+        <UserStoreContext.Provider value={{
+            store,
+            setStore: setter,
+            setActions,
+            isMenuOpen,
+            searches,
+            isStoreReady: isReady
+        }}
+        >
             {props.children}
         </UserStoreContext.Provider>
     )

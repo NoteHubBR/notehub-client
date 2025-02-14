@@ -2,8 +2,12 @@ export default interface Store {
     isFirstTimer: boolean;
     isGuest: boolean;
     isExpired: boolean;
-    isMenuOpen: boolean;
-    searches: string[];
+    actions: Record<
+        string, {
+            isMenuOpen: boolean;
+            searches: string[]
+        }
+    >
 }
 
 export function storeData() {
@@ -12,8 +16,12 @@ export function storeData() {
             isFirstTimer: true,
             isGuest: false,
             isExpired: false,
-            isMenuOpen: false,
-            searches: []
+            actions: {
+                'Guest': {
+                    isMenuOpen: false,
+                    searches: []
+                }
+            }
         }
         localStorage.setItem('store', JSON.stringify(store));
     }

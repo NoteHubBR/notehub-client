@@ -3,11 +3,13 @@ import { InputDropdown } from "../dropdown/contents/InputDropdown";
 import { Search } from "../dropdown/elements/Search";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useStore } from "@/data/hooks";
+import { useStore, useUser } from "@/data/hooks";
 
 export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
 
-    const { store: { searches }, setStore } = useStore();
+    const { searches, setActions } = useStore();
+
+    const { user } = useUser();
 
     const [query, setQuery] = useState<string>('');
 
@@ -19,7 +21,7 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
         e.preventDefault();
         if (!query.trim() || !ref.current) return;
         ref.current.blur();
-        setStore({ searches: [query, ...searches.filter(s => s !== query)] });
+        setActions({ searches: [query, ...searches(user).filter(q => q !== query)] }, user?.username);
         return router.push(`/search?q=${query}`);
     }
 
@@ -41,7 +43,7 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
                 {...props}
             />
             <button
-                aria-label="Buscar"
+                aria-label="Consultar"
                 className="cursor-pointer
                     py-[6px] px-4
                     border-2 border-transparent rounded-e-3xl
@@ -51,13 +53,13 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
             >
                 <IconSearch size={20} className="text-white" />
             </button>
-            {searches.length > 0 &&
+            {searches(user).length > 0 &&
                 <InputDropdown>
-                    {searches.map((search, index) => (
+                    {searches(user).map((query, index) => (
                         <Search
                             key={index}
-                            search={search}
-                            setter={() => { setQuery(search) }}
+                            query={query}
+                            setter={() => { setQuery(query) }}
                             inputRef={ref}
                         />
                     ))}

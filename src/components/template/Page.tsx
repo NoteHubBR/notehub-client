@@ -22,7 +22,7 @@ const Page = (props: PageProps) => {
 
     const { isLoaded } = useLoading();
 
-    const { store: { isMenuOpen } } = useStore();
+    const { isMenuOpen } = useStore();
 
     const { user } = useUser();
 
@@ -31,7 +31,7 @@ const Page = (props: PageProps) => {
     return (
         <div
             className={clsx(
-                shouldUseMargin && onDesktop && user ? `${isMenuOpen ? "pl-[240px]" : "pl-[88px]"}` : '',
+                shouldUseMargin && onDesktop && user ? `${isMenuOpen(user) ? "pl-[240px]" : "pl-[88px]"}` : '',
                 shouldUseMargin && onMobile ? 'pb-[45px]' : '',
                 className
             )}

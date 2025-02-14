@@ -1,17 +1,19 @@
 import { IconCornerRightUp, IconX } from "@tabler/icons-react";
 import { useCallback } from "react";
-import { useStore } from "@/data/hooks";
+import { useStore, useUser } from "@/data/hooks";
 import Link from "next/link";
 
 interface SearchProps extends React.HTMLAttributes<HTMLDivElement> {
-    search: string;
+    query: string;
     setter: (query: string) => void;
     inputRef: React.RefObject<HTMLInputElement>;
 }
 
-export const Search = ({ search, setter, inputRef, ...rest }: SearchProps) => {
+export const Search = ({ query, setter, inputRef, ...rest }: SearchProps) => {
 
-    const { store: { searches }, setStore } = useStore();
+    const { searches, setActions } = useStore();
+
+    const { user } = useUser();
 
     const Button = (props: React.HTMLAttributes<HTMLButtonElement>) => {
         return <button
@@ -24,11 +26,12 @@ export const Search = ({ search, setter, inputRef, ...rest }: SearchProps) => {
     const navigate = (ref: React.RefObject<HTMLInputElement>, query: string): string | void => {
         if (!ref.current) return;
         ref.current.blur();
-        return ref.current.value = query;
+        setActions({ searches: [query, ...searches(user).filter(q => q !== query)] }, user?.username)
+        return setter(query);
     }
 
-    const remove = useCallback((search: string): void => {
-        return setStore({ searches: searches.filter(s => s !== search) });
+    const remove = useCallback((query: string): void => {
+        return setActions({ searches: searches(user).filter(q => q !== query) }, user?.username);
     }, [searches])
 
     return (
@@ -39,16 +42,16 @@ export const Search = ({ search, setter, inputRef, ...rest }: SearchProps) => {
             {...rest}
         >
             <Link
-                href={`/search?q=${search}`}
+                href={`/search?q=${query}`}
                 className="overflow-hidden whitespace-nowrap text-ellipsis w-full pl-3"
-                onClick={() => navigate(inputRef, search)}
+                onClick={() => navigate(inputRef, query)}
             >
-                <span className="text-sm">{search}</span>
+                <span className="text-sm">{query}</span>
             </Link>
-            <Button aria-label="Remover pesquisa" onClick={() => remove(search)}>
+            <Button aria-label="Remover pesquisa" onClick={() => remove(query)}>
                 <IconX size={18} />
             </Button>
-            <Button aria-label="Aplicar pesquisa" onClick={() => setter(search)}>
+            <Button aria-label="Aplicar pesquisa" onClick={() => setter(query)}>
                 <IconCornerRightUp size={18} />
             </Button>
         </div>
