@@ -1,7 +1,7 @@
 'use client';
 
-import { User } from "@/core";
 import { useNotifications, useStore, useUser } from "@/data/hooks";
+import { User } from "@/core";
 import Link from "next/link";
 
 export default function Home() {
@@ -30,7 +30,7 @@ export default function Home() {
   if (!store) return null;
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div className="h-full flex flex-col items-center justify-center gap-4">
       {isFirstTimer &&
         <>
           <div>be welcome</div>

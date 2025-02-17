@@ -1,4 +1,4 @@
-import { IconCornerRightUp, IconX } from "@tabler/icons-react";
+import { IconCornerRightUp, IconHistory, IconX } from "@tabler/icons-react";
 import { useCallback } from "react";
 import { useStore, useUser } from "@/data/hooks";
 import Link from "next/link";
@@ -18,7 +18,7 @@ export const Search = ({ query, setter, inputRef, ...rest }: SearchProps) => {
     const Button = (props: React.HTMLAttributes<HTMLButtonElement>) => {
         return <button
             type="button"
-            className="p-1 rounded-md hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10"
+            className="p-1 rounded-md hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10 transition-colors"
             {...props}
         />
     }
@@ -37,16 +37,16 @@ export const Search = ({ query, setter, inputRef, ...rest }: SearchProps) => {
     return (
         <div
             className="p-1 flex items-center justify-end
-            hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10
-            transition-all"
+            hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10"
             {...rest}
         >
             <Link
                 href={`/search?q=${query}`}
-                className="overflow-hidden whitespace-nowrap text-ellipsis w-full pl-3"
+                className="overflow-hidden w-full pl-3 flex items-center gap-2"
                 onClick={() => navigate(inputRef, query)}
             >
-                <span className="text-sm">{query}</span>
+                <IconHistory size={18} />
+                <span className="overflow-hidden whitespace-nowrap flex-1 text-ellipsis text-sm">{query}</span>
             </Link>
             <Button aria-label="Remover pesquisa" onClick={() => remove(query)}>
                 <IconX size={18} />

@@ -1,4 +1,4 @@
-import { IconSearch } from "@tabler/icons-react";
+import { IconSearch, IconX } from "@tabler/icons-react";
 import { InputDropdown } from "../dropdown/contents/InputDropdown";
 import { Search } from "../dropdown/elements/Search";
 import { useRef, useState } from "react";
@@ -42,8 +42,20 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
                 {...props}
             />
+            {query.length > 0 &&
+                <button
+                    aria-label="Apagar"
+                    type="button"
+                    className="absolute right-16 p-1 rounded-md hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10"
+                    onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
+                    onClick={() => { setQuery(''); }}
+                >
+                    <IconX size={18} />
+                </button>
+            }
             <button
                 aria-label="Consultar"
+                type="submit"
                 className="cursor-pointer
                     py-[6px] px-4
                     border-2 border-transparent rounded-e-3xl

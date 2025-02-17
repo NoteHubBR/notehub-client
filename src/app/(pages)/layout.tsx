@@ -68,7 +68,7 @@ const layout = (props: any) => {
             <Container className="flex flex-col">
                 <Desktop.Navbar />
                 <Mobile.Navbar />
-                <div className="h-full flex">
+                <div className="h-full flex flex-1">
                     <Desktop.Sidebar />
                     <Page className="w-full">
                         {props.children}
