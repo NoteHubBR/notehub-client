@@ -13,28 +13,29 @@ const Search = () => {
     const { user } = useUser();
 
     const [query, setQuery] = useState<string>('');
-    
+
     const inputRef = useRef<HTMLInputElement>(null);
 
     if (!onMobile) return null;
 
     return (
-        <>
+        <section className="w-full h-full dark:bg-neutral-900 bg-neutral-50">
             <Mobile.Header.SearchHeader ref={inputRef} query={query} setQuery={setQuery} />
-            <section
+            <ul
                 className="w-[77%] m-auto py-2"
                 onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
             >
                 {searches(user).map((query, index) => (
-                    <RecentSearch
-                        key={index}
-                        query={query}
-                        setter={() => setQuery(query)}
-                        inputRef={inputRef}
-                    />
+                    <li key={index}>
+                        <RecentSearch
+                            query={query}
+                            setter={() => setQuery(query)}
+                            inputRef={inputRef}
+                        />
+                    </li>
                 ))}
-            </section >
-        </>
+            </ul >
+        </section>
     )
 
 }

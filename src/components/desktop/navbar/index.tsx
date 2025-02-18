@@ -57,7 +57,7 @@ export const Navbar = () => {
                             <Dropdown buttonRef={bellButton}><BellDropdown /></Dropdown>
                         </Button>
                         <Button ref={menuButton}>
-                            <Photo user={user} />
+                            <Photo user={user} size={27} />
                             <Dropdown buttonRef={menuButton} ><MenuDropdown user={user} /></Dropdown>
                         </Button>
                     </div>

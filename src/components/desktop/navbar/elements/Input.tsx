@@ -68,14 +68,17 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
             </button>
             {searches(user).length > 0 &&
                 <InputDropdown>
-                    {searches(user).map((query, index) => (
-                        <Search
-                            key={index}
-                            query={query}
-                            setter={() => { setQuery(query) }}
-                            inputRef={ref}
-                        />
-                    ))}
+                    <ul>
+                        {searches(user).map((query, index) => (
+                            <li key={index}>
+                                <Search
+                                    query={query}
+                                    setter={() => { setQuery(query) }}
+                                    inputRef={ref}
+                                />
+                            </li>
+                        ))}
+                    </ul>
                 </InputDropdown>
             }
         </form>

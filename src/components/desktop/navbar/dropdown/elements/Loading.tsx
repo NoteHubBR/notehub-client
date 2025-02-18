@@ -8,6 +8,7 @@ interface LoadingProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Loading = ({ state, ...rest }: LoadingProps) => {
     return (
         <div
+            role='status'
             className={clsx(
                 state ? '' : 'hidden',
                 'w-full py-2 flex items-center justify-center select-none pointer-events-none'
