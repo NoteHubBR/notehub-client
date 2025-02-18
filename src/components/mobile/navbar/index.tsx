@@ -1,6 +1,6 @@
 'use client'
 
-import { IconCompass, IconHome, IconPlus, IconUserCircle, IconUsers } from "@tabler/icons-react"
+import { IconCompass, IconHome, IconNotes, IconPlus, IconUserCircle } from "@tabler/icons-react"
 import { Item } from "./elements/Item";
 import { List } from "./elements/List";
 import { Photo } from "@/components/Photo";
@@ -42,7 +42,7 @@ export const Navbar = () => {
                 <Item href='/' text="Início"><IconHome size={22} /></Item>
                 <Item href='/signin' text="Explorar"><IconCompass size={22} /></Item>
                 <Item href='/signin'><IconPlus size={22} /></Item>
-                <Item href='/signin' text="Seguindo"><IconUsers size={22} /></Item>
+                <Item href='/signin' text="Notas"><IconNotes size={22} /></Item>
                 <Item href='/signin' text="Você"><IconUserCircle size={22} /></Item>
             </List>
         </Nav>
@@ -54,8 +54,8 @@ export const Navbar = () => {
                 <Item href='/' text="Início"><IconHome size={22} /></Item>
                 <Item href='/explore' text="Explorar"><IconCompass size={22} /></Item>
                 <Item href='/new'><IconPlus size={22} /></Item>
-                <Item href={`/${user.username}/following`} text="Seguindo"><IconUsers size={22} /></Item>
-                <Item href={`/${user.username}`} text="Você"><Photo user={user} /></Item>
+                <Item href={`/${user.username}/notes`} text="Notas"><IconNotes size={22} /></Item>
+                <Item href={`/${user.username}`} text="Você"><Photo user={user} size={22} /></Item>
             </List>
         </Nav>
     )

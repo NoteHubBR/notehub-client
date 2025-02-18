@@ -29,9 +29,10 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
         <form onSubmit={onSubmit} className="relative flex items-center justify-between">
             <input
                 ref={ref}
+                inputMode="search"
                 className="outline-none
                     peer
-                    inlg:w-[333px] w-[444px] py-[6px] px-4
+                    inlg:w-[333px] w-[444px] py-[6px] pl-4 pr-9
                     text-sm dark:text-neutral-50 text-neutral-900
                     border-2 dark:border-neutral-50/15 border-neutral-900/15 rounded-s-3xl
                     dark:bg-neutral-900 bg-neutral-100

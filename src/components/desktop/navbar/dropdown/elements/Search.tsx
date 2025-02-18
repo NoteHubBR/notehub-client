@@ -36,13 +36,13 @@ export const Search = ({ query, setter, inputRef, ...rest }: SearchProps) => {
 
     return (
         <div
-            className="p-1 flex items-center justify-end
+            className="flex items-center justify-end
             hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10"
             {...rest}
         >
             <Link
                 href={`/search?q=${query}`}
-                className="overflow-hidden w-full pl-3 flex items-center gap-2"
+                className="overflow-hidden w-full p-2 pl-3 flex items-center gap-2"
                 onClick={() => navigate(inputRef, query)}
             >
                 <IconHistory size={18} />

@@ -9,7 +9,7 @@ import Image from "next/image";
 
 export const SplashScreen = () => {
 
-    const { onDesktop } = useScreen();
+    const { onDesktop, onMobile } = useScreen();
 
     const { width } = useWidth();
 
@@ -21,8 +21,9 @@ export const SplashScreen = () => {
 
     useEffect(() => {
         if (onDesktop && width <= 768 && shouldRender) setIsLoaded(false)
+        else if (onMobile && width > 768 && shouldRender) setIsLoaded(false)
         else setIsLoaded(true)
-    }, [onDesktop, width, setIsLoaded, shouldRender])
+    }, [onDesktop, onMobile, width, setIsLoaded, shouldRender])
 
     if (isLoaded) return null;
 
