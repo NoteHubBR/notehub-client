@@ -1,11 +1,13 @@
 import { IconBell, IconSearch } from "@tabler/icons-react";
-import { useNotifications, useScreen } from "@/data/hooks";
+import { useNotifications, useScreen, useUser } from "@/data/hooks";
 import Image from "next/image";
 import NextLink, { LinkProps } from "next/link";
 
 export const Header = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
 
     const { onMobile } = useScreen();
+
+    const { user } = useUser();
 
     const { count } = useNotifications();
 
@@ -28,18 +30,20 @@ export const Header = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
             {...props}
         >
             <Image src={'/imgs/logo.png'} width={77} height={0} alt="Logo" className="mr-auto" />
-            <Link href='/m/notifications'>
-                <IconBell />
-                {count > 0 &&
-                    <span className="absolute top-0 left-0 
-                        w-4 h-4 flex items-center justify-center rounded-full 
-                        text-sm text-neutral-50 
-                        bg-violet-600"
-                    >
-                        {count}
-                    </span>
-                }
-            </Link>
+            {user &&
+                <Link href='/m/notifications'>
+                    <IconBell />
+                    {count > 0 &&
+                        <span className="absolute top-0 left-0 
+                    w-4 h-4 flex items-center justify-center rounded-full 
+                    text-sm text-neutral-50 
+                    bg-violet-600"
+                        >
+                            {count}
+                        </span>
+                    }
+                </Link>
+            }
             <Link href={'/m/search'}><IconSearch /></Link>
         </header>
     )
