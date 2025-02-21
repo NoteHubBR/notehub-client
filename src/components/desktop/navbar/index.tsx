@@ -38,7 +38,7 @@ export const Navbar = () => {
         <nav className="sticky top-0
             w-screen max-w-full h-[8vh] inmd:h-[8svh] p-4
             flex items-center justify-between gap-4
-            dark:bg-neutral-900 bg-neutral-50"
+            dark:bg-neutral-950 bg-neutral-50"
         >
             {user
                 ?

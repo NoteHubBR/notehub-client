@@ -80,3 +80,13 @@ export function toRelativeTime(dateString: string): string {
 
     return new Intl.RelativeTimeFormat('pt-BR', { style: 'long', numeric: 'auto' }).format(-value, unit);
 }
+
+export function toSpecificTime(dateStr: string): string {
+    const [day, month, year] = dateStr.split("/");
+    const dayNumber = parseInt(day, 10);
+    const monthNumber = parseInt(month, 10);
+    const fullYear = year.length === 2 ? parseInt("20" + year, 10) : parseInt(year, 10);
+    const monthAbbrs = ["jan.", "fev.", "mar.", "abr.", "mai.", "jun.", "jul.", "ago.", "set.", "out.", "nov.", "dez."];
+    const monthAbbr = monthAbbrs[monthNumber - 1] || "";
+    return `${dayNumber} de ${monthAbbr} de 20${fullYear}`;
+}
