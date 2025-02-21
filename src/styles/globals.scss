@@ -27,3 +27,11 @@
 .underline-onhover {
     @include mixins.underline-onhover;
 }
+
+.following {
+    @include mixins.requesting-follow(#7c3aed);
+}
+
+.unfollowing {
+    @include mixins.requesting-unfollow(#7c3aed);
+}

@@ -130,3 +130,61 @@
     }
 
 }
+
+@mixin requesting-follow($bgColor) {
+    z-index: 1;
+    overflow: hidden;
+    position: relative;
+    color: white;
+
+    &:before {
+        z-index: -1;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background: $bgColor;
+        animation: request-follow 2.5s linear infinite;
+    }
+}
+
+@keyframes request-follow {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+@mixin requesting-unfollow($bgColor) {
+    z-index: 1;
+    overflow: hidden;
+    position: relative;
+    color: white;
+
+    &:before {
+        z-index: -1;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: $bgColor;
+        animation: request-unfollow 2.5s linear infinite;
+    }
+}
+
+@keyframes request-unfollow {
+    0% {
+        width: 100%;
+    }
+
+    100% {
+        width: 0%;
+    }
+}
