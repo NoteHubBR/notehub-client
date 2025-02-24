@@ -1,8 +1,8 @@
+import { LowDetailUser, User } from "@/core";
 import { Photo } from "@/components/Photo"
-import { User } from "@/core";
 import Image from "next/image";
 
-export const Cover = ({ user }: { user: User }) => {
+export const Cover = ({ user }: { user: User | LowDetailUser }) => {
     return (
         <figure className="relative w-full h-full">
             <Image

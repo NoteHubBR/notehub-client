@@ -1,14 +1,28 @@
 'use client';
 
 import { IconAt, IconBalloon, IconBubbleText, IconUsers, IconUsersGroup } from "@tabler/icons-react";
+import { LowDetailUser, toSpecificTime } from "@/core";
 import { Overview } from "./components/overview";
 import { Section } from "./components/Section";
-import { toSpecificTime } from "@/core";
-import { useUser } from "@/data/hooks";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "next/navigation";
+import { useServices } from "@/data/hooks";
 
 const Page = () => {
 
-    const { user } = useUser();
+    const { userService: { getUser } } = useServices();
+
+    const params = useParams<{ username: string }>();
+
+    const [user, setUser] = useState<LowDetailUser | null>();
+
+    const isFetching = useRef<boolean>(false);
+    useEffect(() => {
+        const fetchUser = async () => setUser(await getUser(params.username));
+        if (isFetching.current) return;
+        isFetching.current = true;
+        fetchUser();
+    }, [params.username])
 
     if (!user) return null;
 
@@ -50,13 +64,13 @@ const Page = () => {
                 </Overview.Info>
                 <Overview.Info
                     title="Mensagem"
-                    subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias pariatur quibusdam amet corrupti facere tempora consequatur ipsum, nulla quas aut, aliquam eum ratione ea voluptate nobis dolorum nihil velit distinctio."
+                    subtitle={`${user.message ?? ''}`}
                     subtitleClassName="text-md italic"
                 >
                     <IconBubbleText size={28} />
                 </Overview.Info>
             </ul>
-        </Section >
+        </Section>
     )
 
 }

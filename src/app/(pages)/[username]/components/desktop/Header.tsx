@@ -2,17 +2,19 @@
 
 import { IconBook, IconFlame, IconNotes } from '@tabler/icons-react';
 import { Layout } from '../layout';
+import { LowDetailUser, User } from '@/core';
 import { Section } from '../Section';
+import { useParams } from 'next/navigation';
 import { useUser } from '@/data/hooks';
 
-export const Header = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
+export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React.HTMLAttributes<HTMLHeadingElement>) => {
 
-    const { user } = useUser();
+    const { user: currentUser } = useUser();
 
-    if (!user) return null;
+    const params = useParams<{ username: string }>();
 
-    return (
-        <header {...props}>
+    if (user) return (
+        <header {...rest}>
             <Section className='overflow-hidden mb-4'>
                 <Layout.Cover user={user} />
                 <div className="pr-4 inlg:pr-2 pl-36 inlg:pl-32 flex items-center gap-6 inlg:gap-1 justify-between">
@@ -21,7 +23,10 @@ export const Header = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
                         <Layout.Li href={`/${user.username}/notes`}><IconNotes />Notas</Layout.Li>
                         <Layout.Li href={`/${user.username}/flames`}><IconFlame fill="#7c3aed" color="#7c3aed" />Chamas</Layout.Li>
                     </Layout.Nav>
-                    <Layout.Button isFollowing={true} />
+                    {currentUser && params.username === currentUser.username
+                        ? <Layout.Link href={'/settings/profile'} />
+                        : <Layout.Button user={user} />
+                    }
                 </div>
             </Section>
         </header>

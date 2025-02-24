@@ -88,5 +88,5 @@ export function toSpecificTime(dateStr: string): string {
     const fullYear = year.length === 2 ? parseInt("20" + year, 10) : parseInt(year, 10);
     const monthAbbrs = ["jan.", "fev.", "mar.", "abr.", "mai.", "jun.", "jul.", "ago.", "set.", "out.", "nov.", "dez."];
     const monthAbbr = monthAbbrs[monthNumber - 1] || "";
-    return `${dayNumber} de ${monthAbbr} de 20${fullYear}`;
+    return `${dayNumber} de ${monthAbbr} de ${fullYear}`;
 }

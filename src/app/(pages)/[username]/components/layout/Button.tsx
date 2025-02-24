@@ -1,22 +1,54 @@
 'use client';
 
 import { clsx } from "clsx";
-import { useState } from "react";
+import { LowDetailUser } from "@/core";
+import { useCallback, useState } from "react";
+import { useFollowing, useServices, useUser } from "@/data/hooks";
 
-export const Button = ({ isFollowing, ...rest }: { isFollowing: boolean } & React.HTMLAttributes<HTMLButtonElement>) => {
+interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+    user: LowDetailUser;
+}
+
+export const Button = ({ user, ...rest }: ButtonProps) => {
+
+    const { userService: { followUser, unfollowUser } } = useServices();
+
+    const { token } = useUser();
+    const { users, setNewFollowing, removeFollowing } = useFollowing();
+
+    const isFollowing = users.some((u) => u.username === user.username);
 
     const [hovering, setHovering] = useState<boolean>(false);
-    const toggleHovering = (): void => setHovering(!hovering);
-
     const [requesting, setRequesting] = useState<boolean>(false);
     const [reqFollow, setReqFollow] = useState<boolean>(false);
     const [reqUnfollow, setReqUnfollow] = useState<boolean>(false);
 
-    const toggleStates = (state: string): void => {
-        setRequesting(!requesting);
-        if (state === 'setReqFollow') return setReqFollow(!reqFollow);
-        if (state === 'setReqUnfollow') return setReqUnfollow(!reqUnfollow);
-    }
+    const follow = useCallback(async () => {
+        if (!token) return;
+        setRequesting(true);
+        setReqFollow(true);
+        try {
+            await followUser(token.access_token, user.username);
+            setNewFollowing(user);
+        } finally {
+            setRequesting(false);
+            setReqFollow(false);
+        }
+    }, [token])
+
+    const unfollow = useCallback(async () => {
+        if (!token) return;
+        setRequesting(true);
+        setReqUnfollow(true);
+        try {
+            await unfollowUser(token.access_token, user.username);
+            removeFollowing(user);
+        } finally {
+            setHovering(false);
+            setRequesting(false);
+            setReqUnfollow(false);
+        }
+    }, [token])
 
     const HTMLButton = ({ className, ...rest }: { className?: string } & React.HTMLAttributes<HTMLButtonElement>) => {
         return (
@@ -52,20 +84,20 @@ export const Button = ({ isFollowing, ...rest }: { isFollowing: boolean } & Reac
         <HTMLButton
             aria-label="Desseguir"
             className="dark:bg-rose-600 bg-rose-600 text-white"
-            onMouseLeave={() => toggleHovering()}
-            onClick={() => toggleStates('setReqUnfollow')}
+            onMouseLeave={() => setHovering(false)}
+            onClick={() => unfollow()}
             {...rest}
         >
             Desseguir
-        </HTMLButton>
+        </HTMLButton >
     )
 
     if (isFollowing) return (
         <HTMLButton
             aria-label="Seguindo"
             className="dark:bg-violet-600 bg-violet-600 text-white"
-            onClick={() => toggleStates('setReqUnfollow')}
-            onMouseEnter={() => toggleHovering()}
+            onMouseEnter={() => setHovering(true)}
+            onClick={() => unfollow()}
             {...rest}
         >
             Seguindo
@@ -78,7 +110,7 @@ export const Button = ({ isFollowing, ...rest }: { isFollowing: boolean } & Reac
             className="dark:bg-neutral-50/10 bg-neutral-900/10
             hover:dark:bg-violet-600 hover:bg-violet-600
             hover:text-white dark:text-white text-neutral-700"
-            onClick={() => toggleStates('setReqFollow')}
+            onClick={() => follow()}
             {...rest}
         >
             Seguir
