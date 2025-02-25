@@ -1,11 +1,10 @@
 import { Button } from "./Button";
-import { Field } from "./Field";
 import { Filter, LowDetailNote } from "@/core";
 import { Input } from "./Input";
-import { Target } from "./Target";
+import { Link } from "./Link";
+import { Photo } from "@/components/Photo";
 import { useCallback, useEffect, useState } from "react";
 import { useNotes } from "@/data/hooks";
-import Link from "next/link";
 
 export const NotesScope = () => {
 
@@ -19,8 +18,6 @@ export const NotesScope = () => {
     })
 
     const { list, isSearching } = state;
-
-    useEffect(() => { setState((prev) => ({ ...prev, list: sliced })) }, [notes])
 
     const isExpanded = list.length === notes.length;
 
@@ -40,15 +37,18 @@ export const NotesScope = () => {
         })
     }, [notes, sliced])
 
+    useEffect(() => { setState((prev) => ({ ...prev, list: sliced })) }, [notes]);
+
     return (
         <div className="flex flex-col gap-3">
             <Input type="text" required onChange={findBy} />
             {list.map(note =>
-                <Field key={note.id}>
-                    <Link href={`/${note.user.username}/${note.id}`}>
-                        <Target user={note.user} note={note} />
-                    </Link>
-                </Field>
+                <Link
+                    key={note.id}
+                    href={`/${note.user.username}/${note.id}`}
+                    icon={<Photo user={note.user} />}
+                    text={note.title}
+                />
             )}
             {!isSearching && notes.length > sliced.length &&
                 <Button

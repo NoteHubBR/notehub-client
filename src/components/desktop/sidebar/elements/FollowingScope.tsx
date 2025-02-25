@@ -1,11 +1,11 @@
 import { Button } from "./Button";
-import { Field } from "./Field";
+import { clsx } from "clsx";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
+import { Link } from "./Link";
 import { LowDetailUser } from "@/core";
-import { Target } from "./Target";
-import { useCallback, useState } from "react";
+import { Photo } from "@/components/Photo";
+import { useCallback, useEffect, useState } from "react";
 import { useFollowing } from "@/data/hooks";
-import Link from "next/link";
 
 export const FollowingScope = () => {
 
@@ -21,23 +21,31 @@ export const FollowingScope = () => {
         setListState(isExpanded ? sliced : following);
     }, [following, sliced, isExpanded]);
 
+    useEffect(() => { setListState(sliced) }, [following]);
+
     return (
         <div className="flex flex-col gap-3">
             {listState.map(user => (
-                <Field key={user.username}>
-                    <Link href={`/${user.username}`}>
-                        <Target user={user} />
-                    </Link>
-                </Field>
+                <Link
+                    key={user.username}
+                    href={`/${user.username}`}
+                    icon={<Photo user={user} />}
+                    text={user.username}
+                />
             ))}
             {following.length > sliced.length && (
-                <Field>
+                <div className={clsx(
+                    'cursor-pointer',
+                    'rounded-md',
+                    'hover:dark:bg-neutral-50/15 hover:bg-neutral-900/15',
+                    'transition-colors'
+                )}>
                     <Button
                         icon={isExpanded ? <IconChevronUp size={27} /> : <IconChevronDown size={27} />}
                         text={isExpanded ? "Mostrar menos" : "Mostrar mais"}
                         onClick={toggleList}
                     />
-                </Field>
+                </div>
             )}
         </div>
     );
