@@ -1,17 +1,36 @@
 import { LowDetailUser, User } from "@/core";
-import { Photo } from "@/components/Photo"
+import { Photo } from "@/components/Photo";
+import { PicturePortal } from "@/components/PicturePortal";
+import { Portal } from "@/components/template/Portal";
+import { useRef } from "react";
 import Image from "next/image";
 
 export const Cover = ({ user }: { user: User | LowDetailUser }) => {
+
+    const photoRef = useRef<HTMLImageElement>(null);
+    const upscaledPhotoRef = useRef<HTMLImageElement>(null);
+    const coverRef = useRef<HTMLImageElement>(null);
+    const upscaledCoverRef = useRef<HTMLImageElement>(null);
+
     return (
         <figure className="relative w-full h-full">
             <Image
-                src={'https://marketplace.canva.com/EAEeOQwo3jY/1/0/1600w/canva-purple-mountain-vintage-retro-twitch-banner-1NYTq34QR6I.jpg'}
-                alt="cover" width={1280} height={0}
+                ref={coverRef}
+                src={'https://pbs.twimg.com/profile_banners/1642957463346356237/1685224906/1500x500'}
+                alt="cover" width={1500} height={1500}
+                className="cursor-pointer"
             />
+            <Portal refElement={coverRef} refChild={upscaledCoverRef}>
+                <PicturePortal ref={upscaledCoverRef} user={user} fill />
+            </Portal>
             <Photo
+                ref={photoRef}
                 user={user} size={111}
-                className="absolute bottom-0 left-4 translate-y-1/2" />
+                className="cursor-pointer absolute bottom-0 left-4 translate-y-1/2"
+            />
+            <Portal refElement={photoRef} refChild={upscaledPhotoRef}>
+                <PicturePortal ref={upscaledPhotoRef} user={user} size={369} className="rounded-full" />
+            </Portal>
             <h1
                 className="absolute bottom-2 left-36 inlg:left-32
                 py-1 px-2 rounded-md
@@ -23,4 +42,5 @@ export const Cover = ({ user }: { user: User | LowDetailUser }) => {
             </h1>
         </figure>
     )
-};
+
+}
