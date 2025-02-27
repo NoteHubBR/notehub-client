@@ -13,7 +13,7 @@ interface InfoProps {
 export const Info = ({ children, title, subtitle, subtitleClassName, href }: InfoProps) => {
     return (
         <li className={clsx(
-            'flex items-center gap-3 p-3',
+            'flex items-start gap-3 p-3',
             'border-b dark:border-neutral-700/50 border-neutral-900/10',
             'last:border-none last:col-span-2 insm:last:col-span-1',
         )}>

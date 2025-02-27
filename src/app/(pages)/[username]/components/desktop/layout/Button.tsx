@@ -54,7 +54,7 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
         return (
             <button
                 className={clsx(
-                    'w-28 inlg:w-24 py-2 flex items-center justify-center rounded-3xl text-md inlg:text-sm font-medium',
+                    'w-28 inlg:w-24 h-[40px] py-2 flex items-center justify-center rounded-3xl text-md inlg:text-sm font-medium',
                     'transition-colors duration-100',
                     className
                 )}
@@ -109,7 +109,9 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
             aria-label="Seguir"
             className="dark:bg-neutral-50/10 bg-neutral-900/10
             hover:dark:bg-violet-600 hover:bg-violet-600
-            hover:text-white dark:text-white text-neutral-700"
+            hover:text-white dark:text-white  text-neutral-700 inmd:text-black
+            backdrop-blur-sm
+            drop-shadow-[0_0_1px_rgba(0,0,0,0.33)]"
             onClick={() => follow()}
             {...rest}
         >

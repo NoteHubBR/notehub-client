@@ -11,7 +11,7 @@ interface PicturePortalProps {
 }
 
 export const PicturePortal = forwardRef<HTMLImageElement, PicturePortalProps>(({ user, size, fill, className }, ref) => {
-    if (user.avatar) return (
+    if (user.avatar && user.banner) return (
         <>
             {size &&
                 <figure
@@ -19,7 +19,7 @@ export const PicturePortal = forwardRef<HTMLImageElement, PicturePortalProps>(({
                     style={{ width: size, height: size }}
                     className={clsx(
                         'overflow-hidden',
-                        'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+                        'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
                         className
                     )}
                 >
@@ -34,17 +34,18 @@ export const PicturePortal = forwardRef<HTMLImageElement, PicturePortalProps>(({
             }
             {fill &&
                 <figure
+                    role="banner"
                     ref={ref}
-                    style={{ width: '100vw', aspectRatio: '3/1' }}
                     className={clsx(
                         'overflow-hidden',
-                        'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+                        'w-full aspect-[3/1]',
+                        'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
                         className
                     )}
                 >
 
                     <Image
-                        src={user.banner ?? 'https://pbs.twimg.com/profile_banners/1642957463346356237/1685224906/1500x500'}
+                        src={user.banner}
                         fill
                         alt={`Capa de ${user.username}`}
                         className="w-full h-full object-cover"

@@ -1,7 +1,7 @@
 'use client';
 
 import { IconBook, IconFlame, IconNotes } from '@tabler/icons-react';
-import { Layout } from '../layout';
+import { Layout } from './layout';
 import { LowDetailUser, User } from '@/core';
 import { Section } from '../Section';
 import { useParams } from 'next/navigation';
@@ -16,7 +16,7 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
     if (user) return (
         <header {...rest}>
             <Section className='overflow-hidden mb-4'>
-                <Layout.Cover user={user} />
+                <Layout.Banner user={user} />
                 <div className="pr-4 inlg:pr-2 pl-36 inlg:pl-32 flex items-center gap-6 inlg:gap-1 justify-between">
                     <Layout.Nav>
                         <Layout.Li href={`/${user.username}`}><IconBook />Visão Geral</Layout.Li>

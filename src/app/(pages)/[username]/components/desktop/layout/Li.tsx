@@ -13,7 +13,9 @@ export const Li = ({ children, ...rest }: { children: React.ReactNode } & LinkPr
         <li className={clsx(
             'relative',
             'py-4',
-            onRoute && 'after:pointer-events-none after:absolute after:w-full after:left-0 after:bottom-0 after:border after:border-violet-600'
+            'after:pointer-events-none after:absolute after:w-full after:left-0 after:bottom-0 after:border',
+            onRoute ? ' after:border-violet-600' : 'after:border-transparent',
+            'transition-all'
         )}
         >
             <Link
@@ -21,7 +23,9 @@ export const Li = ({ children, ...rest }: { children: React.ReactNode } & LinkPr
                     'relative whitespace-nowrap',
                     'py-1 px-2 inlg:px-1 rounded-md flex items-center gap-1 inlg:gap-[2px]',
                     'font-semibold text-md inlg:text-sm',
-                    onRoute && 'dark:bg-neutral-50/10 bg-neutral-900/10 text-violet-600',
+                    onRoute
+                        ? 'text-violet-600 dark:bg-neutral-50/10 bg-neutral-900/10'
+                        : 'dark:text-white text-black bg-transparent',
                     'hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10',
                     'transition-colors'
                 )}

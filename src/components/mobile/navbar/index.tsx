@@ -28,7 +28,7 @@ export const Navbar = () => {
                 className="fixed bottom-0
                     w-full h-[45px] px-4
                     border-t dark:border-neutral-50/10 border-neutral-900/10
-                    dark:bg-neutral-900 bg-neutral-50"
+                    dark:bg-neutral-950 bg-neutral-50"
                 {...rest}
             >
                 {children}

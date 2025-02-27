@@ -26,7 +26,7 @@ export const Header = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
 
     return (
         <header
-            className="py-2 px-4 flex items-center justify-end gap-4 dark:bg-neutral-900 bg-neutral-50"
+            className="py-2 px-4 flex items-center justify-end gap-4 dark:bg-neutral-950 bg-neutral-50"
             {...props}
         >
             <Image src={'/imgs/logo.png'} width={77} height={0} alt="Logo" className="mr-auto" />

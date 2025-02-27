@@ -39,14 +39,23 @@ export const Portal = ({ refElement, refChild, children }: PortalProps) => {
         }
     }, [handleClickKeyEsc, handleClickOnRefChild, handleClickOnRefElement, refChild, refElement])
 
+    useEffect(() => {
+        if (isOpen) document.body.classList.add('overflow-hidden');
+        else document.body.classList.remove('overflow-hidden');
+        return () => {
+            document.body.classList.remove('overflow-hidden');
+        }
+    }, [isOpen]);
+
     if (isOpen) return createPortal(
         <section
-            className="absolute top-0 left-0
+            className="z-[999] fixed top-0 left-0
             w-screen max-w-full min-h-screen inmd:min-h-svh
-            bg-[rgba(0,0,0,.9)]"
+            bg-[rgba(0,0,0,.5)] backdrop-blur-md"
         >
             <button
-                className="absolute top-[23px] left-[27px]
+                className="fixed top-[23px] left-[27px]
+                insm:left-1/2 insm:-translate-x-1/2
                 p-1 rounded-full
                 hover:bg-neutral-50/50 transition-colors"
             >

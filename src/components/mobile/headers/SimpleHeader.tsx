@@ -13,7 +13,7 @@ export const SimpleHeader = ({ title, ...rest }: { title: string } & React.HTMLA
     if (!onMobile) return null;
 
     return (
-        <header className="w-full p-2 flex items-center justify-between gap-2" {...rest}>
+        <header className="w-full p-2 flex items-center justify-between gap-2 dark:bg-neutral-950 bg-neutral-50" {...rest}>
             <button
                 aria-label="Voltar"
                 className="p-1 rounded-full
