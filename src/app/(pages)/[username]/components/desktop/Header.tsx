@@ -7,7 +7,12 @@ import { Section } from '../Section';
 import { useParams } from 'next/navigation';
 import { useUser } from '@/data/hooks';
 
-export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React.HTMLAttributes<HTMLHeadingElement>) => {
+interface HeaderProps extends React.HTMLAttributes<HTMLHeadingElement> {
+    user: User | LowDetailUser;
+    history: string[];
+}
+
+export const Header = ({ user, history, ...rest }: HeaderProps) => {
 
     const { user: currentUser } = useUser();
 
@@ -16,7 +21,7 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
     if (user) return (
         <header {...rest}>
             <Section className='overflow-hidden mb-4'>
-                <Layout.Banner user={user} />
+                <Layout.Banner user={user} history={history} />
                 <div className="pr-4 inlg:pr-2 pl-36 inlg:pl-32 flex items-center gap-6 inlg:gap-1 justify-between">
                     <Layout.Nav>
                         <Layout.Li href={`/${user.username}`}><IconBook />Visão Geral</Layout.Li>

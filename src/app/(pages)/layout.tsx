@@ -11,6 +11,7 @@ import { ScreenWidthProvider } from "@/data/contexts/ScreenWidthContext";
 import { SplashScreen } from "@/components/SplashScreen";
 import { ThemeProvider } from "@/data/contexts/ThemeContext";
 import { UserFollowingProvider } from "@/data/contexts/UserFollowingContext";
+import { UserHistoryProvider } from "@/data/contexts/UserHistoryContext";
 import { UserNotesProvider } from "@/data/contexts/UserNotesContext";
 import { UserNotificationsProvider } from "@/data/contexts/UserNotificationsContext";
 import { UserPreferencesProvider } from "@/data/contexts/UserPreferencesContext";
@@ -26,11 +27,13 @@ const UserProviders = ({ children }: { children: React.ReactNode }) => {
                 <UserStoreProvider>
                     <UserFollowingProvider>
                         <UserNotesProvider>
-                            <UserProvider>
-                                <UserNotificationsProvider>
-                                    {children}
-                                </UserNotificationsProvider>
-                            </UserProvider>
+                            <UserHistoryProvider>
+                                <UserProvider>
+                                    <UserNotificationsProvider>
+                                        {children}
+                                    </UserNotificationsProvider>
+                                </UserProvider>
+                            </UserHistoryProvider>
                         </UserNotesProvider>
                     </UserFollowingProvider>
                 </UserStoreProvider>

@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useEffect, useState } from "react";
 import { Token, User, Cookies, shouldUseUserContext } from "@/core";
-import { useFollowing, useLoading, useNotes, useServices, useStore } from "../hooks";
+import { useFollowing, useHistory, useLoading, useNotes, useServices, useStore } from "../hooks";
 import { usePathname } from "next/navigation";
 
 export interface UserContextProps {
@@ -18,11 +18,12 @@ export const UserProvider = (props: any) => {
 
     const {
         authService: { refreshUser, logoutUser },
-        userService: { getUserFollowing },
+        userService: { getUserDisplayNameHistory, getUserFollowing },
         noteService: { getUserNotes }
     } = useServices();
 
     const { isStoreReady, store, setStore, setActions } = useStore();
+    const { clearHistory, setHistory } = useHistory();
     const { clearFollowing, setFollowing } = useFollowing();
     const { clearNotes, setNotes } = useNotes();
 
@@ -63,12 +64,17 @@ export const UserProvider = (props: any) => {
         }
     }
 
-    const clearData = useCallback(async () => { clearFollowing(); clearNotes(); }, [clearFollowing, clearNotes])
+    const clearData = useCallback(async () => {
+        clearHistory();
+        clearFollowing();
+        clearNotes();
+    }, [clearHistory, clearFollowing, clearNotes])
 
     const fetchUserData = async (accessToken: string, username: string): Promise<void> => {
         try {
             await clearData();
-            setFollowing(await getUserFollowing(accessToken, username))
+            setHistory(await getUserDisplayNameHistory(username));
+            setFollowing(await getUserFollowing(accessToken, username));
             setNotes(await getUserNotes(accessToken));
             return;
         } finally {

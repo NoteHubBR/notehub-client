@@ -15,6 +15,7 @@ const createHeaders = (useToken?: string): HeadersInit => {
 };
 
 const handleResponse = async (response: Response) => {
+    if (response.status === 404) throw new Error();
     if (!response.ok) {
         const errors = await response.json();
         throw errors;

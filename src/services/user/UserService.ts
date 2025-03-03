@@ -35,6 +35,14 @@ export const UserService = () => {
         }
     }, [httpGet])
 
+    const getUserDisplayNameHistory = useCallback(async (username: string): Promise<string[]> => {
+        try {
+            return await httpGet(`/users/${username}/display-names`);
+        } catch (error) {
+            throw error;
+        }
+    }, [httpGet])
+
     const followUser = useCallback(async (token: string, username: string): Promise<void> => {
         const endpoint: string = `/users/${username}/follow`;
         try {
@@ -75,6 +83,7 @@ export const UserService = () => {
         createUser,
         activateUser,
         getUser,
+        getUserDisplayNameHistory,
         followUser,
         unfollowUser,
         getUserFollowing,
