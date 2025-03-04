@@ -7,7 +7,7 @@ import { Section } from '../Section';
 import { useParams } from 'next/navigation';
 import { useUser } from '@/data/hooks';
 
-interface HeaderProps extends React.HTMLAttributes<HTMLHeadingElement> {
+interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
     user: User | LowDetailUser;
     history: string[];
 }

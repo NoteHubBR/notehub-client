@@ -8,9 +8,9 @@ import { useStore, useUser } from "@/data/hooks";
 export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
 
     const { searches, setActions } = useStore();
-
     const { user } = useUser();
 
+    const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const [query, setQuery] = useState<string>('');
 
     const ref = useRef<HTMLInputElement>(null);
@@ -25,8 +25,34 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
         return router.push(`/search?q=${query}`);
     }
 
+    const handleBlur = (e: React.FocusEvent<HTMLFormElement>) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+            setIsDropdownOpen(false);
+        }
+    }
+
+    const handleFocus = () => {
+        if (searches(user).length > 0) {
+            setIsDropdownOpen(true);
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setQuery(e.target.value);
+        if (ref.current === document.activeElement) {
+            setIsDropdownOpen(true);
+        }
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            setIsDropdownOpen(false);
+        }
+    };
+
     return (
-        <form onSubmit={onSubmit} className="relative flex items-center justify-between">
+        <form onSubmit={onSubmit} onBlur={handleBlur} className="relative flex items-center justify-between">
             <input
                 ref={ref}
                 inputMode="search"
@@ -40,7 +66,9 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
                     dark:placeholder:text-neutral-100/30
                     transition-colors"
                 value={query}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
+                onFocus={handleFocus}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
                 {...props}
             />
             {query.length > 0 &&
@@ -67,7 +95,7 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
                 <IconSearch size={20} className="text-white" />
             </button>
             {searches(user).length > 0 &&
-                <InputDropdown>
+                <InputDropdown isOpen={isDropdownOpen}>
                     <ul>
                         {searches(user).map((query, index) => (
                             <li key={index}>

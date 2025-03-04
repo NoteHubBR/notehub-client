@@ -35,7 +35,7 @@ export const Navbar = () => {
     if (!shouldRender || !onDesktop || !isLoaded) return null;
 
     return (
-        <nav className="sticky top-0
+        <nav className="sticky top-0 z-[998]
             w-screen max-w-full h-[8vh] inmd:h-[8svh] p-4
             flex items-center justify-between gap-4
             dark:bg-neutral-950 bg-neutral-50"

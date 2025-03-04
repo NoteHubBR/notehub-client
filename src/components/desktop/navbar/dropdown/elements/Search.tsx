@@ -46,7 +46,7 @@ export const Search = ({ query, setter, inputRef, ...rest }: SearchProps) => {
                 onClick={() => navigate(inputRef, query)}
             >
                 <IconHistory size={18} />
-                <span className="overflow-hidden whitespace-nowrap flex-1 text-ellipsis text-sm">{query}</span>
+                <span className="flex-1 text-sm truncate">{query}</span>
             </Link>
             <Button aria-label="Remover pesquisa" onClick={() => remove(query)}>
                 <IconX size={18} />

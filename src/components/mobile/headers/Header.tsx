@@ -3,7 +3,7 @@ import { useNotifications, useScreen, useUser } from "@/data/hooks";
 import Image from "next/image";
 import NextLink, { LinkProps } from "next/link";
 
-export const Header = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
+export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
 
     const { onMobile } = useScreen();
 

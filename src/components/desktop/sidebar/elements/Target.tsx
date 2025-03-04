@@ -15,9 +15,9 @@ export const Target = (props: TargetProps) => {
             <Photo user={user} />
             {note
                 ?
-                <span className="overflow-hidden whitespace-nowrap text-ellipsis text-sm">{note.title}</span>
+                <span className="text-sm truncate">{note.title}</span>
                 :
-                <span className="overflow-hidden whitespace-nowrap text-ellipsis text-sm">{user.username}</span>
+                <span className="text-sm truncate">{user.username}</span>
             }
         </div>
     )

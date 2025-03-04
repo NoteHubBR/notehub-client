@@ -1,25 +1,25 @@
 import { clsx } from "clsx";
-import { useStore, useUser } from "@/data/hooks"
+import { useStore, useUser } from "@/data/hooks";
 
-export const InputDropdown = (props: React.HTMLAttributes<HTMLDivElement>) => {
-
+export const InputDropdown = ({ isOpen, ...rest }: { isOpen: boolean } & React.HTMLAttributes<HTMLDivElement>) => {
     const { searches } = useStore();
     const { user } = useUser();
 
     return (
         <section
             className={clsx(
-                'pointer-events-none peer-focus:pointer-events-auto',
+                'pointer-events-none',
                 'absolute top-[110%]',
-                'max-h-0 peer-focus:max-h-[200px]',
+                isOpen ? 'max-h-[200px] py-1 pointer-events-auto' : 'max-h-0 py-0',
                 searches(user).length > 5 ? 'overflow-y-auto scrollbar' : 'overflow-y-hidden',
-                'w-full p-0 peer-focus:py-1 rounded-lg',
+                'w-full rounded-lg',
                 'dark:bg-neutral-800 bg-neutral-50',
+                'drop-shadow-[0_0_1px_rgba(0,0,0,.33)]',
                 'transition-all'
             )}
-            style={{ filter: 'drop-shadow(0 0 2px rgba(0, 0, 0, .2))' }}
             onMouseDown={(e: React.MouseEvent) => { e.preventDefault() }}
-            {...props}
+            {...rest}
         />
     )
+
 }

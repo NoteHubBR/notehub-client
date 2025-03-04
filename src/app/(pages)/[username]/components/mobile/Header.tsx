@@ -9,7 +9,7 @@ import { useParams } from "next/navigation";
 import { usePref, useUser } from "@/data/hooks";
 import { useRef } from "react";
 
-export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React.HTMLAttributes<HTMLHeadingElement>) => {
+export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React.HTMLAttributes<HTMLElement>) => {
 
     const { pref: { useDarkTheme } } = usePref();
     const { user: currentUser } = useUser();

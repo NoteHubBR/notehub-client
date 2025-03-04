@@ -29,7 +29,7 @@ export const Link = (props: LinkProps) => {
                 : pathname === href || pathname.startsWith(`${href}/`);
 
     const Span = ({ className, ...rest }: { className?: string } & React.HTMLAttributes<HTMLSpanElement>) => {
-        return <span className={`overflow-hidden whitespace-nowrap text-ellipsis text-center ${className}`} {...rest} />
+        return <span className={`text-center truncate ${className}`} {...rest} />
     }
 
     return (
