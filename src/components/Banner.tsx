@@ -9,7 +9,7 @@ interface BannerProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Banner = forwardRef<HTMLImageElement, BannerProps>((props, ref) => {
     const { user, className, ...rest } = props;
-    if (user.banner && user.username) {
+    if (user.username) {
         return (
             <figure
                 role="banner"
@@ -17,7 +17,7 @@ export const Banner = forwardRef<HTMLImageElement, BannerProps>((props, ref) => 
                 className={`overflow-hidden w-full aspect-[3/1] ${className}`} {...rest}
             >
                 <Image
-                    src={user.banner}
+                    src={user.banner ?? '/imgs/banner.png'}
                     fill
                     alt={`Avatar de ${user.username}`}
                 />

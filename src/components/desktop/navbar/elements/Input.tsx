@@ -60,7 +60,7 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
                     peer
                     inlg:w-[333px] w-[444px] py-[6px] pl-4 pr-9
                     text-sm dark:text-neutral-50 text-neutral-900
-                    border-2 dark:border-neutral-50/15 border-neutral-900/15 rounded-s-3xl
+                    border-2 dark:border-neutral-50/10 border-neutral-900/15 rounded-s-3xl
                     dark:bg-neutral-900 bg-neutral-100
                     dark:focus:border-violet-600 focus:border-violet-600
                     dark:placeholder:text-neutral-100/30

@@ -11,7 +11,7 @@ interface PicturePortalProps {
 }
 
 export const PicturePortal = forwardRef<HTMLImageElement, PicturePortalProps>(({ user, size, fill, className }, ref) => {
-    if (user.avatar && user.banner) return (
+    if (user.avatar) return (
         <>
             {size &&
                 <figure
@@ -45,7 +45,7 @@ export const PicturePortal = forwardRef<HTMLImageElement, PicturePortalProps>(({
                 >
 
                     <Image
-                        src={user.banner}
+                        src={user.banner ?? '/imgs/banner.png'}
                         fill
                         alt={`Capa de ${user.username}`}
                         className="w-full h-full object-cover"

@@ -24,14 +24,14 @@ const Page = () => {
         fetchUser();
     }, [params.username])
 
-    if (!user) return null;
+    if (!user) return <Overview.Skeleton/>;
 
     return (
         <Section>
             <header className="py-5 px-8 border-b dark:border-neutral-700/50 border-neutral-900/10">
                 <h2 className="font-semibold text-xl inmd:text-center">Visão Geral</h2>
             </header>
-            <ul className="px-6 insm:px-0 insm:m-auto grid grid-cols-2 insm:grid-cols-1 gap-x-6">
+            <ul className="px-6 insm:px-0 grid grid-cols-2 insm:grid-cols-1 gap-x-6">
                 <Overview.Info
                     href={`/${user.username}/followers`}
                     title={`Seguidores: ${user.followers_count}`}

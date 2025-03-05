@@ -3,10 +3,10 @@
 import { Desktop } from "./desktop";
 import { LowDetailUser, User } from "@/core";
 import { Mobile } from "./mobile";
+import { NotFound } from "./NotFound";
 import { useEffect, useRef, useState } from "react";
 import { useHistory, useScreen, useServices, useUser } from "@/data/hooks";
 import { useParams } from "next/navigation";
-import { NotFound } from "./NotFound";
 
 export const Header = () => {
 
@@ -43,12 +43,14 @@ export const Header = () => {
         init();
     }, [params.username])
 
-    if (notFound) return <NotFound />
+    if (onDesktop && !user) return <Desktop.HeaderSkeleton />;
 
-    if (!user) return null;
+    if (onMobile && !user) return <Mobile.HeaderSkeleton />;
 
-    if (onDesktop) return <Desktop.Header user={user} history={history} />
+    if (notFound) return <NotFound />;
 
-    if (onMobile) return <Mobile.Header user={user} />;
+    if (onDesktop && user) return <Desktop.Header user={user} history={history} />;
+
+    if (onMobile && user) return <Mobile.Header user={user} />;
 
 }

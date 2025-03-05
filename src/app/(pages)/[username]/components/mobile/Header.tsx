@@ -23,7 +23,7 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
 
     return (
         <header
-            style={{ backgroundImage: `url('${user.banner}')` }}
+            style={{ backgroundImage: `url('${user.banner ?? '/imgs/banner.png'}')` }}
             className="relative py-5 bg-cover bg-no-repeat bg-center"
             {...rest}
         >
@@ -55,4 +55,5 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
             </section>
         </header>
     )
+    
 }
