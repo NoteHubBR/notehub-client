@@ -1,7 +1,7 @@
 'use client';
 
 import { IconAt, IconBalloon, IconBubbleText, IconUsers, IconUsersGroup } from "@tabler/icons-react";
-import { LowDetailUser, toSpecificTime } from "@/core";
+import { LowDetailUser, toSpecificTime, User } from "@/core";
 import { Overview } from "./components/overview";
 import { Section } from "./components/Section";
 import { useEffect, useRef, useState } from "react";
@@ -14,17 +14,31 @@ const Page = () => {
 
     const params = useParams<{ username: string }>();
 
-    const [user, setUser] = useState<LowDetailUser | null>();
+    const [notFound, setNotFound] = useState<boolean>(false);
+    const [user, setUser] = useState<User | LowDetailUser | null>();
 
     const isFetching = useRef<boolean>(false);
     useEffect(() => {
-        const fetchUser = async () => setUser(await getUser(params.username));
-        if (isFetching.current) return;
-        isFetching.current = true;
-        fetchUser();
+        const init = async () => {
+            if (isFetching.current) return;
+            if (user && params.username === user.username) {
+                setUser(user);
+                return;
+            }
+            isFetching.current = true;
+            try {
+                setUser(await getUser(params.username))
+                return;
+            } catch {
+                return setNotFound(true);
+            }
+        }
+        init();
     }, [params.username])
 
-    if (!user) return <Overview.Skeleton/>;
+    if (notFound) return null;
+
+    if (!user) return <Overview.Skeleton />;
 
     return (
         <Section>

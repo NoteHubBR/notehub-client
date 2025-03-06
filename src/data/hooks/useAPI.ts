@@ -15,14 +15,23 @@ const createHeaders = (useToken?: string): HeadersInit => {
 };
 
 const handleResponse = async (response: Response) => {
-    if (response.status === 404) throw new Error();
-    if (!response.ok) {
-        const errors = await response.json();
-        throw errors;
-    }
     if (response.status === 204) return null;
+
     const text = await response.text();
-    return text ? JSON.parse(text) : null;
+    let data;
+    try {
+        data = text ? JSON.parse(text) : null;
+    } catch {
+        data = text;
+    }
+    if (!response.ok) {
+        if (response.status === 404) {
+            throw data || new Error();
+        }
+        throw data;
+    }
+
+    return data;
 };
 
 export const useAPI = () => {

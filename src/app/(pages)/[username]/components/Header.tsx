@@ -43,11 +43,11 @@ export const Header = () => {
         init();
     }, [params.username])
 
+    if (notFound) return <NotFound />;
+
     if (onDesktop && !user) return <Desktop.HeaderSkeleton />;
 
     if (onMobile && !user) return <Mobile.HeaderSkeleton />;
-
-    if (notFound) return <NotFound />;
 
     if (onDesktop && user) return <Desktop.Header user={user} history={history} />;
 
