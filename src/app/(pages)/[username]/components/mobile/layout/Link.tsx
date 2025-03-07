@@ -1,8 +1,38 @@
-import NextLink, { LinkProps } from 'next/link';
+// Futuramente será aplicada a técnica "Client-Side Routing" ou "Modal Routing", este é o motivo do componente se chamar Link
+// import { forwardRef } from 'react';
+// import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 
-export const Link = ({ children, ...rest }: { children: React.ReactNode } & LinkProps) => {
+// interface LinkProps extends NextLinkProps {
+//     children: React.ReactNode;
+// }
+
+// export const Link = forwardRef<HTMLAnchorElement, LinkProps>(({ children, ...rest }, ref) => {
+//     return (
+//         <NextLink
+//             ref={ref}
+//             aria-label="Editar"
+//             className="p-2 rounded-full
+//             dark:text-white text-black
+//             dark:bg-black bg-white
+//             drop-shadow-[0_0_1px_rgba(0,0,0,0.33)]"
+//             {...rest}
+//         >
+//             {children}
+//         </NextLink>
+//     )
+// })
+// Link.displayName = 'Link';
+
+import { forwardRef } from "react";
+
+interface LinkProps {
+    children: React.ReactNode;
+}
+
+export const Link = forwardRef<HTMLButtonElement, LinkProps>(({ children, ...rest }, ref) => {
     return (
-        <NextLink
+        <button
+            ref={ref}
             aria-label="Editar"
             className="p-2 rounded-full
             dark:text-white text-black
@@ -11,6 +41,7 @@ export const Link = ({ children, ...rest }: { children: React.ReactNode } & Link
             {...rest}
         >
             {children}
-        </NextLink>
+        </button>
     )
-}
+})
+Link.displayName = 'Link';

@@ -1,10 +1,13 @@
 'use client';
 
+import { Form } from '@/components/forms/update';
 import { IconBook, IconFlame, IconNotes } from '@tabler/icons-react';
 import { Layout } from './layout';
 import { LowDetailUser, User } from '@/core';
+import { Portal } from '@/components/template/Portal';
 import { Section } from '../Section';
 import { useParams } from 'next/navigation';
+import { useRef } from 'react';
 import { useUser } from '@/data/hooks';
 
 interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
@@ -18,6 +21,9 @@ export const Header = ({ user, history, ...rest }: HeaderProps) => {
 
     const params = useParams<{ username: string }>();
 
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    const formRef = useRef<HTMLFormElement>(null);
+
     if (user) return (
         <header {...rest}>
             <Section className='overflow-hidden mb-4'>
@@ -29,7 +35,13 @@ export const Header = ({ user, history, ...rest }: HeaderProps) => {
                         <Layout.Li href={`/${user.username}/flames`}><IconFlame fill="#7c3aed" color="#7c3aed" />Chamas</Layout.Li>
                     </Layout.Nav>
                     {currentUser && params.username === currentUser.username
-                        ? <Layout.Link href={'/settings/profile'} />
+                        ?
+                        <>
+                            <Layout.Link ref={buttonRef}>Editar</Layout.Link>
+                            <Portal refElement={buttonRef} refChild={formRef}>
+                                <Form ref={formRef} />
+                            </Portal>
+                        </>
                         : <Layout.Button user={user} />
                     }
                 </div>

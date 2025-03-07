@@ -2,7 +2,7 @@
 
 import { Container } from '@/components/template/Container';
 import { Cookies, handleFieldErrors, Token, User } from '@/core';
-import { Form } from '@/components/form';
+import { Form } from '@/components/forms/auth';
 import { FormProvider, useForm } from 'react-hook-form';
 import { IconAt } from '@tabler/icons-react';
 import { LoginUserFormData, loginUserFormSchema } from '@/core/schemas/user/LoginUser';

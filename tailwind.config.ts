@@ -28,7 +28,41 @@ const config: Config = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }: { addUtilities: any }) {
+      const newUtilities = {
+        '.center': {
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)'
+        },
+        '.top-mid': {
+          position: 'absolute',
+          top: '0',
+          transform: 'translateY(-50%)'
+        },
+        '.top-mid-center': {
+          position: 'absolute',
+          top: '0',
+          left: '50%',
+          transform: 'translate(-50%, -50%)'
+        },
+        '.bot-mid': {
+          position: 'absolute',
+          botttom: '0',
+          transform: 'translateY(-50%)'
+        },
+        '.bot-mid-center': {
+          position: 'absolute',
+          bottom: '0',
+          left: '50%',
+          transform: 'translate(-50%, 50%)'
+        },
+      };
+      addUtilities(newUtilities);
+    }
+  ],
   darkMode: "class"
 };
 export default config;

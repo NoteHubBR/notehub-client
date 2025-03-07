@@ -14,7 +14,7 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
     const upscaledBannerRef = useRef<HTMLImageElement>(null);
 
     return (
-        <figure className="relative w-full h-full">
+        <div className="relative w-full h-full">
             <Cover
                 ref={bannerRef}
                 user={user}
@@ -23,7 +23,7 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
                 after:bg-[rgba(0,0,0,.15)] after:opacity-0
                 hover:after:opacity-100 after:transition-opacity"
             />
-            <Portal refElement={bannerRef} refChild={upscaledBannerRef}>
+            <Portal refElement={bannerRef} refChild={upscaledBannerRef} useDefaultCloseButton>
                 <PicturePortal ref={upscaledBannerRef} user={user} fill />
             </Portal>
             <Photo
@@ -36,11 +36,11 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
                 after:bg-[rgba(0,0,0,.15)] after:opacity-0
                 hover:after:opacity-100 after:transition-opacity"
             />
-            <Portal refElement={photoRef} refChild={upscaledPhotoRef}>
+            <Portal refElement={photoRef} refChild={upscaledPhotoRef} useDefaultCloseButton>
                 <PicturePortal ref={upscaledPhotoRef} user={user} size={369} className="rounded-full" />
             </Portal>
             <Title displayName={user.display_name} history={history} />
-        </figure>
+        </div>
     )
 
 }

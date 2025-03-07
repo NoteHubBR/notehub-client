@@ -8,6 +8,7 @@ import { Portal } from "@/components/template/Portal";
 import { useParams } from "next/navigation";
 import { usePref, useUser } from "@/data/hooks";
 import { useRef } from "react";
+import { Form } from "@/components/forms/update";
 
 export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React.HTMLAttributes<HTMLElement>) => {
 
@@ -18,6 +19,8 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
 
     const photoRef = useRef<HTMLImageElement>(null);
     const upscaledPhotoRef = useRef<HTMLImageElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    const formRef = useRef<HTMLFormElement>(null);
 
     const isCurrentUserProfile = currentUser && currentUser.username === params.username;
 
@@ -35,15 +38,20 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
             />
             <section className="relative z-10 flex flex-col items-center gap-3 ">
                 <Photo ref={photoRef} user={user} size={111} className="cursor-pointer drop-shadow-[0_0_1px_rgba(0,0,0,0.33)]" />
-                <Portal refElement={photoRef} refChild={upscaledPhotoRef}>
+                <Portal refElement={photoRef} refChild={upscaledPhotoRef} useDefaultCloseButton>
                     <PicturePortal ref={upscaledPhotoRef} user={user} size={270} className="rounded-full" />
                 </Portal>
                 <div className="w-full px-3 overflow-hidden flex items-center justify-center gap-3">
                     <Layout.Title>{user.display_name}</Layout.Title>
                     {isCurrentUserProfile &&
-                        <Layout.Link href='/settings/profile'>
-                            <IconEdit size={20} />
-                        </Layout.Link>
+                        <>
+                            <Layout.Link ref={buttonRef}>
+                                <IconEdit size={20} />
+                            </Layout.Link>
+                            <Portal refElement={buttonRef} refChild={formRef}>
+                                <Form ref={formRef} />
+                            </Portal>
+                        </>
                     }
                 </div>
                 {!isCurrentUserProfile && <Button user={user} />}
@@ -55,5 +63,5 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
             </section>
         </header>
     )
-    
+
 }

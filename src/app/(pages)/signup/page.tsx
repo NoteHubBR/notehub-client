@@ -2,7 +2,7 @@
 
 import { Container } from "@/components/template/Container";
 import { CreateUserFormData, createUserFormSchema, handleFieldErrors } from "@/core";
-import { Form } from "@/components/form";
+import { Form } from "@/components/forms/auth";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconMail, IconAt, IconSignature } from "@tabler/icons-react";
 import { TsParticles } from "@/components/TsParticles";

@@ -17,18 +17,13 @@ export const PicturePortal = forwardRef<HTMLImageElement, PicturePortalProps>(({
                 <figure
                     ref={ref}
                     style={{ width: size, height: size }}
-                    className={clsx(
-                        'overflow-hidden',
-                        'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
-                        className
-                    )}
+                    className={`overflow-hidden m-auto ${className}`}
                 >
                     <Image
                         src={user.avatar}
+                        alt={`Avatar de ${user.username}`}
                         width={size}
                         height={size}
-                        alt={`Avatar de ${user.username}`}
-                        className="w-full h-full object-cover"
                     />
                 </figure>
             }
@@ -38,17 +33,15 @@ export const PicturePortal = forwardRef<HTMLImageElement, PicturePortalProps>(({
                     ref={ref}
                     className={clsx(
                         'overflow-hidden',
-                        'w-full aspect-[3/1]',
-                        'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+                        'aspect-[3/1]',
                         className
                     )}
                 >
 
                     <Image
                         src={user.banner ?? '/imgs/banner.png'}
-                        fill
                         alt={`Capa de ${user.username}`}
-                        className="w-full h-full object-cover"
+                        fill
                     />
                 </figure>
             }
