@@ -1,21 +1,40 @@
-import { IconChevronDown, IconWorld } from '@tabler/icons-react';
+import { clsx } from "clsx";
+import { IconChevronDown } from "@tabler/icons-react";
 
-export const Select = (props: React.HTMLAttributes<HTMLDivElement>) => {
+interface SelectProps extends React.HTMLAttributes<HTMLDivElement> {
+    icon: React.ReactNode;
+    title: string;
+    description?: string;
+    isMenuOpen: boolean;
+    children: React.ReactNode
+}
+
+export const Select = ({ icon, title, description, isMenuOpen, children, ...rest }: SelectProps) => {
     return (
-        <div className="w-full px-4 flex items-center gap-3" {...props}>
-            <h2 className="dark:text-neutral-400 text-neutral-600">Perfil</h2>
-            <button
-                type="button"
-                className="w-fit p-1 rounded border border-neutral-700/70 flex items-center gap-3
-                hover:dark:bg-neutral-900 hover:bg-neutral-100 transition-colors"
-            >
-                <IconWorld size={27} className="dark:text-neutral-400 text-neutral-600" />
-                <div className="text-start flex flex-col">
-                    <span className="font-medium text-sm dark:text-neutral-400 text-neutral-600">Público</span>
-                    <span className="font-medium text-xs dark:text-neutral-400 text-neutral-600">Todos podem ver</span>
-                </div>
-                <IconChevronDown size={20} className="dark:text-neutral-400 text-neutral-600" />
-            </button>
+        <div
+            className={clsx(
+                'z-[999] relative w-[190px] insm:w-fit p-1',
+                'rounded',
+                'flex items-center gap-3',
+                'bg-violet-600',
+                'hover:!bg-indigo-600',
+                'drop-shadow-[0_0_1px_rgba(0,0,0,.33)]',
+                'transition-all'
+            )}
+            {...rest}
+        >
+            <figure className="text-white">
+                {icon}
+            </figure>
+            <div className="flex-1 text-start flex flex-col">
+                <span className="font-medium text-sm text-white">{title}</span>
+                <span className="insm:hidden font-medium text-xs text-white">{description} </span>
+            </div>
+            <IconChevronDown
+                size={20}
+                className={`text-white ${isMenuOpen ? 'rotate-180' : 'rotate-0'} transition-all`}
+            />
+            {children}
         </div>
     )
 }

@@ -23,6 +23,7 @@ export const Header = ({ user, history, ...rest }: HeaderProps) => {
 
     const buttonRef = useRef<HTMLButtonElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
+    const closeFormButtonRef = useRef<HTMLButtonElement>(null);
 
     if (user) return (
         <header {...rest}>
@@ -38,8 +39,8 @@ export const Header = ({ user, history, ...rest }: HeaderProps) => {
                         ?
                         <>
                             <Layout.Link ref={buttonRef}>Editar</Layout.Link>
-                            <Portal refElement={buttonRef} refChild={formRef}>
-                                <Form ref={formRef} />
+                            <Portal refElement={buttonRef} refChild={formRef} refChildCloseButton={closeFormButtonRef}>
+                                <Form ref={formRef} headerRef={closeFormButtonRef} />
                             </Portal>
                         </>
                         : <Layout.Button user={user} />

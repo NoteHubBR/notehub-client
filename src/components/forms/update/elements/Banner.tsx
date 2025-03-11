@@ -9,7 +9,7 @@ interface BannerProps extends React.HTMLAttributes<HTMLImageElement> {
 
 export const Banner = ({ user, children, ...props }: BannerProps) => {
     return (
-        <div className="select-none relative mb-12">
+        <div className="select-none relative">
             <GlobalBanner user={user} {...props} />
             <button type="button" className="center rounded-full p-2 bg-[rgba(0,0,0,.5)] backdrop-blur">
                 <IconCameraPlus color="white" />

@@ -21,6 +21,7 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
     const upscaledPhotoRef = useRef<HTMLImageElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
+    const closeFormButtonRef = useRef<HTMLButtonElement>(null);
 
     const isCurrentUserProfile = currentUser && currentUser.username === params.username;
 
@@ -48,8 +49,8 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
                             <Layout.Link ref={buttonRef}>
                                 <IconEdit size={20} />
                             </Layout.Link>
-                            <Portal refElement={buttonRef} refChild={formRef}>
-                                <Form ref={formRef} />
+                            <Portal refElement={buttonRef} refChild={formRef} refChildCloseButton={closeFormButtonRef}>
+                                <Form ref={formRef} headerRef={closeFormButtonRef} />
                             </Portal>
                         </>
                     }

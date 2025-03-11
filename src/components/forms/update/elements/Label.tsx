@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 
-export const Label = ({ className, ...rest }: { className?: string } & React.HTMLAttributes<HTMLLabelElement>) => {
+export const Label = ({ className, ...rest }: { className?: string } & React.LabelHTMLAttributes<HTMLLabelElement>) => {
     return (
         <label
             className={clsx(
