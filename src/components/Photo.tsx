@@ -3,14 +3,15 @@ import { User } from "@/core";
 import Image from "next/image";
 
 interface PhotoProps extends React.HTMLAttributes<HTMLDivElement> {
+    src?: string;
     user: Partial<User>;
     size?: number;
     className?: string;
 }
 
 export const Photo = forwardRef<HTMLImageElement, PhotoProps>((props, ref) => {
-    const { user, size = 30, className, ...rest } = props;
-    if (user.avatar && user.username) {
+    const { src, user, size = 30, className, ...rest } = props;
+    if (user.username) {
         return (
             <figure
                 ref={ref}
@@ -18,16 +19,15 @@ export const Photo = forwardRef<HTMLImageElement, PhotoProps>((props, ref) => {
                 className={`overflow-hidden flex-none rounded-full ${className}`} {...rest}
             >
                 <Image
-                    src={user.avatar}
+                    src={src ?? user.avatar ?? '/imgs/avatar.png'}
                     width={size}
                     height={size}
                     alt={`Avatar de ${user.username}`}
                     className="w-full h-full object-cover dark:bg-neutral-950 bg-neutral-50"
                 />
             </figure>
-        );
+        )
     }
-    return null;
 })
 
 Photo.displayName = 'Photo';

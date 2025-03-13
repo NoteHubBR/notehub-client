@@ -8,10 +8,10 @@ import { useRef } from "react";
 
 export const Banner = ({ user, history }: { user: User | LowDetailUser, history: string[] }) => {
 
-    const photoRef = useRef<HTMLImageElement>(null);
-    const upscaledPhotoRef = useRef<HTMLImageElement>(null);
     const bannerRef = useRef<HTMLImageElement>(null);
     const upscaledBannerRef = useRef<HTMLImageElement>(null);
+    const photoRef = useRef<HTMLImageElement>(null);
+    const upscaledPhotoRef = useRef<HTMLImageElement>(null);
 
     return (
         <div className="relative w-full h-full">
@@ -23,7 +23,7 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
                 after:bg-[rgba(0,0,0,.15)] after:opacity-0
                 hover:after:opacity-100 after:transition-opacity"
             />
-            <Portal refElement={bannerRef} refChild={upscaledBannerRef} useDefaultCloseButton>
+            <Portal triggerRef={bannerRef} childRef={upscaledBannerRef} useDefaultClose>
                 <PicturePortal ref={upscaledBannerRef} user={user} fill />
             </Portal>
             <Photo
@@ -36,7 +36,7 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
                 after:bg-[rgba(0,0,0,.15)] after:opacity-0
                 hover:after:opacity-100 after:transition-opacity"
             />
-            <Portal refElement={photoRef} refChild={upscaledPhotoRef} useDefaultCloseButton>
+            <Portal triggerRef={photoRef} childRef={upscaledPhotoRef} useDefaultClose>
                 <PicturePortal ref={upscaledPhotoRef} user={user} size={369} className="rounded-full" />
             </Portal>
             <Title displayName={user.display_name} history={history} />

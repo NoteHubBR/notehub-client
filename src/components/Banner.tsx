@@ -3,12 +3,13 @@ import { User } from "@/core";
 import Image from "next/image";
 
 interface BannerProps extends React.HTMLAttributes<HTMLDivElement> {
+    src?: string;
     user: Partial<User>;
     className?: string;
 }
 
 export const Banner = forwardRef<HTMLImageElement, BannerProps>((props, ref) => {
-    const { user, className, ...rest } = props;
+    const { src, user, className, ...rest } = props;
     if (user.username) {
         return (
             <figure
@@ -17,14 +18,13 @@ export const Banner = forwardRef<HTMLImageElement, BannerProps>((props, ref) => 
                 className={`overflow-hidden w-full aspect-[3/1] ${className}`} {...rest}
             >
                 <Image
-                    src={user.banner ?? '/imgs/banner.png'}
+                    src={src ?? user.banner ?? '/imgs/banner.png'}
                     fill
                     alt={`Avatar de ${user.username}`}
                 />
             </figure>
-        );
+        )
     }
-    return null;
 })
 
 Banner.displayName = 'Banner';

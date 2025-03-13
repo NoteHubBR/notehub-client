@@ -2,14 +2,15 @@ import { EditUserFormData, editUserFormSchema } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { forwardRef } from "react";
+import { IconX } from "@tabler/icons-react";
 import { useUser } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
-    headerRef?: React.RefObject<HTMLButtonElement>;
+    closeRef?: React.RefObject<HTMLButtonElement>;
 }
 
-export const Form = forwardRef<HTMLFormElement, FormProps>(({ headerRef, ...rest }, ref) => {
+export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, ...rest }, ref) => {
 
     const { user } = useUser();
 
@@ -34,7 +35,15 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ headerRef, ...rest
                 dark:bg-black bg-white"
                 {...rest}
             >
-                <Element.Header ref={headerRef} />
+                <Element.Header
+                    ref={closeRef}
+                    aria-label="Salvar"
+                    type="submit"
+                    icon={<IconX size={20} />}
+                    title="Editar perfil"
+                >
+                    Salvar
+                </Element.Header>
                 <Element.Main>
                     <Element.Banner user={user}>
                         <Element.Avatar user={user} />

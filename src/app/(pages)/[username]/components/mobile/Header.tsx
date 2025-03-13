@@ -1,4 +1,5 @@
 import { Button } from "../desktop/layout/Button";
+import { Form } from "@/components/forms/update";
 import { IconBook, IconEdit, IconFlame, IconNotes } from "@tabler/icons-react";
 import { Layout } from "./layout";
 import { LowDetailUser, User } from "@/core";
@@ -8,7 +9,6 @@ import { Portal } from "@/components/template/Portal";
 import { useParams } from "next/navigation";
 import { usePref, useUser } from "@/data/hooks";
 import { useRef } from "react";
-import { Form } from "@/components/forms/update";
 
 export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React.HTMLAttributes<HTMLElement>) => {
 
@@ -19,9 +19,9 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
 
     const photoRef = useRef<HTMLImageElement>(null);
     const upscaledPhotoRef = useRef<HTMLImageElement>(null);
-    const buttonRef = useRef<HTMLButtonElement>(null);
-    const formRef = useRef<HTMLFormElement>(null);
-    const closeFormButtonRef = useRef<HTMLButtonElement>(null);
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const childRef = useRef<HTMLFormElement>(null);
+    const closeRef = useRef<HTMLButtonElement>(null);
 
     const isCurrentUserProfile = currentUser && currentUser.username === params.username;
 
@@ -39,18 +39,18 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
             />
             <section className="relative z-10 flex flex-col items-center gap-3 ">
                 <Photo ref={photoRef} user={user} size={111} className="cursor-pointer drop-shadow-[0_0_1px_rgba(0,0,0,0.33)]" />
-                <Portal refElement={photoRef} refChild={upscaledPhotoRef} useDefaultCloseButton>
+                <Portal triggerRef={photoRef} childRef={upscaledPhotoRef} useDefaultClose>
                     <PicturePortal ref={upscaledPhotoRef} user={user} size={270} className="rounded-full" />
                 </Portal>
                 <div className="w-full px-3 overflow-hidden flex items-center justify-center gap-3">
                     <Layout.Title>{user.display_name}</Layout.Title>
                     {isCurrentUserProfile &&
                         <>
-                            <Layout.Link ref={buttonRef}>
+                            <Layout.Link ref={triggerRef}>
                                 <IconEdit size={20} />
                             </Layout.Link>
-                            <Portal refElement={buttonRef} refChild={formRef} refChildCloseButton={closeFormButtonRef}>
-                                <Form ref={formRef} headerRef={closeFormButtonRef} />
+                            <Portal triggerRef={triggerRef} childRef={childRef} closeRef={closeRef}>
+                                <Form ref={childRef} closeRef={closeRef} />
                             </Portal>
                         </>
                     }

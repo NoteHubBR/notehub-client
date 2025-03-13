@@ -9,7 +9,7 @@ interface AvatarProps extends React.HTMLAttributes<HTMLImageElement> {
 export const Avatar = ({ user, ...props }: AvatarProps) => {
     return (
         <div className="select-none bot-mid left-4 drop-shadow-[0_0_1px_rgba(0,0,0,0.33)]">
-            <Photo user={user} size={111} {...props} />
+            <Photo src={user.avatar} user={user} size={111} {...props} />
             <button type="button" className="center rounded-full p-2 bg-[rgba(0,0,0,.5)] backdrop-blur">
                 <IconCameraPlus color="white" />
             </button>

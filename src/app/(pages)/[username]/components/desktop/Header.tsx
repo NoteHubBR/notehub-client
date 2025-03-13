@@ -21,9 +21,9 @@ export const Header = ({ user, history, ...rest }: HeaderProps) => {
 
     const params = useParams<{ username: string }>();
 
-    const buttonRef = useRef<HTMLButtonElement>(null);
-    const formRef = useRef<HTMLFormElement>(null);
-    const closeFormButtonRef = useRef<HTMLButtonElement>(null);
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const childRef = useRef<HTMLFormElement>(null);
+    const closeRef = useRef<HTMLButtonElement>(null);
 
     if (user) return (
         <header {...rest}>
@@ -38,9 +38,9 @@ export const Header = ({ user, history, ...rest }: HeaderProps) => {
                     {currentUser && params.username === currentUser.username
                         ?
                         <>
-                            <Layout.Link ref={buttonRef}>Editar</Layout.Link>
-                            <Portal refElement={buttonRef} refChild={formRef} refChildCloseButton={closeFormButtonRef}>
-                                <Form ref={formRef} headerRef={closeFormButtonRef} />
+                            <Layout.Link ref={triggerRef}>Editar</Layout.Link>
+                            <Portal triggerRef={triggerRef} childRef={childRef} closeRef={closeRef}>
+                                <Form ref={childRef} closeRef={closeRef} />
                             </Portal>
                         </>
                         : <Layout.Button user={user} />

@@ -13,7 +13,7 @@ export const Select = ({ icon, title, description, isMenuOpen, children, ...rest
     return (
         <div
             className={clsx(
-                'z-[999] relative w-[190px] insm:w-fit p-1',
+                'z-[998] relative w-[190px] insm:w-fit p-1',
                 'rounded',
                 'flex items-center gap-3',
                 'bg-violet-600',

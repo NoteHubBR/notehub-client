@@ -2,51 +2,54 @@ import { createPortal } from "react-dom";
 import { IconX } from "@tabler/icons-react";
 import { useCallback, useEffect, useState } from "react";
 
-interface PortalProps {
-    refElement: React.RefObject<HTMLElement>;
-    refChild: React.RefObject<HTMLElement>;
-    refChildCloseButton?: React.RefObject<HTMLButtonElement>;
-    useDefaultCloseButton?: boolean;
-    children: React.ReactNode;
+interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
+    triggerRef: React.RefObject<HTMLElement>;
+    childRef: React.RefObject<HTMLElement>;
+    closeRef?: React.RefObject<HTMLButtonElement>;
+    useDefaultClose?: boolean;
 }
 
-export const Portal = ({ refElement, refChild, children, refChildCloseButton, useDefaultCloseButton }: PortalProps) => {
+export const Portal = ({ triggerRef, childRef, closeRef, useDefaultClose, ...rest }: PortalProps) => {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const handleClickOnRefElement = useCallback(() => {
-        return setIsOpen((prev) => (!prev))
+    const handleClickOutside = useCallback((event: MouseEvent) => {
+        if (childRef.current && !childRef.current.contains(event.target as Node)) {
+            return setIsOpen(false);
+        }
+    }, [childRef])
+
+    const handleClickOnTrigger = useCallback(() => {
+        return setIsOpen(true);
     }, [])
 
-    const handleClickOnRefChild = useCallback((event: MouseEvent) => {
-        if (refChild.current && !refChild.current.contains(event.target as Node)) {
+    const handleClickOnClose = useCallback((e: MouseEvent) => {
+        if (closeRef && closeRef.current?.contains(e.target as HTMLButtonElement)) {
             return setIsOpen(false);
         }
-    }, [refChild])
+    }, [closeRef])
 
-    const handleClickOnRefChildCloseButton = useCallback((event: MouseEvent) => {
-        if (refChildCloseButton && refChildCloseButton.current && refChildCloseButton.current.contains(event.target as Node)) {
-            return setIsOpen(false);
-        }
-    }, [refChildCloseButton])
-
-    const handleClickKeyEsc = useCallback((event: KeyboardEvent) => {
+    const handleClickEscape = useCallback((event: KeyboardEvent) => {
         if (event.key === 'Escape') return setIsOpen(false);
     }, [])
 
     useEffect(() => {
-        const refElmnt = refElement.current;
-        if (refElmnt) refElmnt.addEventListener('click', handleClickOnRefElement);
-        document.addEventListener('mousedown', handleClickOnRefChild);
-        document.addEventListener('mousedown', handleClickOnRefChildCloseButton);
-        document.addEventListener('keydown', handleClickKeyEsc);
+
+        const trigger = triggerRef.current;
+
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('keydown', handleClickEscape);
+        document.addEventListener('mousedown', handleClickOnClose);
+        if (trigger) trigger.addEventListener('click', handleClickOnTrigger);
+
         return () => {
-            if (refElmnt) refElmnt.removeEventListener('click', handleClickOnRefElement);
-            document.removeEventListener('mousedown', handleClickOnRefChild);
-            document.removeEventListener('mousedown', handleClickOnRefChildCloseButton);
-            document.removeEventListener('keydown', handleClickKeyEsc);
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('keydown', handleClickEscape);
+            document.addEventListener('mousedown', handleClickOnClose);
+            if (trigger) trigger.removeEventListener('click', handleClickOnTrigger);
         }
-    }, [handleClickKeyEsc, handleClickOnRefChild, handleClickOnRefChildCloseButton, handleClickOnRefElement, refElement])
+
+    }, [closeRef, handleClickEscape, handleClickOnClose, handleClickOnTrigger, handleClickOutside, isOpen, triggerRef])
 
     useEffect(() => {
         if (isOpen) document.body.classList.add('overflow-hidden');
@@ -62,7 +65,7 @@ export const Portal = ({ refElement, refChild, children, refChildCloseButton, us
             w-screen max-w-full min-h-screen inmd:min-h-svh
             bg-[rgba(0,0,0,.25)] backdrop-blur-md"
         >
-            {useDefaultCloseButton &&
+            {useDefaultClose &&
                 <button
                     className="fixed top-[23px] left-[27px]
                     insm:left-1/2 insm:-translate-x-1/2
@@ -73,10 +76,11 @@ export const Portal = ({ refElement, refChild, children, refChildCloseButton, us
                 </button>
             }
             <div className="center w-full">
-                {children}
+                {rest.children}
             </div>
         </section>,
         document.body
     )
 
 }
+
