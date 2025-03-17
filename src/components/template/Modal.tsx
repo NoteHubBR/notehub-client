@@ -6,27 +6,39 @@ interface ModalProps extends React.HTMLAttributes<HTMLElement> {
     triggerRef: React.RefObject<HTMLInputElement>;
     closeRef: React.RefObject<HTMLButtonElement>;
     applyRef: React.RefObject<HTMLButtonElement>;
+    onOpen: () => void;
+    onClose: () => void;
 }
 
-export const Modal = ({ className, triggerRef, closeRef, applyRef, ...rest }: ModalProps) => {
+export const Modal = ({ className, triggerRef, closeRef, applyRef, onOpen, onClose, ...rest }: ModalProps) => {
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    const handleChangeOnTrigger = useCallback(() => {
+    const handleOpenModal = useCallback((): void => {
+        onOpen();
         return setIsModalOpen(true);
-    }, [])
+    }, [onOpen])
 
-    const handleClickOnClose = useCallback((e: MouseEvent) => {
+    const handleCloseModal = useCallback((): void => {
+        onClose();
+        return setIsModalOpen(false);
+    }, [onClose])
+
+    const handleChangeOnTrigger = useCallback((): void => {
+        return handleOpenModal();
+    }, [handleOpenModal])
+
+    const handleClickOnClose = useCallback((e: MouseEvent): void => {
         if (closeRef && closeRef.current?.contains(e.target as HTMLButtonElement)) {
-            return setIsModalOpen(false);
+            return handleCloseModal();
         }
-    }, [closeRef])
+    }, [closeRef, handleCloseModal])
 
-    const handleClickOnApply = useCallback((e: MouseEvent) => {
+    const handleClickOnApply = useCallback((e: MouseEvent): void => {
         if (applyRef && applyRef.current?.contains(e.target as HTMLButtonElement)) {
-            return setIsModalOpen(false);
+            return handleCloseModal();
         }
-    }, [applyRef])
+    }, [applyRef, handleCloseModal])
 
     useEffect(() => {
 
@@ -47,8 +59,8 @@ export const Modal = ({ className, triggerRef, closeRef, applyRef, ...rest }: Mo
     if (isModalOpen) return (
         <section
             className={clsx(
-                'z-[999] overflow-hidden center m-auto',
-                'w-full max-w-[570px] h-[666px] inmd:h-svh rounded-xl inmd:rounded-none',
+                'z-[999] !visible overflow-hidden fixed inset-0 m-auto',
+                'w-full max-w-[555px] h-[666px] inmd:h-svh rounded-xl inmd:rounded-none',
                 'dark:bg-black bg-white',
                 className
             )}

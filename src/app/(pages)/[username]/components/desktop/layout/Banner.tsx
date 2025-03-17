@@ -31,7 +31,7 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
                 user={user} size={111}
                 className="cursor-pointer
                 absolute bottom-0 left-4 inlg:left-2 translate-y-1/2
-                border-2 dark:border-neutral-950 border-neutral-50
+                border-4 dark:border-neutral-950 border-neutral-50
                 after:absolute after:inset-0
                 after:bg-[rgba(0,0,0,.15)] after:opacity-0
                 hover:after:opacity-100 after:transition-opacity"

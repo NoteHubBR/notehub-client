@@ -1,7 +1,8 @@
+import { clsx } from "clsx";
 import { EditUserFormData, editUserFormSchema } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import { IconX } from "@tabler/icons-react";
 import { useUser } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,15 +25,20 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, ...rest 
         console.log(data)
     }
 
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
     if (user) return (
         <FormProvider {...editUserForm}>
             <form
                 ref={ref}
                 onSubmit={handleSubmit(onSubmit)}
-                className="overflow-y-auto
-                max-w-[555px] h-[666px] inmd:h-svh m-auto
-                pb-9 rounded-xl inmd:rounded-none
-                dark:bg-black bg-white"
+                className={clsx(
+                    isModalOpen ? 'invisible' : 'visible',
+                    'overflow-y-auto',
+                    'max-w-[555px] h-[666px] inmd:h-svh m-auto',
+                    'pb-9 rounded-xl inmd:rounded-none',
+                    'dark:bg-black bg-white'
+                )}
                 {...rest}
             >
                 <Element.Header
@@ -45,8 +51,16 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, ...rest 
                     Salvar
                 </Element.Header>
                 <Element.Main>
-                    <Element.Banner user={user}>
-                        <Element.Avatar user={user} />
+                    <Element.Banner
+                        user={user}
+                        onModalOpen={() => setIsModalOpen(true)}
+                        onModalClose={() => setIsModalOpen(false)}
+                    >
+                        <Element.Avatar
+                            user={user}
+                            onModalOpen={() => setIsModalOpen(true)}
+                            onModalClose={() => setIsModalOpen(false)}
+                        />
                     </Element.Banner>
                     <Element.Privacy />
                     <Element.Field>

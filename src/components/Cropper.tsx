@@ -7,13 +7,14 @@ import EasyCropper from "react-easy-crop";
 interface CropperProps {
     imgSrc: string;
     aspect: number;
+    shape: "rect" | "round";
 }
 
 export interface CropperRef {
     getCroppedImage: () => Promise<string | void>;
 }
 
-const CropperComponent = ({ imgSrc, aspect }: CropperProps, ref: React.Ref<CropperRef>) => {
+const CropperComponent = ({ imgSrc, aspect, shape }: CropperProps, ref: React.Ref<CropperRef>) => {
 
     const { pref: { useDarkTheme } } = usePref();
 
@@ -51,6 +52,7 @@ const CropperComponent = ({ imgSrc, aspect }: CropperProps, ref: React.Ref<Cropp
                 <EasyCropper
                     image={imgSrc}
                     aspect={aspect}
+                    cropShape={shape}
                     crop={crop}
                     zoom={zoom}
                     onCropChange={setCrop}
@@ -71,8 +73,9 @@ const CropperComponent = ({ imgSrc, aspect }: CropperProps, ref: React.Ref<Cropp
                 />
             </footer>
         </>
-    );
-};
+    )
+
+}
 
 export const Cropper = forwardRef<CropperRef, CropperProps>(CropperComponent);
 

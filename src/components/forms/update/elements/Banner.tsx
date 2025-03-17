@@ -8,12 +8,13 @@ import { Upload } from "./Upload";
 import { useCallback, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-interface BannerProps extends React.HTMLAttributes<HTMLImageElement> {
+interface BannerProps extends React.HTMLAttributes<HTMLDivElement> {
     user: User;
-    children: React.ReactNode;
+    onModalOpen: () => void;
+    onModalClose: () => void;
 }
 
-export const Banner = ({ user, children, ...props }: BannerProps) => {
+export const Banner = ({ user, onModalOpen, onModalClose, ...rest }: BannerProps) => {
 
     const { setValue } = useFormContext<EditUserFormData>();
 
@@ -45,16 +46,18 @@ export const Banner = ({ user, children, ...props }: BannerProps) => {
 
     return (
         <>
-            <div className="select-none relative">
-                <GlobalBanner src={url} user={user} {...props} />
-                <Upload
-                    ref={triggerRef}
-                    name="banner"
-                    handleFileChange={handleFileChange}
-                />
-                {children}
+            <div className="select-none relative" {...rest}>
+                <GlobalBanner src={url} user={user} />
+                <Upload ref={triggerRef} name="banner" handleFileChange={handleFileChange} />
+                {rest.children}
             </div>
-            <Modal triggerRef={triggerRef} closeRef={closeRef} applyRef={applyRef}>
+            <Modal
+                triggerRef={triggerRef}
+                closeRef={closeRef}
+                applyRef={applyRef}
+                onOpen={onModalOpen}
+                onClose={onModalClose}
+            >
                 <Header
                     ref={closeRef}
                     applyRef={applyRef}
@@ -66,9 +69,7 @@ export const Banner = ({ user, children, ...props }: BannerProps) => {
                 >
                     Aplicar
                 </Header>
-                {preview &&
-                    <Cropper ref={cropperRef} imgSrc={preview} aspect={3 / 1} />
-                }
+                {preview && <Cropper ref={cropperRef} imgSrc={preview} aspect={3 / 1} shape="rect" />}
             </Modal>
         </>
     )
