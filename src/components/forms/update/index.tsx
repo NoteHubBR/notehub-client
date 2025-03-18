@@ -35,7 +35,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, ...rest 
                 className={clsx(
                     isModalOpen ? 'invisible' : 'visible',
                     'overflow-y-auto',
-                    'max-w-[555px] h-[666px] inmd:h-svh m-auto',
+                    'max-w-[600px] h-[650px] inmd:h-svh m-auto',
                     'pb-9 rounded-xl inmd:rounded-none',
                     'dark:bg-black bg-white'
                 )}
@@ -47,6 +47,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, ...rest 
                     type="submit"
                     icon={<IconX size={20} />}
                     title="Editar perfil"
+                    useBlur
                 >
                     Salvar
                 </Element.Header>

@@ -7,6 +7,7 @@ import { Photo } from "@/components/Photo";
 import { Upload } from "./Upload";
 import { useCallback, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { useScreen } from "@/data/hooks";
 
 interface AvatarProps extends React.HTMLAttributes<HTMLImageElement> {
     user: User;
@@ -15,6 +16,8 @@ interface AvatarProps extends React.HTMLAttributes<HTMLImageElement> {
 }
 
 export const Avatar = ({ user, onModalOpen, onModalClose, ...props }: AvatarProps) => {
+
+    const { onDesktop } = useScreen();
 
     const { setValue } = useFormContext<EditUserFormData>();
 
@@ -48,7 +51,7 @@ export const Avatar = ({ user, onModalOpen, onModalClose, ...props }: AvatarProp
         <>
             <div className="select-none bot-mid left-4">
                 <Photo
-                    src={url} user={user} size={111}
+                    src={url} user={user} size={onDesktop ? 111 : 88}
                     className="border-4 dark:border-neutral-950 border-neutral-50" {...props}
                 />
                 <Upload ref={triggerRef} name="avatar" handleFileChange={handleFileChange} />

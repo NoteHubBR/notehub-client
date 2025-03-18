@@ -48,24 +48,33 @@ const CropperComponent = ({ imgSrc, aspect, shape }: CropperProps, ref: React.Re
 
     return (
         <>
-            <main className="w-full h-full dark:bg-neutral-900 bg-neutral-100">
-                <EasyCropper
-                    image={imgSrc}
-                    aspect={aspect}
-                    cropShape={shape}
-                    crop={crop}
-                    zoom={zoom}
-                    onCropChange={setCrop}
-                    onZoomChange={setZoom}
-                    onCropComplete={onCropComplete}
-                />
+            <main className="w-full h-full dark:bg-neutral-800 bg-neutral-200">
+                <div className="relative w-[90%] h-full m-auto">
+                    <EasyCropper
+                        objectFit="horizontal-cover"
+                        showGrid={false}
+                        crop={crop}
+                        image={imgSrc}
+                        aspect={aspect}
+                        cropShape={shape}
+                        zoom={zoom}
+                        zoomSpeed={0.5}
+                        onCropChange={setCrop}
+                        onZoomChange={setZoom}
+                        onCropComplete={onCropComplete}
+                        classes={{
+                            containerClassName: '!overflow-visible dark:!bg-neutral-800 !bg-neutral-200',
+                            cropAreaClassName: '!border-4 !border-violet-500 dark:!text-[rgba(0,0,0,.5)] !text-[rgba(255,255,255,.5)]',
+                        }}
+                    />
+                </div>
             </main>
-            <footer className="sticky bottom-0 w-full h-[52px] dark:bg-black bg-white flex justify-center items-center">
+            <footer className="sticky bottom-0 w-full h-[52px] flex justify-center items-center dark:bg-black bg-white">
                 <input
                     type="range"
                     min={1}
                     max={3}
-                    step={0.1}
+                    step={0.01}
                     value={zoom}
                     onChange={handleRangeChange}
                     style={rangeStyle}
