@@ -1,11 +1,11 @@
+import { editUserFormSchema } from "@/core";
 import { useFormContext } from "react-hook-form";
 
 interface ErrorProps extends React.HTMLAttributes<HTMLSpanElement> {
-    className?: string;
-    field: string;
+    field: keyof typeof editUserFormSchema.shape;
 }
 
-export const Error = ({ className, field, ...rest }: ErrorProps) => {
+export const Error = ({ field, ...rest }: ErrorProps) => {
 
     const { formState: { errors } } = useFormContext();
 
@@ -13,7 +13,7 @@ export const Error = ({ className, field, ...rest }: ErrorProps) => {
 
     if (error) return (
         <span
-            className={`absolute top-[105%] left-6 font-medium text-sm text-red-500 ${className}`}
+            className="absolute top-[105%] left-2 font-medium text-sm text-red-500"
             {...rest}
         >
             {error.toString()}

@@ -64,21 +64,23 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, ...rest 
                         />
                     </Element.Banner>
                     <Element.Privacy />
-                    <Element.Field>
-                        <Element.Input name="username" defaultValue={user.username} type="text" required />
-                        <Element.Label htmlFor="username">Usuário</Element.Label>
-                        <Element.Error field="username" />
-                    </Element.Field>
-                    <Element.Field>
-                        <Element.Input name="displayName" defaultValue={user.display_name} type="text" required />
-                        <Element.Label htmlFor="displayName">Nome</Element.Label>
-                        <Element.Error field="displayName" />
-                    </Element.Field>
-                    <Element.Field>
-                        <Element.Textarea name="message" defaultValue={user.message} />
-                        <Element.Label htmlFor="message" className="top-6">Mensagem</Element.Label>
-                        <Element.Error field="message" className="!top-[95%]" />
-                    </Element.Field>
+                    <div className="flex flex-col gap-6 px-4">
+                        <Element.Field>
+                            <Element.Input name="username" defaultValue={user.username} type="text" required />
+                            <Element.Label htmlFor="username" labelFor="Usuário" />
+                            <Element.Error field="username" />
+                        </Element.Field>
+                        <Element.Field>
+                            <Element.Input name="displayName" defaultValue={user.display_name} type="text" required />
+                            <Element.Label htmlFor="displayName" labelFor="Nome" />
+                            <Element.Error field="displayName" />
+                        </Element.Field>
+                        <Element.Field>
+                            <Element.Textarea name="message" defaultValue={user.message} />
+                            <Element.Label htmlFor="message" labelFor="Mensagem" />
+                            <Element.Error field="message" />
+                        </Element.Field>
+                    </div>
                 </Element.Main>
                 <ul>
                     <li><Element.Link href={'/user/settings/mutuals'}>Mútuos</Element.Link></li>

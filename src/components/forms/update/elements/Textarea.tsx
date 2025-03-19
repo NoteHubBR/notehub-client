@@ -21,16 +21,16 @@ export const Textarea = ({ name, ...rest }: TextareaProps) => {
                 id={name}
                 {...register(name)}
                 maxLength={max}
+                autoComplete="on"
+                autoCorrect="on"
+                spellCheck
                 className={clsx(
-                    'resize-none peer outline-none dark:font-light',
-                    'w-full px-2 py-1 pt-6',
-                    'text-md',
-                    'border border-neutral-700/70 rounded',
-                    'dark:bg-black bg-white',
+                    'peer resize-none outline-none z-10 relative',
+                    'w-full mt-4',
+                    'dark:font-light text-md',
+                    'bg-transparent',
                     'selection:!bg-violet-600 selection:!text-white',
-                    'focus:border-violet-600',
-                    'invalid:border-red-500',
-                    hasError && '!font-medium !text-red-500 !border-red-500 selection:!bg-red-600',
+                    hasError && '!font-medium !text-red-500 selection:!bg-red-600',
                     'transition-all'
                 )}
                 {...rest}
