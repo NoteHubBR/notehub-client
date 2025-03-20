@@ -35,7 +35,7 @@ export const Title = ({ displayName, history, ...rest }: TitleProps) => {
                 ))}
             </ul>
             <h1
-                className="flex items-center gap-1 font-semibold text-xl text-white"
+                className="flex items-center justify-between gap-1 font-semibold text-xl text-white"
                 {...rest}
             >
                 {displayName}

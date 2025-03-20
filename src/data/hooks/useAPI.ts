@@ -12,7 +12,7 @@ const createHeaders = (useToken?: string): HeadersInit => {
     const headers: HeadersInit = { 'Content-Type': 'application/json' };
     if (useToken) headers['Authorization'] = `Bearer ${useToken}`;
     return headers;
-};
+}
 
 const handleResponse = async (response: Response) => {
     if (response.status === 204) return null;
@@ -32,7 +32,7 @@ const handleResponse = async (response: Response) => {
     }
 
     return data;
-};
+}
 
 export const useAPI = () => {
 
@@ -52,7 +52,7 @@ export const useAPI = () => {
             method,
             headers,
             body: body ? JSON.stringify(body) : undefined,
-        };
+        }
 
         try {
             const response = await fetch(uri, config);
@@ -61,20 +61,24 @@ export const useAPI = () => {
             if (showProgress) setOnProgress(false);
         }
 
-    }, []);
+    }, [setOnProgress]);
 
     const httpPost = useCallback((endpoint: string, body: any, options?: HttpOptions) => {
         return request('POST', endpoint, body, options);
-    }, []);
+    }, [request])
+
+    const httpPut = useCallback((endpoint: string, body: any, options?: HttpOptions) => {
+        return request('PUT', endpoint, body, options);
+    }, [request])
 
     const httpGet = useCallback((endpoint: string, options?: HttpOptions) => {
         return request('GET', endpoint, undefined, options);
-    }, []);
+    }, [request])
 
     const httpDelete = useCallback((endpoint: string, options?: HttpOptions) => {
         return request('DELETE', endpoint, undefined, options);
-    }, []);
+    }, [request])
 
-    return { httpPost, httpGet, httpDelete };
+    return { httpPost, httpPut, httpGet, httpDelete };
 
-};
+}

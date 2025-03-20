@@ -7,6 +7,7 @@ export interface UserStoreProps {
     store: Store;
     setStore: (data: Partial<Store>, username?: string) => void;
     setActions: (data: Partial<{ isMenuOpen: boolean, searches: string[] }>, username?: string) => void;
+    updateActions: (oldUsername: string, newUsername: string) => void;
     isMenuOpen: (user: User | null) => boolean;
     searches: (user: User | null) => string[];
     isStoreReady: boolean;
@@ -49,6 +50,22 @@ export const UserStoreProvider = (props: any) => {
         }, username)
     }, [store.actions, setter])
 
+    const updateActions = useCallback((oldUsername: string, newUsername: string) => {
+        return setStore((prev) => {
+            const { [oldUsername]: oldActions, ...restActions } = prev.actions;
+            const newActions = {
+                ...restActions,
+                [newUsername]: oldActions
+            }
+            const updatedStore = {
+                ...prev,
+                actions: newActions
+            }
+            localStorage.setItem('store', JSON.stringify(updatedStore));
+            return updatedStore
+        })
+    }, [])
+
     const isMenuOpen = (user: User | null): boolean => {
         return user ? store.actions[user.username].isMenuOpen : false;
     }
@@ -69,6 +86,7 @@ export const UserStoreProvider = (props: any) => {
             store,
             setStore: setter,
             setActions,
+            updateActions,
             isMenuOpen,
             searches,
             isStoreReady: isReady

@@ -61,7 +61,7 @@ export const getCroppedImg = async (imageSrc: string, pixelCrop: PixelCrop, rota
     return new Promise((resolve) => {
         canvas.toBlob((file) => {
             resolve(URL.createObjectURL(file as Blob));
-        }, "image/jpeg");
+        }, "image/png");
     })
 
 }

@@ -5,7 +5,7 @@ import { IconArrowLeft } from "@tabler/icons-react";
 import { Modal } from "@/components/template/Modal";
 import { Photo } from "@/components/Photo";
 import { Upload } from "./Upload";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useScreen } from "@/data/hooks";
 
@@ -28,6 +28,8 @@ export const Avatar = ({ user, onModalOpen, onModalClose, ...props }: AvatarProp
 
     const [url, setUrl] = useState<string>(user.avatar);
     const [preview, setPreview] = useState<string>();
+
+    useEffect(() => { setValue("avatar", user.avatar) }, [setValue, user.avatar])
 
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
         const file = e.target.files?.[0];

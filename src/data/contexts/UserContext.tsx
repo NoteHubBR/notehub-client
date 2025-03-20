@@ -9,8 +9,9 @@ export interface UserContextProps {
     token: Token | null;
     user: User | null;
     setUser: (token: Token, user: User) => void;
+    updateUser: (user: Partial<User>) => void;
     clearUser: () => void;
-};
+}
 
 const UserContext = createContext<UserContextProps>({} as UserContextProps);
 
@@ -22,7 +23,7 @@ export const UserProvider = (props: any) => {
         noteService: { getUserNotes }
     } = useServices();
 
-    const { isStoreReady, store, setStore, setActions } = useStore();
+    const { isStoreReady, store, setStore, setActions, updateActions } = useStore();
     const { clearHistory, setHistory } = useHistory();
     const { clearFollowing, setFollowing } = useFollowing();
     const { clearNotes, setNotes } = useNotes();
@@ -44,6 +45,18 @@ export const UserProvider = (props: any) => {
         }, username)
         return setState(prev => ({ ...prev, token: token, user: user }));
     }, [store.actions, setActions])
+
+    const updateUser = useCallback((user: Partial<User>) => {
+        if (!user.username) return;
+        updateActions(state.user!.username, user.username);
+        return setState((prev) => ({
+            ...prev,
+            user: {
+                ...prev.user,
+                ...user
+            } as User
+        }))
+    }, [state.user, updateActions])
 
     const clearUser = useCallback(async () => {
         if (state.token) await logoutUser(state.token.access_token);
@@ -105,6 +118,7 @@ export const UserProvider = (props: any) => {
         <UserContext.Provider value={{
             token: state.token,
             user: state.user,
+            updateUser,
             setUser,
             clearUser,
         }}>

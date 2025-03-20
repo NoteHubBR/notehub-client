@@ -5,7 +5,7 @@ import { Header } from "./Header";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { Modal } from "@/components/template/Modal";
 import { Upload } from "./Upload";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 interface BannerProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -25,6 +25,8 @@ export const Banner = ({ user, onModalOpen, onModalClose, ...rest }: BannerProps
 
     const [url, setUrl] = useState<string>(user.banner);
     const [preview, setPreview] = useState<string>();
+
+    useEffect(() => { setValue("banner", user.banner) }, [setValue, user.banner])
 
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
         const file = e.target.files?.[0];

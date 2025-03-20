@@ -1,11 +1,11 @@
 import { AuthService } from '../auth';
-import { CreateUserFormData, Page, LowDetailUser, Notification } from '@/core';
+import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData } from '@/core';
 import { useAPI } from '@/data/hooks';
 import { useCallback } from 'react';
 
 export const UserService = () => {
 
-    const { httpPost, httpGet, httpDelete } = useAPI();
+    const { httpPost, httpPut, httpGet, httpDelete } = useAPI();
 
     const handleExpiredToken = AuthService().handleExpiredToken;
 
@@ -26,6 +26,14 @@ export const UserService = () => {
             throw error;
         }
     }, [httpGet])
+
+    const updateUser = useCallback(async (token: string, data: EditUserFormData): Promise<LowDetailUser> => {
+        try {
+            return await httpPut('/users/profile', data, { useProgress: true, useToken: token });
+        } catch (error) {
+            throw error;
+        }
+    }, [httpPut])
 
     const getUser = useCallback(async (username: string): Promise<LowDetailUser> => {
         try {
@@ -82,6 +90,7 @@ export const UserService = () => {
     return {
         createUser,
         activateUser,
+        updateUser,
         getUser,
         getUserDisplayNameHistory,
         followUser,
