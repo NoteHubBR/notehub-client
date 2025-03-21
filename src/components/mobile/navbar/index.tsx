@@ -25,7 +25,7 @@ export const Navbar = () => {
     const Nav = ({ children, ...rest }: { children: React.ReactNode } & React.HTMLAttributes<HTMLElement>) => {
         return (
             <nav
-                className="z-[998] fixed bottom-0
+                className="z-[997] fixed bottom-0
                     w-full h-[45px] px-4
                     border-t dark:border-neutral-50/10 border-neutral-900/10
                     dark:bg-neutral-950 bg-neutral-50"

@@ -8,16 +8,16 @@ import { Menu } from "./elements/Menu";
 import { MenuDropdown } from "./dropdown/contents/MenuDropdown";
 import { Photo } from "@/components/Photo";
 import { User } from "@/core";
-import React, { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import React, { useRef } from "react";
 
 export const Navbar = ({ user, ...rest }: { user: User } & React.HTMLAttributes<HTMLElement>) => {
     const menuButton = useRef<HTMLButtonElement>(null);
     const bellButton = useRef<HTMLButtonElement>(null);
     return (
         <nav
-            className="sticky top-0 z-[998]
+            className="sticky top-0 z-[997]
             w-screen max-w-full h-[8vh] inmd:h-[8svh] p-4
             flex items-center justify-between gap-4
             dark:bg-neutral-950 bg-neutral-50"

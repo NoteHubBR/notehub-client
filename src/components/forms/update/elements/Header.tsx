@@ -13,7 +13,7 @@ export const Header = forwardRef<HTMLButtonElement, HeaderProps>(({ icon, title,
     return (
         <header
             className={clsx(
-                'sticky top-0 left-0 z-[998] p-2 pr-4 flex items-center justify-between gap-6',
+                'sticky top-0 left-0 z-[997] p-2 pr-4 flex items-center justify-between gap-6',
                 useBlur
                     ? 'dark:bg-[rgba(0,0,0,.5)] bg-[rgba(255,255,255,.5)] backdrop-blur'
                     : 'dark:bg-black bg-white'

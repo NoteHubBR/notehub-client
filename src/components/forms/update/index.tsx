@@ -11,9 +11,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     closeRef?: React.RefObject<HTMLButtonElement>;
+    onPortalClose?: () => void;
 }
 
-export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, ...rest }, ref) => {
+export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortalClose, ...rest }, ref) => {
 
     const { userService: { updateUser } } = useServices();
 
@@ -42,9 +43,10 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, ...rest 
                         storeImg({
                             blobUrl: data.avatar,
                             folder: "avatars"
-                        }).then(newAvatar => {
-                            newData.avatar = newAvatar;
-                            setValue("avatar", newAvatar);
+                        }).then(avatar => {
+                            deleteImage(user.avatar)
+                            newData.avatar = avatar;
+                            setValue("avatar", avatar);
                         })
                     );
                 }
@@ -53,18 +55,20 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, ...rest 
                         storeImg({
                             blobUrl: data.banner,
                             folder: "banners"
-                        }).then(newBanner => {
-                            newData.banner = newBanner;
-                            setValue("banner", newBanner);
+                        }).then(banner => {
+                            deleteImage(user.banner);
+                            newData.banner = banner;
+                            setValue("banner", banner);
+                        }).finally(() => {
+
                         })
                     );
                 }
                 await Promise.all(uploadPromises);
                 try {
                     const updated = await updateUser(token.access_token, newData);
-                    await deleteImage(user.avatar);
-                    await deleteImage(user.banner);
                     editUser(updated);
+                    onPortalClose?.();
                     return router.push(`/${data.username}`);
                 } catch (errors) {
                     await deleteImage(newData.avatar);
@@ -103,7 +107,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, ...rest 
                     useBlur
                     disabled={isPending}
                 >
-                    {isPending ? "..." : "Salvar"}
+                    Salvar
                 </Element.Header>
                 <Element.Main>
                     <Element.Banner

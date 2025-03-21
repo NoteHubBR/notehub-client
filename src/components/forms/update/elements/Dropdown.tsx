@@ -5,7 +5,7 @@ export const Dropdown = ({ isOpen, ...rest }: { isOpen: boolean } & React.HTMLAt
         <div
             role="menu"
             className={clsx(
-                'z-[998] overflow-hidden absolute top-[110%] left-0',
+                'z-[997] overflow-hidden absolute top-[110%] left-0',
                 'w-full',   
                 isOpen ? 'max-h-[180px]' : 'max-h-0',
                 'rounded',

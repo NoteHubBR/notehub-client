@@ -1,6 +1,6 @@
+import { cloneElement, useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { IconX } from "@tabler/icons-react";
-import { useCallback, useEffect, useState } from "react";
 
 interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
     triggerRef: React.RefObject<HTMLElement>;
@@ -59,9 +59,13 @@ export const Portal = ({ triggerRef, childRef, closeRef, useDefaultClose, ...res
         }
     }, [isOpen]);
 
+    const childrenWithProp = cloneElement(rest.children as React.ReactElement, {
+        onPortalClose: () => setIsOpen(false)
+    })
+
     if (isOpen) return createPortal(
         <section
-            className="z-[999] fixed top-0 left-0
+            className="z-[998] fixed top-0 left-0
             w-screen max-w-full min-h-screen inmd:min-h-svh
             bg-[rgba(0,0,0,.25)] backdrop-blur-md"
         >
@@ -76,11 +80,10 @@ export const Portal = ({ triggerRef, childRef, closeRef, useDefaultClose, ...res
                 </button>
             }
             <div className="center w-full">
-                {rest.children}
+                {childrenWithProp}
             </div>
         </section>,
         document.body
     )
 
 }
-

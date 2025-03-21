@@ -15,9 +15,11 @@ export const Banner = forwardRef<HTMLImageElement, BannerProps>((props, ref) => 
             <figure
                 role="banner"
                 ref={ref}
-                className={`overflow-hidden w-full aspect-[3/1] ${className}`} {...rest}
+                className={`overflow-hidden w-full aspect-[3/1] ${className}`}
+                {...rest}
             >
                 <Image
+                    priority
                     src={src ?? user.banner ?? '/imgs/banner.png'}
                     fill
                     alt={`Avatar de ${user.username}`}

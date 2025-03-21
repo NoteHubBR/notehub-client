@@ -59,7 +59,7 @@ export const Modal = ({ className, triggerRef, closeRef, applyRef, onOpen, onClo
     if (isModalOpen) return (
         <section
             className={clsx(
-                'z-[999] !visible overflow-hidden fixed inset-0 m-auto',
+                'z-[998] !visible overflow-hidden fixed inset-0 m-auto',
                 'w-full max-w-[600px] h-[650px] inmd:h-svh rounded-xl inmd:rounded-none',
                 'flex flex-col',
                 'dark:bg-black bg-white',

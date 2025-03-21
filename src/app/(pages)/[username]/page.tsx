@@ -6,23 +6,25 @@ import { Overview } from "./components/overview";
 import { Section } from "./components/Section";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { useServices } from "@/data/hooks";
+import { useServices, useUser } from "@/data/hooks";
 
 const Page = () => {
 
     const { userService: { getUser } } = useServices();
 
+    const { user: current } = useUser();
+
     const params = useParams<{ username: string }>();
 
     const [notFound, setNotFound] = useState<boolean>(false);
-    const [user, setUser] = useState<User | LowDetailUser | null>();
+    const [user, setUser] = useState<User | LowDetailUser | null>(null);
 
     const isFetching = useRef<boolean>(false);
     useEffect(() => {
         const init = async () => {
-            if (isFetching.current) return;
-            if (user && params.username === user.username) {
-                setUser(user);
+            if (!current && isFetching.current) return;
+            if (current && params.username === current.username) {
+                setUser(current);
                 return;
             }
             isFetching.current = true;
@@ -34,7 +36,7 @@ const Page = () => {
             }
         }
         init();
-    }, [params.username])
+    }, [current, getUser, params.username])
 
     if (notFound) return null;
 
