@@ -11,7 +11,7 @@ export const editUserFormSchema = z.object({
         .min(4, 'Mínimo de 4 caracteres.')
         .max(24, 'Máximo de 24 caracteres.'),
     avatar: z
-        .string().trim(),
+        .string().trim().nullable(),
     banner: z
         .string().trim().nullable(),
     message: z

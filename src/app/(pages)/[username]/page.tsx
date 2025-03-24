@@ -22,17 +22,17 @@ const Page = () => {
     const isFetching = useRef<boolean>(false);
     useEffect(() => {
         const init = async () => {
-            if (!current && isFetching.current) return;
+            if (isFetching.current) return;
             if (current && params.username === current.username) {
-                setUser(current);
-                return;
+                return setUser(current);
             }
             isFetching.current = true;
             try {
-                setUser(await getUser(params.username))
-                return;
+                return setUser(await getUser(params.username));
             } catch {
                 return setNotFound(true);
+            } finally {
+                return isFetching.current = false;
             }
         }
         init();

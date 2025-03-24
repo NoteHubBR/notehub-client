@@ -25,7 +25,7 @@ export const Header = () => {
     const isFetching = useRef<boolean>(false);
     useEffect(() => {
         const init = async () => {
-            if (!currentUser && isFetching.current) return;
+            if (isFetching.current) return;
             if (currentUser && params.username === currentUser.username) {
                 setUser(currentUser);
                 setHistory(currentHistory);
@@ -38,6 +38,8 @@ export const Header = () => {
                 return;
             } catch {
                 return setNotFound(true);
+            } finally {
+                return isFetching.current = false;
             }
         }
         init();

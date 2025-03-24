@@ -24,7 +24,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
         resolver: zodResolver(editUserFormSchema)
     })
 
-    const { setValue, handleSubmit, setError } = editUserForm;
+    const { handleSubmit, setError } = editUserForm;
 
     const [isPending, startTransition] = useTransition();
 
@@ -35,49 +35,49 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
         if (!token || !user) return;
 
         startTransition(async () => {
-            try {
-                const newData: EditUserFormData = { ...data };
-                const uploadPromises: Promise<void>[] = [];
-                if (data.avatar !== user.avatar) {
-                    uploadPromises.push(
-                        storeImg({
-                            blobUrl: data.avatar,
-                            folder: "avatars"
-                        }).then(avatar => {
-                            deleteImage(user.avatar)
-                            newData.avatar = avatar;
-                            setValue("avatar", avatar);
-                        })
-                    );
-                }
-                if (data.banner && data.banner !== user.banner) {
-                    uploadPromises.push(
-                        storeImg({
-                            blobUrl: data.banner,
-                            folder: "banners"
-                        }).then(banner => {
-                            deleteImage(user.banner);
-                            newData.banner = banner;
-                            setValue("banner", banner);
-                        }).finally(() => {
 
-                        })
-                    );
-                }
-                await Promise.all(uploadPromises);
-                try {
-                    const updated = await updateUser(token.access_token, newData);
-                    editUser(updated);
-                    onPortalClose?.();
-                    return router.push(`/${data.username}`);
-                } catch (errors) {
-                    await deleteImage(newData.avatar);
-                    await deleteImage(newData.banner);
-                    if (Array.isArray(errors)) handleFieldErrors(errors, setError);
-                }
+            const newData = { ...data };
+            const shouldUpdateAvatar = user.avatar !== data.avatar;
+            const shouldUpdateBanner = user.banner !== data.banner;
+
+            try {
+
+                const [avatarPromise, bannerPromise] = [
+                    shouldUpdateAvatar
+                        ? storeImg({ folder: "avatars", username: data.username, blobUrl: data.avatar! })
+                        : Promise.resolve(user.avatar),
+                    shouldUpdateBanner
+                        ? storeImg({ folder: "banners", username: data.username, blobUrl: data.banner! })
+                        : Promise.resolve(user.banner)
+                ]
+
+                const [avatar, banner] = await Promise.all([
+                    avatarPromise.catch(() => null),
+                    bannerPromise.catch(() => null)
+                ])
+
+                if (avatar) newData.avatar = avatar;
+                if (banner) newData.banner = banner;
+
+                const updated = await updateUser(token.access_token, newData);
+
+                await Promise.allSettled([
+                    shouldUpdateAvatar && deleteImage(user.avatar),
+                    shouldUpdateBanner && deleteImage(user.banner)
+                ])
+
+                editUser(updated);
+                onPortalClose?.();
+                return router.push(`/${data.username}`);
+
+            } catch (errors) {
+                await Promise.allSettled([
+                    shouldUpdateAvatar && deleteImage(newData.avatar!),
+                    shouldUpdateBanner && deleteImage(newData.banner!)
+                ])
+                if (Array.isArray(errors)) handleFieldErrors(errors, setError);
             }
-            catch (error) { console.log(error) }
-            finally { }
+
         })
 
     }

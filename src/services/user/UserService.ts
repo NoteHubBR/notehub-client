@@ -28,12 +28,13 @@ export const UserService = () => {
     }, [httpGet])
 
     const updateUser = useCallback(async (token: string, data: EditUserFormData): Promise<LowDetailUser> => {
+        const endpoint = '/users/profile';
         try {
-            return await httpPut('/users/profile', data, { useProgress: true, useToken: token });
+            return await httpPut(endpoint, data, { useProgress: true, useToken: token });
         } catch (error) {
-            throw error;
+            return handleExpiredToken(error, (newToken) => httpPut(endpoint, { useProgress: true, useToken: newToken }));
         }
-    }, [httpPut])
+    }, [handleExpiredToken, httpPut])
 
     const getUser = useCallback(async (username: string): Promise<LowDetailUser> => {
         try {

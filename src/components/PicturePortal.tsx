@@ -11,7 +11,7 @@ interface PicturePortalProps {
 }
 
 export const PicturePortal = forwardRef<HTMLImageElement, PicturePortalProps>(({ user, size, fill, className }, ref) => {
-    if (user.avatar) return (
+    return (
         <>
             {size &&
                 <figure
@@ -20,7 +20,7 @@ export const PicturePortal = forwardRef<HTMLImageElement, PicturePortalProps>(({
                     className={`overflow-hidden m-auto ${className}`}
                 >
                     <Image
-                        src={user.avatar}
+                        src={user.avatar ?? '/imgs/avatar.png'}
                         alt={`Avatar de ${user.username}`}
                         width={size}
                         height={size}
@@ -47,7 +47,6 @@ export const PicturePortal = forwardRef<HTMLImageElement, PicturePortalProps>(({
             }
         </>
     )
-    return null;
 })
 
 PicturePortal.displayName = 'PicturePortal';
