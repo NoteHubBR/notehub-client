@@ -16,7 +16,7 @@ export const Photo = forwardRef<HTMLImageElement, PhotoProps>((props, ref) => {
             <figure
                 ref={ref}
                 style={{ width: size, height: size }}
-                className={`overflow-hidden flex-none rounded-full ${className}`} {...rest}
+                className={`select-none overflow-hidden flex-none rounded-full ${className}`} {...rest}
             >
                 <Image
                     src={src ?? user.avatar ?? '/imgs/avatar.png'}

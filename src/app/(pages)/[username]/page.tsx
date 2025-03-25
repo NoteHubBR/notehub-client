@@ -2,7 +2,7 @@
 
 import { IconAt, IconBalloon, IconBubbleText, IconUsers, IconUsersGroup } from "@tabler/icons-react";
 import { LowDetailUser, toSpecificTime, User } from "@/core";
-import { Overview } from "./components/overview";
+import { Overview } from "./overview";
 import { Section } from "./components/Section";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";

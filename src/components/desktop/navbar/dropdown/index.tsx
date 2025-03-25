@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 interface DropdownProps {
     buttonRef: React.RefObject<HTMLButtonElement>;
@@ -30,6 +31,10 @@ export const Dropdown = ({ buttonRef, children }: DropdownProps) => {
     const handleEscKeydown = useCallback((event: KeyboardEvent) => {
         if (event.key === 'Escape') setIsOpen(false);
     }, [])
+
+    const pathname = usePathname();
+    
+    useEffect((): void => { return setIsOpen(false); }, [pathname])
 
     useEffect(() => {
 

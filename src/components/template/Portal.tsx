@@ -67,16 +67,18 @@ export const Portal = ({ triggerRef, childRef, closeRef, useDefaultClose, ...res
         <section
             className="z-[998] fixed top-0 left-0
             w-screen max-w-full min-h-screen inmd:min-h-svh
-            bg-[rgba(0,0,0,.25)] backdrop-blur-md"
+            dark:bg-[rgba(0,0,0,.25)] bg-[rgba(255,255,255,.25)] backdrop-blur-3xl"
         >
             {useDefaultClose &&
                 <button
-                    className="fixed top-[23px] left-[27px]
-                    insm:left-1/2 insm:-translate-x-1/2
+                    className="inmd:hidden
+                    fixed top-[23px] right-[27px]
                     p-1 rounded-full
-                    hover:bg-neutral-50/50 transition-colors"
+                    dark:text-white text-black
+                    dark:hover:bg-neutral-50/10 hover:bg-neutral-500/10
+                    transition-colors"
                 >
-                    <IconX size={24} color="white" />
+                    <IconX size={24} />
                 </button>
             }
             <div className="center w-full">

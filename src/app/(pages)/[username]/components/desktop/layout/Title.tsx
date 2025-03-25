@@ -12,17 +12,14 @@ export const Title = ({ displayName, history, ...rest }: TitleProps) => {
     const [isHovering, setIsHovering] = useState(false);
 
     return (
-        <div
-            className="absolute bottom-2 left-36 inlg:left-32
-            w-fit py-1 px-2 rounded-md
-            bg-neutral-900/20
-            backdrop-blur-sm"
-        >
+        <>
             <ul
                 className={clsx(
-                    'overflow-hidden',
-                    'transition-all duration-300',
-                    isHovering ? 'max-h-72 opacity-100' : 'max-h-0 opacity-0'
+                    'overflow-hidden absolute bottom-11 left-36 inlg:left-32 ',
+                    isHovering ? 'max-h-72 opacity-100' : 'max-h-0 p-0 opacity-0',
+                    'py-1 px-2 mb-1 rounded-md',
+                    'bg-neutral-900/10 backdrop-blur-sm',
+                    'transition-all duration-300'
                 )}
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
@@ -35,7 +32,13 @@ export const Title = ({ displayName, history, ...rest }: TitleProps) => {
                 ))}
             </ul>
             <h1
-                className="flex items-center justify-between gap-1 font-semibold text-xl text-white"
+                className={clsx(
+                    'absolute bottom-2 left-36 inlg:left-32',
+                    'w-fit py-1 px-2 rounded-md',
+                    'flex items-center justify-between gap-2',
+                    'font-semibold text-xl text-white',
+                    'bg-neutral-900/10 backdrop-blur-sm',
+                )}
                 {...rest}
             >
                 {displayName}
@@ -44,11 +47,12 @@ export const Title = ({ displayName, history, ...rest }: TitleProps) => {
                         onMouseEnter={() => setIsHovering(true)}
                         onMouseLeave={() => setIsHovering(false)}
                     >
-                        <IconChevronUp />
+                        <IconChevronUp size={18} />
                     </span>
                 }
             </h1>
-        </div>
+        </>
+
     )
 
 }

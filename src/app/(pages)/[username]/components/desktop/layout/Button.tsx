@@ -34,7 +34,7 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
             setRequesting(false);
             setReqFollow(false);
         }
-    }, [token])
+    }, [followUser, setNewFollowing, token, user])
 
     const unfollow = useCallback(async () => {
         if (!token) return;
@@ -48,13 +48,13 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
             setRequesting(false);
             setReqUnfollow(false);
         }
-    }, [token])
+    }, [removeFollowing, token, unfollowUser, user])
 
     const HTMLButton = ({ className, ...rest }: { className?: string } & React.HTMLAttributes<HTMLButtonElement>) => {
         return (
             <button
                 className={clsx(
-                    'w-28 inlg:w-24 h-[40px] py-2 flex items-center justify-center rounded-3xl text-md inlg:text-sm font-medium',
+                    'w-24 h-[40px] py-2 flex items-center justify-center rounded-3xl text-sm font-medium',
                     'transition-colors duration-100',
                     className
                 )}
@@ -72,7 +72,7 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
                 reqFollow && 'following',
                 reqUnfollow && 'unfollowing',
                 'dark:bg-neutral-50/10 bg-neutral-900/10',
-                'w-28 inlg:w-24 h-[40px] flex items-center justify-center rounded-3xl text-md inlg:text-sm font-medium',
+                'w-24 h-[40px] flex items-center justify-center rounded-3xl text-sm font-medium',
                 'transition-colors duration-300',
             )}
         >

@@ -15,7 +15,7 @@ export const Banner = forwardRef<HTMLImageElement, BannerProps>((props, ref) => 
             <figure
                 role="banner"
                 ref={ref}
-                className={`overflow-hidden w-full aspect-[3/1] dark:bg-black bg-neutral-200 ${className}`}
+                className={`select-none overflow-hidden w-full aspect-[3/1] dark:bg-black bg-neutral-200 ${className}`}
                 {...rest}
             >
                 <Image

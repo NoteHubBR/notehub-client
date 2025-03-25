@@ -1,5 +1,5 @@
 import { Bone } from "@/components/Bone";
-import { Section } from "../Section";
+import { Section } from "../components/Section";
 
 export const Skeleton = () => {
 

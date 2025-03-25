@@ -26,12 +26,12 @@ import { forwardRef } from "react";
 export const Link = forwardRef<HTMLButtonElement, React.HTMLAttributes<HTMLButtonElement>>(({ ...props }, ref) => (
     <button
         ref={ref}
-        className="w-28 inlg:w-24 py-2 flex items-center justify-center
+        className="w-24 py-2 flex items-center justify-center
         rounded-3xl
-        text-md inlg:text-sm font-medium
+        text-sm font-medium
         dark:bg-white bg-black
         dark:text-black text-white
-        hover:opacity-65
+        hover:opacity-80
         transition-all duration-150"
         {...props}
     />
