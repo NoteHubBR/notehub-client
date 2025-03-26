@@ -18,7 +18,7 @@ export const Title = ({ displayName, history, ...rest }: TitleProps) => {
                     'overflow-hidden absolute bottom-11 left-36 inlg:left-32 ',
                     isHovering ? 'max-h-72 opacity-100' : 'max-h-0 p-0 opacity-0',
                     'py-1 px-2 mb-1 rounded-md',
-                    'bg-neutral-900/10 backdrop-blur-sm',
+                    'bg-dark/10 backdrop-blur-sm',
                     'transition-all duration-300'
                 )}
                 onMouseEnter={() => setIsHovering(true)}
@@ -37,7 +37,7 @@ export const Title = ({ displayName, history, ...rest }: TitleProps) => {
                     'w-fit py-1 px-2 rounded-md',
                     'flex items-center justify-between gap-2',
                     'font-semibold text-xl text-white',
-                    'bg-neutral-900/10 backdrop-blur-sm',
+                    'bg-dark/10 backdrop-blur-sm',
                 )}
                 {...rest}
             >

@@ -18,7 +18,7 @@ export const Search = ({ query, setter, inputRef, ...rest }: SearchProps) => {
     const Button = (props: React.HTMLAttributes<HTMLButtonElement>) => {
         return <button
             type="button"
-            className="p-1 rounded-md hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10 transition-colors"
+            className="p-1 rounded-md hover:dark:bg-lighter/10 hover:bg-dark/10 transition-colors"
             {...props}
         />
     }
@@ -37,7 +37,7 @@ export const Search = ({ query, setter, inputRef, ...rest }: SearchProps) => {
     return (
         <div
             className="flex items-center justify-end
-            hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10"
+            hover:dark:bg-lighter/10 hover:bg-dark/10"
             {...rest}
         >
             <Link

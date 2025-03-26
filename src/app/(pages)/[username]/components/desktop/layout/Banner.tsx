@@ -20,10 +20,8 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
                 ref={bannerRef}
                 user={user}
                 className={clsx(
-                    'cursor-pointer after:absolute after:inset-0',
-                    'after:bg-[rgba(0,0,0,.15)] after:opacity-0',
-                    'hover:after:opacity-100 after:transition-opacity',
-                    user.banner ?? '!cursor-default after:hidden'
+                    'cursor-pointer overlay',
+                    user.banner ?? '!cursor-default !overlay-none'
                 )}
             />
             {user.banner &&
@@ -35,13 +33,10 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
                 ref={photoRef}
                 user={user} size={111}
                 className={clsx(
-                    'cursor-pointer',
+                    'cursor-pointer overlay',
                     'absolute bottom-0 left-4 inlg:left-2 translate-y-1/2',
-                    'border-4 dark:border-neutral-950 border-neutral-50',
-                    'after:absolute after:inset-0',
-                    'after:bg-[rgba(0,0,0,.15)] after:opacity-0',
-                    'hover:after:opacity-100 after:transition-opacity',
-                    user.avatar ?? '!cursor-default after:hidden'
+                    'border-4 dark:border-darker border-lighter',
+                    user.avatar ?? '!cursor-default !overlay-none'
                 )}
             />
             {user.avatar &&

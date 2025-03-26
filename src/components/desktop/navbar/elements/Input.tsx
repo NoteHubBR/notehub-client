@@ -59,11 +59,11 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
                 className="outline-none
                     peer
                     inlg:w-[333px] w-[444px] py-[6px] pl-4 pr-9
-                    text-sm dark:text-neutral-50 text-neutral-900
-                    border-2 dark:border-neutral-50/10 border-neutral-900/15 rounded-s-3xl
-                    dark:bg-neutral-900 bg-neutral-100
-                    dark:focus:border-violet-600 focus:border-violet-600
-                    dark:placeholder:text-neutral-100/30
+                    text-sm dark:text-lighter text-dark
+                    border-2 dark:border-lighter/10 border-dark/15 rounded-s-3xl
+                    dark:bg-dark bg-light
+                    dark:focus:border-primary focus:border-primary
+                    dark:placeholder:text-light/30
                     transition-colors"
                 value={query}
                 onFocus={handleFocus}
@@ -75,7 +75,7 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
                 <button
                     aria-label="Apagar"
                     type="button"
-                    className="absolute right-16 p-1 rounded-md hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10"
+                    className="absolute right-16 p-1 rounded-md hover:dark:bg-lighter/10 hover:bg-dark/10"
                     onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
                     onClick={() => { setQuery(''); }}
                 >
@@ -88,8 +88,8 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
                 className="cursor-pointer
                     py-[6px] px-4
                     border-2 border-transparent rounded-e-3xl
-                    dark:bg-neutral-50/15 bg-neutral-900/15
-                    dark:peer-focus:bg-violet-600 peer-focus:bg-violet-600
+                    dark:bg-lighter/15 bg-dark/15
+                    dark:peer-focus:bg-primary peer-focus:bg-primary
                     transition-colors"
             >
                 <IconSearch size={20} className="text-white" />

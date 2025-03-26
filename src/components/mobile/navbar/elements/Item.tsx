@@ -17,17 +17,14 @@ export const Item = (props: ItemProps) => {
     const IconPlus: boolean = !text;
 
     return (
-        <li
-            className={`cursor-pointer underlined ${pathname === href ? 'on' : ''}`}
-            {...rest}
-        >
+        <li className={clsx('cursor-pointer route-highlight', pathname === href && 'on')} {...rest}>
             <Link
                 href={href}
                 className={clsx(
                     'py-1',
                     'flex flex-col items-center',
                     'rounded-full',
-                    IconPlus ? 'px-1 dark:bg-neutral-50/10 bg-neutral-900/10' : ''
+                    IconPlus ? 'px-1 dark:bg-lighter/10 bg-darker/10' : ''
                 )}
             >
                 {children}

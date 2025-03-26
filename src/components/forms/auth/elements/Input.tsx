@@ -24,11 +24,11 @@ const Input = ({ name, icon, type = "text", ...rest }: InputProps) => {
                 className="outline-none
                     peer
                     w-full py-1 px-2
-                    text-md text-violet-500 font-semibold
-                    border-2 dark:border-violet-600/40 border-violet-600/40 rounded-s-md
-                    dark:bg-neutral-900 bg-neutral-100
-                    dark:focus:border-violet-600 dark:valid:border-violet-600
-                    focus:border-violet-600 valid:border-violet-600"
+                    text-md text-primary font-semibold
+                    border-2 dark:border-primary/40 border-primary/40 rounded-s-md
+                    dark:bg-dark bg-light
+                    dark:focus:border-primary dark:valid:border-primary
+                    focus:border-primary valid:border-primary"
                 {...rest}
             />
             {type !== "password"
@@ -36,9 +36,9 @@ const Input = ({ name, icon, type = "text", ...rest }: InputProps) => {
                 <div className="p-1
                     text-slate-100
                     border-2 border-transparent rounded-e-md
-                    dark:bg-violet-600/25 bg-violet-600/35
-                    dark:peer-focus:bg-violet-600 dark:peer-valid:bg-violet-600
-                    peer-focus:bg-violet-600 peer-valid:bg-violet-600"
+                    dark:bg-primary/25 bg-primary/35
+                    dark:peer-focus:bg-primary dark:peer-valid:bg-primary
+                    peer-focus:bg-primary peer-valid:bg-primary"
                 >
                     {icon}
                 </div>
@@ -49,9 +49,9 @@ const Input = ({ name, icon, type = "text", ...rest }: InputProps) => {
                     className="p-1
                         text-slate-100
                         border-2 border-transparent rounded-e-md
-                        dark:bg-violet-600/25 bg-violet-600/35
-                        dark:peer-focus:bg-violet-600 dark:peer-valid:bg-violet-600 dark:focus-visible:bg-violet-600
-                        peer-focus:bg-violet-600 peer-valid:bg-violet-600 focus-visible:bg-violet-600"
+                        dark:bg-primary/25 bg-primary/35
+                        dark:peer-focus:bg-primary dark:peer-valid:bg-primary dark:focus-visible:bg-primary
+                        peer-focus:bg-primary peer-valid:bg-primary focus-visible:bg-primary"
                     onClick={() => setIsPasswordVisible(!isPasswordVisible)}
                 >
                     {isPasswordVisible

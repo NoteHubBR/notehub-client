@@ -8,7 +8,7 @@ interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
 const Label = ({ tooltip, ...rest }: LabelProps) => {
     return (
         <div className="flex items-center gap-1 px-1 ">
-            <label className="text-md dark:text-slate-100 text-neutral-900" {...rest} />
+            <label className="text-md dark:text-slate-100 text-dark" {...rest} />
             {tooltip &&
                 <div className="group relative">
                     <IconQuestionMark size={17} className="text-slate-100 rounded-full dark:bg-slate-300/50 bg-neutral-500" />

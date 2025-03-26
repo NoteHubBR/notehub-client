@@ -20,18 +20,10 @@
     @include mixins.checkered-background(#171717, #fafafa);
 }
 
-.underlined {
-    @include mixins.underline;
+.applying {
+    @include mixins.applying;
 }
 
-.underline-onhover {
-    @include mixins.underline-onhover;
-}
-
-.following {
-    @include mixins.requesting-follow(#7c3aed);
-}
-
-.unfollowing {
-    @include mixins.requesting-unfollow(#7c3aed);
+.canceling {
+    @include mixins.canceling;
 }

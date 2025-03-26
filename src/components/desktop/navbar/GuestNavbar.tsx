@@ -8,7 +8,7 @@ export const Navbar = (props: React.HTMLAttributes<HTMLElement>) => {
       className="sticky top-0 z-[997]
       w-screen max-w-full h-[8vh] inmd:h-[8svh] p-4
       flex items-center justify-between gap-4
-      dark:bg-neutral-950 bg-neutral-50"
+      dark:bg-darker bg-lighter"
       {...props}
     >
       <div className="pl-2 flex gap-4 w-fit">
@@ -18,8 +18,8 @@ export const Navbar = (props: React.HTMLAttributes<HTMLElement>) => {
       </div>
       <Input type="text" placeholder="Pesquisar" />
       <div className="pr-2 flex items-center justify-center gap-8 w-fit">
-        <Link href={'/explore'} className="underline-onhover font-semibold hover:text-violet-600 transition-colors">Explorar</Link>
-        <Link href={'/signin'} className="underline-onhover font-semibold hover:text-violet-600 transition-colors">Entrar</Link>
+        <Link href={'/explore'} className="navigation-hover-hover font-semibold hover:text-primary transition-colors">Explorar</Link>
+        <Link href={'/signin'} className="navigation-hover-hover font-semibold hover:text-primary transition-colors">Entrar</Link>
       </div>
     </nav>
   )

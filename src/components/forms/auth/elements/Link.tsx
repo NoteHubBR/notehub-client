@@ -11,11 +11,11 @@ const Link = ({ children, ...rest }: LinkProps) => {
         <NextLink
             className='
                 p-2
-                font-semibold text-md text-center dark:text-neutral-50 text-neutral-900
+                font-semibold text-md text-center dark:text-lighter text-dark
                 rounded-md
-                dark:bg-neutral-900/75 bg-neutral-50/75
-                dark:hover:bg-violet-600 hover:bg-violet-600 hover:text-neutral-50
-                dark:focus:bg-violet-600 focus:bg-violet-600 focus:text-neutral-50
+                dark:bg-dark/75 bg-lighter/75
+                dark:hover:bg-primary hover:bg-primary hover:text-lighter
+                dark:focus:bg-primary focus:bg-primary focus:text-lighter
                 transition-all
             '
             {...rest}

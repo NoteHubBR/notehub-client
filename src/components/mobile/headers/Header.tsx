@@ -14,7 +14,7 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
     const Link = ({ children, ...rest }: { children: React.ReactNode } & LinkProps) => {
         return (
             <NextLink
-                className="relative p-1 rounded-full hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10 transition-colors"
+                className="relative p-1 rounded-full hover:dark:bg-lighter/10 hover:bg-dark/10 transition-colors"
                 {...rest}
             >
                 {children}
@@ -26,7 +26,7 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
 
     return (
         <header
-            className="py-2 px-4 flex items-center justify-end gap-4 dark:bg-neutral-950 bg-neutral-50"
+            className="py-2 px-4 flex items-center justify-end gap-4 dark:bg-darker bg-lighter"
             {...props}
         >
             <Image src={'/imgs/logo.png'} width={77} height={0} alt="Logo" className="mr-auto" />
@@ -36,8 +36,8 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
                     {count > 0 &&
                         <span className="absolute top-0 left-0 
                     w-4 h-4 flex items-center justify-center rounded-full 
-                    text-sm text-neutral-50 
-                    bg-violet-600"
+                    text-sm text-lighter 
+                    bg-primary"
                         >
                             {count}
                         </span>

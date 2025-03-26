@@ -23,7 +23,7 @@ export const Photo = forwardRef<HTMLImageElement, PhotoProps>((props, ref) => {
                     width={size}
                     height={size}
                     alt={`Avatar de ${user.username}`}
-                    className="w-full h-full object-cover dark:bg-neutral-950 bg-neutral-50"
+                    className="w-full h-full object-cover dark:bg-darker bg-lighter"
                 />
             </figure>
         )

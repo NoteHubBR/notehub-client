@@ -54,7 +54,7 @@ export const Avatar = ({ user, onModalOpen, onModalClose, ...props }: AvatarProp
             <div className="select-none bot-mid left-4">
                 <Photo
                     src={url} user={user} size={onDesktop ? 111 : 88}
-                    className="border-4 dark:border-neutral-950 border-neutral-50" {...props}
+                    className="border-4 dark:border-darker border-lighter" {...props}
                 />
                 <Upload ref={triggerRef} name="avatar" handleFileChange={handleFileChange} />
             </div>

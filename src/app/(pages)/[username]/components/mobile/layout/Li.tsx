@@ -8,13 +8,13 @@ export const Li = ({ children, ...rest }: { children: React.ReactNode } & LinkPr
     const onRoute: boolean = rest.href === pathname;
     return (
         <li
-            style={{ filter: 'drop-shadow(0 0 1px rgba(0, 0, 0, .33))' }}
             className={clsx(
                 'relative',
                 'p-2 rounded-full',
                 onRoute
-                    ? 'text-white fill-white bg-violet-600'
-                    : 'text-violet-600 bg-white',
+                    ? 'text-white fill-white bg-primary'
+                    : 'text-primary bg-white',
+                'drop-shadow-alpha-d-sm',
                 'transition-colors duration-300'
             )}
         >
@@ -30,7 +30,7 @@ export const Li = ({ children, ...rest }: { children: React.ReactNode } & LinkPr
                     : 'opacity-0 top-0 left-1/2 -translate-x-1/2 rotate-180',
                 'transition-all duration-300'
             )}>
-                <IconCaretDown className="fill-violet-600 text-violet-600 animate-bounce" />
+                <IconCaretDown className="fill-primary text-primary animate-bounce" />
             </span>
         </li>
     )

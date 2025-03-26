@@ -11,7 +11,7 @@ export const Menu = (props: React.HTMLAttributes<HTMLButtonElement>) => {
 
     return (
         <button
-            className="p-1 rounded-full hover:dark:bg-neutral-50/10 hover:bg-neutral-900/15 transition-colors"
+            className="p-1 rounded-full hover:dark:bg-lighter/10 hover:bg-dark/15 transition-colors"
             onClick={() => setActions({ isMenuOpen: !isMenuOpen(user) }, user?.username)}
             {...props}
         >

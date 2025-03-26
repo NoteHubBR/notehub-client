@@ -25,11 +25,7 @@
 
 import { forwardRef } from "react";
 
-interface LinkProps {
-    children: React.ReactNode;
-}
-
-export const Link = forwardRef<HTMLButtonElement, LinkProps>(({ children, ...rest }, ref) => {
+export const Link = forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>((props, ref) => {
     return (
         <button
             ref={ref}
@@ -37,10 +33,10 @@ export const Link = forwardRef<HTMLButtonElement, LinkProps>(({ children, ...res
             className="p-2 rounded-full
             dark:text-white text-black
             dark:bg-black bg-white
-            drop-shadow-[0_0_1px_rgba(0,0,0,0.33)]"
-            {...rest}
+            dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
+            {...props}
         >
-            {children}
+            {props.children}
         </button>
     )
 })

@@ -26,8 +26,8 @@ export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ name, handleF
                 className="cursor-pointer center
                 rounded-full p-2
                 backdrop-blur-[2px]
-                bg-[rgba(0,0,0,.5)]
-                hover:bg-[rgba(0,0,0,.25)] transition-all "
+                bg-alpha-d-md
+                hover:bg-alpha-d-sm transition-all "
             >
                 <IconCameraPlus color="white" />
             </label>

@@ -84,54 +84,7 @@
     }
 }
 
-@mixin underline {
-    position: relative;
-
-    &::after {
-        z-index: -1;
-        content: '';
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 0;
-        height: 100%;
-        border-bottom: 3px solid #7c3aed;
-        transition: width ease-in-out .25s;
-    }
-
-    &.on::after {
-        width: 100%;
-        left: 0;
-    }
-
-}
-
-@mixin underline-onhover {
-    position: relative;
-
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: -.5rem;
-        right: 0;
-        width: 0;
-        height: .2rem;
-        border-radius: 9999px;
-        background-color: #7c3aed;
-        transition: width ease-in-out .25s;
-    }
-
-    &:hover {
-        &::after {
-            pointer-events: none;
-            width: 100%;
-            left: 0;
-        }
-    }
-
-}
-
-@mixin requesting-follow($bgColor) {
+@mixin applying {
     z-index: 1;
     overflow: hidden;
     position: relative;
@@ -145,12 +98,12 @@
         left: 0;
         width: 0;
         height: 100%;
-        background: $bgColor;
-        animation: request-follow 2.5s linear infinite;
+        background: #7c3aed;
+        animation: request-apply 2.5s linear infinite;
     }
 }
 
-@keyframes request-follow {
+@keyframes request-apply {
     0% {
         width: 0;
     }
@@ -160,7 +113,7 @@
     }
 }
 
-@mixin requesting-unfollow($bgColor) {
+@mixin canceling {
     z-index: 1;
     overflow: hidden;
     position: relative;
@@ -174,12 +127,12 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: $bgColor;
-        animation: request-unfollow 2.5s linear infinite;
+        background: #7c3aed;
+        animation: request-cancel 2.5s linear infinite;
     }
 }
 
-@keyframes request-unfollow {
+@keyframes request-cancel {
     0% {
         width: 100%;
     }

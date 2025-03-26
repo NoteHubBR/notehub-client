@@ -19,7 +19,7 @@ const Button = ({ children, text, useChevron, ...rest }: ButtonProps) => {
             <button
                 className="w-full py-2 px-4
                     flex items-center justify-between gap-4 
-                    hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10
+                    hover:dark:bg-semilight/10 hover:bg-semidark/10
                     transition-colors"
                 {...rest}
             >
@@ -39,7 +39,7 @@ const Link = ({ target, children, text, useChevron, ...rest }: LinkProps) => {
             <NextLink
                 className="w-full py-2 px-4
                     flex items-center justify-between gap-4
-                    hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10
+                    hover:dark:bg-semilight/10 hover:bg-semidark/10
                     transition-colors"
                 target={target}
                 {...rest}

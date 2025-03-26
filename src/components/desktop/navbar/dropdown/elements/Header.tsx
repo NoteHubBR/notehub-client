@@ -17,7 +17,7 @@ export const Header = ({ children, user, ...rest }: HeaderProps) => {
                 <span className="max-w-[200px] text-md font-faculty truncate">
                     @{user.username}
                 </span>
-                <Link href={`/${user.username}`} className="mt-1 text-sm font-bold text-violet-600">Acessar perfil</Link>
+                <Link href={`/${user.username}`} className="mt-1 text-sm font-bold text-primary">Acessar perfil</Link>
             </div>
         </header>
     )

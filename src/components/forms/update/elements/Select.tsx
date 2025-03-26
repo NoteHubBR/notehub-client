@@ -18,9 +18,9 @@ export const Select = ({ icon, title, description, isMenuOpen, children, ...rest
                 'flex items-center gap-3',
                 'dark:text-neutral-400 text-neutral-600',
                 'dark:bg-black bg-white',
-                'hover:!text-white hover:!bg-violet-600',
-                isMenuOpen && '!text-white !bg-violet-600',
-                'dark:drop-shadow-[0_0_1px_rgba(255,255,255,1)] drop-shadow-[0_0_1px_rgba(0,0,0,1)]',
+                'hover:!text-white hover:!bg-primary',
+                isMenuOpen && '!text-white !bg-primary',
+                'dark:drop-shadow-alpha-l drop-shadow-alpha-d',
                 'transition-all duration-200'
             )}
             {...rest}

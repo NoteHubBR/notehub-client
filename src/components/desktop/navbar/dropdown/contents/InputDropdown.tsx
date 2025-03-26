@@ -13,8 +13,8 @@ export const InputDropdown = ({ isOpen, ...rest }: { isOpen: boolean } & React.H
                 isOpen ? 'max-h-[200px] py-1 pointer-events-auto' : 'max-h-0 py-0',
                 searches(user).length > 5 ? 'overflow-y-auto scrollbar' : 'overflow-y-hidden',
                 'w-full rounded-lg',
-                'dark:bg-neutral-800 bg-neutral-50',
-                'drop-shadow-[0_0_1px_rgba(0,0,0,.33)]',
+                'dark:bg-semidark bg-lighter',
+                'drop-shadow-alpha-d-sm',
                 'transition-all'
             )}
             onMouseDown={(e: React.MouseEvent) => { e.preventDefault() }}

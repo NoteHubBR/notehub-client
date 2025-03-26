@@ -37,7 +37,7 @@ export const FollowingScope = () => {
                 <div className={clsx(
                     'cursor-pointer',
                     'rounded-md',
-                    'hover:dark:bg-neutral-50/15 hover:bg-neutral-900/15',
+                    'hover:dark:bg-lighter/15 hover:bg-dark/15',
                     'transition-colors'
                 )}>
                     <Button

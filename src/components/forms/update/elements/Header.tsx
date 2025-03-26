@@ -15,7 +15,7 @@ export const Header = forwardRef<HTMLButtonElement, HeaderProps>(({ icon, title,
             className={clsx(
                 'sticky top-0 left-0 z-[997] p-2 pr-4 flex items-center justify-between gap-6',
                 useBlur
-                    ? 'dark:bg-[rgba(0,0,0,.5)] bg-[rgba(255,255,255,.5)] backdrop-blur'
+                    ? 'dark:bg-alpha-d-md bg-alpha-l-md backdrop-blur'
                     : 'dark:bg-black bg-white'
             )}
         >
@@ -24,8 +24,8 @@ export const Header = forwardRef<HTMLButtonElement, HeaderProps>(({ icon, title,
                 ref={ref}
                 type="button"
                 className="p-2 rounded-full
-                drop-shadow-[0_0_1px_rgba(0,0,0,0.33)]
-                hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10
+                drop-shadow-alpha-d-sm
+                hover:dark:bg-lighter/10 hover:bg-dark/10
                 transition-colors"
             >
                 {icon}

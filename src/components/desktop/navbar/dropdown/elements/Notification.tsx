@@ -45,24 +45,24 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
     return (
         <Link
             href={`${href}`}
-            className={`py-2 hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10 transition-colors`}
+            className={`py-2 hover:dark:bg-lighter/10 hover:bg-dark/10 transition-colors`}
         >
             <article className="w-ull">
                 <main className="flex items-center">
-                    <figure className="px-2 border-r text-sm dark:border-r-neutral-50/20 border-r-neutral-900/20">
+                    <figure className="px-2 border-r text-sm dark:border-r-lighter/20 border-r-dark/20">
                         <Photo user={user} size={55} />
                     </figure>
                     <section className="px-2">
                         <p className="text-sm">
                             <span>{emote ? emote : <IconFlame fill="#6d28d9" color="#7c3aed" />} </span>
-                            <span className="font-extrabold text-violet-600">{username} </span>
+                            <span className="font-extrabold text-primary">{username} </span>
                             {message}
                         </p>
                     </section>
                 </main>
                 <footer className="w-full flex justify-end">
                     <p
-                        className="flex gap-2 px-2 text-xs dark:text-neutral-50/50 text-neutral-900/50"
+                        className="flex gap-2 px-2 text-xs dark:text-lighter/50 text-dark/50"
                     >
                         <span
                             className={clsx(

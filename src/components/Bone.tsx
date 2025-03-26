@@ -13,7 +13,7 @@ export const Bone = ({ width, height, rounded, className, ...rest }: Bone) => {
             style={{ width: `${width}px`, height: `${height}px` }}
             className={clsx(
                 `rounded-${rounded}`,
-                'dark:bg-neutral-900 bg-neutral-100 drop-shadow-[0_0_1px_rgba(0,0,0,.33)]',
+                'dark:bg-dark bg-light dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm',
                 className
             )}
             {...rest}

@@ -21,7 +21,7 @@ export const Tag = ({ children, ...rest }: TagProps) => {
                 flex flex-col gap-4
                 rounded-md
                 backdrop-blur-sm
-                dark:bg-violet-600/20 bg-indigo-600/10"
+                dark:bg-primary/20 bg-indigo-600/10"
             {...rest}
         >
             {children}

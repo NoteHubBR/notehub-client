@@ -67,12 +67,12 @@ const Notifications = () => {
     if (!onMobile) return null;
 
     return (
-        <section ref={sectionRef} className="w-full h-full flex flex-col dark:bg-neutral-900 bg-neutral-50">
+        <section ref={sectionRef} className="w-full h-full flex flex-col dark:bg-dark bg-lighter">
             <Mobile.Header.SimpleHeader title="Notificações" />
             <main className="flex-1 flex flex-col justify-center">
                 <ul className="flex flex-col gap-2">
                     {notifications.map(notification => (
-                        <li key={notification.id} className="even:dark:bg-neutral-50/10 even:bg-neutral-900/10 p-2">
+                        <li key={notification.id} className="even:dark:bg-lighter/10 even:bg-dark/10 p-2">
                             <Notification notification={notification} />
                         </li>
                     ))}

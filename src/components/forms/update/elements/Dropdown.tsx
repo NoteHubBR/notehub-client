@@ -11,7 +11,7 @@ export const Dropdown = ({ isOpen, ...rest }: { isOpen: boolean } & React.HTMLAt
                 'rounded',
                 'dark:text-neutral-400 text-neutral-600',
                 'dark:bg-black bg-white',
-                'hover:dark:bg-neutral-800 hover:bg-neutral-100',
+                'hover:dark:bg-semidark hover:bg-light',
                 'transition-all'
             )}
             {...rest}

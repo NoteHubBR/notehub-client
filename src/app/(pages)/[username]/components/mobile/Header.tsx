@@ -7,12 +7,11 @@ import { Photo } from "@/components/Photo";
 import { PicturePortal } from "@/components/PicturePortal";
 import { Portal } from "@/components/template/Portal";
 import { useParams } from "next/navigation";
-import { usePref, useUser } from "@/data/hooks";
 import { useRef } from "react";
+import { useUser } from "@/data/hooks";
 
 export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React.HTMLAttributes<HTMLElement>) => {
 
-    const { pref: { useDarkTheme } } = usePref();
     const { user: currentUser } = useUser();
 
     const params = useParams<{ username: string }>();
@@ -31,14 +30,9 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
             className="relative py-5 bg-cover bg-no-repeat bg-center"
             {...rest}
         >
-            <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                    background: `linear-gradient(${useDarkTheme ? 'rgba(0,0,0,.5), #0a0a0a 90%' : 'rgba(255,255,255, .5), #fafafa 90%'})`
-                }}
-            />
+            <div className="pointer-events-none absolute inset-0 dark:bg-d-gradient bg-l-gradient" />
             <section className="relative z-10 flex flex-col items-center gap-3 ">
-                <Photo ref={photoRef} user={user} size={111} className="cursor-pointer drop-shadow-[0_0_1px_rgba(0,0,0,0.33)]" />
+                <Photo ref={photoRef} user={user} size={111} className="cursor-pointer drop-shadow-alpha-d-sm" />
                 <Portal triggerRef={photoRef} childRef={upscaledPhotoRef} useDefaultClose>
                     <PicturePortal ref={upscaledPhotoRef} user={user} size={270} className="rounded-full" />
                 </Portal>

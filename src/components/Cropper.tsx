@@ -48,7 +48,7 @@ const CropperComponent = ({ imgSrc, aspect, shape }: CropperProps, ref: React.Re
 
     return (
         <>
-            <main className="w-full h-full dark:bg-neutral-800 bg-neutral-200">
+            <main className="w-full h-full dark:bg-semidark bg-semilight">
                 <div className="relative w-[90%] h-full m-auto">
                     <EasyCropper
                         objectFit="horizontal-cover"
@@ -63,8 +63,8 @@ const CropperComponent = ({ imgSrc, aspect, shape }: CropperProps, ref: React.Re
                         onZoomChange={setZoom}
                         onCropComplete={onCropComplete}
                         classes={{
-                            containerClassName: '!overflow-visible dark:!bg-neutral-800 !bg-neutral-200',
-                            cropAreaClassName: '!border-4 !border-violet-500 dark:!text-[rgba(0,0,0,.5)] !text-[rgba(255,255,255,.5)]',
+                            containerClassName: '!overflow-visible dark:!bg-semidark !bg-semilight',
+                            cropAreaClassName: '!border-4 !border-primary dark:!text-alpha-d-md !text-alpha-l-md',
                         }}
                     />
                 </div>

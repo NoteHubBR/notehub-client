@@ -7,7 +7,7 @@ export const Skeleton = () => {
         <div
             className="border-b p-3
             flex items-center gap-3
-            dark:border-neutral-700/50 border-neutral-900/10
+            dark:border-neutral-700/50 border-dark/10
             last:border-none last:col-span-2 insm:last:col-span-1"
         >
             <Bone width={44} height={44} rounded="full" />
@@ -19,8 +19,8 @@ export const Skeleton = () => {
     )
 
     return (
-        <Section className="w-full min-h-[300px] dark:bg-neutral-950 bg-neutral-50 animate-pulse">
-            <header className="py-5 px-8 border-b inmd:flex inmd:justify-center dark:border-neutral-700/50 border-neutral-900/10">
+        <Section className="w-full min-h-[300px] dark:bg-darker bg-lighter animate-pulse">
+            <header className="py-5 px-8 border-b inmd:flex inmd:justify-center dark:border-neutral-700/50 border-dark/10">
                 <Bone width={200} height={28} rounded="md" />
             </header>
             <div className="px-6 insm:px-0 insm:m-auto grid grid-cols-2 insm:grid-cols-1 gap-x-6">

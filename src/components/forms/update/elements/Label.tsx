@@ -11,7 +11,7 @@ export const Label = ({ labelFor, ...rest }: LabelProps) => {
                 className={clsx(
                     'absolute top-0 left-0 w-full h-full',
                     'border border-neutral-700/70 rounded',
-                    'peer-focus:border-violet-600',
+                    'peer-focus:border-primary',
                     'peer-invalid:border-red-600',
                 )}
                 {...rest}
@@ -24,7 +24,7 @@ export const Label = ({ labelFor, ...rest }: LabelProps) => {
                     'font-semibold text-md dark:text-neutral-400 text-neutral-600',
                     'peer-valid:top-1 peer-valid:translate-y-0 peer-valid:text-sm',
                     'peer-invalid:top-1/2 peer-invalid:-translate-y-1/2 peer-invalid:text-red-600',
-                    'peer-focus:top-1 peer-focus:translate-y-0 peer-focus:text-sm peer-focus:text-violet-600',
+                    'peer-focus:top-1 peer-focus:translate-y-0 peer-focus:text-sm peer-focus:text-primary',
                     'dark:bg-black bg-white',
                     'transition-all'
                 )}

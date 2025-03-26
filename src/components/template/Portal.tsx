@@ -67,7 +67,7 @@ export const Portal = ({ triggerRef, childRef, closeRef, useDefaultClose, ...res
         <section
             className="z-[998] fixed top-0 left-0
             w-screen max-w-full min-h-screen inmd:min-h-svh
-            dark:bg-[rgba(0,0,0,.25)] bg-[rgba(255,255,255,.25)] backdrop-blur-3xl"
+            dark:bg-alpha-d-sm bg-alpha-l-md backdrop-blur-3xl"
         >
             {useDefaultClose &&
                 <button
@@ -75,7 +75,7 @@ export const Portal = ({ triggerRef, childRef, closeRef, useDefaultClose, ...res
                     fixed top-[23px] right-[27px]
                     p-1 rounded-full
                     dark:text-white text-black
-                    dark:hover:bg-neutral-50/10 hover:bg-neutral-500/10
+                    dark:hover:bg-semilight/10 hover:bg-semidark/10
                     transition-colors"
                 >
                     <IconX size={24} />

@@ -34,7 +34,7 @@ export const SearchHeader = forwardRef<HTMLInputElement, SearchHeaderProps>(({ q
             <button
                 aria-label="Voltar"
                 className="p-1 rounded-full
-                    hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10 transition-colors"
+                    hover:dark:bg-lighter/10 hover:bg-dark/10 transition-colors"
                 onClick={() => router.back()}
             >
                 <IconArrowLeft />
@@ -45,11 +45,11 @@ export const SearchHeader = forwardRef<HTMLInputElement, SearchHeaderProps>(({ q
                     inputMode="search"
                     className="outline-none
                         w-full py-[6px] pl-4 pr-10
-                        text-sm dark:text-neutral-50 text-neutral-900
-                        border-2 dark:border-neutral-50/15 border-neutral-900/15 rounded-3xl
-                        dark:bg-neutral-900 bg-neutral-100
-                        dark:focus:border-violet-600 focus:border-violet-600
-                        dark:placeholder:text-neutral-100/30
+                        text-sm dark:text-lighter text-dark
+                        border-2 dark:border-lighter/15 border-dark/15 rounded-3xl
+                        dark:bg-dark bg-light
+                        dark:focus:border-primary focus:border-primary
+                        dark:placeholder:text-light/30
                         transition-colors"
                     placeholder="Pesquisar"
                     value={query}
@@ -62,8 +62,8 @@ export const SearchHeader = forwardRef<HTMLInputElement, SearchHeaderProps>(({ q
                 className={clsx(
                     query.length > 0 ? 'visible opacity-100' : 'invisible opacity-0',
                     "p-1 rounded-md",
-                    "dark:bg-neutral-800 bg-neutral-50",
-                    "hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10",
+                    "dark:bg-semidark bg-lighter",
+                    "hover:dark:bg-lighter/10 hover:bg-dark/10",
                     'transition-all'
                 )}
                 onMouseDown={(e: React.MouseEvent) => e.preventDefault()}

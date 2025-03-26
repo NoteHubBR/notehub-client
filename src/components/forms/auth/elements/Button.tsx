@@ -15,7 +15,7 @@ const Button = ({ isRequesting, ...rest }: ButtonProps) => {
                 'w-full m-auto py-2',
                 'rounded-md',
                 'text-md text-slate-100 font-semibold',
-                isRequesting ? "dark:bg-white/25 bg-black/25" : "dark:bg-slate-100/5 bg-neutral-900/25"
+                isRequesting ? "dark:bg-white/25 bg-black/25" : "dark:bg-slate-100/5 bg-dark/25"
             )}
             type="submit"
             disabled={isRequesting}

@@ -66,13 +66,13 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
     if (requesting) return (
         <div
             role="status"
-            style={{ filter: 'drop-shadow(0 0 2px rgba(0, 0, 0, .25)' }}
             className={clsx(
                 'cursor-pointer',
-                reqFollow && 'following',
-                reqUnfollow && 'unfollowing',
-                'dark:bg-neutral-50/10 bg-neutral-900/10',
+                reqFollow && 'applying',
+                reqUnfollow && 'canceling',
+                'dark:bg-lighter/10 bg-darker/10',
                 'w-24 h-[40px] flex items-center justify-center rounded-3xl text-sm font-medium',
+                'drop-shadow-alpha-d-xs',
                 'transition-colors duration-300',
             )}
         >
@@ -95,7 +95,7 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
     if (isFollowing) return (
         <HTMLButton
             aria-label="Seguindo"
-            className="dark:bg-violet-600 bg-violet-600 text-white"
+            className="dark:bg-primary bg-primary text-white"
             onMouseEnter={() => setHovering(true)}
             onClick={() => unfollow()}
             {...rest}
@@ -107,11 +107,11 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
     if (!isFollowing) return (
         <HTMLButton
             aria-label="Seguir"
-            className="dark:bg-neutral-50/10 bg-neutral-900/10
-            hover:dark:bg-violet-600 hover:bg-violet-600
+            className="dark:bg-lighter/10 bg-darker/10
+            hover:dark:bg-primary hover:bg-primary
             hover:text-white dark:text-white  text-neutral-700 inmd:text-black
             backdrop-blur-sm
-            drop-shadow-[0_0_1px_rgba(0,0,0,0.33)]"
+            drop-shadow-alpha-d-sm"
             onClick={() => follow()}
             {...rest}
         >

@@ -24,8 +24,8 @@ const OAuthButton = (props: OAuthButtonProps) => {
             'flex items-center justify-center gap-4',
             'p-2 rounded-md',
             isGoogleAuthInProgress || isGitHubAuthInProgress
-                ? "dark:bg-violet-600 bg-violet-600"
-                : "dark:bg-slate-100/5 bg-neutral-900/25",
+                ? "dark:bg-primary bg-primary"
+                : "dark:bg-slate-100/5 bg-dark/25",
             'transition-all'
         )} disabled={disabled} {...rest}>
             <Image
@@ -34,7 +34,7 @@ const OAuthButton = (props: OAuthButtonProps) => {
                 priority
                 alt={alt}
             />
-            <span className='font-faculty text-md text-neutral-50'>Continuar com o {brand}</span>
+            <span className='font-faculty text-md text-lighter'>Continuar com o {brand}</span>
         </button>
     )
 

@@ -17,8 +17,8 @@ export const Field = (props: FieldProps) => {
                 'cursor-pointer',
                 'rounded-md',
                 pathname === href
-                    ? 'text-neutral-50 bg-violet-600'
-                    : 'hover:dark:bg-neutral-50/15 hover:bg-neutral-900/15',
+                    ? 'text-lighter bg-primary'
+                    : 'hover:dark:bg-lighter/15 hover:bg-dark/15',
                 'transition-colors'
             )}
             {...props}

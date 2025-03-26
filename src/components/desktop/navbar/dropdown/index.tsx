@@ -2,12 +2,11 @@ import { createPortal } from "react-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
-interface DropdownProps {
+interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
     buttonRef: React.RefObject<HTMLButtonElement>;
-    children: React.ReactNode;
 }
 
-export const Dropdown = ({ buttonRef, children }: DropdownProps) => {
+export const Dropdown = ({ buttonRef, ...rest }: DropdownProps) => {
 
     const portalRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +32,7 @@ export const Dropdown = ({ buttonRef, children }: DropdownProps) => {
     }, [])
 
     const pathname = usePathname();
-    
+
     useEffect((): void => { return setIsOpen(false); }, [pathname])
 
     useEffect(() => {
@@ -68,11 +67,11 @@ export const Dropdown = ({ buttonRef, children }: DropdownProps) => {
 
     if (buttonRef.current) return createPortal(
         <div
-            className="z-[998] absolute rounded-xl dark:bg-neutral-800 bg-neutral-50"
-            style={{ top: position.top, right: position.right, filter: 'drop-shadow(0 0 2px rgba(0, 0, 0, .25))' }}
             ref={portalRef}
+            style={{ top: position.top, right: position.right }}
+            className="z-[998] absolute rounded-xl dark:bg-semidark bg-lighter drop-shadow-alpha-d-xs"
         >
-            {children}
+            {rest.children}
         </div>,
         document.body
     )

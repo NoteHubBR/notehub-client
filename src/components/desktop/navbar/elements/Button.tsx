@@ -6,7 +6,7 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ tooltip, children, ...rest }, ref) => (
-    <button ref={ref} className="relative group p-1 rounded-full hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10 transition-colors" {...rest}>
+    <button ref={ref} className="relative group p-1 rounded-full dark:hover:bg-semilight/10 hover:bg-semidark/10 transition-colors" {...rest}>
         {tooltip &&
             <span
                 className="pointer-events-none

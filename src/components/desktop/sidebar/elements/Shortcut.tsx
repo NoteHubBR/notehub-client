@@ -21,8 +21,8 @@ export const Shortcut = (props: ShortcutProps) => {
                 'flex flex-col items-center gap-1',
                 'rounded-xl',
                 pathname === rest.href
-                    ? 'text-neutral-50 bg-violet-600'
-                    : 'hover:dark:bg-neutral-50/15 hover:bg-neutral-900/15',
+                    ? 'text-lighter bg-primary'
+                    : 'hover:dark:bg-lighter/15 hover:bg-dark/15',
                 'transition-colors'
             )}
             {...rest}

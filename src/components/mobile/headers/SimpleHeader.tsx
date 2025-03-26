@@ -13,11 +13,11 @@ export const SimpleHeader = ({ title, ...rest }: { title: string } & React.HTMLA
     if (!onMobile) return null;
 
     return (
-        <header className="w-full p-2 flex items-center justify-between gap-2 dark:bg-neutral-950 bg-neutral-50" {...rest}>
+        <header className="w-full p-2 flex items-center justify-between gap-2 dark:bg-darker bg-lighter" {...rest}>
             <button
                 aria-label="Voltar"
                 className="p-1 rounded-full
-                    hover:dark:bg-neutral-50/10 hover:bg-neutral-900/10 transition-colors"
+                    hover:dark:bg-lighter/10 hover:bg-dark/10 transition-colors"
                 onClick={() => router.back()}
             >
                 <IconArrowLeft />

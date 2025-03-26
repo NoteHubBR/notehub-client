@@ -37,8 +37,8 @@ export const Link = (props: LinkProps) => {
             'cursor-pointer',
             'rounded-md',
             active
-                ? 'text-neutral-50 bg-violet-600'
-                : 'hover:dark:bg-neutral-50/15 hover:bg-neutral-900/15',
+                ? 'text-lighter bg-primary'
+                : 'dark:hover:bg-semilight/10 hover:bg-semidark/10',
             'transition-colors'
         )}>
             <NextLink className="py-1 px-2 flex items-center gap-3 "{...rest}>

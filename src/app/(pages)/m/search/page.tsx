@@ -19,7 +19,7 @@ const Search = () => {
     if (!onMobile) return null;
 
     return (
-        <section className="w-full h-full dark:bg-neutral-900 bg-neutral-50">
+        <section className="w-full h-full dark:bg-dark bg-lighter">
             <Mobile.Header.SearchHeader ref={inputRef} query={query} setQuery={setQuery} />
             <ul
                 className="w-[77%] m-auto py-2"

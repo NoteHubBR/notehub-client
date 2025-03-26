@@ -29,7 +29,7 @@ export const Textarea = ({ name, ...rest }: TextareaProps) => {
                     'w-full mt-4',
                     'dark:font-light text-md',
                     'bg-transparent',
-                    'selection:!bg-violet-600 selection:!text-white',
+                    'selection:!bg-primary selection:!text-white',
                     hasError && '!font-medium !text-red-500 selection:!bg-red-600',
                     'transition-all'
                 )}

@@ -31,7 +31,7 @@ export const Input = ({ name, ...rest }: InputProps) => {
                     'text-md',
                     'bg-transparent',
                     'selection:!text-white',
-                    hasError ? '!font-medium !text-red-500 selection:!bg-red-600' : 'selection:!bg-violet-600',
+                    hasError ? '!font-medium !text-red-500 selection:!bg-red-600' : 'selection:!bg-primary',
                 )}
                 required
                 {...rest}

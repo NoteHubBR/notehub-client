@@ -5,7 +5,7 @@ export const Skeleton = () => {
         <div
             className="w-full h-[8vh] inmd:h-[8svh] p-4
             flex items-center justify-between
-            dark:bg-neutral-950 bg-neutral-50 animate-pulse"
+            dark:bg-darker bg-lighter animate-pulse"
         >
             <div className="flex gap-4">
                 <Bone width={38} height={38} rounded="full" />
