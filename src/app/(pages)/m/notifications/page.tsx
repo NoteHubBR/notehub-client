@@ -72,7 +72,7 @@ const Notifications = () => {
             <main className="flex-1 flex flex-col justify-center">
                 <ul className="flex flex-col gap-2">
                     {notifications.map(notification => (
-                        <li key={notification.id} className="even:dark:bg-lighter/10 even:bg-dark/10 p-2">
+                        <li key={notification.id} className="even:dark:bg-semilight/15 even:bg-semidark/15 p-2">
                             <Notification notification={notification} />
                         </li>
                     ))}

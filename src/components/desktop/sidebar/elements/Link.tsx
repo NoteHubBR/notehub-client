@@ -1,10 +1,12 @@
 import { clsx } from "clsx";
+import { Icon } from "@/components/icon";
 import { usePathname } from "next/navigation";
 import { useUser } from "@/data/hooks";
 import NextLink, { LinkProps as NextLinkProps } from "next/link";
 
 interface LinkProps extends NextLinkProps {
     icon?: React.ReactNode;
+    useBadge?: boolean;
     text?: string;
     strong?: boolean;
     reverse?: boolean;
@@ -12,7 +14,7 @@ interface LinkProps extends NextLinkProps {
 
 export const Link = (props: LinkProps) => {
 
-    const { icon, text, strong, reverse, ...rest } = props;
+    const { icon, text, strong, reverse, useBadge, ...rest } = props;
 
     const { user } = useUser();
     const pathname = usePathname();
@@ -34,18 +36,18 @@ export const Link = (props: LinkProps) => {
 
     return (
         <div className={clsx(
-            'cursor-pointer',
-            'rounded-md',
+            'cursor-pointer rounded-md',
             active
                 ? 'text-lighter bg-primary'
                 : 'dark:hover:bg-semilight/10 hover:bg-semidark/10',
             'transition-colors'
         )}>
-            <NextLink className="py-1 px-2 flex items-center gap-3 "{...rest}>
+            <NextLink className="py-1 px-2 flex items-center gap-3" {...rest}>
                 {!reverse
                     ?
                     <>
                         {icon && icon}
+                        {useBadge && <Icon.Sponsor isSponsor={useBadge} size={22} useWhite={active} className="-mr-2" />}
                         {strong
                             ?
                             <strong><Span className="text-md">{text}</Span></strong>

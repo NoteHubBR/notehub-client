@@ -1,4 +1,5 @@
 import { clsx } from "clsx";
+import { Icon } from "@/components/icon";
 import { IconFlame } from "@tabler/icons-react";
 import { Notification as PropsType, toRelativeTime, Type } from "@/core";
 import { Photo } from "@/components/Photo";
@@ -45,25 +46,28 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
     return (
         <Link
             href={`${href}`}
-            className={`py-2 hover:dark:bg-lighter/10 hover:bg-dark/10 transition-colors`}
+            className="py-2 hover:dark:bg-semilight/15 hover:bg-semidark/15 transition-colors"
         >
             <article className="w-ull">
                 <main className="flex items-center">
-                    <figure className="px-2 border-r text-sm dark:border-r-lighter/20 border-r-dark/20">
+                    <figure className="relative px-2 border-r text-sm dark:border-r-semilight/15 border-r-semidark/15">
                         <Photo user={user} size={55} />
+                        <Icon.Sponsor
+                            isSponsor={user.sponsor}
+                            size={22}
+                            className="bot-mid-center drop-shadow-alpha-d-md"
+                        />
                     </figure>
                     <section className="px-2">
                         <p className="text-sm">
                             <span>{emote ? emote : <IconFlame fill="#6d28d9" color="#7c3aed" />} </span>
-                            <span className="font-extrabold text-primary">{username} </span>
+                            <span className="font-semibold text-primary">{username} </span>
                             {message}
                         </p>
                     </section>
                 </main>
                 <footer className="w-full flex justify-end">
-                    <p
-                        className="flex gap-2 px-2 text-xs dark:text-lighter/50 text-dark/50"
-                    >
+                    <p className="flex gap-2 px-2 text-xs dark:text-lighter/50 text-darker/50">
                         <span
                             className={clsx(
                                 isMouseOnDateField ? 'opacity-100' : 'opacity-0',

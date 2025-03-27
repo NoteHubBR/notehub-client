@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import { User } from "@/core";
 import Link from "next/link";
 
@@ -14,7 +15,8 @@ export const Header = ({ children, user, ...rest }: HeaderProps) => {
                 <span className="max-w-[200px] text-md font-faculty truncate">
                     {user.display_name}
                 </span>
-                <span className="max-w-[200px] text-md font-faculty truncate">
+                <span className="max-w-[200px] flex gap-1 text-md font-faculty truncate">
+                    <Icon.Sponsor isSponsor={user.sponsor} size={24} />
                     @{user.username}
                 </span>
                 <Link href={`/${user.username}`} className="mt-1 text-sm font-bold text-primary">Acessar perfil</Link>

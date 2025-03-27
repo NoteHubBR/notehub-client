@@ -1,13 +1,15 @@
 import { clsx } from "clsx";
+import { Icon } from "@/components/icon";
 import { IconChevronUp, IconHistory } from "@tabler/icons-react";
+import { LowDetailUser, User } from "@/core";
 import { useState } from "react";
 
 interface TitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
-    displayName: string;
+    user: User | LowDetailUser;
     history: string[];
 }
 
-export const Title = ({ displayName, history, ...rest }: TitleProps) => {
+export const Title = ({ user, history, ...rest }: TitleProps) => {
 
     const [isHovering, setIsHovering] = useState(false);
 
@@ -41,7 +43,9 @@ export const Title = ({ displayName, history, ...rest }: TitleProps) => {
                 )}
                 {...rest}
             >
-                {displayName}
+
+                <Icon.Sponsor isSponsor={user.sponsor} size={25} />
+                {user.display_name}
                 {history.length > 0 &&
                     <span
                         onMouseEnter={() => setIsHovering(true)}

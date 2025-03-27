@@ -1,5 +1,6 @@
 import { Button } from "../desktop/layout/Button";
 import { Form } from "@/components/forms/update";
+import { Icon } from "@/components/icon";
 import { IconBook, IconEdit, IconFlame, IconNotes } from "@tabler/icons-react";
 import { Layout } from "./layout";
 import { LowDetailUser, User } from "@/core";
@@ -37,7 +38,10 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
                     <PicturePortal ref={upscaledPhotoRef} user={user} size={270} className="rounded-full" />
                 </Portal>
                 <div className="w-full px-3 overflow-hidden flex items-center justify-center gap-3">
-                    <Layout.Title>{user.display_name}</Layout.Title>
+                    <Layout.Title>
+                        <Icon.Sponsor isSponsor={user.sponsor} size={25} />
+                        {user.display_name}
+                    </Layout.Title>
                     {isCurrentUserProfile &&
                         <>
                             <Layout.Link ref={triggerRef}>

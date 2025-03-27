@@ -44,7 +44,7 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
                     <PicturePortal ref={upscaledPhotoRef} user={user} size={369} className="rounded-full" />
                 </Portal>
             }
-            <Title displayName={user.display_name} history={history} />
+            <Title user={user} history={history} />
         </div>
     )
 

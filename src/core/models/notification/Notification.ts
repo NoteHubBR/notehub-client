@@ -1,4 +1,4 @@
-import { User } from "../user";
+import { LowDetailUser } from "../user";
 import { UUID } from "crypto";
 
 export enum Type {
@@ -18,6 +18,6 @@ export interface Notification {
     id: UUID,
     read: boolean;
     created_at: string;
-    from_user: Partial<User>;
+    from_user: LowDetailUser;
     info: Info
 }
