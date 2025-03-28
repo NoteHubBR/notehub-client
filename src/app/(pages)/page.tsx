@@ -1,6 +1,6 @@
 'use client';
 
-import { Mobile } from "@/components/mobile";
+import { Device } from "@/components/devices";
 import { useNotifications, useStore, useUser } from "@/data/hooks";
 import { User } from "@/core";
 import Link from "next/link";
@@ -26,12 +26,12 @@ export default function Home() {
       </>
     )
   }
-
+  
   if (!store) return null;
 
   return (
     <main className="h-full flex flex-col">
-      <Mobile.Header.MainHeader />
+      <Device.Mobile.Header.MainHeader />
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
         {isFirstTimer &&
           <>

@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { Icon } from "@/components/icon";
+import { Icon } from "@/components/icons";
 import { IconChevronUp, IconHistory } from "@tabler/icons-react";
 import { LowDetailUser, User } from "@/core";
 import { useState } from "react";

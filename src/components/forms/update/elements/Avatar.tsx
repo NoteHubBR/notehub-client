@@ -1,9 +1,8 @@
-import { Cropper, CropperRef } from "@/components/Cropper";
+import { Component, CropperRef } from "@/components";
 import { EditUserFormData, User } from "@/core";
 import { Header } from "./Header";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { Modal } from "@/components/template/Modal";
-import { Photo } from "@/components/Photo";
+import { Template } from "@/components/templates";
 import { Upload } from "./Upload";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -52,13 +51,13 @@ export const Avatar = ({ user, onModalOpen, onModalClose, ...props }: AvatarProp
     return (
         <>
             <div className="select-none bot-mid left-4">
-                <Photo
+                <Component.Photo
                     src={url} user={user} size={onDesktop ? 111 : 88}
                     className="border-4 dark:border-darker border-lighter" {...props}
                 />
                 <Upload ref={triggerRef} name="avatar" handleFileChange={handleFileChange} />
             </div>
-            <Modal
+            <Template.Modal
                 triggerRef={triggerRef}
                 closeRef={closeRef}
                 applyRef={applyRef}
@@ -76,8 +75,8 @@ export const Avatar = ({ user, onModalOpen, onModalClose, ...props }: AvatarProp
                 >
                     Aplicar
                 </Header>
-                {preview && <Cropper ref={cropperRef} imgSrc={preview} aspect={1 / 1} shape="round" />}
-            </Modal>
+                {preview && <Component.Cropper ref={cropperRef} imgSrc={preview} aspect={1 / 1} shape="round" />}
+            </Template.Modal>
         </>
     )
 

@@ -1,14 +1,12 @@
-import { Container } from "@/components/template/Container";
-import { Desktop } from "@/components/desktop";
+import { Component } from "@/components";
+import { Device } from "@/components/devices";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { LoadingProvider } from "@/data/contexts/LoadingContext";
 import { MenuProvider } from "@/data/contexts/MenuContext";
-import { Mobile } from "@/components/mobile";
-import { ProgressBar } from "@/components/ProgressBar";
 import { ProgressBarProvider } from "@/data/contexts/ProgressContext";
 import { ScreenProvider } from "@/data/contexts/ScreenContext";
 import { ScreenWidthProvider } from "@/data/contexts/ScreenWidthContext";
-import { SplashScreen } from "@/components/SplashScreen";
+import { Template } from "@/components/templates";
 import { ThemeProvider } from "@/data/contexts/ThemeContext";
 import { UserFollowingProvider } from "@/data/contexts/UserFollowingContext";
 import { UserHistoryProvider } from "@/data/contexts/UserHistoryContext";
@@ -17,7 +15,6 @@ import { UserNotificationsProvider } from "@/data/contexts/UserNotificationsCont
 import { UserPreferencesProvider } from "@/data/contexts/UserPreferencesContext";
 import { UserProvider } from "@/data/contexts/UserContext";
 import { UserStoreProvider } from "@/data/contexts/UserStoreContext";
-import Page from "@/components/template/Page";
 
 const UserProviders = ({ children }: { children: React.ReactNode }) => {
     const GCI = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
@@ -64,20 +61,23 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
 }
 
 const layout = (props: any) => {
+
+    const { Desktop, Mobile } = Device;
+
     return (
         <Providers>
-            <ProgressBar />
-            <SplashScreen />
-            <Container className="flex flex-col">
+            <Component.ProgressBar />
+            <Component.SplashScreen />
+            <Template.Container className="flex flex-col">
                 <Desktop.Navbar />
                 <Mobile.Navbar />
                 <div className="h-full flex flex-1">
                     <Desktop.Sidebar />
-                    <Page className="w-full">
+                    <Template.Page className="w-full">
                         {props.children}
-                    </Page>
+                    </Template.Page>
                 </div>
-            </Container>
+            </Template.Container>
         </Providers>
     )
 }

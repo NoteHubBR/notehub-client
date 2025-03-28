@@ -1,8 +1,8 @@
 'use client';
 
-import { Loading } from "@/components/desktop/navbar/dropdown/elements/Loading";
-import { Mobile } from "@/components/mobile";
-import { Notification } from "@/components/desktop/navbar/dropdown/elements/Notification";
+import { Device } from "@/components/devices";
+import { Loading } from "@/components/devices/desktop/navbar/dropdown/elements/Loading";
+import { Notification } from "@/components/devices/desktop/navbar/dropdown/elements/Notification";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNotifications, useScreen, useServices, useUser } from "@/data/hooks";
 import Image from "next/image";
@@ -68,7 +68,7 @@ const Notifications = () => {
 
     return (
         <section ref={sectionRef} className="w-full h-full flex flex-col dark:bg-dark bg-lighter">
-            <Mobile.Header.SimpleHeader title="Notificações" />
+            <Device.Mobile.Header.SimpleHeader title="Notificações" />
             <main className="flex-1 flex flex-col justify-center">
                 <ul className="flex flex-col gap-2">
                     {notifications.map(notification => (

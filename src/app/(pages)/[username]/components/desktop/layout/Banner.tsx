@@ -1,9 +1,7 @@
-import { Banner as Cover } from "@/components/Banner";
 import { clsx } from "clsx";
+import { Component } from "@/components";
 import { LowDetailUser, User } from "@/core";
-import { Photo } from "@/components/Photo";
-import { PicturePortal } from "@/components/PicturePortal";
-import { Portal } from "@/components/template/Portal";
+import { Template } from "@/components/templates";
 import { Title } from "./Title";
 import { useRef } from "react";
 
@@ -16,7 +14,7 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
 
     return (
         <div className="relative w-full h-full">
-            <Cover
+            <Component.Banner
                 ref={bannerRef}
                 user={user}
                 className={clsx(
@@ -25,11 +23,11 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
                 )}
             />
             {user.banner &&
-                <Portal triggerRef={bannerRef} childRef={upscaledBannerRef} useDefaultClose>
-                    <PicturePortal ref={upscaledBannerRef} user={user} fill />
-                </Portal>
+                <Template.Portal triggerRef={bannerRef} childRef={upscaledBannerRef} useDefaultClose>
+                    <Component.PicturePortal ref={upscaledBannerRef} user={user} fill />
+                </Template.Portal>
             }
-            <Photo
+            <Component.Photo
                 ref={photoRef}
                 user={user} size={111}
                 className={clsx(
@@ -40,9 +38,9 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
                 )}
             />
             {user.avatar &&
-                <Portal triggerRef={photoRef} childRef={upscaledPhotoRef} useDefaultClose>
-                    <PicturePortal ref={upscaledPhotoRef} user={user} size={369} className="rounded-full" />
-                </Portal>
+                <Template.Portal triggerRef={photoRef} childRef={upscaledPhotoRef} useDefaultClose>
+                    <Component.PicturePortal ref={upscaledPhotoRef} user={user} size={369} className="rounded-full" />
+                </Template.Portal>
             }
             <Title user={user} history={history} />
         </div>

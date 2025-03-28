@@ -1,6 +1,6 @@
 'use client';
 
-import { Mobile } from "@/components/mobile";
+import { Device } from "@/components/devices";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -13,7 +13,7 @@ const Page = () => {
 
     return (
         <>
-            <Mobile.Header.SearchHeader query={query} setQuery={setQuery} />
+            <Device.Mobile.Header.SearchHeader query={query} setQuery={setQuery} />
             <p>{q}</p>
         </>
     )

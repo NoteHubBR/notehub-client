@@ -1,9 +1,9 @@
 'use client'
 
 import { clsx } from "clsx";
-import { Container } from "@/components/template/Container";
 import { IconChevronRight, IconClick, IconMailCheck } from "@tabler/icons-react";
-import { SVG } from "@/components/SVG";
+import { SVG } from "@/components/svgs";
+import { Template } from "@/components/templates";
 import { usePref } from "@/data/hooks";
 import { useState } from "react";
 import Image from "next/image";
@@ -20,12 +20,12 @@ const Page = () => {
     const toggle = () => { setCount(1); setIsMessageOpen(prev => !prev); }
 
     return (
-        <Container
+        <Template.Container
             className={clsx(
                 'flex flex-col gap-8 items-center justify-center',
                 useDarkTheme ? 'dark-checkered-background' : 'light-checkered-background')}
         >
-            <SVG className="absolute" />
+            <SVG.Flare className="absolute" />
             <header>
                 <Link href={'/'} target="blank" className="z-[1] relative">
                     <Image src="/imgs/logo.png" alt="Logo" priority width={300} height={0} />
@@ -90,7 +90,7 @@ const Page = () => {
                     }
                 </aside>
             </section>
-        </Container >
+        </Template.Container >
     )
 }
 

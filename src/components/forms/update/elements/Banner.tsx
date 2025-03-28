@@ -1,9 +1,8 @@
-import { Banner as GlobalBanner } from "@/components/Banner";
-import { Cropper, CropperRef } from "@/components/Cropper";
+import { Component, CropperRef } from "@/components";
 import { EditUserFormData, User } from "@/core";
 import { Header } from "./Header";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { Modal } from "@/components/template/Modal";
+import { Template } from "@/components/templates";
 import { Upload } from "./Upload";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -49,11 +48,11 @@ export const Banner = ({ user, onModalOpen, onModalClose, ...rest }: BannerProps
     return (
         <>
             <div className="select-none relative" {...rest}>
-                <GlobalBanner src={url} user={user} />
+                <Component.Banner src={url} user={user} />
                 <Upload ref={triggerRef} name="banner" handleFileChange={handleFileChange} />
                 {rest.children}
             </div>
-            <Modal
+            <Template.Modal
                 triggerRef={triggerRef}
                 closeRef={closeRef}
                 applyRef={applyRef}
@@ -71,8 +70,8 @@ export const Banner = ({ user, onModalOpen, onModalClose, ...rest }: BannerProps
                 >
                     Aplicar
                 </Header>
-                {preview && <Cropper ref={cropperRef} imgSrc={preview} aspect={3 / 1} shape="rect" />}
-            </Modal>
+                {preview && <Component.Cropper ref={cropperRef} imgSrc={preview} aspect={3 / 1} shape="rect" />}
+            </Template.Modal>
         </>
     )
 

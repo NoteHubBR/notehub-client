@@ -29,7 +29,7 @@ export const Info = ({ children, title, subtitle, subtitleClassName, href }: Inf
                             'w-fit py-1 px-2 rounded-md',
                             'flex items-center gap-1',
                             'dark:text-neutral-400 text-neutral-500',
-                            'dark:bg-semilight/10 bg-semidark/10',
+                            'dark:bg-semilight/15 bg-semidark/15',
                             'hover:text-primary dark:hover:text-primary',
                             'transition-all duration-200',
                             subtitleClassName

@@ -1,7 +1,7 @@
 'use client';
 
-import { Container } from "./template/Container";
 import { shouldUseUserContext } from "@/core";
+import { Template } from "./templates";
 import { useEffect } from "react";
 import { useLoading, useScreen, useWidth } from "@/data/hooks";
 import { usePathname } from "next/navigation";
@@ -28,7 +28,7 @@ export const SplashScreen = () => {
     if (isLoaded) return null;
 
     return (
-        <Container className="z-[998] absolute top-0 left-0 flex items-center justify-center">
+        <Template.Container className="z-[998] absolute top-0 left-0 flex items-center justify-center">
             <Image
                 src={'/imgs/logo.png'}
                 alt="Logo"
@@ -37,7 +37,7 @@ export const SplashScreen = () => {
                 priority
                 className="animate-pulse"
             />
-        </Container>
+        </Template.Container>
     )
 
 }

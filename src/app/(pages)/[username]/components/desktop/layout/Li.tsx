@@ -26,7 +26,7 @@ export const Li = ({ children, ...rest }: { children: React.ReactNode } & LinkPr
                     onRoute
                         ? 'text-primary dark:bg-primary/25 bg-primary/15'
                         : 'dark:text-white text-black bg-transparent',
-                    !onRoute && 'dark:hover:bg-semilight/10 hover:bg-semidark/10',
+                    !onRoute && 'dark:hover:bg-semilight/15 hover:bg-semidark/15',
                     'transition-colors'
                 )}
                 {...rest}

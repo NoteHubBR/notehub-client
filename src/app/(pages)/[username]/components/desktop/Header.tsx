@@ -1,11 +1,11 @@
 'use client';
 
-import { Form } from '@/components/forms/update';
+import { Form } from '@/components/forms';
 import { IconBook, IconFlame, IconNotes } from '@tabler/icons-react';
 import { Layout } from './layout';
 import { LowDetailUser, User } from '@/core';
-import { Portal } from '@/components/template/Portal';
 import { Section } from '../Section';
+import { Template } from '@/components/templates';
 import { useParams } from 'next/navigation';
 import { useRef } from 'react';
 import { useUser } from '@/data/hooks';
@@ -39,9 +39,9 @@ export const Header = ({ user, history, ...rest }: HeaderProps) => {
                         ?
                         <>
                             <Layout.Link ref={triggerRef}>Editar</Layout.Link>
-                            <Portal triggerRef={triggerRef} childRef={childRef} closeRef={closeRef}>
-                                <Form ref={childRef} closeRef={closeRef} />
-                            </Portal>
+                            <Template.Portal triggerRef={triggerRef} childRef={childRef} closeRef={closeRef}>
+                                <Form.Update ref={childRef} closeRef={closeRef} />
+                            </Template.Portal>
                         </>
                         : <Layout.Button user={user} />
                     }

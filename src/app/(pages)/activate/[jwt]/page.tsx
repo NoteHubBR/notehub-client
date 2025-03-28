@@ -1,7 +1,7 @@
 'use client';
 
-import { Container } from "@/components/template/Container";
-import { SVG } from "@/components/SVG";
+import { SVG } from "@/components/svgs";
+import { Template } from "@/components/templates";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useServices } from "@/data/hooks";
@@ -27,16 +27,16 @@ const Page = () => {
         } finally {
             setIsFinished(true);
         }
-    };
+    }
 
     useEffect(() => { handleActivateUser(params.jwt) }, []);
 
     return (
-        <Container className="flex insm:flex-col items-center justify-center gap-4">
-            <SVG className="absolute -z-10" />
+        <Template.Container className="flex insm:flex-col items-center justify-center gap-4">
+            <SVG.Flare className="absolute -z-10" />
             {isFinished && (
                 <>
-                    <Link href={'/'} className="pr-4 border-e dark:border-lighter/25 border-dark/25">
+                    <Link href={'/'} className="pr-4 border-e dark:border-primary/25 border-primary/25">
                         <Image src={'/imgs/logo.png'} alt="Logo" width={100} height={0} priority />
                     </Link>
                     {isActive
@@ -59,9 +59,9 @@ const Page = () => {
                     }
                 </>
             )}
-        </Container>
-    );
+        </Template.Container>
+    )
 
-};
+}
 
 export default Page;

@@ -1,3 +1,5 @@
+'use client';
+
 import { Area } from "react-easy-crop";
 import { ChangeEvent, forwardRef, useCallback, useImperativeHandle, useState } from "react";
 import { getCroppedImg } from "@/core";

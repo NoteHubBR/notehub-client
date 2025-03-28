@@ -1,7 +1,7 @@
 'use client';
 
-import { Mobile } from "@/components/mobile";
-import { Search as RecentSearch } from "@/components/desktop/navbar/dropdown/elements/Search";
+import { Device } from "@/components/devices";
+import { Search as RecentSearch } from "@/components/devices/desktop/navbar/dropdown/elements/Search";
 import { useRef, useState } from "react";
 import { useScreen, useStore, useUser } from "@/data/hooks";
 
@@ -20,7 +20,7 @@ const Search = () => {
 
     return (
         <section className="w-full h-full dark:bg-dark bg-lighter">
-            <Mobile.Header.SearchHeader ref={inputRef} query={query} setQuery={setQuery} />
+            <Device.Mobile.Header.SearchHeader ref={inputRef} query={query} setQuery={setQuery} />
             <ul
                 className="w-[77%] m-auto py-2"
                 onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
