@@ -46,9 +46,14 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
     return (
         <Link
             href={`${href}`}
-            className="py-2 hover:dark:bg-semilight/10 hover:bg-semidark/10 transition-colors"
+            className={clsx(
+                'py-2',
+                !notification.read && 'dark:bg-semilight/5 bg-semidark/5',
+                'hover:dark:bg-semilight/10 hover:bg-semidark/10',
+                'transition-colors'
+            )}
         >
-            <article className="w-ull">
+            <article className="w-full">
                 <main className="flex items-center">
                     <figure className="relative px-2 border-r text-sm dark:border-r-semilight/10 border-r-semidark/10">
                         <Component.Photo user={user} size={55} />

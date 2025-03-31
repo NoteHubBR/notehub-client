@@ -34,10 +34,11 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
                 <Link href='/m/notifications'>
                     <IconBell />
                     {count > 0 &&
-                        <span className="absolute top-0 left-0 
-                    w-4 h-4 flex items-center justify-center rounded-full 
-                    text-sm text-lighter 
-                    bg-primary"
+                        <span
+                            className="whitespace-nowrap absolute top-0 left-0 
+                            w-5 h-w-5 flex items-center justify-center rounded-full 
+                            text-sm text-lighter 
+                            bg-primary"
                         >
                             {count}
                         </span>

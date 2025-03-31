@@ -30,7 +30,7 @@ const Notifications = () => {
             if (token) {
                 isFetchingRef.current = true;
                 setisFetching(true);
-                const page = await getUserNotifications(token.access_token);
+                const page = await getUserNotifications(token.access_token, 'page=0');
                 if (page.totalElements === 0) hasFetchedAndEmptyList.current = true;
                 return setNotifications(page);
             }
@@ -62,17 +62,17 @@ const Notifications = () => {
         if (!section) return;
         section.addEventListener("scroll", handleScroll);
         return () => section.removeEventListener("scroll", handleScroll);
-    }, [token, handleScroll]);
+    }, [handleScroll]);
 
     if (!onMobile) return null;
 
     return (
-        <section ref={sectionRef} className="w-full h-full flex flex-col dark:bg-dark bg-lighter">
+        <section ref={sectionRef} className="w-full h-svh overflow-y-auto flex flex-col dark:bg-dark bg-lighter">
             <Device.Mobile.Header.SimpleHeader title="Notificações" />
             <main className="flex-1 flex flex-col justify-center">
                 <ul className="flex flex-col gap-2">
                     {notifications.map(notification => (
-                        <li key={notification.id} className="even:dark:bg-semilight/15 even:bg-semidark/15 p-2">
+                        <li key={notification.id} className={`p-2 ${!notification.read ? 'dark:bg-semilight/5' : 'bg-semidark/5'}`}>
                             <Notification notification={notification} />
                         </li>
                     ))}

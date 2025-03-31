@@ -26,7 +26,7 @@ export const BellDropdown = () => {
             if (token) {
                 isFetchingRef.current = true;
                 setisFetching(true);
-                const page = await getUserNotifications(token.access_token);
+                const page = await getUserNotifications(token.access_token, 'page=0');
                 if (page.totalElements === 0) hasFetchedAndEmptyList.current = true;
                 return setNotifications(page);
             }

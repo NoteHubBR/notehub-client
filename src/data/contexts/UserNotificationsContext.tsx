@@ -30,13 +30,16 @@ export const UserNotificationsProvider = (props: any) => {
 
     const setNotifications = useCallback((page: Page<Notification>): void => {
         const { content, ...rest } = page;
-        return setState((prev) => ({
-            ...prev,
-            page: rest,
-            notifications: [...prev.notifications, ...content],
-            count: [...prev.notifications, ...content].filter(n => !n.read).length
-        }))
-    }, [])
+        return setState((prev) => {
+            const uniques = content.filter(newN => !prev.notifications.some(oldN => oldN.id === newN.id))
+            return {
+                ...prev,
+                page: rest,
+                notifications: [...prev.notifications, ...uniques],
+                count: user!.notifications - [...prev.notifications, ...content].filter(n => !n.read).length
+            }
+        })
+    }, [user])
 
     const setTitle = useCallback((count: number): string => {
         setState((prev) => ({ ...prev, count: count }));
@@ -48,7 +51,7 @@ export const UserNotificationsProvider = (props: any) => {
         clearNotifications();
         if (user) setTitle(user.notifications);
         else setTitle(0);
-    }, [setTitle, user])
+    }, [clearNotifications, setTitle, user])
 
     useEffect(() => {
         setTitle(state.count);
