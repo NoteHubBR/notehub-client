@@ -57,6 +57,9 @@ const config: Config = {
     },
   },
   plugins: [
+    function ({ addVariant }: { addVariant: any }) {
+      addVariant('moz', '@-moz-document url-prefix()')
+    },
     function ({ addUtilities }: { addUtilities: any }) {
       const newUtilities = {
         '.navigation-hover': {
@@ -115,8 +118,8 @@ const config: Config = {
         },
         '.bot-mid': {
           position: 'absolute',
-          botttom: '0',
-          transform: 'translateY(-50%)'
+          bottom: '0',
+          transform: 'translateY(50%)'
         },
         '.bot-mid-center': {
           position: 'absolute',

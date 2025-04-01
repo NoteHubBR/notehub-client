@@ -8,23 +8,32 @@
 :root {
   --background: #ffffff;
   --foreground: #000000;
+  --primary: #7c3aed;
 }
 
 @media(prefers-color-scheme: dark) {
   :root {
     --background: #000000;
     --foreground: #ffffff;
+    --primary: #7c3aed;
   }
 }
 
 html.dark {
   --background: #000000;
   --foreground: #ffffff;
+  --primary: #7c3aed;
 }
 
 html.light {
   --background: #ffffff;
   --foreground: #000000;
+  --primary: #7c3aed;
+}
+
+*::selection {
+  background: var(--primary);
+  color: white;
 }
 
 body {

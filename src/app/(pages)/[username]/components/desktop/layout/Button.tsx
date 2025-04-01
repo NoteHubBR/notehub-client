@@ -107,11 +107,10 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
     if (!isFollowing) return (
         <HTMLButton
             aria-label="Seguir"
-            className="dark:bg-lighter/10 bg-darker/10
+            className="dark:bg-lighter/15 bg-darker/15
             hover:dark:bg-primary hover:bg-primary
-            hover:text-white dark:text-white  text-neutral-700 inmd:text-black
-            backdrop-blur-sm
-            drop-shadow-alpha-d-sm"
+            hover:text-white dark:text-white text-neutral-700 inmd:text-black
+            backdrop-blur-sm backdrop-none-moz"
             onClick={() => follow()}
             {...rest}
         >

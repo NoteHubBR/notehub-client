@@ -20,7 +20,7 @@ export const Li = ({ children, ...rest }: { children: React.ReactNode } & LinkPr
         >
             <Link
                 className={clsx(
-                    'relative whitespace-nowrap',
+                    'whitespace-nowrap',
                     'py-[6px] px-2 inlg:px-1 rounded-md flex items-center gap-1 inlg:gap-[2px]',
                     'font-semibold text-md inlg:text-sm',
                     onRoute

@@ -47,7 +47,7 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
         <Link
             href={`${href}`}
             className={clsx(
-                'py-2',
+                'py-2 rounded-md mx-1 insm:mx-0',
                 !notification.read && 'dark:bg-semilight/5 bg-semidark/5',
                 'hover:dark:bg-semilight/10 hover:bg-semidark/10',
                 'transition-colors'

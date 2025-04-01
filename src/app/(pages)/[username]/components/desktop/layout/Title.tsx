@@ -20,7 +20,8 @@ export const Title = ({ user, history, ...rest }: TitleProps) => {
                     'overflow-hidden absolute bottom-11 left-36 inlg:left-32 ',
                     isHovering ? 'max-h-72 opacity-100' : 'max-h-0 p-0 opacity-0',
                     'py-1 px-2 mb-1 rounded-md',
-                    'bg-dark/10 backdrop-blur-sm',
+                    'bg-dark/10 moz:bg-dark/30',
+                    'backdrop-blur-sm moz:backdrop-blur-none',
                     'transition-all duration-300'
                 )}
                 onMouseEnter={() => setIsHovering(true)}
@@ -32,14 +33,15 @@ export const Title = ({ user, history, ...rest }: TitleProps) => {
                         {username}
                     </li>
                 ))}
-            </ul>
+            </ul >
             <h1
                 className={clsx(
                     'absolute bottom-2 left-36 inlg:left-32',
                     'w-fit py-1 px-2 rounded-md',
                     'flex items-center justify-between gap-2',
                     'font-semibold text-xl text-white',
-                    'bg-dark/10 backdrop-blur-sm',
+                    'bg-dark/10 moz:bg-dark/30',
+                    'backdrop-blur-sm moz:backdrop-blur-none',
                 )}
                 {...rest}
             >
