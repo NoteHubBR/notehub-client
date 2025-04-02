@@ -43,8 +43,9 @@ body {
 }
 
 a,
-button {
-  outline: none;
+button,
+input {
+  outline: none !important;
 }
 
 @keyframes requesting-animation {
@@ -85,7 +86,7 @@ button {
 .scrollbar {
   scrollbar-color: transparent transparent;
   scrollbar-width: thin;
-  transition: all ease-in-out .15s;
+  transition: scrollbar-color ease-in-out .15s;
 }
 
 .scrollbar:hover {
@@ -135,4 +136,12 @@ input[type="range"]::-moz-range-thumb:hover {
 
 input[type="range"]:active::-moz-range-thumb {
   box-shadow: 0 0 0 6px rgba(111, 0, 255, .22)
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none !important;
+  display: none !important;
 }
