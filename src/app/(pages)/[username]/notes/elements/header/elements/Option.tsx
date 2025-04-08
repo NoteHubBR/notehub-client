@@ -4,7 +4,7 @@ import { IconCheck } from "@tabler/icons-react";
 
 interface OptionProps extends React.HTMLAttributes<HTMLLIElement> {
     sParam: string;
-    value: string;
+    value: (string | null)[];
     text: string
 }
 
@@ -15,11 +15,11 @@ export const Option = ({ sParam, value, text, ...rest }: OptionProps) => {
     const router = useRouter();
 
     const current = sParams.get(sParam);
-    const onRoute = value === current;
+    const onRoute = value.includes(current);
 
     const handleParamUpdate = useCallback(() => {
         const newSParams = new URLSearchParams(sParams);
-        newSParams.set(sParam, value);
+        newSParams.set(sParam, value[0] ? value[0] : '');
         router.replace(`${pathname}?${newSParams}`);
     }, [pathname, router, sParam, sParams, value])
 

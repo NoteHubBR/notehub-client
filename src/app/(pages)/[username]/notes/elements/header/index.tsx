@@ -10,16 +10,19 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
     useEffect(() => {
 
         const q = sParams.get('q');
-        const type = sParams.get('type') ?? 'all';
-        const tag = sParams.get('tag') ?? 'all';
-        const order = sParams.get('order') ?? 'modifiedAt';
-        const sort = sParams.get('sort') ?? 'desc';
+        const type = sParams.get('type');
+        const tag = sParams.get('tag');
+        const order = sParams.get('order');
+        const sort = sParams.get('sort');
 
+        const params = {} as Record<string, string>;
+        if (q) params.q = q;
+        if (type) params.type = type;
+        if (tag) params.tag = tag;
+        if (order) params.order = order;
+        if (sort) params.sort = sort;
 
-        const newQuery = q
-            ? `?${new URLSearchParams({ q, type, tag, order, sort })}`
-            : `?${new URLSearchParams({ type, tag, order, sort })}`
-
+        const newQuery = `?${new URLSearchParams(params)}`;
         if (newQuery !== window.location.search) router.replace(newQuery);
 
     }, [router, sParams])
@@ -38,16 +41,16 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
 
     return (
         <header className="py-4 border-b dark:border-neutral-700/50 border-dark/25" {...props}>
-            <nav className="flex items-center justify-between gap-2">
+            <nav className="flex items-center justify-between inlg:justify-center gap-2 flex-wrap">
                 <Element.Input placeholder="Encontrar uma nota..." />
                 <Element.Select ref={typeRef} text="Tipo">
                     <Element.Dropdown triggerRef={typeRef} closeRef={closeTypeRef}>
                         <Element.Summary ref={closeTypeRef} summary="Selecione o tipo" />
                         <ul className="flex flex-col">
-                            <Element.Option sParam="type" value="all" text="todos" />
-                            <Element.Option sParam="type" value="open" text="aberta" />
-                            <Element.Option sParam="type" value="closed" text="fechada" />
-                            <Element.Option sParam="type" value="hidden" text="oculta" />
+                            <Element.Option sParam="type" value={[null]} text="todos" />
+                            <Element.Option sParam="type" value={["open"]} text="aberta" />
+                            <Element.Option sParam="type" value={["closed"]} text="fechada" />
+                            <Element.Option sParam="type" value={["hidden"]} text="oculta" />
                         </ul>
                     </Element.Dropdown>
                 </Element.Select>
@@ -55,10 +58,10 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
                     <Element.Dropdown triggerRef={tagRef} closeRef={closeTagRef}>
                         <Element.Summary ref={closeTagRef} summary="Selecione a tag" />
                         <ul className="flex flex-col">
-                            <Element.Option sParam="tag" value="all" text="todos" />
-                            <Element.Option sParam="tag" value="java" text="java" />
-                            <Element.Option sParam="tag" value="spring" text="spring" />
-                            <Element.Option sParam="tag" value="quarkus" text="quarkus" />
+                            <Element.Option sParam="tag" value={[null]} text="todos" />
+                            <Element.Option sParam="tag" value={["java"]} text="java" />
+                            <Element.Option sParam="tag" value={["spring"]} text="spring" />
+                            <Element.Option sParam="tag" value={["quarkus"]} text="quarkus" />
                         </ul>
                     </Element.Dropdown>
                 </Element.Select>
@@ -66,11 +69,11 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
                     <Element.Dropdown triggerRef={sortRef} closeRef={closeSortRef}>
                         <Element.Summary ref={closeSortRef} summary="Selecione a ordem" />
                         <ul className="flex flex-col">
-                            <Element.Option sParam="order" value="modifiedAt" text="atualização" />
-                            <Element.Option sParam="order" value="createdAt" text="criação" />
-                            <Element.Option sParam="order" value="title" text="nome" />
-                            <Element.Option sParam="order" value="flamesCount" text="chamas" />
-                            <Element.Option sParam="order" value="commentsCount" text="comentários" />
+                            <Element.Option sParam="order" value={["modifiedAt", null]} text="atualização" />
+                            <Element.Option sParam="order" value={["createdAt"]} text="criação" />
+                            <Element.Option sParam="order" value={["title"]} text="título" />
+                            <Element.Option sParam="order" value={["flamesCount"]} text="chamas" />
+                            <Element.Option sParam="order" value={["commentsCount"]} text="comentários" />
                         </ul>
                     </Element.Dropdown>
                 </Element.Select>
@@ -78,8 +81,8 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
                     <Element.Dropdown triggerRef={orderRef} closeRef={closeOrderRef}>
                         <Element.Summary ref={closeOrderRef} summary="Selecione o sorteio" />
                         <ul className="flex flex-col">
-                            <Element.Option sParam="sort" value="asc" text="crescente" />
-                            <Element.Option sParam="sort" value="desc" text="decrescente" />
+                            <Element.Option sParam="sort" value={["desc", null]} text="decrescente" />
+                            <Element.Option sParam="sort" value={["asc"]} text="crescente" />
                         </ul>
                     </Element.Dropdown>
                 </Element.Select>

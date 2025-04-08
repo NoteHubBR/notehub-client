@@ -12,7 +12,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(({ text, ...res
             aria-label="Abrir menu"
             aria-haspopup="true"
             // aria-expanded={isOpen}
-            className="select-none relative
+            className="select-none relative insm:static
             px-2 py-1 rounded-xl flex items-center gap-1
             border dark:border-neutral-700/50 border-dark/25
             dark:bg-dark bg-light

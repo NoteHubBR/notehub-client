@@ -110,7 +110,7 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
             className="dark:bg-lighter/15 bg-darker/15
             hover:dark:bg-primary hover:bg-primary
             hover:text-white dark:text-white text-neutral-700 inmd:text-black
-            backdrop-blur-sm backdrop-none-moz"
+            backdrop-blur-sm moz:backdrop-blur-none"
             onClick={() => follow()}
             {...rest}
         >

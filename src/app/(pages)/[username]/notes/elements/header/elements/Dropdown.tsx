@@ -52,20 +52,30 @@ export const Dropdown = ({ triggerRef, closeRef, ...rest }: DropdownProps) => {
     useEffect(() => { return setIsOpen(false) }, [sParams])
 
     return (
-        <div
-            ref={dropdownRef}
-            role="menu"
-            aria-hidden={!isOpen}
-            className={clsx(
-                'cursor-default whitespace-nowrap overflow-auto scrollbar',
-                'absolute right-0',
-                'w-60 max-h-[333px] rounded-lg',
-                isOpen ? 'visible top-[120%] !transition-all' : 'invisible top-full transition-none',
-                'border dark:border-neutral-700/50 border-dark/25',
-                'dark:bg-dark bg-light',
-            )}
-            {...rest}
-        />
+        <>
+            <div
+                className={clsx(
+                    isOpen ? 'hidden insm:block' : 'hidden',
+                    'z-[998] cursor-default fixed top-0 left-0',
+                    'w-screen max-w-full min-h-screen inmd:min-h-svh',
+                    'dark:bg-alpha-d-sm bg-alpha-l-xl backdrop-blur-sm'
+                )}
+            />
+            <div
+                ref={dropdownRef}
+                role="menu"
+                aria-hidden={!isOpen}
+                className={clsx(
+                    'z-[999] cursor-default whitespace-nowrap overflow-auto scrollbar',
+                    'absolute right-0 inmd:right-auto inmd:left-0 insm:center',
+                    'w-60 max-h-[333px] rounded-lg',
+                    isOpen ? 'visible top-[120%] !transition-all' : 'invisible top-full transition-none',
+                    'border dark:border-neutral-700/50 border-dark/25',
+                    'dark:bg-dark bg-light',
+                )}
+                {...rest}
+            />
+        </>
     )
 
 }
