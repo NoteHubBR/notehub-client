@@ -4,9 +4,11 @@ import { UUID } from "crypto";
 export interface Note {
     id: UUID,
     title: string;
+    description: string;
     tags: string[];
     user: User;
     created_at: string;
+    modified_at: string;
     modified: false;
     closed: false;
     hidden: boolean;
@@ -15,4 +17,4 @@ export interface Note {
     flames_count: number;
 }
 
-export type LowDetailNote = Omit<Note, 'hidden' | 'markdown'>;
+export type LowDetailNote = Omit<Note, 'markdown'>;

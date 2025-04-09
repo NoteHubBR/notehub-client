@@ -40,7 +40,7 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
     const closeOrderRef = useRef<HTMLSpanElement>(null);
 
     return (
-        <header className="py-4 border-b dark:border-neutral-700/50 border-dark/25" {...props}>
+        <header className="py-4 mb-4 border-b dark:border-neutral-700/50 border-dark/25" {...props}>
             <nav className="flex items-center justify-between inlg:justify-center gap-2 flex-wrap">
                 <Element.Input placeholder="Encontrar uma nota..." />
                 <Element.Select ref={typeRef} text="Tipo">
