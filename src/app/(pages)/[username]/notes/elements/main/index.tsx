@@ -9,8 +9,8 @@ interface MainProps extends React.HTMLAttributes<HTMLElement> {
 export const Main = ({ notes, ...rest }: MainProps) => {
 
     return (
-        <main className="flex flex-col gap-3" {...rest}>
-            {notes.slice(0, 5).map((note) => (
+        <main className="my-4 flex flex-col gap-3" {...rest}>
+            {notes.map((note) => (
                 <Element.Section key={note.id}>
                     <article className="w-full flex flex-col gap-3">
                         <header className="relative pl-14 flex flex-col">

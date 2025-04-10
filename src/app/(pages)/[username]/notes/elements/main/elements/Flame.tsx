@@ -24,7 +24,7 @@ export const Flame = ({ inFlames, ...props }: { inFlames: boolean } & React.Butt
                 'p-1 rounded-full',
                 'flex items-center',
                 'dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm',
-                'active:scale-125',
+                'active:scale-110',
                 'transition-all',
                 className
             )}

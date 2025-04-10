@@ -17,7 +17,7 @@ export const Comments = ({ note }: { note: LowDetailNote }) => {
                 'insm:dark:bg-lighter/25 insm:bg-darker/25',
                 'hover:dark:bg-semidark hover:bg-semilight',
                 'hover:dark:drop-shadow-alpha-l-sm hover:drop-shadow-alpha-d-sm',
-                'active:scale-125',
+                'active:scale-110',
                 'transition-all'
             )}
         >

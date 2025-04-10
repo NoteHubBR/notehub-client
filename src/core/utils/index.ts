@@ -5,3 +5,4 @@ export * from './Cookies';
 export * from './Date';
 export * from './Crop';
 export * from './File';
+export * from './Object';

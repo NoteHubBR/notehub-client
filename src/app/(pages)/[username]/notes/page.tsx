@@ -1,17 +1,21 @@
 'use client';
 
 import { Element } from "./elements";
+import { isEmpty } from "@/core";
 import { Section } from "../components/Section";
 import { useNotes } from "@/data/hooks";
 
 const Page = () => {
 
-    const { notes } = useNotes();
+    const { page, notes } = useNotes();
+
+    if (isEmpty(page) || isEmpty(notes)) return null;
 
     return (
         <Section className="px-4 py-2">
             <Element.Header />
             <Element.Main notes={notes} />
+            <Element.Footer page={page} />
         </Section>
     )
 
