@@ -6,13 +6,15 @@ interface FooterProps extends React.HTMLAttributes<HTMLElement> {
     page: Omit<Page<LowDetailNote>, "content">
 }
 
+export { Skeleton as footer } from "./skeleton";
+
 export const Footer = ({ page, ...rest }: FooterProps) => {
 
     const { first, last, page: index, totalPages } = page;
     const current = index + 1;
 
     return (
-        <footer {...rest}>
+        <footer className="pb-2" {...rest}>
             <Element.Pagination>
 
                 {!first &&

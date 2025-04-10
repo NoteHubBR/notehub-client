@@ -1,5 +1,5 @@
-import { Footer } from "./footer";
-import { Header } from "./header";
-import { Main } from "./main";
+import { Header, header } from "./header";
+import { Main, main } from "./main";
+import { Footer, footer } from "./footer";
 
-export const Element = { Header, Main, Footer };
+export const Element = { Header, header, Main, main, Footer, footer };

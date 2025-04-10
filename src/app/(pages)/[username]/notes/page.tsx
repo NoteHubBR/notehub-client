@@ -9,7 +9,13 @@ const Page = () => {
 
     const { page, notes } = useNotes();
 
-    if (isEmpty(page) || isEmpty(notes)) return null;
+    if (isEmpty(page) || isEmpty(notes)) return (
+        <Section className="px-4 py-2">
+            <Element.header />
+            <Element.main />
+            <Element.footer />
+        </Section>
+    )
 
     return (
         <Section className="px-4 py-2">

@@ -6,6 +6,8 @@ interface MainProps extends React.HTMLAttributes<HTMLElement> {
     notes: LowDetailNote[];
 }
 
+export { Skeleton as main } from './skeleton';
+
 export const Main = ({ notes, ...rest }: MainProps) => {
 
     return (
