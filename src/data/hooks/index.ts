@@ -11,3 +11,4 @@ export * from './useLoading';
 export * from './useScreen';
 export * from './useScreenWidth';
 export * from './useHistory';
+export * from './useFlames';

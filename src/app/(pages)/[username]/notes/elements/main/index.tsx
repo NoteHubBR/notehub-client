@@ -32,7 +32,7 @@ export const Main = ({ notes, ...rest }: MainProps) => {
                         </main>
                         <footer className="mt-1 pl-12 insm:pl-0 flex items-center justify-between">
                             <Element.Comments note={note} />
-                            <Element.Flame inFlames={true} />
+                            <Element.Flame note={note} />
                         </footer>
                     </article>
                 </Element.Section>

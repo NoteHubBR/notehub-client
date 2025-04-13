@@ -1,4 +1,4 @@
-import { AuthService, NoteService, UserService } from "@/services";
+import { AuthService, FlameService, NoteService, UserService } from "@/services";
 
 export const useServices = () => {
 
@@ -8,6 +8,8 @@ export const useServices = () => {
 
     const noteService = NoteService();
 
-    return { authService, userService, noteService };
+    const flameService = FlameService();
+
+    return { authService, userService, noteService, flameService };
 
 }

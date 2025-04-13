@@ -1,21 +1,48 @@
 import { clsx } from 'clsx';
 import { IconFlame } from '@tabler/icons-react';
+import { LowDetailNote } from '@/core';
 import { useCallback, useState } from 'react';
+import { useFlames, useServices, useUser } from '@/data/hooks';
 
-export const Flame = ({ inFlames, ...props }: { inFlames: boolean } & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+export const Flame = ({ note, ...rest }: { note: LowDetailNote } & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+
+    const { flameService: { inflameNote, deflameNote } } = useServices();
+
+    const { token } = useUser();
+    const { flames, setNewFlame, removeFlame } = useFlames();
+
+    const inFlames = flames.some((f => f.note.id === note.id));
 
     const [hovering, setHovering] = useState<boolean>(false);
     const [requesting, setRequesting] = useState<boolean>(false);
     const [reqInflame, setReqInflame] = useState<boolean>(false);
     const [reqDeflame, setReqDeflame] = useState<boolean>(false);
 
-    const inflame = useCallback(() => {
+    const inflame = useCallback(async () => {
+        if (!token) return;
+        setRequesting(true);
+        setReqInflame(true);
+        try {
+            setNewFlame(await inflameNote(token.access_token, note.id));
+        } finally {
+            setRequesting(false);
+            setReqInflame(false);
+        }
+    }, [inflameNote, note.id, setNewFlame, token])
 
-    }, [])
-
-    const deflame = useCallback(() => {
-
-    }, [])
+    const deflame = useCallback(async () => {
+        if (!token) return;
+        setRequesting(true);
+        setReqDeflame(true);
+        try {
+            await deflameNote(token.access_token, note.id);
+            removeFlame(note);
+        } finally {
+            setHovering(false);
+            setRequesting(false);
+            setReqDeflame(false);
+        }
+    }, [deflameNote, note, removeFlame, token])
 
     const Button = ({ className, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
         <button
@@ -56,7 +83,7 @@ export const Flame = ({ inFlames, ...props }: { inFlames: boolean } & React.Butt
             className="!bg-rose-600"
             onMouseLeave={() => setHovering(false)}
             onClick={deflame}
-            {...props}
+            {...rest}
         >
             <IconFlame className="!fill-white !text-white" />
         </Button >
@@ -68,7 +95,7 @@ export const Flame = ({ inFlames, ...props }: { inFlames: boolean } & React.Butt
             className="!bg-primary"
             onMouseEnter={() => setHovering(true)}
             onClick={deflame}
-            {...props}
+            {...rest}
         >
             <IconFlame className="!fill-white !text-white" />
         </Button>
@@ -81,7 +108,7 @@ export const Flame = ({ inFlames, ...props }: { inFlames: boolean } & React.Butt
             dark:bg-lighter/25 bg-darker/25
             hover:!bg-primary"
             onClick={inflame}
-            {...props}
+            {...rest}
         >
             <IconFlame className="!fill-white !text-white" />
         </Button>

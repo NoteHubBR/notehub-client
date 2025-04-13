@@ -8,6 +8,7 @@ import { ScreenProvider } from "@/data/contexts/ScreenContext";
 import { ScreenWidthProvider } from "@/data/contexts/ScreenWidthContext";
 import { Template } from "@/components/templates";
 import { ThemeProvider } from "@/data/contexts/ThemeContext";
+import { UserFlamesProvider } from "@/data/contexts/UserFlamesContext";
 import { UserFollowingProvider } from "@/data/contexts/UserFollowingContext";
 import { UserHistoryProvider } from "@/data/contexts/UserHistoryContext";
 import { UserNotesProvider } from "@/data/contexts/UserNotesContext";
@@ -25,11 +26,13 @@ const UserProviders = ({ children }: { children: React.ReactNode }) => {
                     <UserFollowingProvider>
                         <UserNotesProvider>
                             <UserHistoryProvider>
-                                <UserProvider>
-                                    <UserNotificationsProvider>
-                                        {children}
-                                    </UserNotificationsProvider>
-                                </UserProvider>
+                                <UserFlamesProvider>
+                                    <UserProvider>
+                                        <UserNotificationsProvider>
+                                            {children}
+                                        </UserNotificationsProvider>
+                                    </UserProvider>
+                                </UserFlamesProvider>
                             </UserHistoryProvider>
                         </UserNotesProvider>
                     </UserFollowingProvider>

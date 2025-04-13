@@ -5,3 +5,4 @@ export * from './preferences';
 export * from './store';
 export * from './note';
 export * from './notification';
+export * from './flame';
