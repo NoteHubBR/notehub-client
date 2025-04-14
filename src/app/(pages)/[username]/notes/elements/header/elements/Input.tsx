@@ -1,5 +1,5 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
 
@@ -7,14 +7,24 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
     const sParams = useSearchParams();
     const router = useRouter();
 
-    const [query, setQuery] = useState<string>('');
+    const [query, setQuery] = useState<string>(sParams.get('q') ?? '');
 
-    const handleSearchSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const updateURL = (value: string) => {
         const params = new URLSearchParams(sParams);
-        params.set('q', query);
+        params.set('q', value);
         router.replace(`${pathname}?${params}`);
     }
+
+    const handleSearchSubmit = (e: React.FormEvent) => {
+        e.preventDefault(); updateURL(query);
+    }
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            updateURL(query);
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [query]);
 
     return (
         <li className="flex-1 inlg:basis-full">

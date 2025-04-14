@@ -3,15 +3,18 @@ import { IconChevronLeftPipe, IconChevronRightPipe } from "@tabler/icons-react";
 import { LowDetailNote, Page } from "@/core";
 
 interface FooterProps extends React.HTMLAttributes<HTMLElement> {
-    page: Omit<Page<LowDetailNote>, "content">
+    page: Omit<Page<LowDetailNote>, "content">;
+    isEmpty: boolean;
 }
 
 export { Skeleton as footer } from "./skeleton";
 
-export const Footer = ({ page, ...rest }: FooterProps) => {
+export const Footer = ({ page, isEmpty, ...rest }: FooterProps) => {
 
     const { first, last, page: index, totalPages } = page;
     const current = index + 1;
+
+    if ((first || last) && isEmpty) return null;
 
     return (
         <footer className="pb-2" {...rest}>
@@ -23,11 +26,13 @@ export const Footer = ({ page, ...rest }: FooterProps) => {
                     </Element.Pageable>
                 }
 
-                {current > 1 &&
+                {current > 1 && current < totalPages &&
                     <Element.Pageable aria-label="Voltar página" sParam="page" page={current - 1} />
                 }
 
-                <Element.Pageable sParam="page" page={current} />
+                {current < totalPages &&
+                    <Element.Pageable sParam="page" page={current} />
+                }
 
                 {current < totalPages &&
                     <Element.Pageable aria-label="Próxima página" sParam="page" page={current + 1} />

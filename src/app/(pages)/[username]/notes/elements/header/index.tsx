@@ -1,35 +1,23 @@
 import { Element } from "./elements"
-import { useEffect, useRef } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { LowDetailNote, Page } from "@/core";
+import { useParams } from "next/navigation";
+import { useRef } from "react";
+import { useUser } from "@/data/hooks";
+
+interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
+    page: Omit<Page<LowDetailNote>, "content">;
+    tags: string[];
+}
 
 export { Skeleton as header } from './skeleton';
 
-export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
+export const Header = ({ page, tags, ...rest }: HeaderProps) => {
 
-    const sParams = useSearchParams();
-    const router = useRouter();
+    const { username } = useParams<{ username: string }>();
 
-    useEffect(() => {
+    const { user } = useUser();
 
-        const q = sParams.get('q');
-        const type = sParams.get('type');
-        const tag = sParams.get('tag');
-        const order = sParams.get('order');
-        const sort = sParams.get('sort');
-        const page = sParams.get('page');
-
-        const params = {} as Record<string, string>;
-        if (q) params.q = q;
-        if (type) params.type = type;
-        if (tag) params.tag = tag;
-        if (order) params.order = order;
-        if (sort) params.sort = sort;
-        if (page) params.page = page;
-
-        const newQuery = `?${new URLSearchParams(params)}`;
-        if (newQuery !== window.location.search) router.replace(newQuery);
-
-    }, [router, sParams])
+    const current: boolean = username === user?.username;
 
     const typeRef = useRef<HTMLButtonElement>(null);
     const closeTypeRef = useRef<HTMLSpanElement>(null);
@@ -43,8 +31,8 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
     const orderRef = useRef<HTMLButtonElement>(null);
     const closeOrderRef = useRef<HTMLSpanElement>(null);
 
-    return (
-        <header className="py-4 border-b dark:border-neutral-700/50 border-dark/25" {...props}>
+    if (page.totalElements > 0) return (
+        <header className="py-4 border-b dark:border-neutral-700/50 border-dark/25" {...rest}>
             <nav>
                 <ul className="flex items-center justify-between inlg:justify-center gap-2 flex-wrap">
                     <Element.Input placeholder="Encontrar uma nota..." />
@@ -55,7 +43,7 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
                                 <Element.Option sParam="type" value={[null]} text="todos" />
                                 <Element.Option sParam="type" value={["open"]} text="aberta" />
                                 <Element.Option sParam="type" value={["closed"]} text="fechada" />
-                                <Element.Option sParam="type" value={["hidden"]} text="oculta" />
+                                {current && <Element.Option sParam="type" value={["hidden"]} text="oculta" />}
                             </ul>
                         </Element.Dropdown>
                     </Element.Select>
@@ -64,9 +52,9 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
                             <Element.Summary ref={closeTagRef} summary="Selecione a tag" />
                             <ul className="flex flex-col">
                                 <Element.Option sParam="tag" value={[null]} text="todos" />
-                                <Element.Option sParam="tag" value={["java"]} text="java" />
-                                <Element.Option sParam="tag" value={["spring"]} text="spring" />
-                                <Element.Option sParam="tag" value={["quarkus"]} text="quarkus" />
+                                {tags.map((tag, key) => (
+                                    <Element.Option key={key} sParam="tag" value={[tag]} text={tag} />
+                                ))}
                             </ul>
                         </Element.Dropdown>
                     </Element.Select>
@@ -91,9 +79,10 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
                             </ul>
                         </Element.Dropdown>
                     </Element.Select>
-                    <Element.Link>Nova</Element.Link>
+                    {current && <Element.Link>Nova</Element.Link>}
                 </ul>
             </nav>
         </header>
     )
+
 }

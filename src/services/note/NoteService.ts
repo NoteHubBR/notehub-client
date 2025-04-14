@@ -1,6 +1,7 @@
+import { AuthService } from "../auth";
 import { LowDetailNote, Page } from "@/core";
 import { useAPI } from "@/data/hooks";
-import { AuthService } from "../auth";
+import { useCallback } from 'react';
 
 export const NoteService = () => {
 
@@ -8,15 +9,33 @@ export const NoteService = () => {
 
     const handleExpiredToken = AuthService().handleExpiredToken;
 
-    const getUserNotes = async (token: string): Promise<Page<LowDetailNote>> => {
-        const endpoint: string = '/notes/private?size=9999&sort=createdAt,desc';
+    const getUserNotes = useCallback(async (token: string): Promise<Page<LowDetailNote>> => {
+        const endpoint: string = '/notes/private?size=9999&sort=modifiedAt,desc';
         try {
             return await httpGet(endpoint, { useToken: token });
         } catch (error: any) {
             return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useToken: newToken }));
         }
-    }
+    }, [httpGet, handleExpiredToken])
 
-    return { getUserNotes }
+    const findUserTags = useCallback(async (token: string, username: string): Promise<string[]> => {
+        const endpoint: string = `/notes/${username}/tags`;
+        try {
+            return await httpGet(endpoint, { useToken: token });
+        } catch (error: any) {
+            return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useToken: newToken }));
+        }
+    }, [httpGet, handleExpiredToken])
+
+    const searchUserNotes = useCallback(async (token: string, username: string, parameters?: string): Promise<Page<LowDetailNote>> => {
+        const endpoint: string = `/notes/${username}/specs?${parameters}`;
+        try {
+            return await httpGet(endpoint, { useToken: token });
+        } catch (error: any) {
+            return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useToken: newToken }));
+        }
+    }, [httpGet, handleExpiredToken])
+
+    return { getUserNotes, findUserTags, searchUserNotes }
 
 }
