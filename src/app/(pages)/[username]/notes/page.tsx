@@ -1,9 +1,10 @@
 'use client';
 
 import { Element } from "./elements";
-import { isEmpty, LowDetailNote, Page as NotesPage } from "@/core";
+import { handleFieldErrorsMsg, isEmpty, LowDetailNote, Page as NotesPage } from "@/core";
+import { IconEyeOff, IconLock } from "@tabler/icons-react";
 import { Section } from "../components/Section";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useServices, useUser } from "@/data/hooks";
 
@@ -17,16 +18,30 @@ const Page = () => {
     const { token } = useUser();
 
     const [state, setState] = useState({
+        onFetch: false,
+        hasFetched: false,
+        args: sParams.get('q'),
         page: {} as Omit<NotesPage<LowDetailNote>, 'content'>,
         notes: [] as LowDetailNote[],
         tags: [] as string[],
         emptyList: false,
+        notCurrent: false,
         notMutual: false,
     })
 
-    const { page, notes, tags, emptyList, notMutual } = state;
+    const { onFetch, hasFetched, args, page, notes, tags, emptyList, notCurrent, notMutual } = state;
 
     const isFetching = useRef<boolean>(false);
+
+    const startFetch = useCallback(() => {
+        isFetching.current = true;
+        return setState((prev) => ({ ...prev, onFetch: true }));
+    }, [])
+
+    const endFetch = useCallback(() => {
+        isFetching.current = false;
+        return setState((prev) => ({ ...prev, onFetch: false, hasFetched: true }));
+    }, [])
 
     useEffect(() => {
 
@@ -57,35 +72,56 @@ const Page = () => {
         if (queryString.endsWith('&')) queryString = queryString.slice(0, -1);
 
         const init = async () => {
-            if (!token || isFetching.current) return;
-            isFetching.current = true;
+            if (isFetching.current || hasFetched && args === queryString) return;
             try {
-                const { content, ...rest } = await searchUserNotes(token.access_token, username, queryString);
-                const tags = await findUserTags(token.access_token, username);
-                return setState((prev) => ({
-                    page: rest,
-                    notes: content,
-                    tags: tags,
-                    notMutual: prev.notMutual,
-                    emptyList: content.length === 0
-                }));
-            } catch(error) {
-                console.log(error)
-                return setState((prev) => ({
-                    ...prev,
-                    notMutual: true
-                }))
+                if (token) {
+                    startFetch();
+                    const { content, ...rest } = await searchUserNotes(token.access_token, username, queryString);
+                    const tags = await findUserTags(token.access_token, username);
+                    return setState((prev) => ({
+                        ...prev,
+                        args: queryString,
+                        page: rest,
+                        notes: content,
+                        tags: tags,
+                        emptyList: content.length === 0
+                    }));
+                }
+            } catch (errors) {
+                if (Array.isArray(errors)) {
+                    const { notCurrent, notMutual } = handleFieldErrorsMsg(errors)
+                    return setState((prev) => ({
+                        ...prev,
+                        args: queryString,
+                        notCurrent: notCurrent,
+                        notMutual: notMutual
+                    }))
+                }
             } finally {
-                return isFetching.current = false;
+                endFetch();
             }
         }
         init();
 
-    }, [token, sParams])
+    }, [sParams, state, token])
+
+    if (notCurrent) return (
+        <Section className="p-6 flex items-center inmd:justify-center gap-3">
+            <Element.Dialog
+                icon={IconEyeOff}
+                title="Notas ocultas"
+                desc="Nome auto explicativo."
+            />
+        </Section>
+    )
 
     if (notMutual) return (
-        <Section className="px-4 py-2">
-            <p>Faz o L</p>
+        <Section className="p-6 flex items-center inmd:justify-center gap-3">
+            <Element.Dialog
+                icon={IconLock}
+                title="Perfil privado"
+                desc="Necessária conexão bidirecional, ambos se seguirem."
+            />
         </Section>
     )
 
@@ -99,9 +135,19 @@ const Page = () => {
 
     return (
         <Section className="px-4 py-2">
-            <Element.Header page={page} tags={tags} />
-            <Element.Main notes={notes} />
-            <Element.Footer page={page} isEmpty={emptyList} />
+            <Element.Header tags={tags} />
+            {onFetch
+                ? <Element.Loading />
+                : emptyList
+                    ? <p className="p-4 text-center">Nada que seja público foi encontrado.</p>
+                    :
+                    <>
+                        <Element.Main notes={notes} />
+                        <Element.Footer page={page} isEmpty={emptyList} />
+                    </>
+
+            }
+
         </Section>
     )
 

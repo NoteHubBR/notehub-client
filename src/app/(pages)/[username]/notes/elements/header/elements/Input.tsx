@@ -1,5 +1,6 @@
+import { useDebounce } from "@/data/hooks";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
 
 export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
 
@@ -7,33 +8,27 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
     const sParams = useSearchParams();
     const router = useRouter();
 
-    const [query, setQuery] = useState<string>(sParams.get('q') ?? '');
+    const [query, setQuery] = useState<null | string>(sParams.get('q'));
 
-    const updateURL = (value: string) => {
-        const params = new URLSearchParams(sParams);
-        params.set('q', value);
-        router.replace(`${pathname}?${params}`);
-    }
-
-    const handleSearchSubmit = (e: React.FormEvent) => {
-        e.preventDefault(); updateURL(query);
-    }
+    const debouncedSearch = useDebounce(query);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            updateURL(query);
-        }, 500);
-        return () => clearTimeout(timer);
-    }, [query]);
+        const updateURL = (value: string) => {
+            const params = new URLSearchParams(sParams);
+            if (value) params.set('q', value);
+            else params.delete('q');
+            router.replace(`${pathname}?${params}`);
+        }
+        updateURL(debouncedSearch ?? '');
+    }, [debouncedSearch, pathname, router, sParams]);
 
     return (
         <li className="flex-1 inlg:basis-full">
-            <form role="search" onSubmit={handleSearchSubmit} className="flex justify-center">
+            <form role="search" onSubmit={(e: React.FormEvent) => e.preventDefault()} className="flex justify-center">
                 <input
                     name="q"
                     type="search"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
                     className="w-full inlg:max-w-[444px] h-full px-2 py-1 rounded-lg
                     border-2 dark:border-neutral-700/50 border-dark/25
                     text-md placeholder:text-sm

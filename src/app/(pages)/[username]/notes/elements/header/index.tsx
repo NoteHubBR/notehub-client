@@ -1,17 +1,15 @@
 import { Element } from "./elements"
-import { LowDetailNote, Page } from "@/core";
 import { useParams } from "next/navigation";
 import { useRef } from "react";
 import { useUser } from "@/data/hooks";
 
 interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
-    page: Omit<Page<LowDetailNote>, "content">;
     tags: string[];
 }
 
 export { Skeleton as header } from './skeleton';
 
-export const Header = ({ page, tags, ...rest }: HeaderProps) => {
+export const Header = ({ tags, ...rest }: HeaderProps) => {
 
     const { username } = useParams<{ username: string }>();
 
@@ -31,7 +29,7 @@ export const Header = ({ page, tags, ...rest }: HeaderProps) => {
     const orderRef = useRef<HTMLButtonElement>(null);
     const closeOrderRef = useRef<HTMLSpanElement>(null);
 
-    if (page.totalElements > 0) return (
+    return (
         <header className="py-4 border-b dark:border-neutral-700/50 border-dark/25" {...rest}>
             <nav>
                 <ul className="flex items-center justify-between inlg:justify-center gap-2 flex-wrap">

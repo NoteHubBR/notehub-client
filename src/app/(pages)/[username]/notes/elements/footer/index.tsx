@@ -20,17 +20,17 @@ export const Footer = ({ page, isEmpty, ...rest }: FooterProps) => {
         <footer className="pb-2" {...rest}>
             <Element.Pagination>
 
-                {!first &&
+                {!first && !(current - 1 === 1) &&
                     <Element.Pageable aria-label="Primeira página" sParam="page" page={1}>
                         <IconChevronLeftPipe size={18} />
                     </Element.Pageable>
                 }
 
-                {current > 1 && current < totalPages &&
+                {current > 1 && current <= totalPages &&
                     <Element.Pageable aria-label="Voltar página" sParam="page" page={current - 1} />
                 }
 
-                {current < totalPages &&
+                {current <= totalPages &&
                     <Element.Pageable sParam="page" page={current} />
                 }
 
@@ -38,7 +38,7 @@ export const Footer = ({ page, isEmpty, ...rest }: FooterProps) => {
                     <Element.Pageable aria-label="Próxima página" sParam="page" page={current + 1} />
                 }
 
-                {!last &&
+                {!last && !(current + 1 === totalPages) &&
                     <Element.Pageable aria-label="Última página" sParam="page" page={totalPages}>
                         <IconChevronRightPipe size={18} />
                     </Element.Pageable>

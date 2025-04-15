@@ -12,3 +12,4 @@ export * from './useScreen';
 export * from './useScreenWidth';
 export * from './useHistory';
 export * from './useFlames';
+export * from './useDebounce';

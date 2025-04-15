@@ -67,7 +67,7 @@ export const Dropdown = ({ triggerRef, closeRef, ...rest }: DropdownProps) => {
                 aria-hidden={!isOpen}
                 className={clsx(
                     'z-[999] cursor-default whitespace-nowrap overflow-auto scrollbar',
-                    'absolute right-0 inmd:right-auto inmd:left-0 insm:center',
+                    'absolute right-0 inmd:right-auto inmd:left-0 insm:center insm:!fixed',
                     'w-60 max-h-[333px] rounded-lg',
                     isOpen ? 'visible top-[120%] !transition-all' : 'invisible top-full transition-none',
                     'border dark:border-neutral-700/50 border-dark/25',
