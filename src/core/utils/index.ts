@@ -6,3 +6,4 @@ export * from './Date';
 export * from './Crop';
 export * from './File';
 export * from './Object';
+export * from './Query';

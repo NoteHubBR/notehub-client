@@ -1,6 +1,6 @@
-import { Element } from "./elements"
+import { Element } from "./elements";
+import { useCallback, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { useRef } from "react";
 import { useUser } from "@/data/hooks";
 
 interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
@@ -12,9 +12,7 @@ export { Skeleton as header } from './skeleton';
 export const Header = ({ tags, ...rest }: HeaderProps) => {
 
     const { username } = useParams<{ username: string }>();
-
     const { user } = useUser();
-
     const current: boolean = username === user?.username;
 
     const typeRef = useRef<HTMLButtonElement>(null);
@@ -29,8 +27,15 @@ export const Header = ({ tags, ...rest }: HeaderProps) => {
     const orderRef = useRef<HTMLButtonElement>(null);
     const closeOrderRef = useRef<HTMLSpanElement>(null);
 
+    const [filteredTags, setFilteredTags] = useState<string[]>(tags);
+
+    const handleOnChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const query = e.target.value.toLowerCase();
+        setFilteredTags(tags.filter((tag) => tag.includes(query)));
+    }, [tags])
+
     return (
-        <header className="py-4 border-b dark:border-neutral-700/50 border-dark/25" {...rest}>
+        <header className="pb-4 border-b dark:border-neutral-700/50 border-dark/25" {...rest}>
             <nav>
                 <ul className="flex items-center justify-between inlg:justify-center gap-2 flex-wrap">
                     <Element.Input placeholder="Encontrar uma nota..." />
@@ -49,8 +54,9 @@ export const Header = ({ tags, ...rest }: HeaderProps) => {
                         <Element.Dropdown triggerRef={tagRef} closeRef={closeTagRef}>
                             <Element.Summary ref={closeTagRef} summary="Selecione a tag" />
                             <ul className="flex flex-col">
-                                <Element.Option sParam="tag" value={[null]} text="todos" />
-                                {tags.map((tag, key) => (
+                                <Element.Filter onChange={handleOnChange} />
+                                <Element.Option sParam="tag" value={[null]} text="todas" />
+                                {filteredTags.map((tag, key) => (
                                     <Element.Option key={key} sParam="tag" value={[tag]} text={tag} />
                                 ))}
                             </ul>

@@ -17,7 +17,7 @@ export const Footer = ({ page, isEmpty, ...rest }: FooterProps) => {
     if ((first || last) && isEmpty) return null;
 
     return (
-        <footer className="pb-2" {...rest}>
+        <footer {...rest}>
             <Element.Pagination>
 
                 {!first && !(current - 1 === 1) &&

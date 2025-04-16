@@ -1,7 +1,7 @@
 'use client';
 
+import { buildQueryStrings, handleFieldErrorsMsg, isEmpty, LowDetailNote, Page as NotesPage } from "@/core";
 import { Element } from "./elements";
-import { handleFieldErrorsMsg, isEmpty, LowDetailNote, Page as NotesPage } from "@/core";
 import { IconEyeOff, IconLock } from "@tabler/icons-react";
 import { Section } from "../components/Section";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -15,6 +15,7 @@ const Page = () => {
     const router = useRouter();
 
     const { noteService: { findUserTags, searchUserNotes } } = useServices();
+
     const { token } = useUser();
 
     const [state, setState] = useState({
@@ -44,55 +45,31 @@ const Page = () => {
     }, [])
 
     useEffect(() => {
-
-        const q = sParams.get('q');
-        const type = sParams.get('type');
-        const tag = sParams.get('tag');
-        const order = sParams.get('order');
-        const sort = sParams.get('sort');
-        const page = sParams.get('page');
-
-        const params = {} as Record<string, string>;
-        if (q) params.q = q;
-        if (type) params.type = type;
-        if (tag) params.tag = tag;
-        if (order) params.order = order;
-        if (sort) params.sort = sort;
-        if (page) params.page = page;
-
-        const newQuery = `?${new URLSearchParams(params)}`;
-        if (newQuery !== window.location.search) router.replace(newQuery);
-
-        let queryString = '';
-        if (q) queryString += `q=${q}&`;
-        if (type) queryString += `type=${type}&`;
-        if (tag) queryString += `tag=${tag}&`;
-        if (order) queryString += `sort=${order},${sort ?? 'desc'}&`;
-        if (page) queryString += `page=${Number(page) - 1}&`;
-        if (queryString.endsWith('&')) queryString = queryString.slice(0, -1);
-
         const init = async () => {
-            if (isFetching.current || hasFetched && args === queryString) return;
+            const query = buildQueryStrings(sParams, router);
+            if (isFetching.current || hasFetched && args === query) return;
             try {
                 if (token) {
                     startFetch();
-                    const { content, ...rest } = await searchUserNotes(token.access_token, username, queryString);
-                    const tags = await findUserTags(token.access_token, username);
+                    const { content, ...rest } = await searchUserNotes(token.access_token, username, query);
+                    const userTags = tags.length > 0
+                        ? tags
+                        : await findUserTags(token.access_token, username)
                     return setState((prev) => ({
                         ...prev,
-                        args: queryString,
+                        args: query,
                         page: rest,
                         notes: content,
-                        tags: tags,
+                        tags: userTags,
                         emptyList: content.length === 0
                     }));
                 }
             } catch (errors) {
                 if (Array.isArray(errors)) {
-                    const { notCurrent, notMutual } = handleFieldErrorsMsg(errors)
+                    const { notCurrent, notMutual } = handleFieldErrorsMsg(errors);
                     return setState((prev) => ({
                         ...prev,
-                        args: queryString,
+                        args: query,
                         notCurrent: notCurrent,
                         notMutual: notMutual
                     }))
@@ -126,7 +103,7 @@ const Page = () => {
     )
 
     if (isEmpty(page) || isEmpty(notes)) return (
-        <Section className="px-4 py-2">
+        <Section className="p-4">
             <Element.header />
             <Element.main />
             <Element.footer />
@@ -134,12 +111,12 @@ const Page = () => {
     )
 
     return (
-        <Section className="px-4 py-2">
+        <Section className="p-4">
             <Element.Header tags={tags} />
             {onFetch
                 ? <Element.Loading />
                 : emptyList
-                    ? <p className="p-4 text-center">Nada que seja público foi encontrado.</p>
+                    ? <h2 className="pt-4 font-medium text-center dark:text-lighter/75 text-darker/75">Nada foi encontrado.</h2>
                     :
                     <>
                         <Element.Main notes={notes} />
@@ -147,7 +124,6 @@ const Page = () => {
                     </>
 
             }
-
         </Section>
     )
 

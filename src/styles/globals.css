@@ -48,51 +48,6 @@ input {
   outline: none !important;
 }
 
-@keyframes requesting-animation {
-
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-.animate-gradient {
-  background-size: 400%;
-  -webkit-animation: requesting-animation 2s ease infinite;
-  -moz-animation: requesting-animation 2s ease infinite;
-  animation: requesting-animation 2s ease infinite;
-}
-
-@keyframes click-animation {
-  0% {
-    left: 275%;
-  }
-
-  100% {
-    left: 0;
-  }
-}
-
-.animate-click {
-  -webkit-animation: click-animation 1.666s ease-in-out infinite;
-  -moz-animation: click-animation 1.666s ease-in-out infinite;
-  animation: click-animation 1.666s ease-in-out infinite;
-}
-
-.scrollbar {
-  scrollbar-color: transparent transparent;
-  scrollbar-width: thin;
-  transition: scrollbar-color ease-in-out .15s;
-}
-
-.scrollbar:hover {
-  scrollbar-color: #7c3aed transparent;
-}
-
 input[type="range"] {
   cursor: pointer;
   -webkit-appearance: none;
@@ -144,4 +99,77 @@ input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
   -webkit-appearance: none !important;
   display: none !important;
+}
+
+@keyframes requesting-animation {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 400%;
+  -webkit-animation: requesting-animation 2s ease infinite;
+  -moz-animation: requesting-animation 2s ease infinite;
+  animation: requesting-animation 2s ease infinite;
+}
+
+@keyframes click-animation {
+  0% {
+    left: 275%;
+  }
+
+  100% {
+    left: 0;
+  }
+}
+
+.animate-click {
+  -webkit-animation: click-animation 1.666s ease-in-out infinite;
+  -moz-animation: click-animation 1.666s ease-in-out infinite;
+  animation: click-animation 1.666s ease-in-out infinite;
+}
+
+.scrollbar {
+  scrollbar-color: transparent transparent;
+  scrollbar-width: thin;
+  transition: scrollbar-color ease-in-out .15s;
+}
+
+.scrollbar:hover {
+  scrollbar-color: #7c3aed transparent;
+}
+
+@keyframes dots {
+  50% {
+    opacity: 0;
+    transform: scale(0.7) translateY(10px);
+  }
+}
+
+.animated-dots {
+  width: 6px;
+  height: 6px;
+  margin: 0 2px;
+  background-color: #7c3aed;
+  border-radius: 50%;
+  display: inline-block;
+  animation: dots;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.animated-dots:nth-child(2) {
+  animation-delay: .4s;
+}
+
+.animated-dots:nth-child(3) {
+  animation-delay: .8s;
 }
