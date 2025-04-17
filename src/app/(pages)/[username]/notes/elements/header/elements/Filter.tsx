@@ -15,6 +15,9 @@ export const Filter = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
             id="filter"
             type="text"
             placeholder="Filtrar..."
+            spellCheck={false}
+            autoCorrect="off"
+            autoCapitalize="off"
             className="outline-none py-2
             w-full
             text-sm dark:text-semilight text-semidark

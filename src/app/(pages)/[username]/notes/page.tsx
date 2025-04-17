@@ -2,7 +2,7 @@
 
 import { buildQueryStrings, handleFieldErrorsMsg, isEmpty, LowDetailNote, Page as NotesPage } from "@/core";
 import { Element } from "./elements";
-import { IconEyeOff, IconLock } from "@tabler/icons-react";
+import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
 import { Section } from "../components/Section";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -80,10 +80,10 @@ const Page = () => {
         }
         init();
 
-    }, [sParams, state, token])
+    }, [sParams, token, tags, page, notes])
 
     if (notCurrent) return (
-        <Section className="p-6 flex items-center inmd:justify-center gap-3">
+        <Section className="p-6 flex">
             <Element.Dialog
                 icon={IconEyeOff}
                 title="Notas ocultas"
@@ -93,11 +93,11 @@ const Page = () => {
     )
 
     if (notMutual) return (
-        <Section className="p-6 flex items-center inmd:justify-center gap-3">
+        <Section className="p-6 flex">
             <Element.Dialog
                 icon={IconLock}
                 title="Perfil privado"
-                desc="Necessária conexão bidirecional, ambos se seguirem."
+                desc="Necessário que ambos de vocês se sigam."
             />
         </Section>
     )
@@ -111,12 +111,16 @@ const Page = () => {
     )
 
     return (
-        <Section className="p-4">
+        <Section className="p-4 flex flex-col">
             <Element.Header tags={tags} />
             {onFetch
                 ? <Element.Loading />
                 : emptyList
-                    ? <h2 className="pt-4 font-medium text-center dark:text-lighter/75 text-darker/75">Nada foi encontrado.</h2>
+                    ? <Element.Dialog
+                        icon={IconNotesOff}
+                        title="Zero"
+                        desc="Nada encontrado."
+                    />
                     :
                     <>
                         <Element.Main notes={notes} />

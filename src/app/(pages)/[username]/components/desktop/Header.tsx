@@ -27,7 +27,7 @@ export const Header = ({ user, history, ...rest }: HeaderProps) => {
 
     if (user) return (
         <header {...rest}>
-            <Section className='overflow-hidden mb-4'>
+            <Section className="overflow-hidden">
                 <Layout.Banner user={user} history={history} />
                 <div className="pr-4 inlg:pr-2 pl-36 inlg:pl-32 flex items-center gap-6 inlg:gap-1 justify-between">
                     <Layout.Nav>
@@ -43,7 +43,7 @@ export const Header = ({ user, history, ...rest }: HeaderProps) => {
                                 <Form.Update ref={childRef} closeRef={closeRef} />
                             </Template.Portal>
                         </>
-                        : <Layout.Button user={user} />
+                        : currentUser && <Layout.Button user={user} />
                     }
                 </div>
             </Section>

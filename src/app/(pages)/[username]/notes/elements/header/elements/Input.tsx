@@ -28,6 +28,9 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
                 <input
                     name="q"
                     type="search"
+                    spellCheck={false}
+                    autoCorrect="off"
+                    autoCapitalize="off"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
                     className="w-full inlg:max-w-[444px] h-full px-2 py-1 rounded-lg
                     border-2 dark:border-neutral-700/50 border-dark/25

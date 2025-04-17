@@ -11,7 +11,7 @@ export { Skeleton as main } from './skeleton';
 export const Main = ({ notes, ...rest }: MainProps) => {
 
     return (
-        <main className="my-4 flex flex-col gap-3" {...rest}>
+        <main className="my-4 flex flex-1 flex-col gap-3" {...rest}>
             {notes.map((note) => (
                 <Element.Section key={note.id}>
                     <article className="w-full flex flex-col gap-3">

@@ -56,6 +56,9 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
             <input
                 ref={ref}
                 inputMode="search"
+                spellCheck={false}
+                autoCorrect="off"
+                autoCapitalize="off"
                 className="outline-none
                     peer
                     inlg:w-[333px] w-[444px] py-[6px] pl-4 pr-9
