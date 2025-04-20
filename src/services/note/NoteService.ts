@@ -18,7 +18,7 @@ export const NoteService = () => {
         }
     }, [httpGet, handleExpiredToken])
 
-    const findUserTags = useCallback(async (token: string, username: string): Promise<string[]> => {
+    const findUserTags = useCallback(async (token: string | null, username: string): Promise<string[]> => {
         const endpoint: string = `/notes/${username}/tags`;
         try {
             return await httpGet(endpoint, { useToken: token });
@@ -27,7 +27,7 @@ export const NoteService = () => {
         }
     }, [httpGet, handleExpiredToken])
 
-    const searchUserNotes = useCallback(async (token: string, username: string, parameters?: string): Promise<Page<LowDetailNote>> => {
+    const searchUserNotes = useCallback(async (token: string | null, username: string, parameters?: string): Promise<Page<LowDetailNote>> => {
         const endpoint: string = `/notes/${username}/specs?${parameters}`;
         try {
             return await httpGet(endpoint, { useToken: token });

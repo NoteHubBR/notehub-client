@@ -12,38 +12,41 @@ export const Header = () => {
 
     const { userService: { getUser, getUserDisplayNameHistory } } = useServices();
 
-    const { onDesktop, onMobile } = useScreen();
-    const { user: currentUser } = useUser();
-    const { history: currentHistory } = useHistory();
-
     const params = useParams<{ username: string }>();
 
-    const [notFound, setNotFound] = useState<boolean>(false);
-    const [user, setUser] = useState<User | LowDetailUser | null>(null);
-    const [history, setHistory] = useState<string[]>([]);
+    const { onDesktop, onMobile } = useScreen();
+    const { isMounted, user: currentUser } = useUser();
+    const { history: currentHistory } = useHistory();
+
+    const [state, setState] = useState({
+        notFound: false,
+        user: {} as User | LowDetailUser,
+        history: [] as string[]
+    })
+
+    const { notFound, user, history } = state;
 
     const isFetching = useRef<boolean>(false);
+
     useEffect(() => {
         const init = async () => {
             if (isFetching.current) return;
             if (currentUser && params.username === currentUser.username) {
-                setUser(currentUser);
-                setHistory(currentHistory);
-                return;
+                return setState((prev) => ({ ...prev, user: currentUser, history: currentHistory }));
             }
             isFetching.current = true;
             try {
-                setUser(await getUser(params.username))
-                setHistory(await getUserDisplayNameHistory(params.username));
-                return;
+                const user = await getUser(params.username);
+                const history = await getUserDisplayNameHistory(params.username);
+                return setState((prev) => ({ ...prev, user: user, history: history }));
             } catch {
-                return setNotFound(true);
+                return setState((prev) => ({ ...prev, notFound: true }));
             } finally {
                 return isFetching.current = false;
             }
         }
-        init();
-    }, [currentHistory, currentUser, getUser, getUserDisplayNameHistory, params.username])
+        if (isMounted) init();
+    }, [currentHistory, currentUser, getUser, getUserDisplayNameHistory, isMounted, params.username])
 
     if (notFound) return <NotFound />;
 

@@ -6,6 +6,7 @@ import { useFlames, useFollowing, useHistory, useLoading, useNotes, useServices,
 import { usePathname } from "next/navigation";
 
 export interface UserContextProps {
+    isMounted: boolean;
     token: Token | null;
     user: User | null;
     setUser: (token: Token, user: User) => void;
@@ -35,6 +36,7 @@ export const UserProvider = (props: any) => {
     const { setIsLoaded } = useLoading();
 
     const [state, setState] = useState({
+        isMounted: false,
         token: null as Token | null,
         user: null as User | null,
     })
@@ -106,7 +108,7 @@ export const UserProvider = (props: any) => {
                 return await fetchUser();
             }
         }
-        init();
+        init().finally(() => setState((prev) => ({ ...prev, isMounted: true })));
     }, [isStoreReady])
 
     useEffect(() => {
@@ -120,6 +122,7 @@ export const UserProvider = (props: any) => {
 
     return (
         <UserContext.Provider value={{
+            isMounted: state.isMounted,
             token: state.token,
             user: state.user,
             updateUser,

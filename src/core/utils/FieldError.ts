@@ -13,7 +13,7 @@ export function handleFieldErrors(errors: FieldError[], setError: UseFormSetErro
 
 export function handleFieldErrorsMsg(errors: FieldError[]): { notMutual: boolean; notCurrent: boolean } {
     for (const error of errors) {
-        if (error.message === "Usuário sem permissão") {
+        if (error.message === "Usuário sem permissão.") {
             return { notMutual: false, notCurrent: true };
         }
         if (error.message === "Não há vínculo bidirecional entre os usuários.") {

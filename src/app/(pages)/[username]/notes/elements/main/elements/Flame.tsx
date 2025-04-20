@@ -8,7 +8,7 @@ export const Flame = ({ note, ...rest }: { note: LowDetailNote } & React.ButtonH
 
     const { flameService: { inflameNote, deflameNote } } = useServices();
 
-    const { token } = useUser();
+    const { token, user } = useUser();
     const { flames, setNewFlame, removeFlame } = useFlames();
 
     const inFlames = flames.some((f => f.note.id === note.id));
@@ -58,6 +58,8 @@ export const Flame = ({ note, ...rest }: { note: LowDetailNote } & React.ButtonH
             {...rest}
         />
     )
+
+    if (!user) return null;
 
     if (requesting) return (
         <div

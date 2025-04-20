@@ -12,7 +12,7 @@ const Page = () => {
 
     const { userService: { getUser } } = useServices();
 
-    const { user: current } = useUser();
+    const { isMounted, user: current } = useUser();
 
     const params = useParams<{ username: string }>();
 
@@ -23,9 +23,7 @@ const Page = () => {
     useEffect(() => {
         const init = async () => {
             if (isFetching.current) return;
-            if (current && params.username === current.username) {
-                return setUser(current);
-            }
+            if (current && params.username === current.username) return setUser(current);
             isFetching.current = true;
             try {
                 return setUser(await getUser(params.username));
@@ -35,8 +33,8 @@ const Page = () => {
                 return isFetching.current = false;
             }
         }
-        init();
-    }, [current, getUser, params.username])
+        if (isMounted) init();
+    }, [current, getUser, isMounted, params.username])
 
     if (notFound) return null;
 

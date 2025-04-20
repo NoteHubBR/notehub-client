@@ -16,7 +16,7 @@ const Page = () => {
 
     const { noteService: { findUserTags, searchUserNotes } } = useServices();
 
-    const { token } = useUser();
+    const { isMounted, token } = useUser();
 
     const [state, setState] = useState({
         onFetch: false,
@@ -28,9 +28,10 @@ const Page = () => {
         emptyList: false,
         notCurrent: false,
         notMutual: false,
+        notFound: false,
     })
 
-    const { onFetch, hasFetched, args, page, notes, tags, emptyList, notCurrent, notMutual } = state;
+    const { onFetch, hasFetched, args, page, notes, tags, emptyList, notCurrent, notMutual, notFound } = state;
 
     const isFetching = useRef<boolean>(false);
 
@@ -47,23 +48,24 @@ const Page = () => {
     useEffect(() => {
         const init = async () => {
             const query = buildQueryStrings(sParams, router);
-            if (isFetching.current || hasFetched && args === query) return;
+            const accessToken = token ? token.access_token : null;
+            const secret = `${query}:${accessToken}`;
+            if (isFetching.current || hasFetched && args === secret) return;
             try {
-                if (token) {
-                    startFetch();
-                    const { content, ...rest } = await searchUserNotes(token.access_token, username, query);
-                    const userTags = tags.length > 0
-                        ? tags
-                        : await findUserTags(token.access_token, username)
-                    return setState((prev) => ({
-                        ...prev,
-                        args: query,
-                        page: rest,
-                        notes: content,
-                        tags: userTags,
-                        emptyList: content.length === 0
-                    }));
-                }
+                startFetch();
+                const { content, ...rest } = await searchUserNotes(accessToken, username, query);
+                const userTags = tags.length > 0 ? tags : await findUserTags(accessToken, username);
+                return setState((prev) => ({
+                    ...prev,
+                    args: secret,
+                    page: rest,
+                    notes: content,
+                    tags: userTags,
+                    emptyList: content.length === 0,
+                    notCurrent: false,
+                    notMutual: false,
+                    notFound: false
+                }))
             } catch (errors) {
                 if (Array.isArray(errors)) {
                     const { notCurrent, notMutual } = handleFieldErrorsMsg(errors);
@@ -73,14 +75,15 @@ const Page = () => {
                         notCurrent: notCurrent,
                         notMutual: notMutual
                     }))
-                }
+                } else return setState((prev) => ({ ...prev, notFound: true }));
             } finally {
                 endFetch();
             }
         }
-        init();
+        if (isMounted) init();
+    }, [isMounted, sParams])
 
-    }, [sParams, token, tags, page, notes])
+    if (notFound) return null;
 
     if (notCurrent) return (
         <Section className="p-6 flex">

@@ -3,12 +3,12 @@ import { useProgress } from "./useProgress";
 
 interface HttpOptions {
     useProgress?: boolean;
-    useToken?: string;
+    useToken?: string | null;
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const createHeaders = (useToken?: string): HeadersInit => {
+const createHeaders = (useToken?: string | null): HeadersInit => {
     const headers: HeadersInit = { 'Content-Type': 'application/json' };
     if (useToken) headers['Authorization'] = `Bearer ${useToken}`;
     return headers;
