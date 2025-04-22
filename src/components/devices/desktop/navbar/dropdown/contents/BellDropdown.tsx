@@ -20,7 +20,7 @@ export const BellDropdown = () => {
 
     const sectionRef = useRef<HTMLDivElement>(null);
 
-    const init = async () => {
+    const init = useCallback(async () => {
         if (isFetchingRef.current || notifications.length > 0 || hasFetchedAndEmptyList.current) return;
         try {
             if (token) {
@@ -35,7 +35,7 @@ export const BellDropdown = () => {
             setisFetching(false);
             setIsFetched(true);
         }
-    }
+    }, [getUserNotifications, notifications.length, setNotifications, token])
 
     const handleScroll = useCallback(async () => {
         if (!token || page.last || !sectionRef.current || isFetchingRef.current) return;
@@ -50,7 +50,7 @@ export const BellDropdown = () => {
                 setisFetching(false);
             }
         }
-    }, [page]);
+    }, [getUserNotifications, page.last, page.page, setNotifications, token]);
 
     useEffect(() => {
         init();
@@ -58,7 +58,7 @@ export const BellDropdown = () => {
         if (!section) return;
         section.addEventListener("scroll", handleScroll);
         return () => section.removeEventListener("scroll", handleScroll);
-    }, [handleScroll]);
+    }, [handleScroll, init]);
 
     return (
         <>

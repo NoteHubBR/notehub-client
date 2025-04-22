@@ -9,7 +9,14 @@ export const Bell = () => {
         <>
             <IconBell size={27} />
             {count > 0 &&
-                <span className="absolute top-0 left-0 w-5 h-5 flex items-center justify-center rounded-full text-sm text-lighter bg-primary">
+                <span
+                    className="whitespace-nowrap
+                    absolute top-0 left-0
+                    w-5 h-5 rounded-full
+                    flex items-center justify-center
+                    text-sm text-lighter
+                    bg-primary"
+                >
                     {count}
                 </span>
             }

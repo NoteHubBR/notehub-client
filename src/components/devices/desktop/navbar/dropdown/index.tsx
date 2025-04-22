@@ -8,6 +8,8 @@ interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Dropdown = ({ buttonRef, ...rest }: DropdownProps) => {
 
+    const pathname = usePathname();
+
     const portalRef = useRef<HTMLDivElement>(null);
 
     const [position, setPosition] = useState({ top: 0, right: 0 });
@@ -27,11 +29,42 @@ export const Dropdown = ({ buttonRef, ...rest }: DropdownProps) => {
         }
     }, [buttonRef])
 
-    const handleEscKeydown = useCallback((event: KeyboardEvent) => {
-        if (event.key === 'Escape') setIsOpen(false);
-    }, [])
+    const handleKeydown = useCallback((event: KeyboardEvent) => {
+        const scrollingKeys = new Set([
+            'ArrowUp',
+            'ArrowDown',
+            'PageUp',
+            'PageDown',
+            'Home',
+            'End'
+        ])
+        if (event.key === 'Escape') return setIsOpen(false);
+        if (isOpen && scrollingKeys.has(event.key)) return event.preventDefault();
+    }, [isOpen])
 
-    const pathname = usePathname();
+    const preventScrolling = useCallback((e: WheelEvent) => {
+
+        if (!isOpen || !portalRef.current) return;
+
+        const isScrollableElement = (el: HTMLElement): boolean => {
+            const overflowY = window.getComputedStyle(el).overflowY;
+            return overflowY === 'auto' || overflowY === 'scroll';
+        }
+
+        let targetElement = e.target as HTMLElement;
+        let scrollableInPortal = false;
+
+        while (targetElement && targetElement !== portalRef.current) {
+            if (isScrollableElement(targetElement)) {
+                scrollableInPortal = true;
+                break;
+            }
+            targetElement = targetElement.parentElement as HTMLElement;
+        }
+
+        if (!scrollableInPortal) e.preventDefault();
+
+    }, [isOpen]);
 
     useEffect((): void => { return setIsOpen(false); }, [pathname])
 
@@ -40,28 +73,34 @@ export const Dropdown = ({ buttonRef, ...rest }: DropdownProps) => {
         const refElement = buttonRef.current;
         if (refElement) refElement.addEventListener('click', handleClickOnButtonRef);
 
-        document.addEventListener('mousedown', handleClickOutsidePortal);
-        document.addEventListener('keydown', handleEscKeydown);
+        window.addEventListener('mousedown', handleClickOutsidePortal);
+        window.addEventListener('keydown', handleKeydown, { passive: false });
+        window.addEventListener('wheel', preventScrolling, { passive: false });
 
         const handlePosition = () => {
             if (!refElement) return;
             const rect = refElement.getBoundingClientRect();
+            const scrollX = window.pageXOffset;
+            const scrollY = window.pageYOffset;
             setPosition({
-                top: rect.bottom,
-                right: window.innerWidth - rect.right
+                top: rect.bottom + scrollY,
+                right: (window.innerWidth - rect.right) + scrollX
             });
         }
         handlePosition();
         window.addEventListener('resize', handlePosition);
+        window.addEventListener('scroll', handlePosition);
 
         return () => {
             if (refElement) refElement.removeEventListener('click', handleClickOnButtonRef);
-            document.removeEventListener('mousedown', handleClickOutsidePortal);
-            document.removeEventListener('keydown', handleEscKeydown);
+            window.removeEventListener('mousedown', handleClickOutsidePortal);
+            window.removeEventListener('keydown', handleKeydown);
+            window.removeEventListener('wheel', preventScrolling);
             window.removeEventListener('resize', handlePosition);
+            window.removeEventListener('scroll', handlePosition);
         }
 
-    }, [buttonRef, handleClickOutsidePortal, handleClickOnButtonRef, handleEscKeydown])
+    }, [buttonRef, handleClickOnButtonRef, handleClickOutsidePortal, handleKeydown, preventScrolling])
 
     if (!isOpen) return null;
 

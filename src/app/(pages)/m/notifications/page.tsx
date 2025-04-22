@@ -24,7 +24,7 @@ const Notifications = () => {
 
     const sectionRef = useRef<HTMLDivElement>(null);
 
-    const init = async () => {
+    const init = useCallback(async () => {
         if (isFetchingRef.current || notifications.length > 0 || hasFetchedAndEmptyList.current) return;
         try {
             if (token) {
@@ -39,7 +39,7 @@ const Notifications = () => {
             setisFetching(false);
             setIsFetched(true);
         }
-    }
+    }, [getUserNotifications, notifications.length, setNotifications, token])
 
     const handleScroll = useCallback(async () => {
         if (!token || page.last || !sectionRef.current || isFetchingRef.current) return;
@@ -54,7 +54,7 @@ const Notifications = () => {
                 setisFetching(false);
             }
         }
-    }, [page]);
+    }, [getUserNotifications, page.last, page.page, setNotifications, token]);
 
     useEffect(() => {
         init();
@@ -62,14 +62,14 @@ const Notifications = () => {
         if (!section) return;
         section.addEventListener("scroll", handleScroll);
         return () => section.removeEventListener("scroll", handleScroll);
-    }, [handleScroll]);
+    }, [handleScroll, init]);
 
     if (!onMobile) return null;
 
     return (
-        <section ref={sectionRef} className="w-full h-svh overflow-y-auto flex flex-col dark:bg-dark bg-lighter">
+        <section className="h-[calc(100svh-45px)] flex flex-col dark:bg-dark bg-light">
             <Device.Mobile.Header.SimpleHeader title="Notificações" />
-            <main className="flex-1 flex flex-col justify-center">
+            <main ref={sectionRef} className="overflow-y-auto scrollbar h-full flex flex-col">
                 <ul className="flex flex-col gap-2">
                     {notifications.map(notification => (
                         <li key={notification.id} className={`p-2 ${!notification.read ? 'dark:bg-semilight/5' : 'bg-semidark/5'}`}>
@@ -79,7 +79,7 @@ const Notifications = () => {
                 </ul>
                 <Loading state={isFetching} />
                 {page.totalElements === 0 && isFetched &&
-                    <div className="p-4 flex flex-col gap-2 items-center justify-center">
+                    <div className="flex-1 p-4 flex flex-col gap-2 items-center justify-center">
                         <h2 className="text-md text-center font-faculty font-medium">Nada aqui.</h2>
                         <p className="text-sm text-center font-faculty font-medium">Dê um sinal para que vejam!</p>
                         <figure style={{ width: 133, height: 133 }} className={`overflow-hidden flex-none`}>

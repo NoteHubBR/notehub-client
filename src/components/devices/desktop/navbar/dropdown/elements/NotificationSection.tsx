@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 export const Section = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLUListElement>>(({ ...props }, ref) => (
     <section
         ref={ref}
-        className="scrollbar
+        className="overscroll-contain scrollbar
             cursor-auto
             w-[400px] max-h-[400px] overflow-y-auto
             pt-2

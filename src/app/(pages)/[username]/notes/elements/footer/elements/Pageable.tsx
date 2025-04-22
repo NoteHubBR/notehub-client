@@ -27,7 +27,7 @@ export const Pageable = ({ sParam, page, children, className, ...rest }: Pageabl
             <button
                 aria-current="page"
                 className={clsx(
-                    'cursor-pointer',
+                    'whitespace-nowrap cursor-pointer',
                     'rounded-full',
                     'w-6 h-6 flex items-center justify-center',
                     'border',

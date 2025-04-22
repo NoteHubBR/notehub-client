@@ -11,7 +11,7 @@ export const Loading = ({ state, ...rest }: LoadingProps) => {
             role='status'
             className={clsx(
                 state ? '' : 'hidden',
-                'w-full py-2 flex items-center justify-center select-none pointer-events-none'
+                'h-full w-full py-2 flex items-center justify-center select-none pointer-events-none'
             )}
             {...rest}
         >
