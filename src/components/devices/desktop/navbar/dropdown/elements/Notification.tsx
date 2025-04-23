@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import { Component } from "@/components";
 import { Icon } from "@/components/icons";
-import { IconFlame } from "@tabler/icons-react";
+import { IconFlame, IconMessageUser, IconUserPlus } from "@tabler/icons-react";
 import { Notification as PropsType, toRelativeTime, Type } from "@/core";
 import { useCallback, useState } from "react";
 import Link from "next/link";
@@ -22,17 +22,17 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
         else return `/${user.username}/${target}`;
     }
 
-    const getEmote = (type: Type): string | null => {
+    const getEmote = (type: Type): React.ElementType => {
         switch (type) {
-            case Type.FOLLOWER: return '👀';
-            case Type.COMMENT:
-            case Type.REPLY: return '🗣';
-            default: return null;
+            case Type.FLAME: return IconFlame
+            case Type.FOLLOWER: return IconUserPlus
+            case Type.COMMENT: return IconMessageUser
+            case Type.REPLY: return IconMessageUser
         }
     }
 
     const href = getHref(type);
-    const emote = getEmote(type);
+    const Emote = getEmote(type);
     const relativeTime = toRelativeTime(notification.created_at);
     const [username, message] = [
         text.split(' ').filter(word => word.startsWith('@')),
@@ -58,16 +58,16 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
                     <figure className="relative px-2 border-r text-sm dark:border-r-semilight/10 border-r-semidark/10">
                         <Component.Photo user={user} size={55} />
                         <Icon.Sponsor
-                            isSponsor={user.sponsor}
+                            user={user}
                             size={22}
                             className="bot-mid-center drop-shadow-alpha-d-md"
                         />
                     </figure>
                     <section className="px-2">
                         <p className="text-sm">
-                            <span>{emote ? emote : <IconFlame fill="#6d28d9" color="#7c3aed" />} </span>
-                            <span className="font-semibold text-primary">{username} </span>
-                            {message}
+                            <span>{<Emote className="inline-block text-primary fill-primary" />}</span>
+                            <span className="font-semibold text-primary"> {username} </span>
+                            <span>{message}</span>
                         </p>
                     </section>
                 </main>

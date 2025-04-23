@@ -27,6 +27,7 @@ export const FollowingScope = () => {
         <div className="flex flex-col gap-3">
             {listState.map(user => (
                 <Link
+                    user={user}
                     key={user.username}
                     href={`/${user.username}`}
                     icon={<Component.Photo user={user} />}

@@ -25,7 +25,7 @@ const Minimized = ({ user }: { user: User }) => {
 const Maximized = ({ user, ...rest }: { user: User } & React.HTMLAttributes<HTMLDivElement>) => {
     return (
         <aside
-            className="fixed overflow-y-auto scrollbar
+            className="fixed overflow-y-auto scrollbar-desktop
             w-[240px] h-[92vh] inmd:h-[92svh] p-4
             flex flex-col gap-3
             dark:bg-darker bg-lighter"

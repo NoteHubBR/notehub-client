@@ -32,21 +32,63 @@ export const Dropdown = ({ triggerRef, closeRef, ...rest }: DropdownProps) => {
         }
     }, [triggerRef])
 
-    const handleKeydownEsc = useCallback((event: KeyboardEvent) => {
+    const handleKeydown = useCallback((event: KeyboardEvent) => {
+        const scrollingKeys = new Set([
+            'ArrowUp',
+            'ArrowDown',
+            'PageUp',
+            'PageDown',
+            'Home',
+            'End'
+        ])
         if (event.key === 'Escape') return setIsOpen(false);
-    }, [])
+        if (isOpen && scrollingKeys.has(event.key)) return event.preventDefault();
+    }, [isOpen])
+
+    const preventScrolling = useCallback((e: WheelEvent | TouchEvent) => {
+
+        if (!isOpen || !dropdownRef.current) return;
+
+        const isScrollableElement = (el: HTMLElement): boolean => {
+            const overflowY = window.getComputedStyle(el).overflowY;
+            const canOverflow = overflowY === 'auto' || overflowY === 'scroll';
+            return canOverflow && el.scrollHeight > el.clientHeight;
+        }
+
+        let targetElement = e.target as HTMLElement;
+        let scrollableInPortal = false;
+
+        while (targetElement) {
+            if (isScrollableElement(targetElement)) {
+                scrollableInPortal = true;
+                break;
+            }
+            targetElement = targetElement.parentElement as HTMLElement;
+        }
+
+        if (!scrollableInPortal) e.preventDefault();
+
+    }, [isOpen]);
 
     useEffect(() => {
+
         const trigger = triggerRef.current;
         if (trigger) trigger.addEventListener('click', handleClickOnTrigger);
-        document.addEventListener('click', handleClickOutsideDropdown);
-        document.addEventListener('keydown', handleKeydownEsc);
+
+        window.addEventListener('click', handleClickOutsideDropdown);
+        window.addEventListener('keydown', handleKeydown, { passive: false });
+        window.addEventListener('wheel', preventScrolling, { passive: false });
+        window.addEventListener('touchmove', preventScrolling, { passive: false });
+
         return () => {
             if (trigger) trigger.removeEventListener('click', handleClickOnTrigger);
-            document.removeEventListener('click', handleClickOutsideDropdown);
-            document.removeEventListener('keydown', handleKeydownEsc);
+            window.removeEventListener('click', handleClickOutsideDropdown);
+            window.removeEventListener('keydown', handleKeydown);
+            window.removeEventListener('wheel', preventScrolling);
+            window.removeEventListener('touchmove', preventScrolling);
         }
-    }, [handleClickOnTrigger, handleClickOutsideDropdown, handleKeydownEsc, triggerRef])
+
+    }, [handleClickOnTrigger, handleClickOutsideDropdown, handleKeydown, preventScrolling, triggerRef])
 
     const sParams = useSearchParams();
     useEffect(() => { return setIsOpen(false) }, [sParams])
@@ -66,7 +108,8 @@ export const Dropdown = ({ triggerRef, closeRef, ...rest }: DropdownProps) => {
                 role="menu"
                 aria-hidden={!isOpen}
                 className={clsx(
-                    'z-[999] cursor-default whitespace-nowrap overflow-auto scrollbar',
+                    'z-[999] cursor-default whitespace-nowrap',
+                    'overflow-auto overscroll-contain scrollbar-desktop inmd:scrollbar-mobile',
                     'absolute right-0 inmd:right-auto inmd:left-0 insm:center insm:!fixed',
                     'w-60 max-h-[333px] rounded-lg',
                     isOpen ? 'visible top-[120%] !transition-all' : 'invisible top-full transition-none',

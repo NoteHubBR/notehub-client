@@ -11,7 +11,7 @@ export const InputDropdown = ({ isOpen, ...rest }: { isOpen: boolean } & React.H
                 'pointer-events-none',
                 'absolute top-[110%]',
                 isOpen ? 'max-h-[200px] py-1 pointer-events-auto' : 'max-h-0 py-0',
-                searches(user).length > 5 ? 'overflow-y-auto scrollbar' : 'overflow-y-hidden',
+                searches(user).length > 5 ? 'overflow-y-auto scrollbar-desktop' : 'overflow-y-hidden',
                 'w-full rounded-lg',
                 'dark:bg-semidark bg-lighter',
                 'drop-shadow-alpha-d-sm',

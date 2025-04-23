@@ -69,7 +69,7 @@ const Notifications = () => {
     return (
         <section className="h-[calc(100svh-45px)] flex flex-col dark:bg-dark bg-light">
             <Device.Mobile.Header.SimpleHeader title="Notificações" />
-            <main ref={sectionRef} className="overflow-y-auto scrollbar h-full flex flex-col">
+            <main ref={sectionRef} className="overflow-y-auto scrollbar-mobile h-full flex flex-col">
                 <ul className="flex flex-col gap-2">
                     {notifications.map(notification => (
                         <li key={notification.id} className={`p-2 ${!notification.read ? 'dark:bg-semilight/5' : 'bg-semidark/5'}`}>

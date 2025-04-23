@@ -38,7 +38,7 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
                 </Template.Portal>
                 <div className="w-full px-3 overflow-hidden flex items-center justify-center gap-3">
                     <Layout.Title>
-                        <Icon.Sponsor isSponsor={user.sponsor} size={25} />
+                        <Icon.Sponsor user={user} size={25} />
                         {user.display_name}
                     </Layout.Title>
                     {isCurrentUserProfile &&

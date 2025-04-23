@@ -1,15 +1,15 @@
 import { IconCheck } from '@tabler/icons-react';
+import { LowDetailUser, User } from '@/core';
 import Image from 'next/image';
 
 interface Sponsor extends React.ImgHTMLAttributes<HTMLImageElement> {
-    isSponsor: boolean;
-    size: number;
+    user: User | LowDetailUser;
+    size?: number;
     useWhite?: boolean;
-    className?: string;
 }
 
-export const Sponsor = ({ isSponsor, size, useWhite, className, ...rest }: Sponsor) => {
-    if (isSponsor) return (
+export const Sponsor = ({ user, size = 24, useWhite, className, ...rest }: Sponsor) => {
+    if (user.sponsor) return (
         <figure role="img" className={`select-none pointer-events-none relative flex-none ${className}`} {...rest}>
             <Image
                 aria-hidden="true"

@@ -1,10 +1,12 @@
 import { clsx } from "clsx";
 import { Icon } from "@/components/icons";
+import { LowDetailUser, User } from "@/core";
 import { usePathname } from "next/navigation";
 import { useUser } from "@/data/hooks";
 import NextLink, { LinkProps as NextLinkProps } from "next/link";
 
 interface LinkProps extends NextLinkProps {
+    user?: User | LowDetailUser;
     icon?: React.ReactNode;
     useBadge?: boolean;
     text?: string;
@@ -14,14 +16,15 @@ interface LinkProps extends NextLinkProps {
 
 export const Link = (props: LinkProps) => {
 
-    const { icon, text, strong, reverse, useBadge, ...rest } = props;
+    const { user, icon, text, strong, reverse, useBadge, ...rest } = props;
 
-    const { user } = useUser();
+    const { user: current } = useUser();
     const pathname = usePathname();
     const href = String(rest.href);
 
-    if (!user) return null;
-    const userRoute = `/${user.username}`;
+    if (!current) return null;
+
+    const userRoute = `/${current.username}`;
 
     const active =
         href === "/"
@@ -47,7 +50,7 @@ export const Link = (props: LinkProps) => {
                     ?
                     <>
                         {icon && icon}
-                        {useBadge && <Icon.Sponsor isSponsor={useBadge} size={22} useWhite={active} className="-mr-2" />}
+                        {user && useBadge && <Icon.Sponsor user={user} size={22} useWhite={active} className="-mr-2" />}
                         {strong
                             ?
                             <strong><Span className="text-md">{text}</Span></strong>

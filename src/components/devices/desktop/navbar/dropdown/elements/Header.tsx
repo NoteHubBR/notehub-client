@@ -16,7 +16,7 @@ export const Header = ({ children, user, ...rest }: HeaderProps) => {
                     {user.display_name}
                 </span>
                 <span className="max-w-[200px] flex gap-1 text-md font-faculty truncate">
-                    <Icon.Sponsor isSponsor={user.sponsor} size={24} />
+                    <Icon.Sponsor user={user} size={24} />
                     @{user.username}
                 </span>
                 <Link href={`/${user.username}`} className="mt-1 text-sm font-bold text-primary">Acessar perfil</Link>

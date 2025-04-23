@@ -20,7 +20,7 @@ export const Header = () => {
 
     const [state, setState] = useState({
         notFound: false,
-        user: {} as User | LowDetailUser,
+        user: null as User | null as LowDetailUser,
         history: [] as string[]
     })
 

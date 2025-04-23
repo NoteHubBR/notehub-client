@@ -62,6 +62,18 @@ const config: Config = {
     },
     function ({ addUtilities }: { addUtilities: any }) {
       const newUtilities = {
+        '.scrollbar-desktop': {
+          scrollbarColor: 'transparent transparent',
+          scrollbarWidth: 'thin',
+          transition: 'scrollbar-color ease-in-out .15s',
+          '&:hover': {
+            scrollbarColor: `${colors.violet[600]} transparent`
+          }
+        },
+        '.scrollbar-mobile': {
+          scrollbarColor: `${colors.violet[600]} transparent`,
+          scrollbarWidth: 'thin',
+        },
         '.navigation-hover': {
           position: 'relative',
           '&::after': {
