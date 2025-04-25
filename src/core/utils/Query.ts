@@ -1,6 +1,6 @@
 export const buildQueryStrings = (
     searchParams: URLSearchParams,
-    router: { replace: (url: string) => void },
+    router?: { replace: (url: string) => void },
     keys: string[] = ['q', 'type', 'tag', 'order', 'sort', 'page']
 ): string => {
 
@@ -11,8 +11,10 @@ export const buildQueryStrings = (
         if (value) params[key] = value;
     })
 
-    const newQuery = `?${new URLSearchParams(params)}`;
-    if (newQuery !== window.location.search) router.replace(newQuery);
+    if (router) {
+        const newQuery = `?${new URLSearchParams(params)}`;
+        if (newQuery !== window.location.search) router.replace(newQuery);
+    }
 
     const searchQuery = new URLSearchParams();
     if (params.q) searchQuery.set('q', params.q);

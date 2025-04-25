@@ -37,6 +37,15 @@ export const FlameService = () => {
         }
     }, [httpDelete, handleExpiredToken])
 
-    return { inflameNote, getUserFlames, deflameNote }
+    const searchUserFlames = useCallback(async (token: string | null, username: string, parameters?: string): Promise<Page<Flame>> => {
+        const endpoint: string = `/flames/${username}?${parameters}`;
+        try {
+            return await httpGet(endpoint, { useToken: token });
+        } catch (error: any) {
+            return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useToken: newToken }));
+        }
+    }, [httpGet, handleExpiredToken])
+
+    return { inflameNote, getUserFlames, deflameNote, searchUserFlames }
 
 }
