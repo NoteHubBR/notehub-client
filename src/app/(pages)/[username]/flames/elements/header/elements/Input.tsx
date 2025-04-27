@@ -1,12 +1,11 @@
 import { useDebounce } from "@/data/hooks";
 import { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
 
     const pathname = usePathname();
     const sParams = useSearchParams();
-    const router = useRouter();
 
     const [query, setQuery] = useState<null | string>(sParams.get('q'));
 
@@ -20,7 +19,7 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
             window.history.replaceState(null, '', `${pathname}?${params}`);
         }
         updateURL(debouncedSearch ?? '');
-    }, [debouncedSearch, pathname, router, sParams]);
+    }, [debouncedSearch, pathname, sParams]);
 
     return (
         <li className="flex-1 insm:basis-full">

@@ -5,7 +5,7 @@ export const AuthService = () => {
 
     const { httpPost, httpGet, httpDelete } = useAPI();
 
-    const { setUser } = useUser();
+    const { updateToken } = useUser();
 
     const loginUserByDefault = async (data: LoginUserFormData): Promise<{ token: Token, user: User }> => {
         try {
@@ -41,8 +41,9 @@ export const AuthService = () => {
 
     const handleExpiredToken = async (error: any, func: (token: string) => Promise<any>) => {
         if (error.message === 'Token inválido.') {
-            const { token, user } = await refreshUser();
-            setUser(token, user);
+            const { token } = await refreshUser();
+            Cookies.set('rtoken', token.refresh_token, token.expires_at);
+            updateToken(token);
             return await func(token.access_token);
         }
         else throw error;

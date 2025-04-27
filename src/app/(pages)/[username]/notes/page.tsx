@@ -5,14 +5,15 @@ import { Element } from "./elements";
 import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
 import { Section } from "../components/Section";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useServices, useUser } from "@/data/hooks";
 
 const Page = () => {
 
     const { username } = useParams<{ username: string }>();
     const sParams = useSearchParams();
-    const router = useRouter();
+    
+    const query = buildQueryStrings(sParams);
 
     const { noteService: { findUserTags, searchUserNotes } } = useServices();
 
@@ -45,43 +46,43 @@ const Page = () => {
         return setState((prev) => ({ ...prev, onFetch: false, hasFetched: true }));
     }, [])
 
-    useEffect(() => {
-        const init = async () => {
-            const query = buildQueryStrings(sParams, router);
-            const accessToken = token ? token.access_token : null;
-            const secret = `${query}:${accessToken}`;
-            if (isFetching.current || hasFetched && args === secret) return;
-            try {
-                startFetch();
-                const { content, ...rest } = await searchUserNotes(accessToken, username, query);
-                const userTags = tags.length > 0 ? tags : await findUserTags(accessToken, username);
+    const init = useCallback(async () => {
+        const accessToken = token ? token.access_token : null;
+        const secret = `${query}:${accessToken}`;
+        if (isFetching.current || hasFetched && args === secret) return;
+        try {
+            startFetch();
+            const { content, ...rest } = await searchUserNotes(accessToken, username, query);
+            const userTags = tags.length > 0 ? tags : await findUserTags(accessToken, username);
+            return setState((prev) => ({
+                ...prev,
+                args: secret,
+                page: rest,
+                notes: content,
+                tags: userTags,
+                emptyList: content.length === 0,
+                notCurrent: false,
+                notMutual: false,
+                notFound: false
+            }))
+        } catch (errors) {
+            if (Array.isArray(errors)) {
+                const { notCurrent, notMutual } = handleFieldErrorsMsg(errors);
                 return setState((prev) => ({
                     ...prev,
-                    args: secret,
-                    page: rest,
-                    notes: content,
-                    tags: userTags,
-                    emptyList: content.length === 0,
-                    notCurrent: false,
-                    notMutual: false,
-                    notFound: false
+                    args: query,
+                    notCurrent: notCurrent,
+                    notMutual: notMutual
                 }))
-            } catch (errors) {
-                if (Array.isArray(errors)) {
-                    const { notCurrent, notMutual } = handleFieldErrorsMsg(errors);
-                    return setState((prev) => ({
-                        ...prev,
-                        args: query,
-                        notCurrent: notCurrent,
-                        notMutual: notMutual
-                    }))
-                } else return setState((prev) => ({ ...prev, notFound: true }));
-            } finally {
-                endFetch();
-            }
+            } else return setState((prev) => ({ ...prev, notFound: true }));
+        } finally {
+            endFetch();
         }
+    }, [sParams])
+
+    useEffect(() => {
         if (isMounted) init();
-    }, [isMounted, sParams])
+    }, [init, isMounted])
 
     if (notFound) return null;
 

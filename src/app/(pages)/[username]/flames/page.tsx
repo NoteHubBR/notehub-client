@@ -46,7 +46,6 @@ const Page = () => {
     }, [])
 
     const init = useCallback(async () => {
-
         const accessToken = token ? token.access_token : null;
         const secret = `${query}:${accessToken}`;
         if (isFetching.current || hasFetched && params === secret) return;
@@ -76,7 +75,7 @@ const Page = () => {
         } finally {
             endFetch();
         }
-    }, [endFetch, hasFetched, params, query, searchUserFlames, startFetch, token, username])
+    }, [sParams])
 
     useEffect(() => { if (isMounted) init() }, [init, isMounted]);
 

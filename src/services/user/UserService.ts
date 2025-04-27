@@ -32,7 +32,7 @@ export const UserService = () => {
         try {
             return await httpPut(endpoint, data, { useProgress: true, useToken: token });
         } catch (error) {
-            return handleExpiredToken(error, (newToken) => httpPut(endpoint, { useProgress: true, useToken: newToken }));
+            return handleExpiredToken(error, (newToken) => httpPut(endpoint, data, { useProgress: true, useToken: newToken }));
         }
     }, [handleExpiredToken, httpPut])
 
@@ -57,7 +57,7 @@ export const UserService = () => {
         try {
             return await httpPost(endpoint, undefined, { useToken: token });
         } catch (error: any) {
-            return handleExpiredToken(error, (newToken) => httpPost(endpoint, { useToken: newToken }));
+            return handleExpiredToken(error, (newToken) => httpPost(endpoint, undefined, { useToken: newToken }));
         }
     }, [httpPost, handleExpiredToken])
 

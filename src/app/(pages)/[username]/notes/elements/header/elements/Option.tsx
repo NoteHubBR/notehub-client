@@ -1,6 +1,6 @@
-import { useCallback } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconCheck } from "@tabler/icons-react";
+import { useCallback } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 
 interface OptionProps extends React.HTMLAttributes<HTMLLIElement> {
     sParam: string;
@@ -12,7 +12,6 @@ export const Option = ({ sParam, value, text, ...rest }: OptionProps) => {
 
     const pathname = usePathname();
     const sParams = useSearchParams();
-    const router = useRouter();
 
     const current = sParams.get(sParam);
     const onRoute = value.includes(current);
@@ -20,8 +19,8 @@ export const Option = ({ sParam, value, text, ...rest }: OptionProps) => {
     const handleParamUpdate = useCallback(() => {
         const newSParams = new URLSearchParams(sParams);
         newSParams.set(sParam, value[0] ? value[0] : '');
-        router.replace(`${pathname}?${newSParams}`);
-    }, [pathname, router, sParam, sParams, value])
+        window.history.replaceState(null, '', `${pathname}?${newSParams}`);
+    }, [pathname, sParam, sParams, value])
 
     return (
         <li

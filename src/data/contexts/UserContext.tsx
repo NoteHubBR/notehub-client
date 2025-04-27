@@ -10,6 +10,7 @@ export interface UserContextProps {
     token: Token | null;
     user: User | null;
     setUser: (token: Token, user: User) => void;
+    updateToken: (token: Token) => void;
     updateUser: (user: Partial<User>) => void;
     clearUser: () => void;
 }
@@ -49,6 +50,13 @@ export const UserProvider = (props: any) => {
         }, username)
         return setState(prev => ({ ...prev, token: token, user: user }));
     }, [store.actions, setActions])
+
+    const updateToken = useCallback((token: Token) => {
+        return setState((prev) => ({
+            ...prev,
+            token: token
+        }))
+    }, [])
 
     const updateUser = useCallback((user: Partial<User>) => {
         if (!user.username) return;
@@ -125,6 +133,7 @@ export const UserProvider = (props: any) => {
             isMounted: state.isMounted,
             token: state.token,
             user: state.user,
+            updateToken,
             updateUser,
             setUser,
             clearUser,
