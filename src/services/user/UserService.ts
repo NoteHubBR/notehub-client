@@ -70,8 +70,17 @@ export const UserService = () => {
         }
     }, [httpDelete, handleExpiredToken])
 
-    const getUserFollowing = useCallback(async (token: string, username: string): Promise<Page<LowDetailUser>> => {
-        const endpoint: string = `/users/${username}/following?size=9999&sort=username,asc`;
+    const searchUserFollowing = useCallback(async (token: string | null, username: string, parameters?: string): Promise<Page<LowDetailUser>> => {
+        const endpoint: string = `/users/${username}/following?${parameters}`;
+        try {
+            return await httpGet(endpoint, { useToken: token });
+        } catch (error: any) {
+            return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useToken: newToken }));
+        }
+    }, [httpGet, handleExpiredToken])
+
+    const searchUserFollowers = useCallback(async (token: string | null, username: string, parameters?: string): Promise<Page<LowDetailUser>> => {
+        const endpoint: string = `/users/${username}/followers?${parameters}`;
         try {
             return await httpGet(endpoint, { useToken: token });
         } catch (error: any) {
@@ -96,7 +105,8 @@ export const UserService = () => {
         getUserDisplayNameHistory,
         followUser,
         unfollowUser,
-        getUserFollowing,
+        searchUserFollowing,
+        searchUserFollowers,
         getUserNotifications
     }
 

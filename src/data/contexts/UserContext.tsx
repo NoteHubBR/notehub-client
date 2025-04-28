@@ -21,7 +21,7 @@ export const UserProvider = (props: any) => {
 
     const {
         authService: { refreshUser, logoutUser },
-        userService: { getUserDisplayNameHistory, getUserFollowing },
+        userService: { getUserDisplayNameHistory, searchUserFollowing },
         noteService: { getUserNotes },
         flameService: { getUserFlames }
     } = useServices();
@@ -100,7 +100,7 @@ export const UserProvider = (props: any) => {
         try {
             await clearData();
             setHistory(await getUserDisplayNameHistory(username));
-            setFollowing(await getUserFollowing(accessToken, username));
+            setFollowing(await searchUserFollowing(accessToken, username, 'sort=username,asc&size=9999'));
             setNotes(await getUserNotes(accessToken));
             setFlames(await getUserFlames(accessToken, username, 'size=9999'));
             return;
