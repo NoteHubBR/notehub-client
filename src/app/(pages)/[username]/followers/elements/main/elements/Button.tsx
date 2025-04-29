@@ -1,6 +1,7 @@
 'use client';
 
 import { clsx } from "clsx";
+import { IconUserCheck, IconUserMinus, IconUserPlus } from "@tabler/icons-react";
 import { LowDetailUser } from "@/core";
 import { useCallback, useState } from "react";
 import { useFollowing, useServices, useUser } from "@/data/hooks";
@@ -55,7 +56,8 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
             <button
                 className={clsx(
                     'absolute top-1 right-1',
-                    'w-[80px] h-[30px] py-1 flex items-center justify-center rounded-3xl text-xs font-medium',
+                    'p-2 flex items-center justify-center rounded-full',
+                    'font-medium text-xs',
                     'transition-colors duration-100',
                     className
                 )}
@@ -76,13 +78,14 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
                 '!absolute top-1 right-1',
                 reqFollow && 'applying',
                 reqUnfollow && 'canceling',
-                'bg-lighter/15',
-                'w-[80px] h-[30px] py-1 flex items-center justify-center rounded-3xl text-xs font-medium',
+                'dark:bg-lighter/30 bg-darker/30',
+                'p-2 flex items-center justify-center rounded-full',
+                'font-medium text-xs',
                 'drop-shadow-alpha-d-xs',
                 'transition-colors duration-300',
             )}
         >
-            {reqFollow && 'Seguindo'} {reqUnfollow && 'Desseguindo'}
+            {reqFollow && <IconUserPlus size={20} />} {reqUnfollow && <IconUserMinus size={20} />}
         </div>
     )
 
@@ -94,7 +97,7 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
             onClick={() => unfollow()}
             {...rest}
         >
-            Desseguir
+            <IconUserMinus size={20} />
         </HTMLButton >
     )
 
@@ -106,21 +109,21 @@ export const Button = ({ user, ...rest }: ButtonProps) => {
             onClick={() => unfollow()}
             {...rest}
         >
-            Seguindo
+            <IconUserCheck size={20} />
         </HTMLButton>
     )
 
     if (!isFollowing) return (
         <HTMLButton
             aria-label="Seguir"
-            className="bg-lighter/15
+            className="dark:bg-lighter/30 bg-darker/30
             hover:dark:bg-primary hover:bg-primary
-            hover:text-white dark:text-white text-white inmd:text-black
+            hover:text-white dark:text-white text-white
             backdrop-blur-sm moz:backdrop-blur-none"
             onClick={() => follow()}
             {...rest}
         >
-            Seguir
+            <IconUserPlus size={20} />
         </HTMLButton>
     )
 
