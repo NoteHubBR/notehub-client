@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 import { useCallback } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 interface PageableProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     sParam: string;
@@ -11,7 +11,6 @@ export const Pageable = ({ sParam, page, children, className, ...rest }: Pageabl
 
     const pathname = usePathname();
     const sParams = useSearchParams();
-    const router = useRouter();
 
     const current = Number(sParams.get('page') || 1);
     const onRoute = page === current;
@@ -19,8 +18,8 @@ export const Pageable = ({ sParam, page, children, className, ...rest }: Pageabl
     const handleParamUpdate = useCallback(() => {
         const newSearchParams = new URLSearchParams(sParams);
         newSearchParams.set(sParam, String(page));
-        router.replace(`${pathname}?${newSearchParams}`);
-    }, [pathname, router, sParam, sParams, page])
+        window.history.replaceState(null, '', `${pathname}?${newSearchParams}`);
+    }, [page, pathname, sParam, sParams])
 
     return (
         <li>

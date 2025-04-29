@@ -21,6 +21,7 @@ export const buildQueryStrings = (
     if (params.type) searchQuery.set('type', params.type);
     if (params.tag) searchQuery.set('tag', params.tag);
     if (params.order) searchQuery.set('sort', `${params.order},${params.sort ?? 'desc'}`);
+    if (params.sort) searchQuery.set('sort', `${params.order ?? 'modifiedAt'},${params.sort}`);
     if (params.page) searchQuery.set('page', String(Number(params.page) - 1));
 
     return String(searchQuery);

@@ -75,9 +75,11 @@ const Page = () => {
         } finally {
             endFetch();
         }
-    }, [sParams])
+    }, [isMounted, sParams])
 
-    useEffect(() => { if (isMounted) init() }, [init, isMounted]);
+    useEffect(() => {
+        if (isMounted) init()
+    }, [init, isMounted])
 
     if (notFound) return null;
 

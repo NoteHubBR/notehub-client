@@ -12,7 +12,7 @@ const Page = () => {
 
     const { username } = useParams<{ username: string }>();
     const sParams = useSearchParams();
-    
+
     const query = buildQueryStrings(sParams);
 
     const { noteService: { findUserTags, searchUserNotes } } = useServices();
@@ -78,7 +78,7 @@ const Page = () => {
         } finally {
             endFetch();
         }
-    }, [sParams])
+    }, [isMounted, sParams])
 
     useEffect(() => {
         if (isMounted) init();
