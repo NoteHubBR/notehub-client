@@ -1,32 +1,20 @@
 'use client';
 
 import { Device } from "@/components/devices";
-import { useNotifications, useStore, useUser } from "@/data/hooks";
-import { User } from "@/core";
+import { Feed } from "./feed";
+import { useNotes, useStore, useUser } from "@/data/hooks";
 import Link from "next/link";
 
 export default function Home() {
 
   const { store, setStore } = useStore();
   const { user } = useUser();
-  const { count } = useNotifications();
+  const { notes } = useNotes();
 
   const { isFirstTimer, isGuest, isExpired } = store;
 
   const initAsGuest = () => { setStore({ isFirstTimer: false, isGuest: true }); }
 
-  const Elements = (user: User) => {
-    return (
-      <>
-        <h1>{user.username}</h1>
-        <h1>{user.email}</h1>
-        <h1>notifications: {count}</h1>
-        <h1>followers: {user.followers_count}</h1>
-        <h1>following: {user.following_count}</h1>
-      </>
-    )
-  }
-  
   if (!store) return null;
 
   return (
@@ -48,7 +36,7 @@ export default function Home() {
         }
         {user &&
           <>
-            <Elements {...user} />
+            <Feed notes={notes} />
           </>
         }
         {isExpired &&

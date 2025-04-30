@@ -10,7 +10,7 @@ interface Sponsor extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 export const Sponsor = ({ user, size = 24, useWhite, className, ...rest }: Sponsor) => {
     if (user.sponsor) return (
-        <figure role="img" className={`select-none pointer-events-none relative flex-none ${className}`} {...rest}>
+        <figure role="img" className={`select-none pointer-events-none relative flex-none inline-block align-middle ${className}`} {...rest}>
             <Image
                 aria-hidden="true"
                 src={useWhite ? "/svgs/white-ten-pointed-star.svg" : "/svgs/violet-ten-pointed-star.svg"}
