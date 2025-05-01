@@ -1,24 +1,24 @@
-import { Base } from "@/components/base";
 import { Component } from "@/components";
+import { Element } from "./elements";
 import { LowDetailNote } from "@/core";
 import Link from "next/link";
 
 export const Feed = ({ notes }: { notes: LowDetailNote[] }) => {
 
-    const { Feed: {
-        Header: {
-            Title, Filter
+    const {
+        Header: { Title,
+            Filter
         },
         Item: {
             Article,
             Header: { Creator, Message, Time },
             Section: { Target, Desc, Flames }
         }
-    } } = Base;
+    } = Element;
 
     return (
-        <section className="max-w-[777px] w-full">
-            <header className="py-3 flex items-center justify-between">
+        <section className="max-w-[777px] inlg:max-w-full w-full py-3">
+            <header className="pb-3 flex items-center justify-between">
                 <Title>Feed</Title>
                 <Filter />
             </header>

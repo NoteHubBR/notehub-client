@@ -6,7 +6,7 @@ export const Filter = ({ children, ...rest }: React.ButtonHTMLAttributes<HTMLBut
         aria-haspopup="true"
         // aria-expanded={isOpen}
         disabled
-        className="select-none cursor-pointer relative
+        className="select-none cursor-pointer disabled:cursor-not-allowed relative
         px-2 py-1 rounded-xl flex items-center gap-1
         border dark:border-neutral-700/50 border-dark/25
         dark:bg-dark bg-light

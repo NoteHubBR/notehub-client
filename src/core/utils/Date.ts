@@ -36,16 +36,25 @@ function dateDiff(current: Date, past: Date): {
     }
 
     return { years, months, days, hours, minutes, seconds };
+
 }
 
 export function toRelativeTime(dateString: string): string {
-    const [datePart, timePart] = dateString.split(' ');
-    const [day, month, year] = datePart.split('/').map(Number);
-    const [hour, minute] = timePart.split(':').map(Number);
 
-    const notificationDate = new Date(2000 + year, month - 1, day, hour, minute);
+    let notificationDate: Date;
+
+    const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
+
+    if (isoRegex.test(dateString)) {
+        notificationDate = new Date(dateString);
+    } else {
+        const [datePart, timePart] = dateString.split(' ');
+        const [day, month, year] = datePart.split('/').map(Number);
+        const [hour, minute] = timePart.split(':').map(Number);
+        notificationDate = new Date(2000 + year, month - 1, day, hour, minute);
+    }
+
     const currentDate = new Date();
-
     if (notificationDate > currentDate) {
         return new Intl.RelativeTimeFormat('pt-BR', { style: 'long', numeric: 'auto' }).format(0, 'second');
     }
@@ -79,6 +88,7 @@ export function toRelativeTime(dateString: string): string {
     }
 
     return new Intl.RelativeTimeFormat('pt-BR', { style: 'long', numeric: 'auto' }).format(-value, unit);
+
 }
 
 export function toSpecificTime(dateStr: string): string {

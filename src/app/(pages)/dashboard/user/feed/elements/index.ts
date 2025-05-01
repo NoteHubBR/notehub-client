@@ -1,4 +1,4 @@
 import { Header } from "./header";
 import { Item } from "./item";
 
-export const Feed = { Header, Item };
+export const Element = { Header, Item };

@@ -1,9 +1,9 @@
 'use client';
 
 import { Device } from "@/components/devices";
-import { Feed } from "./feed";
 import { useNotes, useStore, useUser } from "@/data/hooks";
 import Link from "next/link";
+import { Dashboard } from "./dashboard";
 
 export default function Home() {
 
@@ -18,9 +18,12 @@ export default function Home() {
   if (!store) return null;
 
   return (
-    <main className="h-full flex flex-col">
+    <main className="h-full w-full flex flex-col">
       <Device.Mobile.Header.MainHeader />
-      <div className="flex flex-1 flex-col items-center justify-center gap-4">
+      <section
+        className="px-3 flex-1 flex justify-center gap-6
+        inlg:flex-col-reverse inlg:gap-0"
+      >
         {isFirstTimer &&
           <>
             <div>be welcome</div>
@@ -36,7 +39,8 @@ export default function Home() {
         }
         {user &&
           <>
-            <Feed notes={notes} />
+            <Dashboard.User.Feed notes={notes} />
+            <Dashboard.User.Aside />
           </>
         }
         {isExpired &&
@@ -45,7 +49,7 @@ export default function Home() {
             <Link href={'/signin'} className="request-btn">Logar</Link>
           </>
         }
-      </div>
+      </section>
     </main>
   )
 
