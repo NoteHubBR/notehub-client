@@ -1,5 +1,7 @@
 import { Component } from "@/components";
 import { Element } from "./elements"
+import { isEmpty } from "@/core";
+import { Skeleton } from "./skeleton";
 import { useNotes } from "@/data/hooks";
 import NextLink from "next/link";
 
@@ -9,11 +11,13 @@ export const Ranking = () => {
 
     const { Title, Li, Target, Desc, Flames, Link } = Element;
 
+    if (isEmpty(notes)) return <Skeleton />;
+
     return (
         <section
-            className=" h-fit p-3 rounded
-            dark:bg-dark bg-light
-            dark:drop-shadow-alpha-l-md drop-shadow-alpha-d-md
+            className="w-full h-fit p-3 rounded-[5px]
+            dark:bg-darker bg-lighter
+            dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm
             inlg:h-full
             inmd:w-full"
         >

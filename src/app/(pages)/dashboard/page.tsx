@@ -1,21 +1,19 @@
 'use client';
 
 import { Device } from "@/components/devices";
-import { useNotes } from "@/data/hooks";
 import { User } from "./user";
 
 export const Page = () => {
 
-    const { notes } = useNotes();
-
     return (
-        <main className="h-full w-full flex flex-col">
+        <main className="h-full w-full flex flex-col dark:bg-dark bg-light">
             <Device.Mobile.Header.MainHeader />
             <section
-                className="px-3 flex-1 flex justify-center gap-6
-                inlg:flex-col-reverse inlg:gap-0"
+                className="px-3 flex-1 flex justify-center gap-3
+                inlg:flex-col-reverse inlg:justify-end inlg:gap-0
+                inmd:flex-col inmd:justify-start"
             >
-                <User.Feed notes={notes} />
+                <User.Feed />
                 <User.Aside />
             </section>
         </main>

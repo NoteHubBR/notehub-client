@@ -1,5 +1,6 @@
 import { Element } from "./elements";
 import { Log } from "@/core";
+import { Skeleton } from "./skeleton";
 import { useCallback, useEffect, useState } from "react";
 import { useServices } from "@/data/hooks";
 
@@ -19,11 +20,13 @@ export const Changelog = () => {
 
     const { Title, Li, Time, Change, Link } = Element;
 
+    if (commits.length === 0) return <Skeleton />;
+
     return (
         <section
-            className="h-fit p-3 rounded
-            dark:bg-dark bg-light
-            dark:drop-shadow-alpha-l-md drop-shadow-alpha-d-md
+            className="w-full h-fit p-3 rounded-[5px]
+            dark:bg-darker bg-lighter
+            dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm
             inlg:h-full
             inmd:w-full"
         >

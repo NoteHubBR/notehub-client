@@ -1,15 +1,14 @@
 'use client';
 
-import { Device } from "@/components/devices";
-import { useNotes, useStore, useUser } from "@/data/hooks";
-import Link from "next/link";
 import { Dashboard } from "./dashboard";
+import { Device } from "@/components/devices";
+import { useStore, useUser } from "@/data/hooks";
+import Link from "next/link";
 
 export default function Home() {
 
   const { store, setStore } = useStore();
   const { user } = useUser();
-  const { notes } = useNotes();
 
   const { isFirstTimer, isGuest, isExpired } = store;
 
@@ -18,11 +17,12 @@ export default function Home() {
   if (!store) return null;
 
   return (
-    <main className="h-full w-full flex flex-col">
+    <main className="h-full w-full flex flex-col dark:bg-dark bg-light">
       <Device.Mobile.Header.MainHeader />
       <section
-        className="px-3 flex-1 flex justify-center gap-6
-        inlg:flex-col-reverse inlg:gap-0"
+        className="px-3 flex-1 flex justify-center gap-3
+        inlg:flex-col-reverse inlg:justify-end inlg:gap-0
+        inmd:flex-col inmd:justify-start"
       >
         {isFirstTimer &&
           <>
@@ -39,7 +39,7 @@ export default function Home() {
         }
         {user &&
           <>
-            <Dashboard.User.Feed notes={notes} />
+            <Dashboard.User.Feed />
             <Dashboard.User.Aside />
           </>
         }
