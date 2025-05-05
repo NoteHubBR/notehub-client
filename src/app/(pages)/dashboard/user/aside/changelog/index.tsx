@@ -15,7 +15,7 @@ export const Changelog = () => {
     }, [getCommits])
 
     useEffect(() => {
-        fetch();
+        // fetch();
     }, [fetch])
 
     const { Title, Li, Time, Change, Link } = Element;

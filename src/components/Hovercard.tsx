@@ -148,7 +148,7 @@ export const Hovercard = ({ ref, user }: HovercardProps) => {
         >
             {user.sponsor && (
                 <figure
-                    className="absolute top-0 right-0 p-1 rounded-tr bg-gradient-to-r from-blue-600 via-purple-600 to-red-600"
+                    className="z-10 absolute top-0 right-0 p-1 rounded-tr bg-gradient-to-r from-blue-600 via-purple-600 to-red-600"
                     style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 0)' }}
                 >
                     <Icon.Sponsor size={22} user={user} useWhite className="ml-5 mb-5" />

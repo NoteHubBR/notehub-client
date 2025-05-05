@@ -1,16 +1,17 @@
-import { Dialog } from "./dialog";
-import { Element } from "./elements";
+import { Empty } from "./empty";
+import { Header } from "./header";
 import { Icon } from "@/components/icons";
-import { IconMoodPuzzled } from "@tabler/icons-react";
 import { isEmpty, LowDetailNote, Page } from "@/core";
+import { Item } from "./item";
 import { Skeleton } from "./skeleton";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useServices, useUser } from "@/data/hooks";
 
 export const Feed = () => {
 
-    const { isMounted, token } = useUser();
     const { noteService: { getFeedNotes } } = useServices();
+
+    const { isMounted, token } = useUser();
 
     const [state, setState] = useState({
         onFetch: false,
@@ -76,19 +77,9 @@ export const Feed = () => {
         return () => document.removeEventListener("scroll", handleScroll);
     }, [handleScroll, init, isMounted])
 
-    const {
-        Header: {
-            Title,
-            Filter
-        },
-        Item: {
-            Article,
-            Header: { Creator, Message, Time },
-            Section: { Target, Desc, Flames }
-        }
-    } = Element;
-
     if (isEmpty(page)) return <Skeleton />;
+
+    if (emptyFeed) return <Empty />;
 
     return (
         <section
@@ -96,28 +87,11 @@ export const Feed = () => {
             dark:bg-darker bg-lighter
             dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
         >
-            <header className="p-3 pt-0 flex items-center justify-between">
-                <Title>Feed</Title>
-                <Filter />
-            </header>
-            {emptyFeed && <Dialog icon={IconMoodPuzzled} title="uai?" desc="Feed vazio." />}
+            <Header />
             <ul className="flex flex-col gap-4">
                 {notes.map((note) => (
                     <li key={note.id}>
-                        <Article>
-                            <header className="flex items-center gap-3">
-                                <Creator user={note.user} />
-                                <div className="flex flex-col">
-                                    <Message user={note.user} />
-                                    <Time time={note.created_at} />
-                                </div>
-                            </header>
-                            <section className="p-3 rounded flex flex-col gap-2 dark:bg-semidark bg-semilight">
-                                <Target note={note} />
-                                <Desc>{note.description}</Desc>
-                                <Flames note={note} />
-                            </section>
-                        </Article>
+                        <Item note={note} />
                     </li>
                 ))}
             </ul>

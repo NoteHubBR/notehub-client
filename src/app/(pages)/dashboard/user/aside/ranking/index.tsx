@@ -1,15 +1,26 @@
 import { Element } from "./elements"
-import { isEmpty } from "@/core";
+import { isEmpty, LowDetailNote, Page } from "@/core";
 import { Skeleton } from "./skeleton";
-import { useNotes } from "@/data/hooks";
+import { useCallback, useEffect, useState } from "react";
+import { useServices } from "@/data/hooks";
 
 export const Ranking = () => {
 
-    const { notes } = useNotes();
+    const { noteService: { searchNotes } } = useServices();
+
+    const [ranking, setRanking] = useState<Page<LowDetailNote>>({} as Page<LowDetailNote>);
+
+    const getTopThreeNotes = useCallback(async () => {
+        return setRanking(await searchNotes('size=3'));
+    }, [searchNotes])
+
+    useEffect(() => {
+        getTopThreeNotes();
+    }, [getTopThreeNotes])
 
     const { Title, Li, Target, Desc, Flames, Link } = Element;
 
-    if (isEmpty(notes)) return <Skeleton />;
+    if (isEmpty(ranking)) return <Skeleton />;
 
     return (
         <section
@@ -21,7 +32,7 @@ export const Ranking = () => {
         >
             <Title>Explore notas</Title>
             <ul className="py-3">
-                {notes.slice(0, 3).map((note) => (
+                {ranking.content.map((note) => (
                     <Li key={note.id}>
                         <article className="flex flex-col gap-2">
                             <Target note={note} />

@@ -6,7 +6,7 @@ import { LowDetailUser } from "@/core";
 import { useCallback, useState } from "react";
 import { useFollowing, useServices, useUser } from "@/data/hooks";
 
-interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     user: LowDetailUser;
     useIcon?: boolean;
     useText?: boolean;

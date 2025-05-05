@@ -4,7 +4,12 @@ import { LowDetailNote } from '@/core';
 import { useCallback, useState } from 'react';
 import { useFlames, useServices, useUser } from '@/data/hooks';
 
-export const Flames = ({ note, ...rest }: { note: LowDetailNote } & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+interface FlameProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    note: LowDetailNote;
+    useCount?: boolean;
+}
+
+export const Flame = ({ note, useCount, ...rest }: FlameProps) => {
 
     const { flameService: { inflameNote, deflameNote } } = useServices();
 
@@ -85,7 +90,7 @@ export const Flames = ({ note, ...rest }: { note: LowDetailNote } & React.Button
             >
                 <IconFlame size={15} className="!fill-white !text-white" />
             </div>
-            <Count />
+            {useCount && <Count />}
         </div>
     )
 
@@ -100,7 +105,7 @@ export const Flames = ({ note, ...rest }: { note: LowDetailNote } & React.Button
             >
                 <IconFlame size={15} className="!fill-white !text-white" />
             </Button >
-            <Count />
+            {useCount && <Count />}
         </div>
     )
 
@@ -115,7 +120,7 @@ export const Flames = ({ note, ...rest }: { note: LowDetailNote } & React.Button
             >
                 <IconFlame size={15} className="!fill-white !text-white" />
             </Button>
-            <Count />
+            {useCount && <Count />}
         </div>
     )
 
@@ -131,7 +136,7 @@ export const Flames = ({ note, ...rest }: { note: LowDetailNote } & React.Button
             >
                 <IconFlame size={15} className="!fill-white !text-white" />
             </Button>
-            <Count />
+            {useCount && <Count />}
         </div>
     )
 

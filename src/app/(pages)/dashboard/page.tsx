@@ -5,7 +5,7 @@ import { User } from "./user";
 import { useStore, useUser } from "@/data/hooks";
 import Link from "next/link";
 
-export default function Home() {
+export default function Dashboard() {
 
     const { store, setStore } = useStore();
     const { user } = useUser();
@@ -21,8 +21,8 @@ export default function Home() {
             <Device.Mobile.Header.MainHeader />
             <section
                 className="px-3 flex-1 flex justify-center gap-3
-        inlg:flex-col-reverse inlg:justify-end inlg:gap-0
-        inmd:flex-col inmd:justify-start"
+                inlg:flex-col-reverse inlg:justify-end inlg:gap-0
+                inmd:flex-col inmd:justify-start"
             >
                 {isFirstTimer &&
                     <>

@@ -1,10 +1,13 @@
+import { Header } from "./header";
+import { IconMoodPuzzled } from "@tabler/icons-react";
+
 interface DialogProps extends React.HTMLAttributes<HTMLDivElement> {
     icon: React.ElementType;
     title: string;
     desc: string;
 }
 
-export const Dialog = ({ icon: Icon, title, desc, ...rest }: DialogProps) => (
+const Dialog = ({ icon: Icon, title, desc, ...rest }: DialogProps) => (
     <div
         role="dialog"
         aria-labelledby="dialogTitle"
@@ -27,4 +30,15 @@ export const Dialog = ({ icon: Icon, title, desc, ...rest }: DialogProps) => (
             </p>
         </section>
     </div>
+)
+
+export const Empty = () => (
+    <section
+        className="max-w-[777px] inlg:max-w-full w-full my-3 p-3 rounded-[5px]
+        dark:bg-darker bg-lighter
+        dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
+    >
+        <Header />
+        <Dialog icon={IconMoodPuzzled} title="uai?" desc="Feed vazio." />
+    </section>
 )
