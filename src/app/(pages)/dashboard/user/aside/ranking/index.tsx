@@ -1,9 +1,7 @@
-import { Component } from "@/components";
 import { Element } from "./elements"
 import { isEmpty } from "@/core";
 import { Skeleton } from "./skeleton";
 import { useNotes } from "@/data/hooks";
-import NextLink from "next/link";
 
 export const Ranking = () => {
 
@@ -26,12 +24,7 @@ export const Ranking = () => {
                 {notes.slice(0, 3).map((note) => (
                     <Li key={note.id}>
                         <article className="flex flex-col gap-2">
-                            <header className="flex items-center gap-2">
-                                <NextLink href={`/${note.user.username}`}>
-                                    <Component.Photo user={note.user} size={25} />
-                                </NextLink>
-                                <Target note={note} />
-                            </header>
+                            <Target note={note} />
                             <Desc>{note.description}</Desc>
                             <Flames note={note} />
                         </article>

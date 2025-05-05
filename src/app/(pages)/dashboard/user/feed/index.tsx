@@ -1,4 +1,3 @@
-import { Component } from "@/components";
 import { Dialog } from "./dialog";
 import { Element } from "./elements";
 import { Icon } from "@/components/icons";
@@ -7,7 +6,6 @@ import { isEmpty, LowDetailNote, Page } from "@/core";
 import { Skeleton } from "./skeleton";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useServices, useUser } from "@/data/hooks";
-import Link from "next/link";
 
 export const Feed = () => {
 
@@ -115,12 +113,7 @@ export const Feed = () => {
                                 </div>
                             </header>
                             <section className="p-3 rounded flex flex-col gap-2 dark:bg-semidark bg-semilight">
-                                <div className="flex items-center gap-2">
-                                    <Link href={`/${note.user.username}`}>
-                                        <Component.Photo user={note.user} size={25} />
-                                    </Link>
-                                    <Target note={note} />
-                                </div>
+                                <Target note={note} />
                                 <Desc>{note.description}</Desc>
                                 <Flames note={note} />
                             </section>
