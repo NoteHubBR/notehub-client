@@ -1,5 +1,4 @@
 import { Comments } from "./Comments";
-import { Flame } from "./Flame";
 import { PlainText } from "./PlainText";
 import { Section } from "./Section";
 import { Status } from "./Status";
@@ -8,4 +7,4 @@ import { Tags } from "./Tags";
 import { Time } from "./Time";
 import { Title } from "./Title";
 
-export const Element = { Section, PlainText, Time, Status, Title, Tags, Tag, Comments, Flame };
+export const Element = { Section, PlainText, Time, Status, Title, Tags, Tag, Comments };

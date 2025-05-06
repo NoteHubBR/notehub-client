@@ -20,7 +20,7 @@ export const Target = ({ note, ...rest }: TargetProps) => {
                 </Link>
                 <Link
                     href={`/${note.user.username}/${note.id}`}
-                    className="font-semibold text-sm hover:underline hover:text-primary"
+                    className="font-semibold text-sm hover:underline hover:text-secondary"
                     {...rest}
                 >
                     {note.user.username}  / {note.title}

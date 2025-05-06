@@ -1,4 +1,3 @@
-import { Button } from "../desktop/layout/Button";
 import { Component } from "@/components";
 import { Form } from "@/components/forms";
 import { Icon } from "@/components/icons";
@@ -6,6 +5,7 @@ import { IconBook, IconEdit, IconFlame, IconNotes } from "@tabler/icons-react";
 import { Layout } from "./layout";
 import { LowDetailUser, User } from "@/core";
 import { Template } from "@/components/templates";
+import { Toggle } from "@/components/buttons";
 import { useParams } from "next/navigation";
 import { useRef } from "react";
 import { useUser } from "@/data/hooks";
@@ -52,7 +52,7 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
                         </>
                     }
                 </div>
-                {!isCurrentUserProfile && <Button user={user} />}
+                {!isCurrentUserProfile && <Toggle.Follow user={user} useIcon useText />}
                 <Layout.Nav>
                     <Layout.Li href={`/${user.username}`}><IconBook size={30} /></Layout.Li>
                     <Layout.Li href={`/${user.username}/notes`}><IconNotes size={30} /></Layout.Li>

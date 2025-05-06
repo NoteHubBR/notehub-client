@@ -1,7 +1,8 @@
 import { Element } from "./elements";
+import { Icon } from "@/components/icons";
 import { LowDetailNote } from "@/core";
 import { Photo } from "@/components/Photo";
-import { Icon } from "@/components/icons";
+import { Toggle } from "@/components/buttons";
 
 interface MainProps extends React.HTMLAttributes<HTMLElement> {
     notes: LowDetailNote[];
@@ -36,7 +37,7 @@ export const Main = ({ notes, ...rest }: MainProps) => {
                         </main>
                         <footer className="mt-1 pl-12 insm:pl-0 flex items-center justify-between">
                             <Element.Comments note={note} />
-                            <Element.Flame note={note} />
+                            <Toggle.Flame size={20} note={note} useCount />
                         </footer>
                     </article>
                 </Element.Section>

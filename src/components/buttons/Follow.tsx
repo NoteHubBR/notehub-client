@@ -61,7 +61,8 @@ export const Follow = ({ user, useIcon, useText, className, ...rest }: ButtonPro
                     ? 'max-w-32 rounded-3xl text-sm font-medium'
                     : 'max-w-24 rounded-3xl text-sm font-medium',
                 'flex items-center justify-center gap-1',
-                'transition-colors duration-100',
+                'dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm',
+                'transition-all duration-100',
                 className
             )}
             {...rest}
@@ -85,8 +86,8 @@ export const Follow = ({ user, useIcon, useText, className, ...rest }: ButtonPro
                     : 'max-w-24 rounded-3xl text-sm font-medium',
                 'dark:bg-lighter/30 bg-darker/30',
                 'flex items-center justify-center gap-1',
-                'drop-shadow-alpha-d-xs',
-                'transition-colors duration-300',
+                'dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm',
+                'transition-all duration-300',
                 className
             )}
         >

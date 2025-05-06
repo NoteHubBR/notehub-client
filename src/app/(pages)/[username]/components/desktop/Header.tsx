@@ -6,6 +6,7 @@ import { Layout } from './layout';
 import { LowDetailUser, User } from '@/core';
 import { Section } from '../Section';
 import { Template } from '@/components/templates';
+import { Toggle } from '@/components/buttons';
 import { useParams } from 'next/navigation';
 import { useRef } from 'react';
 import { useUser } from '@/data/hooks';
@@ -43,7 +44,7 @@ export const Header = ({ user, history, ...rest }: HeaderProps) => {
                                 <Form.Update ref={childRef} closeRef={closeRef} />
                             </Template.Portal>
                         </>
-                        : currentUser && <Layout.Button user={user} />
+                        : currentUser && <Toggle.Follow user={user} useText className="!m-0" />
                     }
                 </div>
             </Section>

@@ -30,7 +30,7 @@ export const Info = ({ children, title, subtitle, subtitleClassName, href }: Inf
                             'flex items-center gap-1',
                             'dark:text-neutral-400 text-neutral-500',
                             'dark:bg-semilight/15 bg-semidark/15',
-                            'hover:text-primary dark:hover:text-primary',
+                            'hover:!text-secondary',
                             'transition-all duration-200',
                             subtitleClassName
                         )}>

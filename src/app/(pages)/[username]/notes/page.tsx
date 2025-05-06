@@ -130,7 +130,6 @@ const Page = () => {
                         <Element.Main notes={notes} />
                         <Element.Footer page={page} isEmpty={emptyList} />
                     </>
-
             }
         </Section>
     )

@@ -2,6 +2,7 @@ import { Element } from "./elements";
 import { Flame } from "@/core";
 import { Icon } from "@/components/icons";
 import { Photo } from "@/components/Photo";
+import { Toggle } from "@/components/buttons";
 
 interface MainProps extends React.HTMLAttributes<HTMLElement> {
     flames: Flame[];
@@ -35,7 +36,7 @@ export const Main = ({ flames, ...rest }: MainProps) => {
                         </main>
                         <footer className="mt-1 pl-12 insm:pl-0 flex items-center justify-between">
                             <Element.Comments note={flame.note} />
-                            <Element.Flame note={flame.note} />
+                            <Toggle.Flame size={20} note={flame.note} useCount />
                         </footer>
                     </article>
                 </Element.Section>

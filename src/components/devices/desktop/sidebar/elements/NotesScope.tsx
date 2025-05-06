@@ -52,7 +52,7 @@ export const NotesScope = () => {
             )}
             {!isSearching && notes.length > sliced.length &&
                 <Button
-                    className="w-fit flex items-center gap-3 py-1 cursor-pointer hover:text-primary transition-colors"
+                    className="w-fit flex items-center gap-3 py-1 cursor-pointer hover:text-secondary transition-colors"
                     text={isExpanded ? "Mostrar menos" : "Mostrar mais"}
                     onClick={toggleList}
                 />

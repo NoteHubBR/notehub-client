@@ -1,6 +1,7 @@
 import { Element } from "./elements"
 import { isEmpty, LowDetailNote, Page } from "@/core";
 import { Skeleton } from "./skeleton";
+import { Toggle } from "@/components/buttons";
 import { useCallback, useEffect, useState } from "react";
 import { useServices } from "@/data/hooks";
 
@@ -18,7 +19,7 @@ export const Ranking = () => {
         getTopThreeNotes();
     }, [getTopThreeNotes])
 
-    const { Title, Li, Target, Desc, Flames, Link } = Element;
+    const { Title, Li, Target, Desc, Link } = Element;
 
     if (isEmpty(ranking)) return <Skeleton />;
 
@@ -37,7 +38,7 @@ export const Ranking = () => {
                         <article className="flex flex-col gap-2">
                             <Target note={note} />
                             <Desc>{note.description}</Desc>
-                            <Flames note={note} />
+                            <Toggle.Flame size={15} note={note} useCount />
                         </article>
                     </Li>
                 ))}

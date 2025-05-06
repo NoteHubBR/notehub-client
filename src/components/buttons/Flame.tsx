@@ -5,11 +5,12 @@ import { useCallback, useState } from 'react';
 import { useFlames, useServices, useUser } from '@/data/hooks';
 
 interface FlameProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    size?: number;
     note: LowDetailNote;
     useCount?: boolean;
 }
 
-export const Flame = ({ note, useCount, ...rest }: FlameProps) => {
+export const Flame = ({ size = 24, note, useCount, ...rest }: FlameProps) => {
 
     const { flameService: { inflameNote, deflameNote } } = useServices();
 
@@ -88,7 +89,7 @@ export const Flame = ({ note, useCount, ...rest }: FlameProps) => {
                     'transition-colors duration-300',
                 )}
             >
-                <IconFlame size={15} className="!fill-white !text-white" />
+                <IconFlame size={size} className="!fill-white !text-white" />
             </div>
             {useCount && <Count />}
         </div>
@@ -103,7 +104,7 @@ export const Flame = ({ note, useCount, ...rest }: FlameProps) => {
                 onClick={deflame}
                 {...rest}
             >
-                <IconFlame size={15} className="!fill-white !text-white" />
+                <IconFlame size={size} className="!fill-white !text-white" />
             </Button >
             {useCount && <Count />}
         </div>
@@ -118,7 +119,7 @@ export const Flame = ({ note, useCount, ...rest }: FlameProps) => {
                 onClick={deflame}
                 {...rest}
             >
-                <IconFlame size={15} className="!fill-white !text-white" />
+                <IconFlame size={size} className="!fill-white !text-white" />
             </Button>
             {useCount && <Count />}
         </div>
@@ -134,7 +135,7 @@ export const Flame = ({ note, useCount, ...rest }: FlameProps) => {
                 onClick={inflame}
                 {...rest}
             >
-                <IconFlame size={15} className="!fill-white !text-white" />
+                <IconFlame size={size} className="!fill-white !text-white" />
             </Button>
             {useCount && <Count />}
         </div>

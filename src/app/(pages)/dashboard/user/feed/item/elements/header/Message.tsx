@@ -20,7 +20,7 @@ export const Message = ({ user, ...rest }: MessageProps) => {
                     <Link
                         ref={ref}
                         href={`/${user.username}`}
-                        className="font-semibold hover:underline hover:text-primary"
+                        className="font-semibold hover:underline hover:text-secondary"
                     >
                         <Icon.Sponsor user={user} size={22} className="mr-1" />{user.display_name}
                     </Link>

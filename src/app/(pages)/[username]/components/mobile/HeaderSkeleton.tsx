@@ -3,7 +3,7 @@ import { Component } from "@/components";
 export const HeaderSkeleton = (props: React.HTMLAttributes<HTMLElement>) => {
     return (
         <header
-            className="w-full h-[325px] py-5 flex flex-col items-center gap-3 dark:bg-darker bg-lighter animate-pulse"
+            className="w-full h-[273px] py-5 flex flex-col items-center gap-3 dark:bg-darker bg-lighter animate-pulse"
             {...props}
         >
             <Component.Bone width={111} height={111} rounded="full" className="flex-none" />

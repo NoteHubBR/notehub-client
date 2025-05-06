@@ -1,5 +1,6 @@
 import { Element } from "./elements";
 import { LowDetailUser } from "@/core";
+import { Toggle } from "@/components/buttons";
 
 interface MainProps extends React.HTMLAttributes<HTMLElement> {
     users: LowDetailUser[];
@@ -14,12 +15,17 @@ export const Main = ({ users, ...rest }: MainProps) => (
                 <Element.Li key={user.username}>
                     <Element.Section user={user}>
                         <Element.Overlay />
-                        <Element.Button user={user} />
                         <Element.User user={user} />
+                        <Toggle.Follow
+                            user={user}
+                            useIcon
+                            className="!absolute !top-1 !right-1 !w-fit !rounded-full !p-2 !text-white"
+                        />
                         <Element.Count user={user} />
                     </Element.Section>
                 </Element.Li>
-            ))}
+            )
+            )}
         </ul>
     </main>
 )

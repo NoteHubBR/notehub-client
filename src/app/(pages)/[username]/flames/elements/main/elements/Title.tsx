@@ -8,7 +8,7 @@ export const Title = ({ note, ...rest }: { note: LowDetailNote } & Omit<LinkProp
             className={clsx(
                 'underline',
                 'font-bold text-lg',
-                'hover:text-primary',
+                'hover:text-secondary',
                 'transition-colors',
             )}
         >

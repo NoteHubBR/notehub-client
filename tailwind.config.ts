@@ -27,6 +27,7 @@ const config: Config = {
         'alpha-l-lg': 'rgba(255,255,255,.65)',
         'alpha-l-xl': 'rgba(255,255,255,.75)',
         primary: colors.violet[600],
+        secondary: colors.violet[500],
         middark: colors.neutral[700],
         semidark: colors.neutral[800],
         dark: colors.neutral[900],

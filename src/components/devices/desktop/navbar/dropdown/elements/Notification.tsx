@@ -65,8 +65,8 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
                     </figure>
                     <section className="px-2">
                         <p className="text-sm">
-                            <span>{<Emote className="inline-block text-primary fill-primary" />}</span>
-                            <span className="font-semibold text-primary"> {username} </span>
+                            <span>{<Emote className="inline-block text-secondary fill-secondary" />}</span>
+                            <span className="font-semibold text-secondary"> {username} </span>
                             <span>{message}</span>
                         </p>
                     </section>

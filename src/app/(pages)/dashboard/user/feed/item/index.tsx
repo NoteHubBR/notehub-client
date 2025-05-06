@@ -22,7 +22,7 @@ export const Item = ({ note }: { note: LowDetailNote }) => {
             <section className="p-3 rounded flex flex-col gap-2 dark:bg-semidark bg-semilight">
                 <Target note={note} />
                 <Desc>{note.description}</Desc>
-                <Toggle.Flame note={note} useCount/>
+                <Toggle.Flame size={18} note={note} useCount />
             </section>
         </Article>
     )
