@@ -3,7 +3,7 @@ import NextLink, { LinkProps } from "next/link";
 
 export const Link = (props: Omit<LinkProps, 'href'>) => (
     <NextLink
-        href={'/explore'}
+        href={'/search'}
         className="w-fit font-medium text-sm hover:underline hover:text-secondary"
         {...props}
     >

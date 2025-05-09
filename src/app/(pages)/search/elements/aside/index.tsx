@@ -1,13 +1,12 @@
-import { Element } from "..";
 import { IconHash, IconNotes, IconUsers } from "@tabler/icons-react";
+import { Sorter } from "./Sorter";
 
+export { Skeleton as aside } from "./skeleton";
 export const Aside = (props: React.HTMLAttributes<HTMLElement>) => {
-
-    const { Li } = Element;
 
     return (
         <aside
-            className="w-[222px] py-4
+            className="w-[122px] py-4
             inlg:w-full
             inmd:py-0"
             {...props}
@@ -17,9 +16,9 @@ export const Aside = (props: React.HTMLAttributes<HTMLElement>) => {
                     className="flex flex-col gap-3
                     inlg:flex-row inlg:justify-center inmd:gap-1"
                 >
-                    <Li onParam useBg icon={IconNotes}>Notas</Li>
-                    <Li useBg icon={IconHash}>Tags</Li>
-                    <Li useBg icon={IconUsers}>Pessoas</Li>
+                    <Sorter sParam="type" values={["notes", null]} icon={IconNotes}>Notas</Sorter>
+                    <Sorter sParam="type" values={["tags"]} icon={IconHash}>Tags</Sorter>
+                    <Sorter sParam="type" values={["users"]} icon={IconUsers}>Pessoas</Sorter>
                 </ul>
             </nav>
         </aside>

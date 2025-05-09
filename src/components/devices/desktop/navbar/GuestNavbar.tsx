@@ -18,7 +18,7 @@ export const Navbar = (props: React.HTMLAttributes<HTMLElement>) => {
       </div>
       <Input type="text" placeholder="Pesquisar" />
       <div className="pr-2 flex items-center justify-center gap-8 w-fit">
-        <Link href={'/explore'} className="navigation-hover-hover font-semibold hover:text-primary transition-colors">Explorar</Link>
+        <Link href={'/search'} className="navigation-hover-hover font-semibold hover:text-primary transition-colors">Explorar</Link>
         <Link href={'/signin'} className="navigation-hover-hover font-semibold hover:text-primary transition-colors">Entrar</Link>
       </div>
     </nav>

@@ -97,6 +97,14 @@ export const UserService = () => {
         }
     }, [httpGet, handleExpiredToken])
 
+    const searchUsers = useCallback(async (parameters?: string): Promise<Page<LowDetailUser>> => {
+        try {
+            return await httpGet(`/users?${parameters}`);
+        } catch (error) {
+            throw error;
+        }
+    }, [httpGet])
+
     return {
         createUser,
         activateUser,
@@ -107,7 +115,8 @@ export const UserService = () => {
         unfollowUser,
         searchUserFollowing,
         searchUserFollowers,
-        getUserNotifications
+        getUserNotifications,
+        searchUsers
     }
 
 }

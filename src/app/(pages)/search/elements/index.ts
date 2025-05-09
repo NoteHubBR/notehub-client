@@ -1,6 +1,6 @@
-import { Li } from "./Li";
-import { Header } from "./header";
-import { Aside } from "./aside";
-import { Results } from "./results";
+import { Header, header } from "./header";
+import { Aside, aside } from "./aside";
+import { Results, results } from "./results";
+import { Loading } from "./loading";
 
-export const Element = { Li, Header, Aside, Results };
+export const Element = { Header, header, Aside, aside, Results, results, Loading };

@@ -6,9 +6,12 @@ import { User } from "./user";
 interface ResultsProps extends React.HTMLAttributes<HTMLElement> {
     page: Omit<Page<(LowDetailUser | LowDetailNote)>, "content">;
     contents: (LowDetailUser | LowDetailNote)[];
+    isEmpty: boolean;
+    totalElements: number;
 }
 
-export const Results = ({ page, contents, ...rest }: ResultsProps) => {
+export { Skeleton as results } from './skeleton';
+export const Results = ({ page, contents, isEmpty, totalElements, ...rest }: ResultsProps) => {
 
     const isUser = (item: LowDetailUser | LowDetailNote): item is LowDetailUser => {
         return (item as LowDetailUser).username !== undefined;
@@ -20,8 +23,26 @@ export const Results = ({ page, contents, ...rest }: ResultsProps) => {
             {...rest}
         >
             <header className="pt-2 pb-4 flex inmd:flex-col justify-between gap-4">
-                <h3 className="text-center text-xl font-semibold">25 resultados de 500</h3>
-                <Nav page={page} isEmpty={false} />
+                {totalElements > 0
+                    ?
+                    <>
+                        {totalElements > 1
+                            ?
+                            <h3 className="text-center text-xl font-semibold">
+                                {contents.length} resultados de {totalElements}
+                            </h3>
+                            :
+                            <h3 className="text-center text-xl font-semibold">
+                                1 resultado
+                            </h3>
+                        }
+                    </>
+                    :
+                    <h3>
+                        Nada encontrado.
+                    </h3>
+                }
+                <Nav page={page} isEmpty={isEmpty} />
             </header>
             <ul className="flex flex-col gap-3">
                 {contents.map(item => (

@@ -23,6 +23,10 @@ export const buildQueryStrings = (
     if (params.order) searchQuery.set('sort', `${params.order},${params.sort ?? 'desc'}`);
     if (params.sort) searchQuery.set('sort', `${params.order ?? 'modifiedAt'},${params.sort}`);
     if (params.page) searchQuery.set('page', String(Number(params.page) - 1));
+    if (params.type === "users" && params.order === "relevant") searchQuery.set('sort', 'followersCount,desc');
+    if (params.type === "notes" && params.order === "relevant") searchQuery.set('sort', 'flamesCount,desc');
+    if (params.type === "tags" && params.order === "relevant") searchQuery.set('sort', 'flamesCount,desc');
+    if (params.type === undefined && params.order === "relevant") searchQuery.set('sort', 'flamesCount,desc');
 
     return String(searchQuery);
 

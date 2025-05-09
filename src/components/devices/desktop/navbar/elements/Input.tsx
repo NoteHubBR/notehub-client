@@ -2,10 +2,12 @@ import { IconSearch, IconX } from "@tabler/icons-react";
 import { InputDropdown } from "../dropdown/contents/InputDropdown";
 import { Search } from "../dropdown/elements/Search";
 import { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useStore, useUser } from "@/data/hooks";
 
 export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
+
+    const sParams = useSearchParams();
 
     const { searches, setActions } = useStore();
     const { user } = useUser();
@@ -22,7 +24,9 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
         if (!query.trim() || !ref.current) return;
         ref.current.blur();
         setActions({ searches: [query, ...searches(user).filter(q => q !== query)] }, user?.username);
-        return router.push(`/search?q=${query}`);
+        const params = new URLSearchParams(sParams);
+        params.set('q', query);
+        return router.push(`/search?${params}`);
     }
 
     const handleBlur = (e: React.FocusEvent<HTMLFormElement>) => {
@@ -35,21 +39,21 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
         if (searches(user).length > 0) {
             setIsDropdownOpen(true);
         }
-    };
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(e.target.value);
         if (ref.current === document.activeElement) {
             setIsDropdownOpen(true);
         }
-    };
+    }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Escape') {
             e.preventDefault();
             setIsDropdownOpen(false);
         }
-    };
+    }
 
     return (
         <form onSubmit={onSubmit} onBlur={handleBlur} className="relative flex items-center justify-between">
@@ -60,14 +64,14 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
                 autoCorrect="off"
                 autoCapitalize="off"
                 className="outline-none
-                    peer
-                    inlg:w-[333px] w-[444px] py-[6px] pl-4 pr-9
-                    text-sm dark:text-lighter text-dark
-                    border-2 dark:border-semilight/10 border-semidark/10 rounded-s-3xl
-                    dark:bg-dark bg-light
-                    dark:focus:border-primary focus:border-primary
-                    dark:placeholder:text-light/30
-                    transition-colors"
+                peer
+                inlg:w-[333px] w-[444px] py-[6px] pl-4 pr-9
+                text-sm dark:text-lighter text-dark
+                border-2 dark:border-semilight/10 border-semidark/10 rounded-s-3xl
+                dark:bg-dark bg-light
+                dark:focus:border-primary focus:border-primary
+                dark:placeholder:text-light/30
+                transition-colors"
                 value={query}
                 onFocus={handleFocus}
                 onChange={handleChange}
@@ -89,11 +93,11 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
                 aria-label="Consultar"
                 type="submit"
                 className="cursor-pointer
-                    py-[6px] px-4
-                    border-2 border-transparent rounded-e-3xl
-                    dark:bg-semilight/15 bg-semidark/15
-                    dark:peer-focus:bg-primary peer-focus:bg-primary
-                    transition-colors"
+                py-[6px] px-4
+                border-2 border-transparent rounded-e-3xl
+                dark:bg-semilight/15 bg-semidark/15
+                dark:peer-focus:bg-primary peer-focus:bg-primary
+                transition-colors"
             >
                 <IconSearch size={20} className="text-white" />
             </button>

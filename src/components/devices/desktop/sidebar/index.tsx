@@ -17,7 +17,7 @@ const Minimized = ({ user }: { user: User }) => {
             <Sb.Shortcut href="/" icon={<IconHome size={27} />} text="Início" />
             <Sb.Shortcut href={`/${user.username}`} icon={<IconUserCircle size={27} />} text="Você" />
             <Sb.Shortcut href={`/${user.username}/notes`} icon={<IconNotes size={27} />} text="Notas" />
-            <Sb.Shortcut href="/explore" icon={<IconCompass size={27} />} text="Explorar" />
+            <Sb.Shortcut href="/search" icon={<IconCompass size={27} />} text="Explorar" />
         </aside>
     )
 }

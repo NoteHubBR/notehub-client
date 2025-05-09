@@ -52,7 +52,7 @@ export const Navbar = () => {
         <Nav>
             <List>
                 <Item href='/' text="Início"><IconHome size={22} /></Item>
-                <Item href='/explore' text="Explorar"><IconCompass size={22} /></Item>
+                <Item href='/search' text="Explorar"><IconCompass size={22} /></Item>
                 <Item href='/new'><IconPlus size={22} /></Item>
                 <Item href={`/${user.username}/notes`} text="Notas"><IconNotes size={22} /></Item>
                 <Item href={`/${user.username}`} text="Você"><Component.Photo user={user} size={22} /></Item>
