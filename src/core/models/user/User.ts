@@ -14,6 +14,7 @@ export interface User {
     score: number;
     created_at: string;
     notifications: number;
+    notes_count: number;
     followers_count: number;
     following_count: number;
 }

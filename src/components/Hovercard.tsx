@@ -166,7 +166,7 @@ export const Hovercard = ({ ref, user }: HovercardProps) => {
                 </div>
             </header>
             <dl className="px-6 py-3 flex items-center justify-evenly">
-                <Desc label="notas" count={0} />
+                <Desc label="notas" count={user.notes_count} />
                 <Desc label="seguidores" count={user.followers_count} />
                 <Desc label="seguindo" count={user.following_count} />
             </dl>
