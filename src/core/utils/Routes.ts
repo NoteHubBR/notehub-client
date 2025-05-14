@@ -9,7 +9,8 @@ export enum Routes {
     MOBILE_NOTIFICATIONS = '/m/notifications',
     USERNAME = '/username',
     NOTES = '/username/notes',
-    FLAMES = '/username/flames'
+    FLAMES = '/username/flames',
+    SETTINGS = '/settings'
 }
 
 enum NotUserContextRoutes {
