@@ -141,8 +141,8 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
                     </div>
                 </Element.Main>
                 <ul>
-                    <li><Element.Link href={'/user/settings/mutuals'}>Mútuos</Element.Link></li>
-                    <li><Element.Link href={'/user/settings'}>Configurações</Element.Link></li>
+                    <li><Element.Link href={'/help/mutuals'}>Mútuos</Element.Link></li>
+                    <li><Element.Link href={'/settings/account'}>Configurações</Element.Link></li>
                 </ul>
             </form>
         </FormProvider>

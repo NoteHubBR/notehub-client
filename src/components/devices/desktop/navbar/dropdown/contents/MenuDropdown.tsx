@@ -48,7 +48,7 @@ export const MenuDropdown = ({ user }: { user: User }) => {
                 >
                     <IconYinYangFilled />
                 </Field.Button>
-                <Field.Button text="Configurações"><IconSettings /></Field.Button>
+                <Field.Link href={'/settings/account'} text="Configurações"><IconSettings /></Field.Link>
             </Section>
             <Section>
                 <a href="mailto:suporte@xisyz.xyz" className="w-full">

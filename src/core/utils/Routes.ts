@@ -10,7 +10,9 @@ export enum Routes {
     USERNAME = '/username',
     NOTES = '/username/notes',
     FLAMES = '/username/flames',
-    SETTINGS = '/settings'
+    SETTINGS = '/settings',
+    ACCOUNT = '/settings/account',
+    APPEARANCE = '/settings/appearance',
 }
 
 enum NotUserContextRoutes {

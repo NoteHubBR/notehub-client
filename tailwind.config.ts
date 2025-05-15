@@ -1,5 +1,5 @@
-import type { Config } from "tailwindcss";
 import colors from 'tailwindcss/colors';
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
@@ -16,6 +16,16 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: (({ opacityValue }: { opacityValue?: number }) => {
+          return opacityValue !== undefined
+            ? `rgba(var(--primary), ${opacityValue})`
+            : `rgb(var(--primary))`;
+        }) as any,
+        secondary: (({ opacityValue }: { opacityValue?: number }) => {
+          return opacityValue !== undefined
+            ? `rgba(var(--secondary), ${opacityValue})`
+            : `rgb(var(--secondary))`;
+        }) as any,
         'alpha-d-xs': 'rgba(0,0,0,.15)',
         'alpha-d-sm': 'rgba(0,0,0,.25)',
         'alpha-d-md': 'rgba(0,0,0,.5)',
@@ -26,8 +36,6 @@ const config: Config = {
         'alpha-l-md': 'rgba(255,255,255,.5)',
         'alpha-l-lg': 'rgba(255,255,255,.65)',
         'alpha-l-xl': 'rgba(255,255,255,.75)',
-        primary: colors.violet[600],
-        secondary: colors.violet[500],
         middark: colors.neutral[700],
         semidark: colors.neutral[800],
         dark: colors.neutral[900],

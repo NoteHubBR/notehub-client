@@ -8,31 +8,35 @@
 :root {
   --background: #ffffff;
   --foreground: #000000;
-  --primary: #7c3aed;
+  --primary: 124, 58, 237;
+  --secondary: 139, 92, 246;
 }
 
 @media(prefers-color-scheme: dark) {
   :root {
     --background: #000000;
     --foreground: #ffffff;
-    --primary: #7c3aed;
+    --primary: 124, 58, 237;
+    --secondary: 139, 92, 246;
   }
 }
 
 html.dark {
   --background: #000000;
   --foreground: #ffffff;
-  --primary: #7c3aed;
+  --primary: 124, 58, 237;
+  --secondary: 139, 92, 246;
 }
 
 html.light {
   --background: #ffffff;
   --foreground: #000000;
-  --primary: #7c3aed;
+  --primary: 124, 58, 237;
+  --secondary: 139, 92, 246;
 }
 
 *::selection {
-  background: var(--primary);
+  background: rgba(var(--primary));
   color: white;
 }
 

@@ -16,7 +16,7 @@ export const ThemeProvider = (props: any) => {
         };
         mediaQuery.addEventListener("change", handleChange);
         return () => mediaQuery.removeEventListener("change", handleChange);
-    }, [setPref]);
+    }, [setPref])
 
     useEffect(() => {
         if (pref.useDarkTheme) {
@@ -26,13 +26,21 @@ export const ThemeProvider = (props: any) => {
             document.documentElement.classList.add("light");
             document.documentElement.classList.remove("dark");
         }
-    }, [pref.useDarkTheme]);
+    }, [pref.useDarkTheme])
+
+    useEffect(() => {
+        if (pref.useColors) {
+            document.documentElement.style.setProperty("--primary", pref.useColors.primary);
+            document.documentElement.style.setProperty("--secondary", pref.useColors.secondary);
+        }
+    }, [pref.useColors])
 
     return (
         <ThemeContext.Provider value={{}}>
             {props.children}
         </ThemeContext.Provider>
-    );
-};
+    )
+
+}
 
 export default ThemeContext;
