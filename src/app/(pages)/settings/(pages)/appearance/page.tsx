@@ -21,7 +21,7 @@ const Page = () => {
 
     return (
         <section>
-            <Header title="Aparência" />
+            <Header goBack="/settings" title="Aparência" />
             <section className="mt-6 flex flex-col gap-6">
                 <SectionHeader />
                 <Card useDark={colors.isDark} color={colors.color} />

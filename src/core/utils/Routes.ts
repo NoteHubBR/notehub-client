@@ -12,6 +12,7 @@ export enum Routes {
     FLAMES = '/username/flames',
     SETTINGS = '/settings',
     ACCOUNT = '/settings/account',
+    INFO = '/settings/account/info',
     APPEARANCE = '/settings/appearance',
 }
 

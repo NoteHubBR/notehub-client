@@ -10,12 +10,12 @@ interface LinkProps extends NextLinkProps {
 export const Link = ({ children, icon: Icon, href, ...rest }: LinkProps) => {
 
     const pathname = usePathname();
-    const onRoute = href === pathname;
+    const onRoute = pathname === href || pathname.startsWith(String(href));
 
     return (
         <li
             className={clsx(
-                'px-2 border-l-4',
+                'pl-2 border-l-4',
                 onRoute ? 'border-primary' : 'border-transparent'
             )}
         >
