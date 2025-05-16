@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 
 export const UserService = () => {
 
-    const { httpPost, httpPut, httpGet, httpDelete } = useAPI();
+    const { httpPost, httpPut, httpPatch, httpGet, httpDelete } = useAPI();
 
     const handleExpiredToken = AuthService().handleExpiredToken;
 
@@ -35,6 +35,15 @@ export const UserService = () => {
             return handleExpiredToken(error, (newToken) => httpPut(endpoint, data, { useProgress: true, useToken: newToken }));
         }
     }, [handleExpiredToken, httpPut])
+
+    const updateUserVisibility = useCallback(async (token: string): Promise<void> => {
+        const endpoint = '/users/profile/visibility';
+        try {
+            return await httpPatch(endpoint, undefined, { useToken: token });
+        } catch (error) {
+            return handleExpiredToken(error, (newToken) => httpPatch(endpoint, undefined, { useToken: newToken }));
+        }
+    }, [handleExpiredToken, httpPatch])
 
     const getUser = useCallback(async (username: string): Promise<LowDetailUser> => {
         try {
@@ -109,6 +118,7 @@ export const UserService = () => {
         createUser,
         activateUser,
         updateUser,
+        updateUserVisibility,
         getUser,
         getUserDisplayNameHistory,
         followUser,

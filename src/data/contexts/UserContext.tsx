@@ -59,15 +59,16 @@ export const UserProvider = (props: any) => {
     }, [])
 
     const updateUser = useCallback((user: Partial<User>) => {
-        if (!user.username) return;
-        updateActions(state.user!.username, user.username);
-        return setState((prev) => ({
-            ...prev,
-            user: {
-                ...prev.user,
-                ...user
-            } as User
-        }))
+        if (state.user) {
+            if (user.username) updateActions(state.user.username, user.username);
+            return setState((prev) => ({
+                ...prev,
+                user: {
+                    ...prev.user,
+                    ...user
+                } as User
+            }))
+        }
     }, [state.user, updateActions])
 
     const clearUser = useCallback(async () => {

@@ -12,7 +12,6 @@ export const Link = ({ href, icon: Icon, children, ...rest }: LinkProps) => (
             href={href}
             className="px-2 py-3
             flex items-center justify-between gap-6
-            text-lg
             hover:dark:bg-middark/30 hover:bg-midlight/30"
             {...rest}
         >

@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icons";
 import Image from "next/image";
 
 export const Loading = (props: React.HTMLAttributes<HTMLDivElement>) => (
@@ -15,11 +16,6 @@ export const Loading = (props: React.HTMLAttributes<HTMLDivElement>) => (
             alt=""
             aria-hidden="true"
         />
-        <h2 id="statusDesc" className="text-md">
-            Procurando
-            <span aria-hidden="true" className="animated-dots"></span>
-            <span aria-hidden="true" className="animated-dots"></span>
-            <span aria-hidden="true" className="animated-dots"></span>
-        </h2>
+        <h2 id="statusDesc" className="text-md">Procurando<Icon.Dots /></h2>
     </div>
 )

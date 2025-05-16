@@ -71,6 +71,10 @@ export const useAPI = () => {
         return request('PUT', endpoint, body, options);
     }, [request])
 
+    const httpPatch = useCallback((endpoint: string, body: any, options?: HttpOptions) => {
+        return request('PATCH', endpoint, body, options);
+    }, [request])
+
     const httpGet = useCallback((endpoint: string, options?: HttpOptions) => {
         return request('GET', endpoint, undefined, options);
     }, [request])
@@ -79,6 +83,6 @@ export const useAPI = () => {
         return request('DELETE', endpoint, undefined, options);
     }, [request])
 
-    return { httpPost, httpPut, httpGet, httpDelete };
+    return { httpPost, httpPut, httpPatch, httpGet, httpDelete };
 
 }

@@ -21,7 +21,7 @@ export const Header = ({ title, goBack, ...rest }: HeaderProps) => {
                     <IconArrowLeft size={24} />
                 </Link>
             }
-            <h1 className="font-semibold text-xl">{title}</h1>
+            <h2 className="font-semibold text-xl">{title}</h2>
         </header>
     )
 
