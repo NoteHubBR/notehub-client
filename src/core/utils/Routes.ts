@@ -12,15 +12,19 @@ export enum Routes {
     FLAMES = '/username/flames',
     SETTINGS = '/settings',
     ACCOUNT = '/settings/account',
-    INFO = '/settings/account/info',
+    ACCOUNT_INFO = '/settings/account/info',
+    ACCOUNT_EMAIL = '/settings/account/email',
+    ACCOUNT_PASSWORD = '/settings/account/password',
     APPEARANCE = '/settings/appearance',
+    CHANGE_EMAIL = '/change/email'
 }
 
 enum NotUserContextRoutes {
     SIGNUP = '/signup',
     SIGNIN = '/signin',
     SENT = '/sent',
-    ACTIVATE = '/activate/:jwt'
+    ACTIVATE = '/activate/:jwt',
+    CHANGE_EMAIL = '/change/email'
 }
 
 export const shouldUseUserContext = (pathname: string): boolean => {

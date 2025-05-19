@@ -1,0 +1,66 @@
+import { Cookies, EmailChangeFormData, emailChangeFormSchema, handleFieldErrors, handleInvalidTokenFieldError } from "@/core";
+import { Element } from "./elements";
+import { FormProvider, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useServices, useStore, useUser } from "@/data/hooks";
+import { useState, useTransition } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+export const Form = ({ token }: { token: string }) => {
+
+    const { userService: { updateUserEmail } } = useServices();
+    const { setStore } = useStore();
+    const { setUser } = useUser();
+
+    const emailChangeForm = useForm<EmailChangeFormData>({
+        resolver: zodResolver(emailChangeFormSchema)
+    })
+
+    const { handleSubmit, setError } = emailChangeForm;
+
+    const [isPending, startTransition] = useTransition();
+    const [invalid, setInvalid] = useState<boolean>(false);
+    const router = useRouter();
+
+    const onSubmit = (data: EmailChangeFormData) => startTransition(async (): Promise<void> => {
+        try {
+            await updateUserEmail(token, data);
+            setStore({ isGuest: true });
+            setUser(null, null);
+            Cookies.remove('rtoken');
+            return router.push("/");
+        } catch (errors: any) {
+            if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
+            return handleInvalidTokenFieldError(errors, setInvalid);
+        }
+    })
+
+    const { Field, Input, Label, Error, Button } = Element;
+
+    return (
+        <FormProvider {...emailChangeForm}>
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="max-w-[300px] w-full mt-6 inmd:mx-auto flex flex-col gap-10"
+            >
+                <Field>
+                    <Input name="email" />
+                    <Label htmlFor="email">Email</Label>
+                    <Error name="email" />
+                </Field>
+                <Field>
+                    <Input name="repeatEmail" />
+                    <Label htmlFor="repeatEmail">Repetir email</Label>
+                    <Error name="repeatEmail" />
+                </Field>
+                <Button disabled={isPending}>
+                    Definir
+                </Button>
+                <p className={`${invalid ? 'opacity-100' : 'opacity-0'} text-red-600 transition-opacity`}>
+                    Token inválido.
+                </p>
+            </form>
+        </FormProvider>
+    )
+
+}

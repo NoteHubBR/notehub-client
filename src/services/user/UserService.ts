@@ -1,5 +1,5 @@
 import { AuthService } from '../auth';
-import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData } from '@/core';
+import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData, EmailChangeFormData } from '@/core';
 import { useAPI } from '@/data/hooks';
 import { useCallback } from 'react';
 
@@ -35,6 +35,17 @@ export const UserService = () => {
             return handleExpiredToken(error, (newToken) => httpPut(endpoint, data, { useProgress: true, useToken: newToken }));
         }
     }, [handleExpiredToken, httpPut])
+
+    const updateUserEmail = useCallback(async (token: string, data: EmailChangeFormData): Promise<void> => {
+        const endpoint = '/users/change-email';
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { repeatEmail, ...output } = data;
+        try {
+            return await httpPatch(endpoint, output, { useProgress: true, useToken: token });
+        } catch (error) {
+            throw error;
+        }
+    }, [httpPatch])
 
     const updateUserVisibility = useCallback(async (token: string): Promise<void> => {
         const endpoint = '/users/profile/visibility';
@@ -118,6 +129,7 @@ export const UserService = () => {
         createUser,
         activateUser,
         updateUser,
+        updateUserEmail,
         updateUserVisibility,
         getUser,
         getUserDisplayNameHistory,
