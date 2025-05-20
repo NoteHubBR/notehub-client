@@ -9,7 +9,7 @@ export interface UserContextProps {
     isMounted: boolean;
     token: Token | null;
     user: User | null;
-    setUser: (token: Token | null, user: User | null) => void;
+    setUser: (token: Token, user: User) => void;
     updateToken: (token: Token) => void;
     updateUser: (user: Partial<User>) => void;
     clearUser: () => void;

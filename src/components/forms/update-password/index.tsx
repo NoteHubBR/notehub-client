@@ -1,6 +1,6 @@
 import { Element } from "./elements";
-import { EmailChangeFormData, emailChangeFormSchema, handleFieldErrors, handleInvalidTokenFieldError } from "@/core";
 import { FormProvider, useForm } from "react-hook-form";
+import { handleFieldErrors, handleInvalidTokenFieldError, PasswordUpdateFormData, passwordUpdateFormSchema } from "@/core";
 import { useRouter } from "next/navigation";
 import { useServices, useUser } from "@/data/hooks";
 import { useState, useTransition } from "react";
@@ -8,22 +8,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = ({ token }: { token: string }) => {
 
-    const { userService: { updateUserEmail } } = useServices();
+    const { userService: { updateUserPassword } } = useServices();
     const { clearUser } = useUser();
 
-    const emailChangeForm = useForm<EmailChangeFormData>({
-        resolver: zodResolver(emailChangeFormSchema)
+    const passwordUpdateForm = useForm<PasswordUpdateFormData>({
+        resolver: zodResolver(passwordUpdateFormSchema)
     })
 
-    const { handleSubmit, setError } = emailChangeForm;
+    const { handleSubmit, setError } = passwordUpdateForm;
 
     const [isPending, startTransition] = useTransition();
     const [invalid, setInvalid] = useState<boolean>(false);
     const router = useRouter();
 
-    const onSubmit = (data: EmailChangeFormData) => startTransition(async (): Promise<void> => {
+    const onSubmit = (data: PasswordUpdateFormData) => startTransition(async (): Promise<void> => {
         try {
-            await updateUserEmail(token, data);
+            await updateUserPassword(token, data);
             clearUser();
             return router.push("/");
         } catch (errors: any) {
@@ -32,23 +32,24 @@ export const Form = ({ token }: { token: string }) => {
         }
     })
 
-    const { Field, Input, Label, Error, Button } = Element;
+    const { Field, Input, Label, Error, Strength, Button } = Element;
 
     return (
-        <FormProvider {...emailChangeForm}>
+        <FormProvider {...passwordUpdateForm}>
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="max-w-[300px] w-full mt-6 inmd:mx-auto flex flex-col gap-10"
             >
                 <Field>
-                    <Input name="email" />
-                    <Label htmlFor="email">Email</Label>
-                    <Error name="email" />
+                    <Input name="password" />
+                    <Label htmlFor="password">Senha</Label>
+                    <Strength field="password" />
+                    <Error name="password" />
                 </Field>
                 <Field>
-                    <Input name="repeatEmail" />
-                    <Label htmlFor="repeatEmail">Repetir email</Label>
-                    <Error name="repeatEmail" />
+                    <Input name="repeatPassword" />
+                    <Label htmlFor="repeatPassword">Repetir senha</Label>
+                    <Error name="repeatPassword" />
                 </Field>
                 <Button disabled={isPending}>
                     Definir

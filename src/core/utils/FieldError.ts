@@ -1,4 +1,3 @@
-import { SetStateAction } from "react";
 import { UseFormSetError } from "react-hook-form";
 
 export default interface FieldError {
@@ -14,7 +13,7 @@ export function handleFieldErrors(errors: FieldError[], setError: UseFormSetErro
 
 export function handleInvalidTokenFieldError(
     error: FieldError,
-    setInvalid: React.Dispatch<SetStateAction<boolean>>
+    setInvalid: React.Dispatch<React.SetStateAction<boolean>>
 ): void {
     if (error.message === "Token inválido.") return setInvalid(true);
 }

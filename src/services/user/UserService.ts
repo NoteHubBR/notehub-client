@@ -1,5 +1,5 @@
 import { AuthService } from '../auth';
-import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData, EmailChangeFormData } from '@/core';
+import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData, EmailChangeFormData, PasswordUpdateFormData } from '@/core';
 import { useAPI } from '@/data/hooks';
 import { useCallback } from 'react';
 
@@ -40,6 +40,17 @@ export const UserService = () => {
         const endpoint = '/users/change-email';
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { repeatEmail, ...output } = data;
+        try {
+            return await httpPatch(endpoint, output, { useProgress: true, useToken: token });
+        } catch (error) {
+            throw error;
+        }
+    }, [httpPatch])
+
+    const updateUserPassword = useCallback(async (token: string, data: PasswordUpdateFormData): Promise<void> => {
+        const endpoint = '/users/change-password';
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { repeatPassword, ...output } = data;
         try {
             return await httpPatch(endpoint, output, { useProgress: true, useToken: token });
         } catch (error) {
@@ -130,6 +141,7 @@ export const UserService = () => {
         activateUser,
         updateUser,
         updateUserEmail,
+        updateUserPassword,
         updateUserVisibility,
         getUser,
         getUserDisplayNameHistory,

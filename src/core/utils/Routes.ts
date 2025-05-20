@@ -16,7 +16,8 @@ export enum Routes {
     ACCOUNT_EMAIL = '/settings/account/email',
     ACCOUNT_PASSWORD = '/settings/account/password',
     APPEARANCE = '/settings/appearance',
-    CHANGE_EMAIL = '/change/email'
+    CHANGE_EMAIL = '/change/email',
+    CHANGE_PASSWORD = '/change/password'
 }
 
 enum NotUserContextRoutes {
@@ -24,7 +25,8 @@ enum NotUserContextRoutes {
     SIGNIN = '/signin',
     SENT = '/sent',
     ACTIVATE = '/activate/:jwt',
-    CHANGE_EMAIL = '/change/email'
+    CHANGE_EMAIL = '/change/email',
+    CHANGE_PASSWORD = '/change/password'
 }
 
 export const shouldUseUserContext = (pathname: string): boolean => {
