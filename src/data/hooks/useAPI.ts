@@ -79,8 +79,8 @@ export const useAPI = () => {
         return request('GET', endpoint, undefined, options);
     }, [request])
 
-    const httpDelete = useCallback((endpoint: string, options?: HttpOptions) => {
-        return request('DELETE', endpoint, undefined, options);
+    const httpDelete = useCallback((endpoint: string, body: any, options?: HttpOptions) => {
+        return request('DELETE', endpoint, body, options);
     }, [request])
 
     return { httpPost, httpPut, httpPatch, httpGet, httpDelete };

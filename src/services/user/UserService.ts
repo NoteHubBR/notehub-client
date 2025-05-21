@@ -1,5 +1,5 @@
 import { AuthService } from '../auth';
-import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData, EmailChangeFormData, PasswordUpdateFormData } from '@/core';
+import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData, EmailChangeFormData, PasswordUpdateFormData, DeleteUserFormData } from '@/core';
 import { useAPI } from '@/data/hooks';
 import { useCallback } from 'react';
 
@@ -95,9 +95,9 @@ export const UserService = () => {
     const unfollowUser = useCallback(async (token: string, username: string): Promise<void> => {
         const endpoint: string = `/users/${username}/unfollow`;
         try {
-            return await httpDelete(endpoint, { useToken: token });
+            return await httpDelete(endpoint, undefined, { useToken: token });
         } catch (error: any) {
-            return handleExpiredToken(error, (newToken) => httpDelete(endpoint, { useToken: newToken }));
+            return handleExpiredToken(error, (newToken) => httpDelete(endpoint, undefined, { useToken: newToken }));
         }
     }, [httpDelete, handleExpiredToken])
 
@@ -136,6 +136,15 @@ export const UserService = () => {
         }
     }, [httpGet])
 
+    const deleteUser = useCallback(async (token: string, data: DeleteUserFormData) => {
+        const endpoint = '/users/delete';
+        try {
+            return await httpDelete(endpoint, data, { useProgress: true, useToken: token })
+        } catch (error) {
+            return handleExpiredToken(error, (newToken) => httpDelete(endpoint, data, { useProgress: true, useToken: newToken }));
+        }
+    }, [httpDelete, handleExpiredToken])
+
     return {
         createUser,
         activateUser,
@@ -150,7 +159,8 @@ export const UserService = () => {
         searchUserFollowing,
         searchUserFollowers,
         getUserNotifications,
-        searchUsers
+        searchUsers,
+        deleteUser
     }
 
 }

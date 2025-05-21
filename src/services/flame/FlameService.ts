@@ -31,9 +31,9 @@ export const FlameService = () => {
     const deflameNote = useCallback(async (token: string, noteId: UUID) => {
         const endpoint = `/flames/${noteId}`;
         try {
-            return await httpDelete(endpoint, { useToken: token });
+            return await httpDelete(endpoint, undefined, { useToken: token });
         } catch (error: any) {
-            return handleExpiredToken(error, (newToken) => httpDelete(endpoint, { useToken: newToken }));
+            return handleExpiredToken(error, (newToken) => httpDelete(endpoint, undefined, { useToken: newToken }));
         }
     }, [httpDelete, handleExpiredToken])
 

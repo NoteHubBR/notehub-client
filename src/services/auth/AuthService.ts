@@ -52,7 +52,7 @@ export const AuthService = () => {
 
     const logoutUser = async (token: string): Promise<void> => {
         try {
-            return await httpDelete('/auth/logout', { useToken: token, useProgress: true });
+            return await httpDelete('/auth/logout', undefined, { useToken: token, useProgress: true });
         } catch (error) {
             throw error;
         }
