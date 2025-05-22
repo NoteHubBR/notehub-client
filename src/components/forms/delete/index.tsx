@@ -35,7 +35,7 @@ export const Form = () => {
 
     return (
         <FormProvider {...deleteUserForm}>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-1">
+            <form onSubmit={handleSubmit(onSubmit)} className="px-2 flex flex-col gap-1">
                 <Wrapper>
                     <Label name="password" />
                     <Input name="password" />

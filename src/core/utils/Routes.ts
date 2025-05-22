@@ -13,9 +13,12 @@ export enum Routes {
     SETTINGS = '/settings',
     ACCOUNT = '/settings/account',
     ACCOUNT_INFO = '/settings/account/info',
+    ACCOUNT_VISIBILITY = '/settings/account/visibility',
     ACCOUNT_EMAIL = '/settings/account/email',
     ACCOUNT_PASSWORD = '/settings/account/password',
+    ACCOUNT_DELETE = '/settings/account/delete',
     APPEARANCE = '/settings/appearance',
+    SPONSORSHIP = '/settings/sponsorship',
     CHANGE_EMAIL = '/change/email',
     CHANGE_PASSWORD = '/change/password'
 }
