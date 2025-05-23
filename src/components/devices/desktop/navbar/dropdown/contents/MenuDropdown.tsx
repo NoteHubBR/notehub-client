@@ -51,12 +51,12 @@ export const MenuDropdown = ({ user }: { user: User }) => {
                 <Field.Link href={'/settings/account'} text="Configurações"><IconSettings /></Field.Link>
             </Section>
             <Section>
-                <a href="mailto:suporte@xisyz.xyz" className="w-full">
-                    <Field.Button text="Ajuda"><IconHelp /></Field.Button>
-                </a>
-                <a href="mailto:contato@xisyz.xyz" className="w-full">
-                    <Field.Button text="Enviar feedback"><IconMessageReport /></Field.Button>
-                </a>
+                <Field.Link href="/help" target="_blank" text="Ajuda">
+                    <IconHelp />
+                </Field.Link>
+                <Field.Link href="mailto:contato@xisyz.xyz" text="Enviar feedback">
+                    <IconMessageReport />
+                </Field.Link>
             </Section>
         </div>
     )

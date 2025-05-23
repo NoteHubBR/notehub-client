@@ -19,10 +19,10 @@ export const Aside = ({ onDesktop, onPathname, ...rest }: AsideProps) => {
         >
             <h1 className="font-semibold text-xl">Configurações</h1>
             <ul className="mt-6">
-                <Link icon={IconChevronRight} href={'/settings/account'}>Conta</Link>
-                <Link icon={IconChevronRight} href={'/settings/appearance'}>Aparência</Link>
-                <Link icon={IconChevronRight} href={'/settings/sponsorship'}>Patrocínio</Link>
-                <Link icon={IconHelp} href={'/help'}>Ajuda</Link>
+                <Link icon={IconChevronRight} href="/settings/account">Conta</Link>
+                <Link icon={IconChevronRight} href="/settings/appearance">Aparência</Link>
+                <Link icon={IconChevronRight} href="/settings/sponsorship">Patrocínio</Link>
+                <Link icon={IconHelp} href="/help" target="_blank">Ajuda</Link>
             </ul>
         </aside>
     )

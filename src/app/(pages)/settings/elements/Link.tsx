@@ -5,9 +5,10 @@ import NextLink, { LinkProps as NextLinkProps } from "next/link";
 interface LinkProps extends NextLinkProps {
     icon: React.ElementType;
     children: React.ReactNode;
+    target?: "_self" | "_blank";
 }
 
-export const Link = ({ children, icon: Icon, href, ...rest }: LinkProps) => {
+export const Link = ({ children, icon: Icon, href, target = "_self", ...rest }: LinkProps) => {
 
     const pathname = usePathname();
     const onRoute = pathname === href || pathname.startsWith(String(href));
@@ -21,6 +22,7 @@ export const Link = ({ children, icon: Icon, href, ...rest }: LinkProps) => {
         >
             <NextLink
                 href={href}
+                target={target}
                 className={clsx(
                     'px-2 py-3',
                     'flex items-center justify-between',
