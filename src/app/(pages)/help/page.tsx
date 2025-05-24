@@ -30,7 +30,6 @@ const Page = () => {
                     <header className="flex items-center gap-3 justify-between">
                         <Input
                             placeholder="O que procura?"
-                            items={items}
                             query={query}
                             setQuery={setQuery}
                         />

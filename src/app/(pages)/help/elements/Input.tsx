@@ -1,13 +1,11 @@
 import { IconSearch } from "@tabler/icons-react";
-import { Items } from "../items";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    items: Items[];
     query: string;
     setQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const Input = ({ items, query, setQuery, ...rest }: InputProps) => (
+export const Input = ({ query, setQuery, ...rest }: InputProps) => (
     <div className="group w-2/3 insm:w-full m-auto flex flex-row-reverse items-center">
         <input
             id="query"
