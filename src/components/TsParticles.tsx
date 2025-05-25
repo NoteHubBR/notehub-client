@@ -20,7 +20,7 @@ export const TsParticles = () => {
 
   const particlesLoaded = async (): Promise<void> => { return; };
 
-  const { pref: { useDarkTheme } } = usePref();
+  const { pref: { useDarkTheme, useColors: { primary } } } = usePref();
 
   const options: ISourceOptions = useMemo(
     () => ({
@@ -53,10 +53,10 @@ export const TsParticles = () => {
       },
       particles: {
         color: {
-          value: "#7c3aed",
+          value: `rgb(${primary})`,
         },
         links: {
-          color: "#7c3aed",
+          color: `rgb(${primary})`,
           distance: 85,
           enable: true,
           opacity: 1,

@@ -8,7 +8,7 @@ export const Flare = (props: React.SVGAttributes<SVGElement>) => {
                     rx="94.1737"
                     ry="824.195"
                     transform="matrix(0.347047 -0.937848 0.628306 0.777966 -236.488 -311.402)"
-                    fill="#6d28d9"
+                    className="fill-primary"
                 />
             </g>
             <g filter="url(#filter1_f_2811_2735)">
@@ -18,7 +18,7 @@ export const Flare = (props: React.SVGAttributes<SVGElement>) => {
                     rx="61.1689"
                     ry="376.084"
                     transform="matrix(0.347047 -0.937848 0.628306 0.777966 275 134.734)"
-                    fill="#6d28d9"
+                    className="fill-primary"
                 />
             </g>
             <defs>

@@ -1,11 +1,11 @@
 'use client';
 
+import { Icon } from "@/components/icons";
 import { SVG } from "@/components/svgs";
 import { Template } from "@/components/templates";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useServices } from "@/data/hooks";
-import Image from "next/image";
 import Link from "next/link";
 
 const Page = () => {
@@ -36,8 +36,8 @@ const Page = () => {
             <SVG.Flare className="absolute -z-10" />
             {isFinished && (
                 <>
-                    <Link href={'/'} className="pr-4 border-e dark:border-primary/25 border-primary/25">
-                        <Image src={'/imgs/logo.png'} alt="Logo" width={100} height={0} priority />
+                    <Link href={'/'} className="group pr-4 border-e dark:border-primary/25 border-primary/25">
+                        <Icon.Logo width={100} height={0} />
                     </Link>
                     {isActive
                         ?

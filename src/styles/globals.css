@@ -10,6 +10,7 @@
   --foreground: #000000;
   --primary: 124, 58, 237;
   --secondary: 139, 92, 246;
+  --shadow: 0 0 0 6px rgba(var(--primary), .25)
 }
 
 @media(prefers-color-scheme: dark) {
@@ -18,6 +19,7 @@
     --foreground: #ffffff;
     --primary: 124, 58, 237;
     --secondary: 139, 92, 246;
+    --shadow: 0 0 0 6px rgba(var(--primary), .5)
   }
 }
 
@@ -26,6 +28,7 @@ html.dark {
   --foreground: #ffffff;
   --primary: 124, 58, 237;
   --secondary: 139, 92, 246;
+  --shadow: 0 0 0 6px rgba(var(--primary), .5)
 }
 
 html.light {
@@ -33,6 +36,7 @@ html.light {
   --foreground: #000000;
   --primary: 124, 58, 237;
   --secondary: 139, 92, 246;
+  --shadow: 0 0 0 6px rgba(var(--primary), .25)
 }
 
 *::selection {
@@ -64,7 +68,7 @@ input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   height: 15px;
   width: 15px;
-  background-color: #7c3aed;
+  background-color: rgb(var(--primary));
   border-radius: 50%;
   border: none;
   filter: drop-shadow(0 0 1px rgba(0, 0, 0, .33));
@@ -74,7 +78,7 @@ input[type="range"]::-webkit-slider-thumb {
 input[type="range"]::-moz-range-thumb {
   height: 15px;
   width: 15px;
-  background-color: #7c3aed;
+  background-color: rgb(var(--primary));
   border-radius: 50%;
   border: none;
   filter: drop-shadow(0 0 1px rgba(0, 0, 0, .33));
@@ -82,19 +86,19 @@ input[type="range"]::-moz-range-thumb {
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  box-shadow: 0 0 0 6px rgba(111, 0, 255, .22)
+  box-shadow: var(--shadow)
 }
 
 input[type="range"]:active::-webkit-slider-thumb {
-  box-shadow: 0 0 0 6px rgba(111, 0, 255, .22)
+  box-shadow: var(--shadow)
 }
 
 input[type="range"]::-moz-range-thumb:hover {
-  box-shadow: 0 0 0 6px rgba(111, 0, 255, .22)
+  box-shadow: var(--shadow)
 }
 
 input[type="range"]:active::-moz-range-thumb {
-  box-shadow: 0 0 0 6px rgba(111, 0, 255, .22)
+  box-shadow: var(--shadow)
 }
 
 input[type="search"]::-webkit-search-decoration,
@@ -151,7 +155,7 @@ input[type="search"]::-webkit-search-results-decoration {
   width: 6px;
   height: 6px;
   margin: 0 2px;
-  background-color: #7c3aed;
+  background-color: rgb(var(--primary));
   border-radius: 50%;
   display: inline-block;
   animation: dots;

@@ -4,19 +4,26 @@ import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
 import Link, { LinkProps } from "next/link";
 
-export const Li = ({ children, ...rest }: { children: React.ReactNode } & LinkProps) => {
+interface LiProps extends LinkProps {
+    icon: React.ElementType;
+    fillIcon?: boolean;
+    children: React.ReactNode;
+}
+
+export const Li = ({ icon: Icon, fillIcon, children, ...rest }: LiProps) => {
 
     const pathname: string = usePathname();
     const onRoute: boolean = rest.href === pathname;
 
     return (
-        <li className={clsx(
-            'relative',
-            'py-3',
-            'after:pointer-events-none after:absolute after:w-full after:left-0 after:bottom-0 after:border',
-            onRoute ? ' after:border-primary' : 'after:border-transparent',
-            'transition-all'
-        )}
+        <li
+            className={clsx(
+                'relative',
+                'py-3',
+                'after:pointer-events-none after:absolute after:w-full after:left-0 after:bottom-0 after:border',
+                onRoute ? ' after:border-primary' : 'after:border-transparent',
+                'transition-all'
+            )}
         >
             <Link
                 className={clsx(
@@ -31,7 +38,7 @@ export const Li = ({ children, ...rest }: { children: React.ReactNode } & LinkPr
                 )}
                 {...rest}
             >
-                {children}
+                <Icon size={24} className={clsx(fillIcon && onRoute && 'fill-primary text-primary')} /> {children}
             </Link>
         </li>
     )

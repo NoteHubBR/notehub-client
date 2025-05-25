@@ -1,12 +1,12 @@
 'use client'
 
 import { clsx } from "clsx";
+import { Icon } from "@/components/icons";
 import { IconChevronRight, IconClick, IconMailCheck } from "@tabler/icons-react";
 import { SVG } from "@/components/svgs";
 import { Template } from "@/components/templates";
 import { usePref } from "@/data/hooks";
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 const Page = () => {
@@ -27,8 +27,8 @@ const Page = () => {
         >
             <SVG.Flare className="absolute" />
             <header>
-                <Link href={'/'} target="blank" className="z-[1] relative">
-                    <Image src="/imgs/logo.png" alt="Logo" priority width={300} height={0} />
+                <Link href={'/'} target="blank" className="z-[1] group relative">
+                    <Icon.Logo width={300} height={0} />
                 </Link>
             </header>
             <section className="z-[1] flex items-center justify-center px-1">
@@ -59,8 +59,8 @@ const Page = () => {
                 <button className="relative" onClick={toggle}>
                     <IconChevronRight
                         size={30}
-                        fill={useDarkTheme ? "#fafafa" : "#171717"}
                         className={clsx(
+                            'dark:fill-white fill-black',
                             'dark:text-lighter text-dark ',
                             'transition-all duration-300',
                             isMessageOpen && "rotate-180"
@@ -69,11 +69,10 @@ const Page = () => {
                     {count < 1 &&
                         <IconClick
                             size={40}
-                            fill="#7c3aed"
                             className="absolute top-0 left-0 
-                                text-primary 
-                                transition-all
-                                animate-click"
+                            fill-primary text-primary 
+                            transition-all
+                            animate-click"
                         />
                     }
                 </button>

@@ -19,7 +19,15 @@ export const Header = ({ children, user, ...rest }: HeaderProps) => {
                     <Icon.Sponsor user={user} size={24} />
                     @{user.username}
                 </span>
-                <Link href={`/${user.username}`} className="mt-1 text-sm font-bold text-primary">Acessar perfil</Link>
+                <Link
+                    href={`/${user.username}`}
+                    className="mt-1 font-semibold text-sm
+                    dark:text-secondary text-primary
+                    hover:dark:text-primary hover:text-secondary
+                    transition-colors"
+                >
+                    Acessar perfil
+                </Link>
             </div>
         </header>
     )

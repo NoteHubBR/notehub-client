@@ -20,7 +20,7 @@ export const User = ({ user, ...rest }: UserProps) => (
             dark:bg-lighter/30 bg-darker/30
             backdrop-blur moz:backdrop-blur-none"
         >
-            <Icon.Sponsor user={user} size={24} className="drop-shadow-alpha-d-sm" />
+            <Icon.Sponsor user={user} size={24} />
             <span
                 className="truncate group-hover/user:underline
                 text-sm decoration-2 text-white

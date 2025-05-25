@@ -102,7 +102,7 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
                     <Element.Input name="password" type="password" autoComplete="on" required />
                     <Element.Error field="password" />
                     <Link href={'/recover'} target='blank' className='w-fit mt-2 mb-4' tabIndex={1}>
-                        <span className='request-btn underline p-1 font-semibold text-sm text-indigo-500'>Esqueceu a senha?</span>
+                        <span className='request-btn underline p-1 font-semibold text-sm text-secondary'>Esqueceu a senha?</span>
                     </Link>
                 </Element.Field>
                 <Element.Button isRequesting={state.isRequesting}>Entrar</Element.Button>

@@ -1,6 +1,6 @@
+import { Icon } from "@/components/icons";
 import { IconBell, IconSearch } from "@tabler/icons-react";
 import { useNotifications, useScreen, useUser } from "@/data/hooks";
-import Image from "next/image";
 import NextLink, { LinkProps } from "next/link";
 
 export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
@@ -29,7 +29,7 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
             className="py-2 px-4 flex items-center justify-end gap-4 dark:bg-darker bg-lighter"
             {...props}
         >
-            <Image src={'/imgs/logo.png'} width={77} height={0} alt="Logo" className="mr-auto" />
+            <Icon.Logo width={77} height={0} className="mr-auto" />
             {user &&
                 <Link href='/m/notifications'>
                     <IconBell />

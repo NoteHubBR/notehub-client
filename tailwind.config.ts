@@ -71,18 +71,18 @@ const config: Config = {
     function ({ addVariant }: { addVariant: any }) {
       addVariant('moz', '@-moz-document url-prefix()')
     },
-    function ({ addUtilities }: { addUtilities: any }) {
+    function ({ addUtilities, theme }: { addUtilities: any, theme: any }) {
       const newUtilities = {
         '.scrollbar-desktop': {
           scrollbarColor: 'transparent transparent',
           scrollbarWidth: 'thin',
           transition: 'scrollbar-color ease-in-out .15s',
           '&:hover': {
-            scrollbarColor: `${colors.violet[600]} transparent`
+            scrollbarColor: `${theme('colors.primary')} transparent`
           }
         },
         '.scrollbar-mobile': {
-          scrollbarColor: `${colors.violet[600]} transparent`,
+          scrollbarColor: `${theme('colors.primary')} transparent`,
           scrollbarWidth: 'thin',
         },
         '.navigation-hover': {
@@ -95,7 +95,7 @@ const config: Config = {
             width: '0',
             height: '0.2rem',
             borderRadius: '9999px',
-            backgroundColor: '#7c3aed',
+            backgroundColor: `${theme('colors.primary')}`,
             transition: 'width ease-in-out .25s',
           },
           '&:hover::after': {
@@ -114,7 +114,7 @@ const config: Config = {
             right: '0',
             width: '0',
             height: '100%',
-            borderBottom: '3px solid #7c3aed',
+            borderBottom: `3px solid ${theme('colors.primary')}`,
             transition: 'width ease-in-out .25s',
           },
           '&.on::after': {

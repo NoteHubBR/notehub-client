@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { IconExternalLink } from "@tabler/icons-react";
+import { IconChevronRight } from "@tabler/icons-react";
 import Link from "next/link";
 
 interface InfoProps {
@@ -30,12 +30,12 @@ export const Info = ({ children, title, subtitle, subtitleClassName, href }: Inf
                             'flex items-center gap-1',
                             'dark:text-neutral-400 text-neutral-500',
                             'dark:bg-semilight/15 bg-semidark/15',
-                            'hover:!text-secondary',
+                            'hover:!text-primary',
                             'transition-all duration-200',
                             subtitleClassName
                         )}>
                             {subtitle}
-                            <IconExternalLink size={16} />
+                            <IconChevronRight size={16} />
                         </span>
                     </Link>
                 </div>

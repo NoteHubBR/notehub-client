@@ -18,7 +18,7 @@ export interface CropperRef {
 
 const CropperComponent = ({ imgSrc, aspect, shape }: CropperProps, ref: React.Ref<CropperRef>) => {
 
-    const { pref: { useDarkTheme } } = usePref();
+    const { pref: { useDarkTheme, useColors: { primary } } } = usePref();
 
     const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
     const [zoom, setZoom] = useState<number>(1);
@@ -44,9 +44,9 @@ const CropperComponent = ({ imgSrc, aspect, shape }: CropperProps, ref: React.Re
     const percentage = ((zoom - 1) / (3 - 1)) * 100;
     const rangeStyle = useDarkTheme
         ?
-        { background: `linear-gradient(to right, #7c3aed 0%, #7c3aed ${percentage}%, #2e1065 ${percentage}%, #2e1065 100%)` }
+        { background: `linear-gradient(to right, rgb(${primary}) 0%, rgb(${primary}) ${percentage}%, rgba(${primary},.25) ${percentage}%, rgba(${primary},.25) 100%)` }
         :
-        { background: `linear-gradient(to right, #7c3aed 0%, #7c3aed ${percentage}%, #ddd6fe ${percentage}%, #ddd6fe 100%)` }
+        { background: `linear-gradient(to right, rgb(${primary}) 0%, rgb(${primary}) ${percentage}%, rgba(${primary},.25) ${percentage}%, rgba(${primary},.25) 100%)` }
 
     return (
         <>

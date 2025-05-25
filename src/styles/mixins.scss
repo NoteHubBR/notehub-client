@@ -1,4 +1,4 @@
-@mixin navigate-logo($border, $borderRadius, $onHoverBgColor, $onHoverBorderColor, $onHoverBoxShadowColor) {
+@mixin navigate-logo($border, $onHoverBgColor, $onHoverBorderColor, $onHoverBoxShadowColor) {
     z-index: 1;
     position: relative;
     transition: ease-in-out .35s;
@@ -11,7 +11,6 @@
         right: 0;
         width: 0%;
         height: 100%;
-        border-radius: $borderRadius;
         transition: all ease-in-out .35s;
     }
 
@@ -98,7 +97,7 @@
         left: 0;
         width: 0;
         height: 100%;
-        background: #7c3aed;
+        background: rgb(var(--primary));
         animation: request-apply 2.5s linear infinite;
     }
 }
@@ -127,7 +126,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: #7c3aed;
+        background: rgb(var(--primary));
         animation: request-cancel 2.5s linear infinite;
     }
 }

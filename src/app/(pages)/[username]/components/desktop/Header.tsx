@@ -32,9 +32,9 @@ export const Header = ({ user, history, ...rest }: HeaderProps) => {
                 <Layout.Banner user={user} history={history} />
                 <div className="pr-4 inlg:pr-2 pl-36 inlg:pl-32 flex items-center gap-6 inlg:gap-1 justify-between">
                     <Layout.Nav>
-                        <Layout.Li href={`/${user.username}`}><IconBook />Visão Geral</Layout.Li>
-                        <Layout.Li href={`/${user.username}/notes`}><IconNotes />Notas</Layout.Li>
-                        <Layout.Li href={`/${user.username}/flames`}><IconFlame fill="#7c3aed" color="#7c3aed" />Chamas</Layout.Li>
+                        <Layout.Li href={`/${user.username}`} icon={IconBook}>Visão Geral</Layout.Li>
+                        <Layout.Li href={`/${user.username}/notes`} icon={IconNotes}>Notas</Layout.Li>
+                        <Layout.Li href={`/${user.username}/flames`} icon={IconFlame} fillIcon>Chamas</Layout.Li>
                     </Layout.Nav>
                     {currentUser && params.username === currentUser.username
                         ?

@@ -1,23 +1,23 @@
 @use 'mixins.scss';
 
 .dark-navigate-logo {
-    @include mixins.navigate-logo(2px, 0.75rem, #fafafa, rgb(71 85 105 / 0.5), #7c3aed);
+    @include mixins.navigate-logo(2px, rgba(var(--primary), .5), rgb(var(--primary)), rgba(var(--primary), 1));
 }
 
 .light-navigate-logo {
-    @include mixins.navigate-logo(2px, 0.75rem, rgb(167 139 250 / 0.25), #fafafa, transparent);
+    @include mixins.navigate-logo(2px, rgba(var(--primary), 1), rgb(var(--primary)), rgba(var(--primary), .5));
 }
 
 .request-btn {
-    @include mixins.request-btn(0.375rem, #7c3aed, #fafafa);
+    @include mixins.request-btn(0.375rem, rgb(var(--primary)), white);
 }
 
 .dark-checkered-background {
-    @include mixins.checkered-background(#fafafa, #171717);
+    @include mixins.checkered-background(white, black);
 }
 
 .light-checkered-background {
-    @include mixins.checkered-background(#171717, #fafafa);
+    @include mixins.checkered-background(black, white);
 }
 
 .applying {
