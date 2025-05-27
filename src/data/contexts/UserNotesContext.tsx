@@ -7,6 +7,7 @@ export interface UserNotesProps {
     page: Omit<Page<LowDetailNote>, 'content'>;
     notes: LowDetailNote[] | [];
     setNotes: (page: Page<LowDetailNote>) => void;
+    setNewNote: (note: LowDetailNote) => void;
     clearNotes: () => void;
 }
 
@@ -21,8 +22,6 @@ export const UserNotesProvider = (props: any) => {
 
     const [state, setState] = useState(initialState);
 
-    const clear = useCallback(() => { setState(initialState) }, []);
-    
     const setter = useCallback((page: Page<LowDetailNote>): void => {
         const { content, ...rest } = page;
         return setState((prev) => ({
@@ -31,11 +30,21 @@ export const UserNotesProvider = (props: any) => {
         }))
     }, [state])
 
+    const setNewNote = useCallback((note: LowDetailNote): void => {
+        return setState((prev) => ({
+            page: prev.page,
+            notes: [note, ...prev.notes]
+        }))
+    }, [])
+
+    const clear = useCallback(() => { setState(initialState) }, []);
+
     return (
         <UserNotesContext.Provider value={{
             page: state.page,
             notes: state.notes,
             setNotes: setter,
+            setNewNote: setNewNote,
             clearNotes: clear
         }}>
             {props.children}

@@ -1,8 +1,13 @@
 'use client';
 
 import { Form } from "@/components/forms";
+import { useUser } from "@/data/hooks";
 
 const Page = () => {
+
+    const { token, user } = useUser();
+
+    if (!token || !user) return null;
 
     return (
         <section className="w-full h-full p-8 inmd:p-0 flex items-center justify-center dark:bg-dark bg-light">
@@ -16,7 +21,7 @@ const Page = () => {
                 <header>
                     <h1 className="font-semibold text-xl">Criar nova nota</h1>
                 </header>
-                <Form.Note.New />
+                <Form.Note.New token={token.access_token} username={user.username} />
             </div>
         </section>
     )

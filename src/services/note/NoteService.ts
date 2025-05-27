@@ -1,11 +1,11 @@
 import { AuthService } from "../auth";
-import { LowDetailNote, Page } from "@/core";
+import { CreateNoteFormData, LowDetailNote, Page } from "@/core";
 import { useAPI } from "@/data/hooks";
 import { useCallback } from 'react';
 
 export const NoteService = () => {
 
-    const { httpGet } = useAPI();
+    const { httpPost, httpGet } = useAPI();
 
     const handleExpiredToken = AuthService().handleExpiredToken;
 
@@ -61,6 +61,15 @@ export const NoteService = () => {
         }
     }, [httpGet])
 
-    return { getUserNotes, findUserTags, searchUserNotes, getFeedNotes, searchNotes, searchTags };
+    const createNote = useCallback(async (token: string, data: CreateNoteFormData): Promise<LowDetailNote> => {
+        const endpoint = '/notes/new-note';
+        try {
+            return await httpPost(endpoint, data, { useToken: token, useProgress: true });
+        } catch (error: any) {
+            return handleExpiredToken(error, (newToken) => httpPost(endpoint, data, { useToken: newToken }));
+        }
+    }, [handleExpiredToken, httpPost])
+
+    return { getUserNotes, findUserTags, searchUserNotes, getFeedNotes, searchNotes, searchTags, createNote };
 
 }

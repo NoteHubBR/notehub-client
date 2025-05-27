@@ -6,27 +6,17 @@ export const createNoteFormSchema = z.object({
         .min(4, 'Mínimo de 4 caracteres.')
         .max(48, 'Máximo de 12 caracteres.'),
     description: z
-        .string()
-        .min(4, 'Mínimo de 4 caracteres.')
-        .max(255, 'Máximo de 12 caracteres.')
-        .nullable(),
+        .string().trim()
+        .max(255, 'Máximo de 12 caracteres.'),
     markdown: z
-        .string()
-        .nullable(),
-    closed: z
-        .boolean()
-        .nullable(),
+        .string().trim()
+        .optional(),
     hidden: z
-        .boolean()
-        .nullable(),
-    tags: z
-        .array(z
-            .string().trim()
-            .min(2, 'Mínimo de 2 caracteres')
-            .max(20, 'Máximo de 12 caracteres.')
-        )
-        .max(12, 'Capacidade máxima excedida')
-        .nullable()
+        .enum(["true", "false"])
+        .transform((value) => value === "true"),
+    closed: z
+        .enum(["true", "false"])
+        .transform((value) => value === "true"),
 })
 
 export type CreateNoteFormData = z.infer<typeof createNoteFormSchema>;

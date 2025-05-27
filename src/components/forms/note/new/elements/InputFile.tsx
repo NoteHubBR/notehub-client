@@ -9,14 +9,16 @@ export const InputFile = (props: React.InputHTMLAttributes<HTMLInputElement>) =>
             className="hidden"
             {...props}
         />
-        <label htmlFor="txt">
-            <IconNotes
-                size={44}
-                className="cursor-pointer
-                dark:text-middark text-midlight
-                hover:!text-primary
-                transition-color duration-300"
-            />
+        <label
+            htmlFor="txt"
+            className="cursor-pointer
+            font-semibold text-center dark:text-middark text-midlight
+            dark:hover:text-secondary hover:text-primary
+            transition-color duration-300"
+        >
+            <IconNotes size={44} />
+            txt
         </label>
+
     </>
 )
