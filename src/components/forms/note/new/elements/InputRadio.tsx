@@ -13,7 +13,11 @@ export const InputRadio = ({ name, ...rest }: InputProps) => {
         <input
             {...register(name)}
             type="radio"
-            className="cursor-pointer align-middle w-4 h-4 accent-primary"
+            onMouseDown={(e: React.MouseEvent<HTMLInputElement>) => e.preventDefault()}
+            className="cursor-pointer
+            align-middle w-4 h-4
+            dark:accent-secondary accent-primary
+            focus-visible:dark:accent-white focus-visible:accent-black"
             {...rest}
         />
     )

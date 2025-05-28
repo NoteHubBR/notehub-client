@@ -32,7 +32,7 @@ export const InputText = ({ name, countPosition, className, ...rest }: InputProp
                     'border dark:border-middark border-midlight',
                     'text-sm',
                     'bg-transparent',
-                    'focus:!border-primary',
+                    'dark:focus:border-secondary focus:border-primary',
                     'transition-colors',
                     hasError ? '!font-medium !text-red-600 selection:!bg-red-600' : 'selection:!bg-primary',
                     className
@@ -41,7 +41,7 @@ export const InputText = ({ name, countPosition, className, ...rest }: InputProp
             />
             <Count
                 current={value.length}
-                max={max!}
+                max={max}
                 className={clsx(
                     countPosition === "half" && 'right-1/2',
                     countPosition === "full" && 'right-0',

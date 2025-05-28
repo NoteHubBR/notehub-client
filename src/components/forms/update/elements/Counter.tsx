@@ -1,6 +1,6 @@
 interface CounterProps extends React.HTMLAttributes<HTMLSpanElement> {
     current: number;
-    max: number;
+    max: number | undefined;
 }
 
 export const Counter = ({ current, max, ...rest }: CounterProps) => {

@@ -31,7 +31,9 @@ export const Navbar = ({ user, ...rest }: { user: User } & React.HTMLAttributes<
             </div>
             <Input type="text" placeholder="Pesquisar" />
             <div className="pr-2 flex gap-4 w-fit">
-                <Button tooltip="Criar nova nota"><Link href={'/'}><IconPlus size={27} /></Link></Button>
+                <Button tooltip="Criar nova nota">
+                    <Link href={'/new'}><IconPlus size={27} /></Link>
+                </Button>
                 <Button ref={bellButton} tooltip="Ver notificações">
                     <Bell />
                     <Dropdown buttonRef={bellButton}><BellDropdown /></Dropdown>

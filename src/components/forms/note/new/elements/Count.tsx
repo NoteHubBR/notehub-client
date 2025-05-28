@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 
 interface CountProps extends React.HTMLAttributes<HTMLSpanElement> {
     current: number;
-    max: number;
+    max: number | undefined;
 }
 
 export const Count = ({ current, max, className, ...rest }: CountProps) => (

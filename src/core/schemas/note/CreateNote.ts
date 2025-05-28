@@ -4,12 +4,12 @@ export const createNoteFormSchema = z.object({
     title: z
         .string().trim()
         .min(4, 'Mínimo de 4 caracteres.')
-        .max(48, 'Máximo de 12 caracteres.'),
+        .max(48, 'Máximo de 48 caracteres.'),
     description: z
         .string().trim()
-        .max(255, 'Máximo de 12 caracteres.'),
+        .max(255, 'Máximo de 255 caracteres.'),
     markdown: z
-        .string().trim()
+        .string()
         .optional(),
     hidden: z
         .enum(["true", "false"])

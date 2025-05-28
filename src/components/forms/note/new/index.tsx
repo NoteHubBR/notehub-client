@@ -14,7 +14,7 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
     const { setNewNote } = useNotes();
 
     const createNoteForm = useForm<CreateNoteFormData>({
-        resolver: zodResolver(createNoteFormSchema),
+        resolver: zodResolver(createNoteFormSchema)
     })
 
     const { handleSubmit, setError } = createNoteForm;
@@ -33,7 +33,7 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
         }
     })
 
-    const { Section, Fieldset, Legend, Label, InputText, InputRadio, InputFile, Error, Info, Submit } = Element;
+    const { Section, Fieldset, FileFieldset, Legend, Label, InputText, InputRadio, Error, Info, Submit } = Element;
 
     return (
         <FormProvider {...createNoteForm}>
@@ -75,18 +75,11 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
                     </Fieldset>
                 </Section>
                 <Section className="flex-1">
-                    <Fieldset
-                        className="w-full h-full pb-3
-                        border-2 border-dashed dark:border-middark border-midlight
-                        flex items-center justify-center
-                        [&:has(input:hover)]:border-primary [&:has(input:focus)]:border-primary
-                        transition-colors duration-300"
-                    >
+                    <FileFieldset name="markdown">
                         <Legend tip="(opcional)">Carregar nota</Legend>
-                        <InputFile />
-                    </Fieldset>
+                    </FileFieldset>
                 </Section>
-                <Section className="">
+                <Section>
                     <Info name="hidden" />
                     <Submit disabled={isPending}>Criar nota</Submit>
                 </Section>
