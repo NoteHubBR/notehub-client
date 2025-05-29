@@ -1,13 +1,17 @@
 'use client';
 
 import { Form } from "@/components/forms";
+import { Skeleton } from "./skeleton";
+import { Unauthorized } from "./unauthorized";
 import { useUser } from "@/data/hooks";
 
 const Page = () => {
 
-    const { token, user } = useUser();
+    const { isMounted, token, user } = useUser();
 
-    if (!token || !user) return null;
+    if (!isMounted) return <Skeleton />;
+
+    if (!token || !user) return <Unauthorized />;
 
     return (
         <section className="w-full h-full p-8 inmd:p-0 flex items-center justify-center dark:bg-dark bg-light">
@@ -19,7 +23,7 @@ const Page = () => {
                 dark:bg-darker bg-lighter"
             >
                 <header>
-                    <h1 className="font-semibold text-xl">Criar nova nota</h1>
+                    <h1 className="w-fit font-semibold text-xl">Criar nova nota</h1>
                 </header>
                 <Form.Note.New token={token.access_token} username={user.username} />
             </div>
