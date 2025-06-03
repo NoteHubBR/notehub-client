@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import { useCallback, useEffect, useRef } from "react";
 
-interface DialogProps extends React.HTMLAttributes<HTMLDivElement> {
+interface DialogProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     msg: string;
     desc: string;
     opt: string;
@@ -11,7 +11,7 @@ interface DialogProps extends React.HTMLAttributes<HTMLDivElement> {
     disabled: boolean;
 }
 
-export const Dialog = ({ msg, desc, opt, type, isOpen, setIsOpen, disabled, className, ...rest }: DialogProps) => {
+export const Dialog = ({ msg, desc, opt, type, isOpen, setIsOpen, disabled, onClick, className, ...rest }: DialogProps) => {
 
     const Option = ({ className, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
         <button
@@ -59,7 +59,6 @@ export const Dialog = ({ msg, desc, opt, type, isOpen, setIsOpen, disabled, clas
             flex flex-col
             dark:bg-semidark bg-white
             dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
-            {...rest}
         >
             <header className="p-6 text-center flex flex-col items-center justify-center gap-3">
                 <h2 id="dialogTitle" className="font-bold text-xl">{msg}</h2>
@@ -76,9 +75,11 @@ export const Dialog = ({ msg, desc, opt, type, isOpen, setIsOpen, disabled, clas
                 </Option>
                 <div className="border-l dark:border-middark border-midlight" />
                 <Option
+                    onClick={onClick}
                     type={type}
                     disabled={disabled}
                     className={`hover:!text-white disabled:!text-white transition-colors ${className}`}
+                    {...rest}
                 >
                     {opt}
                 </Option>

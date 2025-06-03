@@ -10,6 +10,7 @@ export interface UserNotesProps {
     setNotes: (page: Page<LowDetailNote>) => void;
     setNewNote: (note: LowDetailNote) => void;
     setNoteToFirst: (id: UUID) => void;
+    removeNote: (id: UUID) => void;
     clearNotes: () => void;
 }
 
@@ -46,9 +47,16 @@ export const UserNotesProvider = (props: any) => {
             const remainingNotes = prev.notes.filter((note) => note.id !== id);
             return {
                 page: prev.page,
-                notes: [noteToMove, ...remainingNotes],
+                notes: [noteToMove, ...remainingNotes]
             }
         })
+    }, [])
+
+    const removeNote = useCallback((id: UUID) => {
+        setState((prev) => ({
+            page: prev.page,
+            notes: prev.notes.filter((note) => note.id !== id)
+        }))
     }, [])
 
     const clear = useCallback(() => { setState(initialState) }, [initialState]);
@@ -60,6 +68,7 @@ export const UserNotesProvider = (props: any) => {
             setNotes: setter,
             setNewNote: setNewNote,
             setNoteToFirst: setNoteToFirst,
+            removeNote: removeNote,
             clearNotes: clear
         }}>
             {props.children}

@@ -6,7 +6,7 @@ import { UUID } from "crypto";
 
 export const NoteService = () => {
 
-    const { httpPost, httpGet, httpPatch } = useAPI();
+    const { httpPost, httpGet, httpPatch, httpDelete } = useAPI();
 
     const handleExpiredToken = AuthService().handleExpiredToken;
 
@@ -89,6 +89,15 @@ export const NoteService = () => {
         }
     }, [handleExpiredToken, httpPatch])
 
+    const deleteNote = useCallback(async (token: string, id: UUID): Promise<void> => {
+        const endpoint = `/notes/${id}/delete`;
+        try {
+            return await httpDelete(endpoint, undefined, { useToken: token, useProgress: true });
+        } catch (error) {
+            return handleExpiredToken(error, (newToken) => httpDelete(endpoint, undefined, { useToken: newToken, useProgress: true }));
+        }
+    }, [handleExpiredToken, httpDelete])
+
     return {
         getUserNotes,
         findUserTags,
@@ -98,7 +107,8 @@ export const NoteService = () => {
         searchTags,
         createNote,
         getNote,
-        updateNoteText
+        updateNoteText,
+        deleteNote
     }
 
 }
