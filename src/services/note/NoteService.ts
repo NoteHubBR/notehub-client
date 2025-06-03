@@ -1,6 +1,7 @@
 import { AuthService } from "../auth";
-import { CreateNoteFormData, LowDetailNote, Page } from "@/core";
+import { CreateNoteFormData, LowDetailNote, Note, Page } from "@/core";
 import { useAPI } from "@/data/hooks";
+import { UUID } from "crypto";
 import { useCallback } from 'react';
 
 export const NoteService = () => {
@@ -70,6 +71,15 @@ export const NoteService = () => {
         }
     }, [handleExpiredToken, httpPost])
 
-    return { getUserNotes, findUserTags, searchUserNotes, getFeedNotes, searchNotes, searchTags, createNote };
+    const getNote = useCallback(async (token: string | null, id: UUID): Promise<Note> => {
+        const endpoint = `/notes/${id}`;
+        try {
+            return await httpGet(endpoint, { useToken: token });
+        } catch (error) {
+            return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useToken: newToken }));
+        }
+    }, [handleExpiredToken, httpGet])
+
+    return { getUserNotes, findUserTags, searchUserNotes, getFeedNotes, searchNotes, searchTags, createNote, getNote };
 
 }

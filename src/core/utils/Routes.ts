@@ -8,6 +8,7 @@ export enum Routes {
     SEARCH_MOBILE = '/m/search',
     NOTIFICATIONS_MOBILE = '/m/notifications',
     USER = '/username',
+    USER_NOTE = '/username/:id',
     USER_NOTES = '/username/notes',
     USER_FLAMES = '/username/flames',
     SETTINGS = '/settings',
