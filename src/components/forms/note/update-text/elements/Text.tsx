@@ -1,3 +1,5 @@
+import { NoteTextUpdateFormData } from "@/core";
+import { useFormContext } from "react-hook-form";
 import { useRef } from "react";
 
 interface TextProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -7,9 +9,15 @@ interface TextProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
 
 export const Text = ({ setText, value, ...rest }: TextProps) => {
 
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const { setValue } = useFormContext<NoteTextUpdateFormData>();
 
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value);
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const newValue = e.target.value;
+        setValue("markdown", newValue);
+        setText(newValue);
+    }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Tab") {
@@ -17,6 +25,7 @@ export const Text = ({ setText, value, ...rest }: TextProps) => {
             if (textareaRef.current) {
                 const { selectionStart, selectionEnd } = textareaRef.current;
                 const newValue = `${value.substring(0, selectionStart)}\t${value.substring(selectionEnd)}`;
+                setValue("markdown", newValue);
                 setText(newValue);
                 setTimeout(() => {
                     if (textareaRef.current) {

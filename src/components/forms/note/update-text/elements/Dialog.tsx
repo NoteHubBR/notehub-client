@@ -8,9 +8,10 @@ interface DialogProps extends React.HTMLAttributes<HTMLDivElement> {
     type: "button" | "submit";
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    disabled: boolean;
 }
 
-export const Dialog = ({ msg, desc, opt, type, isOpen, setIsOpen, className, ...rest }: DialogProps) => {
+export const Dialog = ({ msg, desc, opt, type, isOpen, setIsOpen, disabled, className, ...rest }: DialogProps) => {
 
     const Option = ({ className, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
         <button
@@ -67,15 +68,17 @@ export const Dialog = ({ msg, desc, opt, type, isOpen, setIsOpen, className, ...
             <footer className="border-t dark:border-middark border-midlight flex">
                 <Option
                     type="button"
+                    disabled={disabled}
                     onClick={handleCancelClick}
-                    className="dark:hover:bg-black hover:bg-semilight transition-colors"
+                    className="disabled:cursor-not-allowed dark:hover:bg-black hover:bg-semilight transition-colors"
                 >
                     Cancelar
                 </Option>
                 <div className="border-l dark:border-middark border-midlight" />
                 <Option
                     type={type}
-                    className={`dark:hover:text-white hover:text-white transition-colors ${className}`}
+                    disabled={disabled}
+                    className={`hover:!text-white disabled:!text-white transition-colors ${className}`}
                 >
                     {opt}
                 </Option>

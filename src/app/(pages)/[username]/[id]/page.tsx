@@ -30,6 +30,7 @@ const Page = () => {
     if (note) return (
         <Section className="flex flex-col h-[90vh] inmd:h-[93svh]">
             <Form.Note.TextUpdate
+                token={token}
                 note={note}
                 author={note.user.username}
                 currentUser={user ? user.username : null}

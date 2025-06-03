@@ -38,7 +38,7 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
     return (
         <FormProvider {...createNoteForm}>
             <form
-                onSubmit={handleSubmit(onSubmit, (errors) => console.log("Erros:", errors))}
+                onSubmit={handleSubmit(onSubmit)}
                 className="w-full h-full flex flex-col"
             >
                 <Section>
