@@ -114,10 +114,13 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         <FormProvider {...updateNoteForm}>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="relative flex flex-col flex-1"
+                className="relative min-h-[90vh] inmd:min-h-[100svh] rounded-[5px]
+                border inmd:dark:border-none dark:border-middark/50 border-midlight/50
+                flex flex-col flex-1
+                dark:bg-darker bg-lighter"
                 {...rest}
             >
-                <header className="px-4 inmd:px-2 flex items-center justify-between gap-3 border-b dark:border-middark border-midlight">
+                <header className="px-4 inmd:px-2 flex items-center justify-between gap-3 border-b dark:border-middark/50 border-midlight/50">
                     <div className="insm:overflow-hidden w-fit flex gap-3">
                         <Title
                             disabled={isPreviewing}

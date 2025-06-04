@@ -20,7 +20,7 @@ export const ActionButton = ({ isEditing, icon: Icon, tooltip, className, childr
         <span
             role="tooltip"
             className="pointer-events-none select-none whitespace-nowrap
-            absolute left-1/2 -translate-x-1/2 inmd:-translate-x-[55%] top-[150%]
+            absolute left-1/2 -translate-x-1/2 inmd:-translate-x-[60%] top-[150%]
             p-2 rounded-full
             font-medium text-xs text-white
             bg-neutral-500

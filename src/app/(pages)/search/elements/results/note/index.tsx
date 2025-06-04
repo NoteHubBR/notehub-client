@@ -16,7 +16,7 @@ export const Note = ({ note, ...rest }: NoteProps) => {
                 className="w-full p-3 rounded-md
                 flex flex-col items-start gap-3
                 dark:bg-darker bg-lighter
-                dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
+                border dark:border-middark/50 border-midlight/50"
                 {...rest}
             >
                 <header className="relative pl-14 flex flex-col">

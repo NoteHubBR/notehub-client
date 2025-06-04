@@ -1,8 +1,8 @@
 'use client';
 
+import { Element } from "./elements";
 import { Form } from "@/components/forms";
 import { Note } from "@/core";
-import { Section } from "../components/Section";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useServices, useUser } from "@/data/hooks";
@@ -27,15 +27,22 @@ const Page = () => {
         if (isMounted) init();
     }, [isMounted])
 
+    const { Aside } = Element;
+
     if (note) return (
-        <Section className="flex flex-col h-[90vh] inmd:h-[93svh]">
+        <section className="max-w-[999px] w-full m-auto flex inlg:flex-col-reverse">
             <Form.Note.TextUpdate
                 token={token}
                 note={note}
                 author={note.user.username}
                 currentUser={user ? user.username : null}
             />
-        </Section>
+            <Aside
+                note={note}
+                author={note.user.username}
+                currentUser={user ? user.username : null}
+            />
+        </section>
     )
 
 }

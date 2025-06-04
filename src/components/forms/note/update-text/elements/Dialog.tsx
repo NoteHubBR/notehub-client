@@ -17,7 +17,7 @@ export const Dialog = ({ msg, desc, opt, type, isOpen, setIsOpen, disabled, onCl
         <button
             className={clsx(
                 'py-2 flex-1',
-                'font-semibold',
+                'font-semibold text-sm',
                 'transition-colors',
                 className
             )}
@@ -56,15 +56,15 @@ export const Dialog = ({ msg, desc, opt, type, isOpen, setIsOpen, disabled, onCl
             aria-describedby="dialogDesc"
             className="z-[999] center
             overflow-hidden max-w-[333px] w-[90%] rounded
+            border dark:border-middark/50 border-midlight/50
             flex flex-col
-            dark:bg-semidark bg-white
-            dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
+            dark:bg-semidark bg-white"
         >
             <header className="p-6 text-center flex flex-col items-center justify-center gap-3">
                 <h2 id="dialogTitle" className="font-bold text-xl">{msg}</h2>
                 <p id="dialogDesc" className="text-sm">{desc}</p>
             </header>
-            <footer className="border-t dark:border-middark border-midlight flex">
+            <footer className="border-t dark:border-middark/50 border-midlight/50 flex">
                 <Option
                     type="button"
                     disabled={disabled}
@@ -73,7 +73,7 @@ export const Dialog = ({ msg, desc, opt, type, isOpen, setIsOpen, disabled, onCl
                 >
                     Cancelar
                 </Option>
-                <div className="border-l dark:border-middark border-midlight" />
+                <div className="border-l dark:border-middark/50 border-midlight/50" />
                 <Option
                     onClick={onClick}
                     type={type}

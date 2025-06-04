@@ -49,7 +49,8 @@ export const Text = ({ setText, value, ...rest }: TextProps) => {
             onKeyDown={handleKeyDown}
             className="resize-none outline-none flex-1
             p-4
-            scrollbar-desktop inmd:scrollbar-mobile overscroll-contain
+            overscroll-contain inmd:overscroll-auto
+            scrollbar-desktop inmd:scrollbar-mobile
             bg-transparent"
             {...rest}
         />

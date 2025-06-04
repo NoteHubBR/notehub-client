@@ -9,13 +9,13 @@ export const Tag = ({ tag, ...rest }: TagProps) => {
     return (
         <li>
             <Link
-                href={`/search?q=${tag}&scope=tag`}
+                href={`/search?type=tags&q=${tag}`}
                 className={clsx(
                     'w-fit px-2 py-1 rounded-full',
-                    'border border-primary/25',
-                    'font-semibold text-xs text-primary',
-                    'dark:bg-primary/25 bg-primary/10',
-                    'hover:!text-white hover:!bg-primary',
+                    'border dark:border-secondary/25 border-primary',
+                    'font-semibold text-xs dark:text-secondary text-primary',
+                    'dark:bg-secondary/25 bg-primary/10',
+                    'hover:!text-white dark:hover:bg-secondary hover:bg-primary',
                 )}
                 {...rest}
             >
