@@ -19,7 +19,7 @@ export const Comments = ({ note, ...rest }: CommentsProps) => (
             transition-all"
             {...rest}
         >
-            <IconMessageCircle />
+            <IconMessageCircle size={20} />
         </Link>
         {note.comments_count}
     </span>

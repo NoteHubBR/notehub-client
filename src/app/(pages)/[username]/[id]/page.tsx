@@ -3,7 +3,8 @@
 import { Element } from "./elements";
 import { Form } from "@/components/forms";
 import { Note } from "@/core";
-import { useCallback, useEffect, useState } from "react";
+import { Template } from "@/components/templates";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useServices, useUser } from "@/data/hooks";
 import { UUID } from "crypto";
@@ -27,10 +28,17 @@ const Page = () => {
         if (isMounted) init();
     }, [isMounted])
 
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const childRef = useRef<HTMLFormElement>(null);
+    const closeRef = useRef<HTMLButtonElement>(null);
+
     const { Aside } = Element;
 
     if (note) return (
         <section className="max-w-[999px] w-full m-auto flex inlg:flex-col-reverse">
+            <Template.Portal blur="sm" triggerRef={triggerRef} childRef={childRef} closeRef={closeRef}>
+                <Form.Note.Update ref={childRef} closeRef={closeRef} note={note} />
+            </Template.Portal>
             <Form.Note.TextUpdate
                 token={token}
                 note={note}
@@ -38,6 +46,7 @@ const Page = () => {
                 currentUser={user ? user.username : null}
             />
             <Aside
+                triggerRef={triggerRef}
                 note={note}
                 author={note.user.username}
                 currentUser={user ? user.username : null}

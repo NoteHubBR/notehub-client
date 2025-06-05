@@ -1,6 +1,7 @@
 import { CreateNoteFormData, createNoteFormSchema } from './CreateNote';
-import { NoteTextUpdateFormData, noteTextUpdateFormSchema } from './UpdateNote';
+import { NoteTextUpdateFormData, noteTextUpdateFormSchema } from './UpdateNoteText';
+import { NoteUpdateFormData, noteUpdateFormSchema } from './UpdateNote';
 
-export type { CreateNoteFormData, NoteTextUpdateFormData };
+export type { CreateNoteFormData, NoteUpdateFormData, NoteTextUpdateFormData };
 
-export { createNoteFormSchema, noteTextUpdateFormSchema };
+export { createNoteFormSchema, noteUpdateFormSchema, noteTextUpdateFormSchema };

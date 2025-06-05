@@ -1,17 +1,19 @@
 'use client';
 
 import { cloneElement, useCallback, useEffect, useState } from "react";
+import { clsx } from "clsx";
 import { createPortal } from "react-dom";
 import { IconX } from "@tabler/icons-react";
 
 interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
+    blur?: "default" | "0" | "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
     triggerRef: React.RefObject<HTMLElement>;
     childRef: React.RefObject<HTMLElement>;
     closeRef?: React.RefObject<HTMLButtonElement>;
     useDefaultClose?: boolean;
 }
 
-export const Portal = ({ triggerRef, childRef, closeRef, useDefaultClose, ...rest }: PortalProps) => {
+export const Portal = ({ blur = "3xl", triggerRef, childRef, closeRef, useDefaultClose, ...rest }: PortalProps) => {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -67,9 +69,12 @@ export const Portal = ({ triggerRef, childRef, closeRef, useDefaultClose, ...res
 
     if (isOpen) return createPortal(
         <section
-            className="z-[998] fixed top-0 left-0
-            w-screen max-w-full min-h-screen inmd:min-h-svh
-            dark:bg-alpha-d-sm bg-alpha-l-md backdrop-blur-3xl"
+            className={clsx(
+                'z-[998] fixed top-0 left-0',
+                'w-screen max-w-full min-h-screen inmd:min-h-svh',
+                'dark:bg-alpha-d-sm bg-alpha-l-md',
+                blur == "default" ? "backdrop-blur" : `backdrop-blur-${blur}`
+            )}
         >
             {useDefaultClose &&
                 <button

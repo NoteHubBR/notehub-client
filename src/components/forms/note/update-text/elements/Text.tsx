@@ -41,6 +41,8 @@ export const Text = ({ setText, value, ...rest }: TextProps) => {
     return (
         <textarea
             ref={textareaRef}
+            id="markdown"
+            name="markdown"
             spellCheck={false}
             autoCorrect="off"
             autoCapitalize="off"

@@ -53,7 +53,7 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
                         <Error field="title" />
                     </Fieldset>
                     <Fieldset className="relative">
-                        <Label htmlFor="desc" tip="(opcional)" className="block">Descrição</Label>
+                        <Label htmlFor="description" tip="(opcional)" className="block">Descrição</Label>
                         <InputText name="description" countPosition="full" className="w-full" />
                         <Error field="description" />
                     </Fieldset>
