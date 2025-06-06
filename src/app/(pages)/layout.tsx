@@ -16,6 +16,7 @@ import { UserNotificationsProvider } from "@/data/contexts/UserNotificationsCont
 import { UserPreferencesProvider } from "@/data/contexts/UserPreferencesContext";
 import { UserProvider } from "@/data/contexts/UserContext";
 import { UserStoreProvider } from "@/data/contexts/UserStoreContext";
+import { UserTagsProvider } from "@/data/contexts/UserTagsContext";
 
 const UserProviders = ({ children }: { children: React.ReactNode }) => {
     const GCI = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
@@ -25,15 +26,17 @@ const UserProviders = ({ children }: { children: React.ReactNode }) => {
                 <UserStoreProvider>
                     <UserFollowingProvider>
                         <UserNotesProvider>
-                            <UserHistoryProvider>
-                                <UserFlamesProvider>
-                                    <UserProvider>
-                                        <UserNotificationsProvider>
-                                            {children}
-                                        </UserNotificationsProvider>
-                                    </UserProvider>
-                                </UserFlamesProvider>
-                            </UserHistoryProvider>
+                            <UserFlamesProvider>
+                                <UserTagsProvider>
+                                    <UserHistoryProvider>
+                                        <UserProvider>
+                                            <UserNotificationsProvider>
+                                                {children}
+                                            </UserNotificationsProvider>
+                                        </UserProvider>
+                                    </UserHistoryProvider>
+                                </UserTagsProvider>
+                            </UserFlamesProvider>
                         </UserNotesProvider>
                     </UserFollowingProvider>
                 </UserStoreProvider>

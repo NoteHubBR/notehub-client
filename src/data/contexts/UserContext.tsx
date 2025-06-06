@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useEffect, useState } from "react";
 import { Token, User, Cookies, shouldUseUserContext } from "@/core";
-import { useFlames, useFollowing, useHistory, useLoading, useNotes, useServices, useStore } from "../hooks";
+import { useFlames, useFollowing, useHistory, useLoading, useNotes, useServices, useStore, useTags } from "../hooks";
 import { usePathname } from "next/navigation";
 
 export interface UserContextProps {
@@ -22,7 +22,7 @@ export const UserProvider = (props: any) => {
     const {
         authService: { refreshUser, logoutUser },
         userService: { getUserDisplayNameHistory, searchUserFollowing },
-        noteService: { getUserNotes },
+        noteService: { getUserNotes, findUserTags },
         flameService: { getUserFlames }
     } = useServices();
 
@@ -31,6 +31,7 @@ export const UserProvider = (props: any) => {
     const { clearFollowing, setFollowing } = useFollowing();
     const { clearNotes, setNotes } = useNotes();
     const { clearFlames, setFlames } = useFlames();
+    const { clearTags, setTags } = useTags();
 
     const pathname = usePathname();
 
@@ -95,7 +96,8 @@ export const UserProvider = (props: any) => {
         clearFollowing();
         clearNotes();
         clearFlames();
-    }, [clearFlames, clearFollowing, clearHistory, clearNotes])
+        clearTags();
+    }, [clearFlames, clearFollowing, clearHistory, clearNotes, clearTags])
 
     const fetchUserData = async (accessToken: string, username: string): Promise<void> => {
         try {
@@ -104,6 +106,7 @@ export const UserProvider = (props: any) => {
             setFollowing(await searchUserFollowing(accessToken, username, 'sort=username,asc&size=9999'));
             setNotes(await getUserNotes(accessToken));
             setFlames(await getUserFlames(accessToken, username, 'size=9999'));
+            setTags(await findUserTags(accessToken, username));
             return;
         } finally {
             setIsLoaded(true);

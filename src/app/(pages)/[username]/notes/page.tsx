@@ -6,7 +6,7 @@ import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
 import { Section } from "../components/Section";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { useServices, useUser } from "@/data/hooks";
+import { useServices, useTags, useUser } from "@/data/hooks";
 
 const Page = () => {
 
@@ -17,7 +17,8 @@ const Page = () => {
 
     const { noteService: { findUserTags, searchUserNotes } } = useServices();
 
-    const { isMounted, token } = useUser();
+    const { isMounted, token, user } = useUser();
+    const { tags: currentTags } = useTags();
 
     const [state, setState] = useState({
         onFetch: false,
@@ -25,7 +26,7 @@ const Page = () => {
         args: sParams.get('q'),
         page: {} as Omit<NotesPage<LowDetailNote>, 'content'>,
         notes: [] as LowDetailNote[],
-        tags: [] as string[],
+        tags: currentTags,
         emptyList: false,
         notCurrent: false,
         notMutual: false,
@@ -52,8 +53,11 @@ const Page = () => {
         if (isFetching.current || hasFetched && args === secret) return;
         try {
             startFetch();
+            const isCurrentUser = user ? user.username === username : false;
             const { content, ...rest } = await searchUserNotes(accessToken, username, query);
-            const userTags = tags.length > 0 ? tags : await findUserTags(accessToken, username);
+            const userTags = tags.length > 0 && isCurrentUser
+                ? currentTags
+                : await findUserTags(accessToken, username);
             return setState((prev) => ({
                 ...prev,
                 args: secret,

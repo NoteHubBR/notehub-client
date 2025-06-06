@@ -6,6 +6,7 @@ export * from './useUser';
 export * from './useNotifications';
 export * from './useFollowing';
 export * from './useNotes';
+export * from './useTags';
 export * from './useProgress';
 export * from './useLoading';
 export * from './useScreen';

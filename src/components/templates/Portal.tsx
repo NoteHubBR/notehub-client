@@ -13,7 +13,7 @@ interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
     useDefaultClose?: boolean;
 }
 
-export const Portal = ({ blur = "3xl", triggerRef, childRef, closeRef, useDefaultClose, ...rest }: PortalProps) => {
+export const Portal = ({ blur, triggerRef, childRef, closeRef, useDefaultClose, ...rest }: PortalProps) => {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -73,7 +73,7 @@ export const Portal = ({ blur = "3xl", triggerRef, childRef, closeRef, useDefaul
                 'z-[998] fixed top-0 left-0',
                 'w-screen max-w-full min-h-screen inmd:min-h-svh',
                 'dark:bg-alpha-d-sm bg-alpha-l-md',
-                blur == "default" ? "backdrop-blur" : `backdrop-blur-${blur}`
+                blur ? blur === "default" ? "backdrop-blur" : `backdrop-blur-${blur}` : "backdrop-blur-3xl"
             )}
         >
             {useDefaultClose &&
