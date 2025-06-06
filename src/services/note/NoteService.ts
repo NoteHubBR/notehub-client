@@ -1,12 +1,12 @@
 import { AuthService } from "../auth";
-import { CreateNoteFormData, LowDetailNote, Note, NoteTextUpdateFormData, Page } from "@/core";
+import { CreateNoteFormData, LowDetailNote, Note, NoteTextUpdateFormData, NoteUpdateFormData, Page } from "@/core";
 import { useAPI } from "@/data/hooks";
 import { useCallback } from 'react';
 import { UUID } from "crypto";
 
 export const NoteService = () => {
 
-    const { httpPost, httpGet, httpPatch, httpDelete } = useAPI();
+    const { httpPost, httpPut, httpGet, httpPatch, httpDelete } = useAPI();
 
     const handleExpiredToken = AuthService().handleExpiredToken;
 
@@ -80,6 +80,15 @@ export const NoteService = () => {
         }
     }, [handleExpiredToken, httpGet])
 
+    const updateNote = useCallback(async (token: string, id: UUID, data: NoteUpdateFormData): Promise<void> => {
+        const endpoint = `/notes/${id}/edit-note`;
+        try {
+            return await httpPut(endpoint, data, { useToken: token, useProgress: true });
+        } catch (error) {
+            return handleExpiredToken(error, (newToken) => httpPut(endpoint, data, { useToken: newToken, useProgress: true }));
+        }
+    }, [handleExpiredToken, httpPut])
+
     const updateNoteText = useCallback(async (token: string, id: UUID, data: NoteTextUpdateFormData): Promise<void> => {
         const endpoint = `/notes/${id}/change-markdown`;
         try {
@@ -107,6 +116,7 @@ export const NoteService = () => {
         searchTags,
         createNote,
         getNote,
+        updateNote,
         updateNoteText,
         deleteNote
     }

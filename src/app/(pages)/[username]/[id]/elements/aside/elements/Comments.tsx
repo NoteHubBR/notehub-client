@@ -1,4 +1,4 @@
-import { IconMessageCircle } from "@tabler/icons-react";
+import { IconMessageCircle, IconMessageCircleOff } from "@tabler/icons-react";
 import { Note } from "@/core";
 import Link, { LinkProps } from "next/link";
 
@@ -19,7 +19,7 @@ export const Comments = ({ note, ...rest }: CommentsProps) => (
             transition-all"
             {...rest}
         >
-            <IconMessageCircle size={20} />
+            {note.closed ? <IconMessageCircleOff size={20} /> : <IconMessageCircle size={20} />}
         </Link>
         {note.comments_count}
     </span>

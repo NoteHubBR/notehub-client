@@ -34,7 +34,7 @@ export const InputText = ({ name, ...rest }: InputProps) => {
                     'dark:focus:border-secondary focus:border-primary',
                     'transition-colors',
                     hasError
-                        ? '!font-medium !text-red-600 selection:!bg-red-600 dark:focus:border-red-500 focus:border-red-600'
+                        ? '!font-medium dark:text-red-500 text-red-600 dark:focus:!border-red-500 focus:border-red-600 selection:!bg-red-600'
                         : 'selection:!bg-primary',
                 )}
                 {...rest}

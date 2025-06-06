@@ -1,31 +1,58 @@
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { forwardRef, useTransition } from "react";
-import { Note, NoteUpdateFormData, noteUpdateFormSchema } from "@/core";
+import { handleFieldErrors, Note, NoteUpdateFormData, noteUpdateFormSchema, Token } from "@/core";
+import { useNotes, useServices } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     onPortalClose?: () => void;
     closeRef?: React.RefObject<HTMLButtonElement>;
+    token: Token | null;
     note: Note;
+    setNote: React.Dispatch<React.SetStateAction<Note | null>>;
 }
 
-export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, closeRef, note, ...rest }, ref) => {
+export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, closeRef, token, note, setNote, ...rest }, ref) => {
+
+    const { noteService: { updateNote } } = useServices();
+
+    const { updateNote: updateNoteContext } = useNotes();
 
     const updateNoteForm = useForm<NoteUpdateFormData>({
         resolver: zodResolver(noteUpdateFormSchema)
     })
 
-    const { handleSubmit } = updateNoteForm;
+    const { handleSubmit, setError } = updateNoteForm;
 
     const [isPending, startTransition] = useTransition();
 
     const onSubmit = (data: NoteUpdateFormData) => startTransition(async (): Promise<void> => {
-        console.log(data);
-        onPortalClose?.();
+        if (token) {
+            try {
+                await updateNote(token.access_token, note.id, data);
+                updateNoteContext(note.id, data.title);
+                setNote(prev => {
+                    if (prev) return {
+                        ...prev,
+                        title: data.title,
+                        description: data.description,
+                        tags: data.tags,
+                        closed: data.closed,
+                        hidden: data.hidden,
+                        modified: true,
+                        modified_at: "now"
+                    }
+                    return null
+                })
+                onPortalClose?.();
+            } catch (errors) {
+                if (Array.isArray(errors)) handleFieldErrors(errors, setError);
+            }
+        }
     })
 
-    const { Fieldset, Label, InputText, InputCheck, Error, Button } = Element;
+    const { Fieldset, Label, InputText, InputTags, InputCheck, Error, Button } = Element;
 
     return (
         <FormProvider {...updateNoteForm}>
@@ -49,8 +76,13 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
                     </Fieldset>
                     <Fieldset className="relative">
                         <Label htmlFor="description">Descrição</Label>
-                        <InputText required name="description" defaultValue={note.description} />
+                        <InputText name="description" defaultValue={note.description} />
                         <Error field="description" />
+                    </Fieldset>
+                    <Fieldset className="relative">
+                        <Label htmlFor="tags">Tags</Label>
+                        <InputTags name="tags" noteTags={note.tags} />
+                        <Error field="tags" />
                     </Fieldset>
                     <Fieldset>
                         <InputCheck name="closed" defaultChecked={note.closed} />
@@ -63,6 +95,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
                 </section>
                 <footer className="p-4 flex items-center gap-3 justify-end">
                     <Button
+                        disabled={isPending}
                         ref={closeRef}
                         type="button"
                         className="hover:dark:bg-black hover:bg-white focus-visible:dark:bg-black focus-visible:bg-white"

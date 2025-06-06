@@ -9,8 +9,8 @@ export interface Note {
     user: User;
     created_at: string;
     modified_at: string;
-    modified: false;
-    closed: false;
+    modified: boolean;
+    closed: boolean;
     hidden: boolean;
     markdown: string;
     comments_count: number;

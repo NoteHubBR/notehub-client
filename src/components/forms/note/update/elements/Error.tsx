@@ -7,17 +7,28 @@ interface ErrorProps extends React.HTMLAttributes<HTMLSpanElement> {
 
 export const Error = ({ field, ...rest }: ErrorProps) => {
 
-    const { formState: { errors } } = useFormContext();
+    const { formState: { errors }, } = useFormContext();
 
-    const error = errors[field]?.message;
+    const fieldError = errors[field];
 
-    if (error) return (
-        <p
-            className="pl-1 text-sm font-medium dark:text-red-500 text-red-600"
-            {...rest}
-        >
-            {error.toString()}
-        </p>
-    )
+    if (fieldError && typeof fieldError.message === "string") {
+        return (
+            <p className="pl-1 text-sm font-medium dark:text-red-500 text-red-600" {...rest}>
+                {fieldError.message}
+            </p>
+        )
+    }
+
+    if (fieldError && typeof fieldError === "object") {
+        for (const key in fieldError) {
+            if (Object.prototype.hasOwnProperty.call(fieldError, key) && (fieldError as any)[key]?.message) {
+                return (
+                    <p className="pl-1 text-sm font-medium dark:text-red-500 text-red-600" {...rest}>
+                        {(fieldError as any)[key].message}
+                    </p>
+                )
+            }
+        }
+    }
 
 }

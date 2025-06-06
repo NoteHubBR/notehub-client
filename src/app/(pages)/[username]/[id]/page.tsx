@@ -37,7 +37,13 @@ const Page = () => {
     if (note) return (
         <section className="max-w-[999px] w-full m-auto flex inlg:flex-col-reverse">
             <Template.Portal blur="sm" triggerRef={triggerRef} childRef={childRef} closeRef={closeRef}>
-                <Form.Note.Update ref={childRef} closeRef={closeRef} note={note} />
+                <Form.Note.Update
+                    ref={childRef}
+                    closeRef={closeRef}
+                    token={token}
+                    note={note}
+                    setNote={setNote}
+                />
             </Template.Portal>
             <Form.Note.TextUpdate
                 token={token}

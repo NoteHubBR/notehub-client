@@ -5,6 +5,7 @@ export const Button = forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<H
     <button
         ref={ref}
         className={clsx(
+            'disabled:cursor-wait',
             'px-4 py-2 rounded',
             'border dark:border-middark/50 border-midlight/50',
             'text-sm',
