@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 interface OptionProps extends React.HTMLAttributes<HTMLLIElement> {
     sParam: string;
     value: (string | null)[];
-    text: string
+    text: string;
 }
 
 export const Option = ({ sParam, value, text, ...rest }: OptionProps) => {
@@ -17,10 +17,12 @@ export const Option = ({ sParam, value, text, ...rest }: OptionProps) => {
     const onRoute = value.includes(current);
 
     const handleParamUpdate = useCallback(() => {
-        const newSParams = new URLSearchParams(sParams);
-        newSParams.set(sParam, value[0] ? value[0] : '');
-        window.history.replaceState(null, '', `${pathname}?${newSParams}`);
-    }, [pathname, sParam, sParams, value])
+        const params = new URLSearchParams(sParams);
+        if (value[0]) params.set(sParam, value[0]);
+        else params.delete(sParam);
+        const newUrl = params ? `${pathname}?${params}` : pathname;
+        window.history.replaceState(null, '', newUrl);
+    }, [pathname, sParam, sParams, value]);
 
     return (
         <li

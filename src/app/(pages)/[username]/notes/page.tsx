@@ -26,7 +26,7 @@ const Page = () => {
         args: sParams.get('q'),
         page: {} as Omit<NotesPage<LowDetailNote>, 'content'>,
         notes: [] as LowDetailNote[],
-        tags: currentTags,
+        tags: [] as string[],
         emptyList: false,
         notCurrent: false,
         notMutual: false,
@@ -54,10 +54,9 @@ const Page = () => {
         try {
             startFetch();
             const isCurrentUser = user ? user.username === username : false;
+            const baseTags = isCurrentUser ? currentTags : tags;
+            const userTags = baseTags.length > 0 ? baseTags : await findUserTags(accessToken, username);
             const { content, ...rest } = await searchUserNotes(accessToken, username, query);
-            const userTags = tags.length > 0 && isCurrentUser
-                ? currentTags
-                : await findUserTags(accessToken, username);
             return setState((prev) => ({
                 ...prev,
                 args: secret,
