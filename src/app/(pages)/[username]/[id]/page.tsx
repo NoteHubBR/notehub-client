@@ -3,6 +3,7 @@
 import { Element } from "./elements";
 import { Form } from "@/components/forms";
 import { Note } from "@/core";
+import { Skeleton } from "./skeleton";
 import { Template } from "@/components/templates";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
@@ -33,6 +34,8 @@ const Page = () => {
     const closeRef = useRef<HTMLButtonElement>(null);
 
     const { Aside } = Element;
+
+    if (!note) return <Skeleton />;
 
     if (note) return (
         <section className="max-w-[999px] w-full m-auto flex inlg:flex-col-reverse">
