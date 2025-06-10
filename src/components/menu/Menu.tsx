@@ -25,7 +25,7 @@ export const Menu = ({ isMenuOpen, setIsMenuOpen, children, ...rest }: MenuProps
             onClick={handleMenuPropagation}
             className={clsx(
                 'cursor-default',
-                'overflow-hidden whitespace-nowrap absolute top-[135%] right-0',
+                'z-10 overflow-hidden whitespace-nowrap absolute top-[135%] right-0',
                 'rounded',
                 'flex flex-col',
                 'dark:bg-dark bg-light',

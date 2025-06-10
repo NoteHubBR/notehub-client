@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 
 interface MenuItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
-    icon: React.ElementType;
+    icon?: React.ElementType;
 }
 
 export const MenuItem = ({ icon: Icon, className, children, ...rest }: MenuItemProps) => (
@@ -19,7 +19,7 @@ export const MenuItem = ({ icon: Icon, className, children, ...rest }: MenuItemP
         )}
         {...rest}
     >
-        <Icon size={20} className="inline-block" />
+        {Icon && <Icon size={20} className="inline-block" />}
         {children}
     </li>
 )
