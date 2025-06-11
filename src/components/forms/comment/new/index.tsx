@@ -1,8 +1,46 @@
 import { clsx } from "clsx";
+import { Comment, CreateCommentFormData, createCommentFormSchema, handleFieldErrors, Note, Token, User } from "@/core";
+import { Component } from "@/components";
 import { Element } from "./elements";
-import { useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useRef, useState, useTransition } from "react";
+import { useServices } from "@/data/hooks";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export const Form = () => {
+interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
+    token: Token;
+    user: User;
+    note: Note;
+    setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
+    setNote: React.Dispatch<React.SetStateAction<Note | null>>;
+}
+
+export const Form = ({ token, user, note, setComments, setNote, ...rest }: FormProps) => {
+
+    const { commentService: { createComment } } = useServices();
+
+    const createCommentForm = useForm<CreateCommentFormData>({
+        resolver: zodResolver(createCommentFormSchema)
+    })
+
+    const { handleSubmit, setError } = createCommentForm;
+
+    const [isPending, startTransition] = useTransition();
+
+    const onSubmit = (data: CreateCommentFormData) => startTransition(async (): Promise<void> => {
+        try {
+            const comment = await createComment(token.access_token, note.id, data);
+            setIsTyping(false);
+            setComment("");
+            setComments(prev => [comment, ...prev]);
+            return setNote((prev) => {
+                if (prev) return { ...prev, comments_count: prev.comments_count + 1 };
+                else return null;
+            })
+        } catch (errors) {
+            if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
+        }
+    })
 
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [comment, setComment] = useState<string>("");
@@ -20,42 +58,53 @@ export const Form = () => {
     const { Fieldset, Text, Label, Error, Button } = Element;
 
     return (
-        <form className="flex-1">
-            <Fieldset>
-                <Text
-                    ref={textareaRef}
-                    value={comment}
-                    onFocus={handleFocus}
-                    onChange={handleChange}
-                />
-                <Label>Adicione um comentário</Label>
-            </Fieldset>
-            {isTyping &&
-                <footer className="py-2 flex items-center justify-between">
-                    <Error />
-                    <div className="flex items-center gap-1 justify-end">
-                        <Button
-                            type="button"
-                            onClick={cancel}
-                            className="dark:hover:bg-lighter/10 hover:bg-darker/10"
-                        >
-                            Cancelar
-                        </Button>
-                        <Button
-                            disabled={comment.length < 1}
-                            type="button"
-                            className={clsx(
-                                comment.length > 0
-                                    ? 'text-white dark:bg-secondary bg-primary hover:dark:bg-primary hover:bg-secondary'
-                                    : 'dark:text-midlight text-middark dark:bg-lighter/25 bg-darker/25',
-                            )}
-                        >
-                            Comentar
-                        </Button>
-                    </div>
-                </footer>
-            }
-        </form>
+        <FormProvider {...createCommentForm}>
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                {...rest}
+                className="py-4"
+            >
+                <header className="flex gap-3">
+                    <Component.Photo user={user} size={40} />
+                    <Fieldset>
+                        <Text
+                            ref={textareaRef}
+                            name="text"
+                            value={comment}
+                            onFocus={handleFocus}
+                            onChange={handleChange}
+                        />
+                        <Label>Adicione um comentário</Label>
+                    </Fieldset>
+                </header>
+                {isTyping &&
+                    <footer className="pt-2 flex items-center justify-between">
+                        <Error field="text" />
+                        <div className="w-full flex items-center gap-1 justify-end">
+                            <Button
+                                disabled={isPending}
+                                type="button"
+                                onClick={cancel}
+                                className="dark:hover:bg-lighter/10 hover:bg-darker/10"
+                            >
+                                Cancelar
+                            </Button>
+                            <Button
+                                disabled={comment.length < 1 || isPending}
+                                type="submit"
+                                className={clsx(
+                                    comment.length > 0
+                                        ? 'text-white dark:bg-secondary bg-primary hover:dark:bg-primary hover:bg-secondary'
+                                        : 'dark:text-midlight text-middark dark:bg-lighter/25 bg-darker/25',
+                                )}
+                            >
+                                Comentar
+                            </Button>
+                        </div>
+                    </footer>
+                }
+            </form>
+        </FormProvider>
     )
 
 }

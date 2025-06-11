@@ -1,40 +1,41 @@
-import { Component } from "@/components";
+import { Comment, Note, Token, User } from "@/core";
 import { Element } from "./elements";
 import { Form } from "@/components/forms";
 import { IconListTree } from "@tabler/icons-react";
 import { Menu, MenuItem } from "@/components/menu";
-import { User } from "@/core";
 import { useState } from "react";
 
 interface CommentsProps extends React.HTMLAttributes<HTMLElement> {
+    token: Token | null;
     user: User | null;
+    note: Note;
+    setNote: React.Dispatch<React.SetStateAction<Note | null>>;
 }
 
-export const Comments = ({ user, ...rest }: CommentsProps) => {
+export const Comments = ({ token, user, note, setNote, ...rest }: CommentsProps) => {
 
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const [comments, setComments] = useState<Comment[]>([] as Comment[]);
 
     const toggleMenu = () => setIsMenuOpen(prev => !prev);
 
     const closeMenu = () => setIsMenuOpen(false);
 
-    const count = 2
-
-    const { Title, Sorter } = Element;
+    const { Title, Sorter, Dialog } = Element;
 
     return (
         <section
             className="w-[72.5%] inlg:w-full inmd:px-2 py-2"
             {...rest}
         >
-            <header className="pt-2 pb-4 flex items-center gap-3">
-                <Title count={count} />
+            <header className="p-2 flex items-center insm:justify-center gap-3">
+                <Title count={note.comments_count} />
                 <Sorter
                     onClick={toggleMenu}
                     onBlur={closeMenu}
                     icon={IconListTree}
                     tooltip="Ordenar"
-                    count={count}
+                    count={note.comments_count}
                 >
                     Classificar por
                     <Menu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}>
@@ -53,12 +54,20 @@ export const Comments = ({ user, ...rest }: CommentsProps) => {
                     </Menu>
                 </Sorter>
             </header>
-            {user &&
-                <div className="flex gap-3">
-                    <Component.Photo user={user} size={40} />
-                    <Form.Comment.New />
-                </div>
+            {token && user ?
+                <Form.Comment.New
+                    user={user}
+                    token={token}
+                    note={note}
+                    setComments={setComments}
+                    setNote={setNote}
+                />
+                :
+                <Dialog>Para comentar é preciso estar logado.</Dialog>
             }
+            {comments.map((comment) => (
+                <p key={comment.id}>{comment.text}</p>
+            ))}
         </section>
     )
 

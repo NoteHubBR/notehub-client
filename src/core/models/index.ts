@@ -7,3 +7,4 @@ export * from './note';
 export * from './notification';
 export * from './flame';
 export * from './log';
+export * from './comment';

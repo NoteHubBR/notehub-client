@@ -19,6 +19,9 @@ const Page = () => {
     const noteId = useParams<{ username: string; id: UUID }>().id;
 
     const [note, setNote] = useState<Note | null>(null);
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const childRef = useRef<HTMLFormElement>(null);
+    const closeRef = useRef<HTMLButtonElement>(null);
 
     const init = useCallback(async () => {
         const accessToken = token ? token.access_token : null;
@@ -28,10 +31,6 @@ const Page = () => {
     useEffect(() => {
         if (isMounted) init();
     }, [isMounted])
-
-    const triggerRef = useRef<HTMLButtonElement>(null);
-    const childRef = useRef<HTMLFormElement>(null);
-    const closeRef = useRef<HTMLButtonElement>(null);
 
     const { Aside, Comments } = Element;
 
@@ -62,7 +61,12 @@ const Page = () => {
                     currentUser={user ? user.username : null}
                 />
             </section>
-            <Comments user={user} />
+            <Comments
+                token={token}
+                user={user}
+                note={note}
+                setNote={setNote}
+            />
         </section>
     )
 
