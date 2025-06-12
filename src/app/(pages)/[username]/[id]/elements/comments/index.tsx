@@ -1,9 +1,11 @@
-import { Comment, Note, Token, User } from "@/core";
+import { Comment, Note, Page, Token, User } from "@/core";
 import { Element } from "./elements";
 import { Form } from "@/components/forms";
+import { Icon } from "@/components/icons";
 import { IconListTree } from "@tabler/icons-react";
 import { Menu, MenuItem } from "@/components/menu";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useServices } from "@/data/hooks";
 
 interface CommentsProps extends React.HTMLAttributes<HTMLElement> {
     token: Token | null;
@@ -14,8 +16,58 @@ interface CommentsProps extends React.HTMLAttributes<HTMLElement> {
 
 export const Comments = ({ token, user, note, setNote, ...rest }: CommentsProps) => {
 
+    const { commentService: { getComments } } = useServices();
+
+    const isFetching = useRef<boolean>(false);
+    const [hasFetched, setHasFetched] = useState<boolean>(false);
+    const [page, setPage] = useState<Omit<Page<Comment>, 'content'>>({} as Omit<Page<Comment>, 'content'>);
+    const [comments, setComments] = useState<Comment[]>([]);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-    const [comments, setComments] = useState<Comment[]>([] as Comment[]);
+
+    const [isPending, startTransition] = useTransition();
+
+    const init = useCallback(async () => {
+        if (isFetching.current || hasFetched) return;
+        startTransition(async () => {
+            try {
+                isFetching.current = true;
+                const { content, ...rest } = await getComments(note.id, 'page=0');
+                setPage(rest)
+                setComments(content);
+            } catch (error) {
+                throw error
+            } finally {
+                isFetching.current = false;
+                setHasFetched(true);
+            }
+        })
+    }, [getComments, hasFetched, note.id])
+
+    const handleScroll = useCallback(async () => {
+        if (isFetching.current || page.last) return;
+        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+        startTransition(async () => {
+            if (scrollTop + clientHeight >= scrollHeight) {
+                try {
+                    isFetching.current = true;
+                    const { content, ...rest } = await getComments(note.id, `page=${page.page + 1}`);
+                    setPage(rest);
+                    setComments(prev => [...prev, ...content]);
+                } catch (error) {
+                    throw error;
+                } finally {
+                    isFetching.current = false;
+                    setHasFetched(true);
+                }
+            }
+        })
+    }, [getComments, note.id, page.last, page.page])
+
+    useEffect(() => {
+        init();
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [handleScroll, hasFetched, init])
 
     const toggleMenu = () => setIsMenuOpen(prev => !prev);
 
@@ -54,7 +106,8 @@ export const Comments = ({ token, user, note, setNote, ...rest }: CommentsProps)
                     </Menu>
                 </Sorter>
             </header>
-            {token && user ?
+            {token && user
+                ?
                 <Form.Comment.New
                     user={user}
                     token={token}
@@ -66,8 +119,16 @@ export const Comments = ({ token, user, note, setNote, ...rest }: CommentsProps)
                 <Dialog>Para comentar é preciso estar logado.</Dialog>
             }
             {comments.map((comment) => (
-                <p key={comment.id}>{comment.text}</p>
+                <Form.Comment.Update
+                    key={comment.id}
+                    user={user}
+                    token={token}
+                    comment={comment}
+                    setComments={setComments}
+                    setNote={setNote}
+                />
             ))}
+            <Icon.Loading hidden={!isPending} size={50} className="py-6" />
         </section>
     )
 

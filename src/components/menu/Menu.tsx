@@ -6,7 +6,7 @@ interface MenuProps extends React.HTMLAttributes<HTMLUListElement> {
     setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Menu = ({ isMenuOpen, setIsMenuOpen, children, ...rest }: MenuProps) => {
+export const Menu = ({ isMenuOpen, setIsMenuOpen, className, children, ...rest }: MenuProps) => {
 
     const handleMenuPropagation = (e: React.MouseEvent) => e.stopPropagation();
 
@@ -30,7 +30,8 @@ export const Menu = ({ isMenuOpen, setIsMenuOpen, children, ...rest }: MenuProps
                 'flex flex-col',
                 'dark:bg-dark bg-light',
                 'dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm',
-                isMenuOpen ? 'max-h-32 p-2 transition-all duration-300' : 'max-h-0 p-0'
+                isMenuOpen ? 'max-h-32 p-2 transition-all duration-300' : 'max-h-0 p-0',
+                className
             )}
             {...rest}
         >

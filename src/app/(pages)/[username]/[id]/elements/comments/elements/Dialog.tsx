@@ -4,7 +4,7 @@ export const Dialog = ({ children, ...rest }: React.HTMLAttributes<HTMLDivElemen
     <div
         role="dialog"
         aria-describedby="dialogMsg"
-        className="w-full p-2"
+        className="w-full px-2 py-8"
         {...rest}
     >
         <p id="dialogMsg" className="text-center">

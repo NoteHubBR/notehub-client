@@ -1,13 +1,17 @@
 import Image from "next/image";
 
-export const Loading = ({ className, ...rest }: React.ImgHTMLAttributes<HTMLImageElement>) => (
+interface LoadingProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+    size?: number;
+}
+
+export const Loading = ({ size = 75, className, ...rest }: LoadingProps) => (
     <figure role="status" className={`select-none pointer-events-none ${className}`} {...rest}>
         <Image
             aria-hidden="true"
             src="/svgs/infinite-spinner.svg"
             alt="Carregando"
-            width={75}
-            height={75}
+            width={size}
+            height={size}
             className="m-auto"
         />
     </figure>

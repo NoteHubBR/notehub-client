@@ -90,7 +90,7 @@ export const Form = ({ token, user, note, setComments, setNote, ...rest }: FormP
                                 Cancelar
                             </Button>
                             <Button
-                                disabled={comment.length < 1 || isPending}
+                                disabled={isPending}
                                 type="submit"
                                 className={clsx(
                                     comment.length > 0

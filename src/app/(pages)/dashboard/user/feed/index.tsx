@@ -95,7 +95,7 @@ export const Feed = () => {
                     </li>
                 ))}
             </ul>
-            <Icon.Loading hidden={!onFetch} className="py-6" />
+            <Icon.Loading hidden={!onFetch} size={50} className="py-6" />
         </section>
     )
 
