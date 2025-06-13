@@ -1,5 +1,6 @@
-import { Dialog } from "./Dialog";
-import { Sorter } from "./Sorter";
-import { Title } from "./Title";
+import { Footer } from "./footer";
+import { Header } from "./header";
+import { CommentBox } from "./new-comment";
+import { CommentItem } from "./update-comment";
 
-export const Element = { Title, Sorter, Dialog };
+export const Element = { Header, CommentBox, CommentItem, Footer };

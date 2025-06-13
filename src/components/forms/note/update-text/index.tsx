@@ -3,9 +3,9 @@ import { FormProvider, useForm } from "react-hook-form";
 import { IconCheck, IconDotsVertical, IconEdit, IconTrash, IconX } from "@tabler/icons-react";
 import { Menu, MenuItem } from "@/components/menu";
 import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
-import { useEffect, useState, useTransition } from "react";
 import { useNotes, useServices } from "@/data/hooks";
 import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -65,11 +65,6 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         }
     })
 
-    const scrollToEnd = () => {
-        const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-        return window.scrollTo({ top: scrollHeight, behavior: 'smooth' });
-    }
-
     const toggleMenu = () => setIsMenuOpen(prev => !prev);
 
     const closeMenu = () => setIsMenuOpen(false);
@@ -78,7 +73,6 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
 
     const startEdit = (e: React.MouseEvent) => {
         e.stopPropagation();
-        scrollToEnd();
         setIsEditing(true);
         setIsPreviewing(false);
         return;
@@ -86,14 +80,12 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
 
     const startSubmit = (e: React.MouseEvent) => {
         e.stopPropagation();
-        scrollToEnd();
         setIsSubmiting(true);
         return;
     }
 
     const startDelete = (e: React.MouseEvent) => {
         e.stopPropagation();
-        scrollToEnd();
         toggleMenu();
         setIsDeleting(true);
         return;
@@ -105,8 +97,6 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         setIsPreviewing(true);
         return;
     }
-
-    useEffect(() => { scrollToEnd() }, []);
 
     const { Title, EditingTitle, ActionButton, Text, Dialog } = Element;
 

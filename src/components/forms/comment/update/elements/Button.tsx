@@ -1,11 +1,15 @@
 import { clsx } from "clsx";
 
-export const Button = ({ className, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    isPending?: boolean;
+}
+
+export const Button = ({ isPending, className, ...rest }: ButtonProps) => (
     <button
         className={clsx(
-            'disabled:cursor-wait',
             'p-2 insm:px-1 rounded-full',
             'text-sm',
+            isPending && 'cursor-wait',
             className
         )}
         {...rest}

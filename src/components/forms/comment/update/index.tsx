@@ -11,12 +11,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     token: Token | null;
     user: User | null;
+    note: Note;
     comment: Comment;
     setNote: React.Dispatch<React.SetStateAction<Note | null>>;
     setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
 }
 
-export const Form = ({ token, user, comment, setNote, setComments, ...rest }: FormProps) => {
+export const Form = ({ token, user, note, comment, setNote, setComments, ...rest }: FormProps) => {
 
     const { commentService: { editComment, deleteComment } } = useServices();
 
@@ -41,8 +42,11 @@ export const Form = ({ token, user, comment, setNote, setComments, ...rest }: Fo
 
     const startEdit = (e: React.MouseEvent) => {
         e.stopPropagation();
-        if (textareaRef.current) {
-            textareaRef.current.focus();
+        const txtElemenet = textareaRef.current;
+        if (txtElemenet) {
+            const length = txtElemenet.value.length;
+            txtElemenet.focus();
+            txtElemenet.setSelectionRange(length, length);
             setReadOnly(false);
             setIsTyping(true);
             return;
@@ -89,7 +93,7 @@ export const Form = ({ token, user, comment, setNote, setComments, ...rest }: Fo
         <FormProvider {...createCommentForm}>
             <form
                 {...rest}
-                onSubmit={handleSubmit(onSubmit, (errors) => console.log(errors))}
+                onSubmit={handleSubmit(onSubmit)}
                 className="relative py-4"
             >
                 {comment.user.username === user?.username && readOnly &&
@@ -102,6 +106,7 @@ export const Form = ({ token, user, comment, setNote, setComments, ...rest }: Fo
                         <Menu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} className="top-auto bottom-[135%]">
                             <MenuItem
                                 onClick={startEdit}
+                                shouldHide={note.closed}
                                 icon={IconEdit}
                                 className="dark:hover:text-secondary hover:text-primary"
                             >
@@ -149,7 +154,8 @@ export const Form = ({ token, user, comment, setNote, setComments, ...rest }: Fo
                                 Cancelar
                             </Button>
                             <Button
-                                disabled={isPending}
+                                disabled={isPending || current.length < 1}
+                                isPending={isPending}
                                 type="submit"
                                 className={clsx(
                                     current.length > 0
@@ -157,7 +163,7 @@ export const Form = ({ token, user, comment, setNote, setComments, ...rest }: Fo
                                         : 'dark:text-midlight text-middark dark:bg-lighter/25 bg-darker/25',
                                 )}
                             >
-                                Comentar
+                                Salvar
                             </Button>
                         </div>
                     </footer>

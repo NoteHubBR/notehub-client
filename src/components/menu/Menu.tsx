@@ -29,8 +29,9 @@ export const Menu = ({ isMenuOpen, setIsMenuOpen, className, children, ...rest }
                 'rounded',
                 'flex flex-col',
                 'dark:bg-dark bg-light',
-                'dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm',
-                isMenuOpen ? 'max-h-32 p-2 transition-all duration-300' : 'max-h-0 p-0',
+                isMenuOpen
+                    ? 'max-h-32 border dark:border-middark/50 border-midlight/50 transition-all duration-300'
+                    : 'max-h-0 border-0',
                 className
             )}
             {...rest}

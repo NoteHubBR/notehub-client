@@ -78,7 +78,7 @@ export const Form = ({ token, user, note, setComments, setNote, ...rest }: FormP
                     </Fieldset>
                 </header>
                 {isTyping &&
-                    <footer className="pt-2 flex items-center justify-between">
+                    <footer className="pl-12 insm:pl-0 pt-2 flex items-center justify-between">
                         <Error field="text" />
                         <div className="w-full flex items-center gap-1 justify-end">
                             <Button
@@ -90,7 +90,8 @@ export const Form = ({ token, user, note, setComments, setNote, ...rest }: FormP
                                 Cancelar
                             </Button>
                             <Button
-                                disabled={isPending}
+                                disabled={isPending || comment.length < 1}
+                                isPending={isPending}
                                 type="submit"
                                 className={clsx(
                                     comment.length > 0

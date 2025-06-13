@@ -1,4 +1,4 @@
-import { CreateCommentFormData } from "@/core";
+import { CreateCommentFormData, createCommentFormSchema, getSchemaStringConstraints } from "@/core";
 import { forwardRef } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -10,6 +10,7 @@ export const Text = forwardRef<HTMLTextAreaElement, TextProps>(({ name, ...rest 
 
     const { register } = useFormContext();
     const { ref: registerRef, ...registerRest } = register(name);
+    const { max } = getSchemaStringConstraints(createCommentFormSchema, name);
 
     return (
         <textarea
@@ -22,6 +23,7 @@ export const Text = forwardRef<HTMLTextAreaElement, TextProps>(({ name, ...rest 
             {...registerRest}
             required
             rows={1}
+            maxLength={max}
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
