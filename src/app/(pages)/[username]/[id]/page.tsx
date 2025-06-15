@@ -61,12 +61,14 @@ const Page = () => {
                     currentUser={user ? user.username : null}
                 />
             </section>
-            <Comments
-                token={token}
-                user={user}
-                note={note}
-                setNote={setNote}
-            />
+            <section className="w-[72.5%] inlg:w-full inmd:px-2 py-2">
+                <Comments
+                    token={token}
+                    user={user}
+                    note={note}
+                    setNote={setNote}
+                />
+            </section>
         </section>
     )
 

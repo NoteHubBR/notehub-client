@@ -3,14 +3,14 @@ import { Element } from "./elements";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useServices } from "@/data/hooks";
 
-interface CommentsProps extends React.HTMLAttributes<HTMLElement> {
+interface CommentsProps {
     token: Token | null;
     user: User | null;
     note: Note;
     setNote: React.Dispatch<React.SetStateAction<Note | null>>;
 }
 
-export const Comments = ({ token, user, note, setNote, ...rest }: CommentsProps) => {
+export const Comments = ({ token, user, note, setNote }: CommentsProps) => {
 
     const { commentService: { getComments } } = useServices();
 
@@ -19,21 +19,24 @@ export const Comments = ({ token, user, note, setNote, ...rest }: CommentsProps)
     const [page, setPage] = useState<Omit<Page<Comment>, 'content'>>({} as Omit<Page<Comment>, 'content'>);
     const [comments, setComments] = useState<Comment[]>([]);
     const [sort, setSort] = useState<"repliesCount,desc" | "createdAt,desc">("repliesCount,desc");
+    const [isSorting, setIsSorting] = useState<boolean>(false);
 
     const [isPending, startTransition] = useTransition();
 
     const init = useCallback(async () => {
         if (note.comments_count === 0 || isFetching.current || hasFetched) return;
+        setIsSorting(true);
         startTransition(async () => {
             try {
                 isFetching.current = true;
                 const { content, ...rest } = await getComments(note.id, `sort=${sort}&page=0`);
-                setPage(rest)
+                setPage(rest);
                 setComments(content);
             } catch (error) {
-                throw error
+                throw error;
             } finally {
                 isFetching.current = false;
+                setIsSorting(false);
                 setHasFetched(true);
             }
         })
@@ -72,10 +75,7 @@ export const Comments = ({ token, user, note, setNote, ...rest }: CommentsProps)
     const { Header, CommentBox, CommentItem, Footer } = Element;
 
     return (
-        <section
-            className="w-[72.5%] inlg:w-full inmd:px-2 py-2"
-            {...rest}
-        >
+        <>
             <Header
                 sort={sort}
                 note={note}
@@ -93,6 +93,7 @@ export const Comments = ({ token, user, note, setNote, ...rest }: CommentsProps)
                 {comments.map((comment) => (
                     <li key={comment.id}>
                         <CommentItem
+                            isSorting={isSorting}
                             token={token}
                             user={user}
                             note={note}
@@ -103,10 +104,8 @@ export const Comments = ({ token, user, note, setNote, ...rest }: CommentsProps)
                     </li>
                 ))}
             </ul>
-            <Footer
-                isPending={isPending}
-            />
-        </section>
+            <Footer isPending={isPending} />
+        </>
     )
 
 }

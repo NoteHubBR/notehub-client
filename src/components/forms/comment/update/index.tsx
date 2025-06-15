@@ -94,7 +94,7 @@ export const Form = ({ token, user, note, comment, setNote, setComments, ...rest
             <form
                 {...rest}
                 onSubmit={handleSubmit(onSubmit)}
-                className="relative py-4"
+                className="relative py-4 last:pb-0"
             >
                 {comment.user.username === user?.username && readOnly &&
                     <MenuButton
