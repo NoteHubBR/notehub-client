@@ -6,7 +6,7 @@ interface FooterProps extends React.HTMLAttributes<HTMLElement> {
 
 export const Footer = ({ isPending, ...rest }: FooterProps) => {
     if (isPending) return (
-        <footer className="w-full py-6" {...rest}>
+        <footer className="w-full pt-4" {...rest}>
             <Icon.Loading size={50} />
         </footer>
     )
