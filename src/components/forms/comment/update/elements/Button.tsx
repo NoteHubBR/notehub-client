@@ -8,7 +8,7 @@ export const Button = ({ isPending, className, ...rest }: ButtonProps) => (
     <button
         className={clsx(
             'p-2 insm:px-1 rounded-full',
-            'text-sm',
+            'text-sm insm:text-xs',
             isPending && 'cursor-wait',
             className
         )}

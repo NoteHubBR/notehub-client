@@ -14,9 +14,9 @@ export const Username = ({ comment, ...rest }: UsernameProps) => {
     return (
         <>
             <Component.Hovercard ref={ref} user={comment.user} />
-            <Link ref={ref} href={`/${comment.user.username}`}>
+            <Link ref={ref} href={`/${comment.user.username}`} className="min-w-0">
                 <p
-                    className="text-sm hover:dark:text-secondary hover:text-primary transition-colors"
+                    className="truncate text-sm hover:dark:text-secondary hover:text-primary transition-colors"
                     {...rest}
                 >
                     @{comment.user.username}

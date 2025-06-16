@@ -32,6 +32,7 @@ export const Form = ({ token, user, note, comment, setNote, setComments, ...rest
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [initialText, setInitialText] = useState<string>(comment.text);
     const [current, setCurrent] = useState<string>(initialText);
+    const [modified, setModified] = useState<boolean>(comment.modified);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const [isPending, startTransition] = useTransition();
@@ -70,6 +71,7 @@ export const Form = ({ token, user, note, comment, setNote, setComments, ...rest
                 setCurrent(data.text);
                 setReadOnly(true);
                 setIsTyping(false);
+                setModified(true);
             }
         } catch (errors) {
             if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
@@ -124,10 +126,10 @@ export const Form = ({ token, user, note, comment, setNote, setComments, ...rest
                 }
                 <header className="relative flex gap-2">
                     <User comment={comment} />
-                    <div className="w-full">
-                        <div className="flex items-baseline gap-1">
+                    <div className="overflow-hidden w-full">
+                        <div className="insm:max-w-[85%] flex items-baseline gap-1">
                             <Username comment={comment} />
-                            <Time time={comment.created_at} />
+                            <Time comment={comment} modified={modified} />
                         </div>
                         <Fieldset readOnly={readOnly}>
                             <Text
