@@ -6,5 +6,6 @@ import { Form as PasswordUpdate } from "./update-password";
 import { Form as Delete } from "./delete";
 import { Note } from "./note";
 import { Comment } from "./comment";
+import { Reply } from "./reply";
 
-export const Form = { Register, Auth, Update, EmailUpdate, PasswordUpdate, Delete, Note, Comment };
+export const Form = { Register, Auth, Update, EmailUpdate, PasswordUpdate, Delete, Note, Comment, Reply };

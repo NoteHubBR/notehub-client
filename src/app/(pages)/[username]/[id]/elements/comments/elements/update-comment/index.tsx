@@ -1,8 +1,12 @@
-import { Comment, Note, Token, User } from "@/core";
+import { Comment, Note, Page, Reply, Token, User } from "@/core";
 import { Form } from "@/components/forms";
+import { LoadMore } from "../load-more";
+import { ReplyBox } from "../new-reply";
+import { ReplyItem } from "../update-reply";
 import { Skeleton } from "./skeleton";
+import { useState } from "react";
 
-interface CommentItem {
+interface CommentItemProps {
     isSorting: boolean;
     token: Token | null;
     user: User | null;
@@ -12,19 +16,64 @@ interface CommentItem {
     setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
 }
 
-export const CommentItem = ({ isSorting, token, user, note, comment, setNote, setComments }: CommentItem) => {
+export const CommentItem = ({ isSorting, token, user, note, comment, setNote, setComments }: CommentItemProps) => {
 
-    if (isSorting) return <Skeleton />
+    const [repliesCount, setRepliesCount] = useState<number>(comment.replies_count ?? 0);
+    const [repliesPage, setRepliesPage] = useState<Omit<Page<Reply>, 'content'>>({} as Omit<Page<Reply>, 'content'>);
+    const [replies, setReplies] = useState<Reply[]>([]);
+    const [isReplying, setIsReplying] = useState<boolean>(false);
+    const [isRepliesListOpen, setIsRepliesListOpen] = useState<boolean>(false);
+
+    if (isSorting) return <Skeleton />;
 
     else return (
-        <Form.Comment.Update
-            user={user}
-            token={token}
-            note={note}
-            comment={comment}
-            setComments={setComments}
-            setNote={setNote}
-        />
+        <>
+            <Form.Comment.Update
+                user={user}
+                token={token}
+                note={note}
+                comment={comment}
+                repliesCount={repliesCount}
+                isRepliesListOpen={isRepliesListOpen}
+                setNote={setNote}
+                setComments={setComments}
+                setRepliesPage={setRepliesPage}
+                setReplies={setReplies}
+                setIsReplying={setIsReplying}
+                setIsRepliesListOpen={setIsRepliesListOpen}
+            />
+            <ReplyBox
+                user={user}
+                token={token}
+                comment={comment}
+                isReplying={isReplying}
+                setReplies={setReplies}
+                setRepliesCount={setRepliesCount}
+                setIsReplying={setIsReplying}
+            />
+            <ul hidden={!isRepliesListOpen}>
+                {replies.map((reply) => (
+                    <li key={reply.id}>
+                        <ReplyItem
+                            token={token}
+                            user={user}
+                            note={note}
+                            comment={comment}
+                            reply={reply}
+                            setReplies={setReplies}
+                            setRepliesCount={setRepliesCount}
+                        />
+                    </li>
+                ))}
+            </ul>
+            <LoadMore
+                isRepliesListOpen={isRepliesListOpen}
+                comment={comment}
+                page={repliesPage}
+                setPage={setRepliesPage}
+                setReplies={setReplies}
+            />
+        </>
     )
 
 }

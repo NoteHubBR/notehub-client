@@ -1,4 +1,4 @@
-import { AuthService, ChangelogService, CommentService, FlameService, NoteService, UserService } from "@/services";
+import { AuthService, ChangelogService, CommentService, FlameService, NoteService, ReplyService, UserService } from "@/services";
 
 export const useServices = () => {
 
@@ -14,6 +14,8 @@ export const useServices = () => {
 
     const commentService = CommentService();
 
-    return { authService, userService, noteService, flameService, changelogService, commentService };
+    const replyService = ReplyService();
+
+    return { authService, userService, noteService, flameService, changelogService, commentService, replyService };
 
 }

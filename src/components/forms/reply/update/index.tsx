@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { Comment, CreateCommentFormData, createCommentFormSchema, handleFieldErrors, Note, Page, Reply, Token, User } from "@/core";
+import { CreateReplyFormData, createReplyFormSchema, handleFieldErrors, Note, Reply, Token, User } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconEdit, IconX } from "@tabler/icons-react";
@@ -12,51 +12,31 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     token: Token | null;
     user: User | null;
     note: Note;
-    comment: Comment;
-    repliesCount: number;
-    isRepliesListOpen: boolean;
-    setNote: React.Dispatch<React.SetStateAction<Note | null>>;
-    setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
-    setRepliesPage: React.Dispatch<React.SetStateAction<Omit<Page<Reply>, 'content'>>>;
+    reply: Reply;
     setReplies: React.Dispatch<React.SetStateAction<Reply[]>>;
-    setIsRepliesListOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setRepliesCount: React.Dispatch<React.SetStateAction<number>>;
     setIsReplying: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Form = ({
-    token,
-    user,
-    note,
-    comment,
-    repliesCount,
-    isRepliesListOpen,
-    setNote,
-    setComments,
-    setRepliesPage,
-    setReplies,
-    setIsReplying,
-    setIsRepliesListOpen,
-    ...rest }: FormProps) => {
+export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, setIsReplying, ...rest }: FormProps) => {
 
-    const { commentService: { editComment, deleteComment }, replyService: { getReplies } } = useServices();
+    const { replyService: { editReply, deleteReply } } = useServices();
 
-    const editCommentForm = useForm<CreateCommentFormData>({
-        resolver: zodResolver(createCommentFormSchema)
+    const editReplyForm = useForm<CreateReplyFormData>({
+        resolver: zodResolver(createReplyFormSchema)
     })
 
-    const { handleSubmit, setError } = editCommentForm;
+    const { handleSubmit, setError } = editReplyForm;
 
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [readOnly, setReadOnly] = useState<boolean>(true);
     const [isTyping, setIsTyping] = useState<boolean>(false);
-    const [initialText, setInitialText] = useState<string>(comment.text);
+    const [initialText, setInitialText] = useState<string>(reply.text);
     const [current, setCurrent] = useState<string>(initialText);
-    const [modified, setModified] = useState<boolean>(comment.modified);
-    const [hasFetchedRepliesList, setHasFetchedRepliesList] = useState<boolean>(false);
+    const [modified, setModified] = useState<boolean>(reply.modified);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const [isPending, startTransition] = useTransition();
-    const [isRepliesFetchPending, startRepliesTransition] = useTransition();
 
     const toggleMenu = () => setIsMenuOpen(prev => !prev);
 
@@ -84,25 +64,12 @@ export const Form = ({
 
     const openReplyBox = () => setIsReplying(true);
 
-    const openRepliesList = () => startRepliesTransition(async () => {
-        if (hasFetchedRepliesList) return setIsRepliesListOpen(prev => !prev);
-        try {
-            const { content, ...rest } = await getReplies(comment.id, 'page=0');
-            setRepliesPage(rest);
-            setReplies(content);
-            setIsRepliesListOpen(prev => !prev);
-            setHasFetchedRepliesList(true);
-        } catch (error) {
-            throw error;
-        }
-    })
-
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setCurrent(e.target.value);
 
-    const onSubmit = (data: CreateCommentFormData) => startTransition(async (): Promise<void> => {
+    const onSubmit = (data: CreateReplyFormData) => startTransition(async (): Promise<void> => {
         try {
             if (token) {
-                await editComment(token.access_token, comment.id, data);
+                await editReply(token.access_token, reply.id, data);
                 setInitialText(data.text);
                 setCurrent(data.text);
                 setReadOnly(true);
@@ -114,27 +81,24 @@ export const Form = ({
         }
     })
 
-    const handleDeleteComment = () => startTransition(async () => {
+    const handleDeleteReply = () => startTransition(async () => {
         if (token) {
-            await deleteComment(token.access_token, comment.id);
-            setComments(prev => prev.filter((c) => c.id != comment.id));
-            setNote((prev) => {
-                if (prev) return { ...prev, comments_count: prev.comments_count - 1 };
-                else return null;
-            })
+            await deleteReply(token.access_token, reply.id);
+            setReplies(prev => prev.filter((r) => r.id != reply.id));
+            setRepliesCount(prev => prev - 1);
         }
     })
 
-    const { User, Username, Time, Fieldset, Text, Label, Error, Button, ChevronIcon } = Element;
+    const { User, Username, Reference, Time, Fieldset, Text, Label, Error, Button } = Element;
 
     return (
-        <FormProvider {...editCommentForm}>
+        <FormProvider {...editReplyForm}>
             <form
                 {...rest}
                 onSubmit={handleSubmit(onSubmit)}
-                className="relative py-4 last:pb-0"
+                className="relative pl-10 py-2"
             >
-                {comment.user.username === user?.username && readOnly &&
+                {reply.user.username === user?.username && readOnly &&
                     <MenuButton
                         onClick={toggleMenu}
                         onBlur={closeMenu}
@@ -151,7 +115,7 @@ export const Form = ({
                                 Editar
                             </MenuItem>
                             <MenuItem
-                                onClick={handleDeleteComment}
+                                onClick={handleDeleteReply}
                                 icon={IconX}
                                 className="hover:text-red-500"
                             >
@@ -161,11 +125,12 @@ export const Form = ({
                     </MenuButton>
                 }
                 <header className="relative flex gap-2">
-                    <User comment={comment} />
+                    <User reply={reply} />
                     <div className="overflow-hidden w-full">
                         <div className="insm:max-w-[85%] flex items-baseline gap-1">
-                            <Username comment={comment} />
-                            <Time comment={comment} modified={modified} />
+                            <Username reply={reply} />
+                            <Reference reply={reply} />
+                            <Time reply={reply} modified={modified} />
                         </div>
                         <Fieldset readOnly={readOnly}>
                             <Text
@@ -207,8 +172,9 @@ export const Form = ({
                         </div>
                     </footer>
                     :
-                    <footer className="pl-10 flex items-center">
-                        {user && !note.closed &&
+                    user && !note.closed
+                        ?
+                        <footer className="pl-10 flex items-center">
                             <Button
                                 type="button"
                                 onClick={openReplyBox}
@@ -216,22 +182,9 @@ export const Form = ({
                             >
                                 Responder
                             </Button>
-                        }
-                        <Button
-                            type="button"
-                            disabled={repliesCount < 1}
-                            isPending={isRepliesFetchPending}
-                            onClick={openRepliesList}
-                            className="flex items-center gap-1 font-medium dark:text-secondary text-primary dark:hover:secondary/20 hover:bg-primary/20"
-                        >
-                            {repliesCount > 0
-                                ? repliesCount > 1
-                                    ? <ChevronIcon isRepliesListOpen={isRepliesListOpen} repliesCount={repliesCount} />
-                                    : <ChevronIcon isRepliesListOpen={isRepliesListOpen} repliesCount={repliesCount} />
-                                : "Nenhuma respota"
-                            }
-                        </Button>
-                    </footer>
+                        </footer>
+                        :
+                        <></>
                 }
             </form>
         </FormProvider>
