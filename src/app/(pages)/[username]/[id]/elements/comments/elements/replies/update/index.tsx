@@ -1,6 +1,6 @@
 import { Comment, Note, Reply, Token, User } from "@/core";
 import { Form } from "@/components/forms";
-import { ReplyBox } from "../new-reply";
+import { ReplyBox } from "../new";
 import { useState } from "react";
 
 interface ReplyItemProps {

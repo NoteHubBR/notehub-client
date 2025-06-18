@@ -12,7 +12,7 @@ interface LoadMoreProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     setReplies: React.Dispatch<React.SetStateAction<Reply[]>>;
 }
 
-export const LoadMore = ({ isRepliesListOpen, comment, page, setPage, setReplies, ...rest }: LoadMoreProps) => {
+export const Loader = ({ isRepliesListOpen, comment, page, setPage, setReplies, ...rest }: LoadMoreProps) => {
 
     const { replyService: { getReplies } } = useServices();
 

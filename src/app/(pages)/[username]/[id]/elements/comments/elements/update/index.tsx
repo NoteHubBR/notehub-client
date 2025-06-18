@@ -1,8 +1,6 @@
 import { Comment, Note, Page, Reply, Token, User } from "@/core";
 import { Form } from "@/components/forms";
-import { LoadMore } from "../load-more";
-import { ReplyBox } from "../new-reply";
-import { ReplyItem } from "../update-reply";
+import { Loader, ReplyBox, ReplyItem } from "../replies";
 import { Skeleton } from "./skeleton";
 import { useState } from "react";
 
@@ -66,7 +64,7 @@ export const CommentItem = ({ isSorting, token, user, note, comment, setNote, se
                     </li>
                 ))}
             </ul>
-            <LoadMore
+            <Loader
                 isRepliesListOpen={isRepliesListOpen}
                 comment={comment}
                 page={repliesPage}
