@@ -1,11 +1,7 @@
-import { Form as Register } from "./register";
-import { Form as Auth } from "./auth";
-import { Form as Update } from "./update";
-import { Form as EmailUpdate } from "./update-email";
-import { Form as PasswordUpdate } from "./update-password";
-import { Form as Delete } from "./delete";
+import { Auth } from "./auth";
+import { User } from "./user";
 import { Note } from "./note";
 import { Comment } from "./comment";
 import { Reply } from "./reply";
 
-export const Form = { Register, Auth, Update, EmailUpdate, PasswordUpdate, Delete, Note, Comment, Reply };
+export const Form = { Auth, User, Note, Comment, Reply };

@@ -13,7 +13,7 @@ const Page = () => {
             <Header goBack="/settings/account" title="Deletar conta" />
             <section className="mt-6 flex flex-col gap-3">
                 <h3 className="px-2 py-3">Confirme sua autoridade</h3>
-                <Form.Delete />
+                <Form.User.Delete />
                 <Warnings />
                 <Card />
             </section>

@@ -21,7 +21,7 @@ const Page = () => {
                     <header className="w-fit insm:mx-auto">
                         <h2 className="px-2 py-3 font-semibold text-xl">Nova senha</h2>
                     </header>
-                    <Form.PasswordUpdate token={token} />
+                    <Form.User.PasswordUpdate token={token} />
                 </main>
             </div>
         </section>

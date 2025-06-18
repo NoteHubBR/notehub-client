@@ -47,7 +47,7 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
                                 <IconEdit size={20} />
                             </Layout.Link>
                             <Template.Portal triggerRef={triggerRef} childRef={childRef} closeRef={closeRef}>
-                                <Form.Update ref={childRef} closeRef={closeRef} />
+                                <Form.User.Update ref={childRef} closeRef={closeRef} />
                             </Template.Portal>
                         </>
                     }

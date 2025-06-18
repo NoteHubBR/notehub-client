@@ -41,7 +41,7 @@ export const Header = ({ user, history, ...rest }: HeaderProps) => {
                         <>
                             <Layout.Link ref={triggerRef}>Editar</Layout.Link>
                             <Template.Portal triggerRef={triggerRef} childRef={childRef} closeRef={closeRef}>
-                                <Form.Update ref={childRef} closeRef={closeRef} />
+                                <Form.User.Update ref={childRef} closeRef={closeRef} />
                             </Template.Portal>
                         </>
                         : currentUser && <Toggle.Follow user={user} useText className="!m-0" />
