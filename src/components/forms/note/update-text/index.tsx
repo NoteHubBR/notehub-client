@@ -5,7 +5,7 @@ import { Menu, MenuItem } from "@/components/menu";
 import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
 import { useNotes, useServices } from "@/data/hooks";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -29,8 +29,6 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
 
     const { handleSubmit } = updateNoteForm;
 
-    const [isPending, startTransition] = useTransition();
-
     const isAuthor = author === currentUser;
 
     const [initialText, setInitialText] = useState<string>(note.markdown ?? "");
@@ -40,30 +38,36 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
     const [isPreviewing, setIsPreviewing] = useState<boolean>(true);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
+    const [isPending, setIsPending] = useState<boolean>(false);
 
     const router = useRouter();
 
-    const onSubmit = (data: NoteTextUpdateFormData) => startTransition(async (): Promise<void> => {
+    const onSubmit = async (data: NoteTextUpdateFormData): Promise<void> => {
         if (token) {
-            await updateNoteText(token.access_token, note.id, data);
-            setIsSubmiting(false);
-            setIsEditing(false);
-            setText(data.markdown);
-            setInitialText(data.markdown);
-            setIsPreviewing(true);
-            setNoteToFirst(note.id);
-            return;
+            setIsPending(true);
+            return await updateNoteText(token.access_token, note.id, data)
+                .then(() => {
+                    setIsSubmiting(false);
+                    setIsEditing(false);
+                    setText(data.markdown);
+                    setInitialText(data.markdown);
+                    setIsPreviewing(true);
+                    setNoteToFirst(note.id);
+                    setIsPending(false);
+                })
         }
-    })
+    }
 
-    const handleDeleteNote = (e: React.MouseEvent<HTMLButtonElement>) => startTransition(async (): Promise<void> => {
+    const handleDeleteNote = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
         e.stopPropagation();
         if (token) {
-            await deleteNote(token.access_token, note.id);
-            removeNote(note.id);
-            return router.push(`/${currentUser}/notes`);
+            return await deleteNote(token.access_token, note.id)
+                .then(() => {
+                    removeNote(note.id);
+                    router.push(`/${currentUser}/notes`);
+                })
         }
-    })
+    }
 
     const toggleMenu = () => setIsMenuOpen(prev => !prev);
 

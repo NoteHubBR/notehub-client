@@ -3,7 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { handleFieldErrors, handleInvalidTokenFieldError, PasswordUpdateFormData, passwordUpdateFormSchema } from "@/core";
 import { useRouter } from "next/navigation";
 import { useServices, useUser } from "@/data/hooks";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = ({ token }: { token: string }) => {
@@ -17,20 +17,23 @@ export const Form = ({ token }: { token: string }) => {
 
     const { handleSubmit, setError } = passwordUpdateForm;
 
-    const [isPending, startTransition] = useTransition();
+    const [isPending, setIsPending] = useState<boolean>(false);
     const [invalid, setInvalid] = useState<boolean>(false);
     const router = useRouter();
 
-    const onSubmit = (data: PasswordUpdateFormData) => startTransition(async (): Promise<void> => {
+    const onSubmit = async (data: PasswordUpdateFormData): Promise<void> => {
         try {
+            setIsPending(true);
             await updateUserPassword(token, data);
             clearUser();
             return router.push("/");
         } catch (errors: any) {
             if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
             return handleInvalidTokenFieldError(errors, setInvalid);
+        } finally {
+            setIsPending(false);
         }
-    })
+    }
 
     const { Field, Input, Label, Error, Strength, Button } = Element;
 

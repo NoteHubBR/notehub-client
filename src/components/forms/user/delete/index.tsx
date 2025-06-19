@@ -3,7 +3,7 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useServices, useUser } from "@/data/hooks";
-import { useTransition } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = () => {
@@ -17,19 +17,22 @@ export const Form = () => {
 
     const { handleSubmit, setError } = deleteUserForm;
 
-    const [isPending, startTransition] = useTransition();
+    const [isPending, setIsPending] = useState<boolean>(false);
     const router = useRouter();
 
-    const onSubmit = (data: DeleteUserFormData) => startTransition(async (): Promise<void> => {
+    const onSubmit = async (data: DeleteUserFormData): Promise<void> => {
         if (token)
             try {
+                setIsPending(true);
                 await deleteUser(token.access_token, data);
                 clearUser();
                 return router.push("/");
             } catch (errors: any) {
                 if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
+            } finally {
+                setIsPending(false);
             }
-    })
+    }
 
     const { Wrapper, Label, Input, Button, Error } = Element;
 

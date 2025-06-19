@@ -1,6 +1,6 @@
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
-import { forwardRef, useTransition } from "react";
+import { forwardRef, useState } from "react";
 import { handleFieldErrors, Note, NoteUpdateFormData, noteUpdateFormSchema, Token } from "@/core";
 import { useNotes, useServices } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,11 +25,12 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
 
     const { handleSubmit, setError } = updateNoteForm;
 
-    const [isPending, startTransition] = useTransition();
+    const [isPending, setIsPending] = useState<boolean>(false);
 
-    const onSubmit = (data: NoteUpdateFormData) => startTransition(async (): Promise<void> => {
+    const onSubmit = async (data: NoteUpdateFormData): Promise<void> => {
         if (token) {
             try {
+                setIsPending(true);
                 await updateNote(token.access_token, note.id, data);
                 updateNoteContext(note.id, data.title);
                 setNote(prev => {
@@ -48,9 +49,11 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
                 onPortalClose?.();
             } catch (errors) {
                 if (Array.isArray(errors)) handleFieldErrors(errors, setError);
+            } finally {
+                setIsPending(false);
             }
         }
-    })
+    }
 
     const { Fieldset, Label, InputText, InputTags, InputCheck, Error, Button } = Element;
 

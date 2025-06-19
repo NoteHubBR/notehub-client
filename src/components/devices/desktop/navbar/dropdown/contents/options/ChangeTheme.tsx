@@ -1,5 +1,5 @@
 import { Field } from "../../elements/Field";
-import { IconCheck } from "@tabler/icons-react";
+import { IconCheck, IconPalette } from "@tabler/icons-react";
 import { OptionHeader } from "../../elements/OptionHeader";
 import { Section } from "../../elements/Section";
 import { usePref } from "@/data/hooks";
@@ -22,6 +22,9 @@ export const ChangeThemeDropdown = ({ setterToClose }: ChangeThemeProps) => {
                 <Field.Button text='Tema claro' onClick={() => setTheme('light')}>
                     <IconCheck className={`${useDarkTheme ? 'invisible' : ''}`} />
                 </Field.Button>
+                <Field.Link href={'/settings/appearance'} text="Temas">
+                    <IconPalette className="invisible" />
+                </Field.Link>
             </Section>
         </div>
     )

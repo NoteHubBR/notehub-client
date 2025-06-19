@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 import { Page, Notification } from "@/core";
 import { useUser } from "../hooks";
 
@@ -18,15 +18,15 @@ export const UserNotificationsProvider = (props: any) => {
 
     const { user } = useUser();
 
-    const initialState = {
+    const initialState = useMemo(() => ({
         count: 0 as number,
         page: {} as Omit<Page<Notification>, 'content'>,
         notifications: [] as Notification[],
-    }
+    }), [])
 
     const [state, setState] = useState(initialState)
 
-    const clearNotifications = useCallback(() => setState(initialState), []);
+    const clearNotifications = useCallback(() => setState(initialState), [initialState]);
 
     const setNotifications = useCallback((page: Page<Notification>): void => {
         const { content, ...rest } = page;

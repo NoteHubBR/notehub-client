@@ -67,7 +67,7 @@ export const NoteService = () => {
         try {
             return await httpPost(endpoint, data, { useToken: token, useProgress: true });
         } catch (error: any) {
-            return handleExpiredToken(error, (newToken) => httpPost(endpoint, data, { useToken: newToken }));
+            return handleExpiredToken(error, (newToken) => httpPost(endpoint, data, { useToken: newToken, useProgress: true }));
         }
     }, [handleExpiredToken, httpPost])
 

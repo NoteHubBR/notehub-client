@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { IconEyeClosed, IconMessage, IconMessageOff, IconWorld } from "@tabler/icons-react";
 import { useNotes, useServices } from "@/data/hooks";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = ({ token, username }: { token: string; username: string; }) => {
@@ -19,19 +19,22 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
 
     const { handleSubmit, setError } = createNoteForm;
 
-    const [isPending, startTransition] = useTransition();
+    const [isPending, setIsPending] = useState<boolean>(false);
 
     const router = useRouter();
 
-    const onSubmit = (data: CreateNoteFormData) => startTransition(async (): Promise<void> => {
+    const onSubmit = async (data: CreateNoteFormData): Promise<void> => {
         try {
+            setIsPending(true);
             const note = await createNote(token, data);
             setNewNote(note);
             router.push(`/${username}/${note.id}`);
         } catch (errors) {
             if (Array.isArray(errors)) handleFieldErrors(errors, setError);
+        } finally {
+            setIsPending(false);
         }
-    })
+    }
 
     const { Section, Fieldset, FileFieldset, Legend, Label, InputText, InputRadio, Error, Info, Submit } = Element;
 

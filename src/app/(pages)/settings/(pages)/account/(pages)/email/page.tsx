@@ -4,22 +4,26 @@ import { clsx } from "clsx";
 import { Header } from "../../../Header";
 import { IconSend } from "@tabler/icons-react";
 import { useServices, useUser } from "@/data/hooks";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 
 const Page = () => {
 
     const { authService: { sendEmailChangeRequest } } = useServices();
     const { user } = useUser();
 
+    const [isPending, setIsPending] = useState<boolean>(false);
     const [sent, setSent] = useState<boolean>(false);
-    const [isPending, startTransition] = useTransition();
 
-    const handleClick = () => startTransition(async () => {
+    const handleClick = async () => {
         if (user) {
-            setSent(true);
-            return await sendEmailChangeRequest({ email: user.email });
+            setIsPending(true);
+            return await sendEmailChangeRequest({ email: user.email })
+                .then(() => {
+                    setIsPending(false);
+                    setSent(true);
+                })
         }
-    })
+    }
 
     if (user) return (
         <section>
