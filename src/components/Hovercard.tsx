@@ -110,7 +110,7 @@ export const Hovercard = ({ ref, user }: HovercardProps) => {
             role="dialog"
             aria-labelledby="dialogTitle"
             aria-describedby="dialogDesc"
-            className="px-6 py-3 flex items-center gap-3 border-y dark:border-middark border-midlight"
+            className="px-6 py-3 flex items-center gap-3 border-y dark:border-middark/50 border-midlight/50"
         >
             <div className="p-[2px] rounded-full bg-gradient-to-r from-blue-600 via-purple-600 to-red-600">
                 <figure className="p-2 rounded-full dark:bg-darker bg-lighter">
@@ -139,7 +139,7 @@ export const Hovercard = ({ ref, user }: HovercardProps) => {
                 'absolute',
                 'w-[366px] rounded',
                 'dark:bg-darker bg-lighter',
-                'dark:drop-shadow-alpha-l-md drop-shadow-alpha-d-md',
+                'dark:drop-shadow-alpha-l-xs drop-shadow-alpha-d-xs',
                 'after:absolute after:w-3 after:h-3 after:dark:bg-darker after:bg-lighter after:rotate-45',
                 position.direction === 'above' ? 'm-0' : 'mt-4',
                 position.direction === 'above' ? 'after:bottom-0 after:translate-y-1/2' : 'after:top-0 after:-translate-y-1/2',
@@ -158,11 +158,13 @@ export const Hovercard = ({ ref, user }: HovercardProps) => {
                 <Link href={`/${user.username}`}>
                     <Photo size={50} user={user} />
                 </Link>
-                <div>
+                <div className="flex-1 min-w-0">
                     <Link href={`/${user.username}`} className="font-semibold">
                         {user.username}
                     </Link>
-                    <p className="font-medium dark:text-midlight text-middark">{user.display_name}</p>
+                    <p className="truncate font-medium dark:text-midlight text-middark">
+                        {user.display_name}
+                    </p>
                 </div>
             </header>
             <dl className="px-6 py-3 flex items-center justify-evenly">

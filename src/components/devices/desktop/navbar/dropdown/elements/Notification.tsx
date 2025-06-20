@@ -54,7 +54,7 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
             )}
         >
             <article className="w-full">
-                <main className="flex items-center">
+                <section className="flex items-center">
                     <figure className="relative px-2 border-r text-sm dark:border-r-semilight/10 border-r-semidark/10">
                         <Component.Photo user={user} size={55} />
                         <Icon.Sponsor
@@ -64,13 +64,13 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
                         />
                     </figure>
                     <section className="px-2">
-                        <p className="text-sm">
+                        <p className="line-clamp-6 text-sm">
                             <span>{<Emote className="inline-block text-secondary fill-secondary" />}</span>
                             <span className="font-semibold text-secondary"> {username} </span>
                             <span>{message}</span>
                         </p>
                     </section>
-                </main>
+                </section>
                 <footer className="w-full flex justify-end">
                     <p className="flex gap-2 px-2 text-xs dark:text-lighter/50 text-darker/50">
                         <span
