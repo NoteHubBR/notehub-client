@@ -3,9 +3,9 @@ import { FormProvider, useForm } from "react-hook-form";
 import { IconCheck, IconDotsVertical, IconEdit, IconTrash, IconX } from "@tabler/icons-react";
 import { Menu, MenuItem } from "@/components/menu";
 import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
+import { useEffect, useState } from "react";
 import { useNotes, useServices } from "@/data/hooks";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -41,6 +41,13 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
     const [isPending, setIsPending] = useState<boolean>(false);
 
     const router = useRouter();
+
+    const scrollToNote = () => {
+        const noteEl = document.getElementById("note");
+        if (noteEl) {
+            noteEl.scrollIntoView({ behavior: "smooth" });
+        }
+    }
 
     const onSubmit = async (data: NoteTextUpdateFormData): Promise<void> => {
         if (token) {
@@ -102,13 +109,17 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         return;
     }
 
+    useEffect(() => { scrollToNote() }, []);
+
     const { Title, EditingTitle, ActionButton, Text, Dialog } = Element;
 
     return (
         <FormProvider {...updateNoteForm}>
             <form
+                id="note"
                 onSubmit={handleSubmit(onSubmit)}
-                className="relative min-h-[90vh] inmd:min-h-[100svh] rounded-[5px]
+                className="scroll-mt-[9vh] inmd:scroll-mt-0
+                relative min-h-[90vh] inmd:min-h-[100svh] rounded-[5px]
                 border inmd:dark:border-none dark:border-middark/50 border-midlight/50
                 flex flex-col flex-1
                 dark:bg-darker bg-lighter"

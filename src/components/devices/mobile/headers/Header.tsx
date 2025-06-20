@@ -1,5 +1,5 @@
 import { Icon } from "@/components/icons";
-import { IconBell, IconSearch } from "@tabler/icons-react";
+import { IconBell, IconSearch, IconSettings } from "@tabler/icons-react";
 import { useNotifications, useScreen, useUser } from "@/data/hooks";
 import NextLink, { LinkProps } from "next/link";
 
@@ -31,19 +31,24 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
         >
             <Icon.Logo width={77} height={0} className="mr-auto" />
             {user &&
-                <Link href='/m/notifications'>
-                    <IconBell />
-                    {count > 0 &&
-                        <span
-                            className="whitespace-nowrap absolute top-0 left-0 
+                <>
+                    <Link href="/settings">
+                        <IconSettings />
+                    </Link>
+                    <Link href="/m/notifications">
+                        <IconBell />
+                        {count > 0 &&
+                            <span
+                                className="whitespace-nowrap absolute top-0 left-0 
                             w-5 h-w-5 flex items-center justify-center rounded-full 
                             text-sm text-lighter 
                             bg-primary"
-                        >
-                            {count}
-                        </span>
-                    }
-                </Link>
+                            >
+                                {count}
+                            </span>
+                        }
+                    </Link>
+                </>
             }
             <Link href={'/m/search'}><IconSearch /></Link>
         </header>

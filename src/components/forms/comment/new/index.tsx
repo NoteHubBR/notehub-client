@@ -60,9 +60,10 @@ export const Form = ({ token, user, note, setComments, setNote, ...rest }: FormP
     return (
         <FormProvider {...createCommentForm}>
             <form
+                id="comment-wrapper"
                 onSubmit={handleSubmit(onSubmit)}
                 {...rest}
-                className="py-4"
+                className="scroll-mt-[8vh] inmd:scroll-mt-0 py-4"
             >
                 <header className="flex gap-3">
                     <Component.Photo user={user} size={40} />
