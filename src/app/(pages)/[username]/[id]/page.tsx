@@ -2,7 +2,9 @@
 
 import { Element } from "./elements";
 import { Form } from "@/components/forms";
-import { Note } from "@/core";
+import { handleFieldErrorsMsg, Note } from "@/core";
+import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
+import { Section } from "../components/Section";
 import { Skeleton } from "./skeleton";
 import { Template } from "@/components/templates";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -19,22 +21,66 @@ const Page = () => {
     const noteId = useParams<{ username: string; id: UUID }>().id;
 
     const [note, setNote] = useState<Note | null>(null);
+    const [notCurrent, setNotCurrent] = useState<boolean>(false);
+    const [notMutual, setNotMutual] = useState<boolean>(false);
+    const [notFound, setNotFound] = useState<boolean>(false);
     const triggerRef = useRef<HTMLButtonElement>(null);
     const childRef = useRef<HTMLFormElement>(null);
     const closeRef = useRef<HTMLButtonElement>(null);
 
     const init = useCallback(async () => {
         const accessToken = token ? token.access_token : null;
-        setNote(await getNote(accessToken, noteId));
+        try {
+            return setNote(await getNote(accessToken, noteId));
+        } catch (errors) {
+            if (Array.isArray(errors)) {
+                const { notCurrent, notMutual } = handleFieldErrorsMsg(errors);
+                console.log({
+                    notCurrent: notCurrent,
+                    notMutual: notMutual
+                })
+                setNotCurrent(notCurrent);
+                setNotMutual(notMutual);
+                return;
+            } else return setNotFound(true);
+        }
     }, [getNote, noteId, token]);
 
     useEffect(() => {
         if (isMounted) init();
     }, [isMounted])
 
-    const { Aside, Comments } = Element;
+    const { Aside, Comments, Dialog } = Element;
 
-    if (!note) return <Skeleton />;
+    if (notFound) return (
+        <Section className="p-6 flex items-center justify-center">
+            <Dialog
+                icon={IconNotesOff}
+                title="404"
+                desc="Nota não encontrada."
+            />
+        </Section>
+    )
+
+    if (notCurrent) return (
+        <Section className="p-6 flex items-center justify-center">
+            <Dialog
+                icon={IconEyeOff}
+                title="Nota oculta"
+                desc="Nome auto explicativo."
+            />
+        </Section>
+    )
+
+    if (notMutual) return (
+        <Section className="p-6 flex items-center justify-center">
+            <Dialog
+                icon={IconLock}
+                title="Perfil privado"
+                desc="Necessário que ambos de vocês se sigam."
+            />
+        </Section>
+    )
 
     if (note) return (
         <section className="max-w-[999px] w-full m-auto">
@@ -71,6 +117,8 @@ const Page = () => {
             </section>
         </section>
     )
+
+    return <Skeleton />;
 
 }
 
