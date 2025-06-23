@@ -29,6 +29,7 @@ export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, se
     const { handleSubmit, setError } = editReplyForm;
 
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [readOnly, setReadOnly] = useState<boolean>(true);
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [initialText, setInitialText] = useState<string>(reply.text);
@@ -62,6 +63,13 @@ export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, se
         if (textareaRef.current) textareaRef.current.style.height = "auto";
     }
 
+    const startDelete = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        toggleMenu();
+        setIsDeleting(true);
+        return;
+    }
+
     const openReplyBox = () => setIsReplying(true);
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setCurrent(e.target.value);
@@ -89,7 +97,7 @@ export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, se
         }
     })
 
-    const { User, Username, Reference, Time, Fieldset, Text, Label, Error, Button } = Element;
+    const { User, Username, Reference, Time, Fieldset, Text, Label, Error, Button, Dialog } = Element;
 
     return (
         <FormProvider {...editReplyForm}>
@@ -100,6 +108,7 @@ export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, se
             >
                 {reply.user.username === user?.username && readOnly &&
                     <MenuButton
+                        disabled={isPending}
                         onClick={toggleMenu}
                         onBlur={closeMenu}
                         tooltip="Menu"
@@ -115,7 +124,7 @@ export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, se
                                 Editar
                             </MenuItem>
                             <MenuItem
-                                onClick={handleDeleteReply}
+                                onClick={startDelete}
                                 icon={IconX}
                                 className="hover:text-red-500"
                             >
@@ -186,6 +195,12 @@ export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, se
                         :
                         <></>
                 }
+                <Dialog
+                    disabled={isPending}
+                    isOpen={isDeleting}
+                    setIsOpen={setIsDeleting}
+                    onClick={handleDeleteReply}
+                />
             </form>
         </FormProvider>
     )

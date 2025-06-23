@@ -47,6 +47,7 @@ export const Form = ({
     const { handleSubmit, setError } = editCommentForm;
 
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [readOnly, setReadOnly] = useState<boolean>(true);
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [initialText, setInitialText] = useState<string>(comment.text);
@@ -80,6 +81,13 @@ export const Form = ({
         setIsTyping(false);
         setCurrent(initialText);
         if (textareaRef.current) textareaRef.current.style.height = "auto";
+    }
+
+    const startDelete = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        toggleMenu();
+        setIsDeleting(true);
+        return;
     }
 
     const openReplyBox = () => setIsReplying(true);
@@ -125,7 +133,7 @@ export const Form = ({
         }
     })
 
-    const { User, Username, Time, Fieldset, Text, Label, Error, Button, ChevronIcon } = Element;
+    const { User, Username, Time, Fieldset, Text, Label, Error, Button, ChevronIcon, Dialog } = Element;
 
     return (
         <FormProvider {...editCommentForm}>
@@ -136,6 +144,7 @@ export const Form = ({
             >
                 {comment.user.username === user?.username && readOnly &&
                     <MenuButton
+                        disabled={isPending}
                         onClick={toggleMenu}
                         onBlur={closeMenu}
                         tooltip="Menu"
@@ -151,7 +160,7 @@ export const Form = ({
                                 Editar
                             </MenuItem>
                             <MenuItem
-                                onClick={handleDeleteComment}
+                                onClick={startDelete}
                                 icon={IconX}
                                 className="hover:text-red-500"
                             >
@@ -233,6 +242,12 @@ export const Form = ({
                         </Button>
                     </footer>
                 }
+                <Dialog
+                    disabled={isPending}
+                    isOpen={isDeleting}
+                    setIsOpen={setIsDeleting}
+                    onClick={handleDeleteComment}
+                />
             </form>
         </FormProvider>
     )
