@@ -10,6 +10,7 @@ export const MenuButton = ({ tooltip, className, children, ...rest }: MenuButton
         type="button"
         className={clsx(
             'group',
+            'disabled:cursor-not-allowed',
             'p-1 rounded-full',
             'transition-colors',
             'dark:hover:bg-semilight/10 hover:bg-semidark/10',

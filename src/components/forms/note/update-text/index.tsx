@@ -68,8 +68,10 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
     const handleDeleteNote = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
         e.stopPropagation();
         if (token) {
+            setIsPending(true);
             return await deleteNote(token.access_token, note.id)
                 .then(() => {
+                    setIsPending(false);
                     removeNote(note.id);
                     router.push(`/${currentUser}/notes`);
                 })
@@ -163,6 +165,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                             />
                             <ActionButton
                                 type="button"
+                                disabled={isPending}
                                 onClick={toggleMenu}
                                 onBlur={closeMenu}
                                 isEditing={!isEditing}
@@ -204,8 +207,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                     setIsOpen={setIsDeleting}
                     disabled={isPending}
                     onClick={handleDeleteNote}
-                    className="disabled:cursor-wait
-                    dark:text-red-500 text-red-600
+                    className="dark:text-red-500 text-red-600
                     dark:hover:bg-red-500 hover:bg-red-600
                     dark:disabled:bg-red-500 disabled:bg-red-600"
                 />
@@ -217,8 +219,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                     isOpen={isSubmiting}
                     setIsOpen={setIsSubmiting}
                     disabled={isPending}
-                    className="disabled:cursor-wait
-                    dark:text-secondary text-primary
+                    className="dark:text-secondary text-primary
                     dark:hover:bg-secondary hover:bg-primary
                     dark:disabled:bg-secondary disabled:bg-primary"
                 />

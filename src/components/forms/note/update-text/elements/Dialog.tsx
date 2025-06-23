@@ -16,6 +16,7 @@ export const Dialog = ({ msg, desc, opt, type, isOpen, setIsOpen, disabled, onCl
     const Option = ({ className, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
         <button
             className={clsx(
+                'disabled:cursor-wait',
                 'py-2 flex-1',
                 'font-semibold text-sm',
                 'transition-colors',
@@ -50,40 +51,47 @@ export const Dialog = ({ msg, desc, opt, type, isOpen, setIsOpen, disabled, onCl
 
     if (isOpen) return (
         <div
-            ref={dialogRef}
-            role="dialog"
-            aria-labelledby="dialogTitle"
-            aria-describedby="dialogDesc"
-            className="z-[999] center
-            overflow-hidden max-w-[333px] w-[90%] rounded
-            border dark:border-middark/50 border-midlight/50
-            flex flex-col
-            dark:bg-semidark bg-white"
+            className="z-[999]
+            fixed top-0 left-0
+            max-w-full w-screen h-screen inmd:h-svh
+            flex items-center justify-center
+            dark:bg-alpha-d-lg bg-alpha-l-lg"
         >
-            <header className="p-6 text-center flex flex-col items-center justify-center gap-3">
-                <h2 id="dialogTitle" className="font-bold text-xl">{msg}</h2>
-                <p id="dialogDesc" className="text-sm">{desc}</p>
-            </header>
-            <footer className="border-t dark:border-middark/50 border-midlight/50 flex">
-                <Option
-                    type="button"
-                    disabled={disabled}
-                    onClick={handleCancelClick}
-                    className="disabled:cursor-not-allowed dark:hover:bg-black hover:bg-semilight transition-colors"
-                >
-                    Cancelar
-                </Option>
-                <div className="border-l dark:border-middark/50 border-midlight/50" />
-                <Option
-                    onClick={onClick}
-                    type={type}
-                    disabled={disabled}
-                    className={`hover:!text-white disabled:!text-white transition-colors ${className}`}
-                    {...rest}
-                >
-                    {opt}
-                </Option>
-            </footer>
+            <div
+                ref={dialogRef}
+                role="dialog"
+                aria-labelledby="dialogTitle"
+                aria-describedby="dialogDesc"
+                className="overflow-hidden max-w-[333px] w-[90%] rounded-md
+                flex flex-col
+                border dark:border-middark/50 border-midlight/50
+                dark:bg-semidark bg-white"
+            >
+                <header className="p-6 text-center flex flex-col items-center justify-center gap-3">
+                    <h2 id="dialogTitle" className="font-bold text-md">{msg}</h2>
+                    <p id="dialogDesc" className="text-sm">{desc}</p>
+                </header>
+                <footer className="border-t dark:border-middark/50 border-midlight/50 flex">
+                    <Option
+                        type="button"
+                        disabled={disabled}
+                        onClick={handleCancelClick}
+                        className="dark:hover:bg-black hover:bg-semilight transition-colors"
+                    >
+                        Cancelar
+                    </Option>
+                    <div className="border-l dark:border-middark/50 border-midlight/50" />
+                    <Option
+                        onClick={onClick}
+                        type={type}
+                        disabled={disabled}
+                        className={`hover:!text-white disabled:!text-white transition-colors ${className}`}
+                        {...rest}
+                    >
+                        {opt}
+                    </Option>
+                </footer>
+            </div>
         </div>
     )
 

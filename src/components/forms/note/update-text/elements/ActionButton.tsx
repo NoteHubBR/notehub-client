@@ -9,6 +9,7 @@ interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
 export const ActionButton = ({ isEditing, icon: Icon, tooltip, className, children, ...rest }: ActionButtonProps) => (
     <button
         className={clsx(
+            'disabled:cursor-not-allowed',
             'group relative p-1 rounded-full',
             'dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm',
             'transition-colors',
