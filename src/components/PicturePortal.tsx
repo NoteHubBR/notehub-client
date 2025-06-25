@@ -4,14 +4,14 @@ import { User } from "@/core";
 import Image from "next/image";
 
 interface PicturePortalProps {
-    user: Partial<User>;
+    user: Partial<User> | null;
     size?: number;
     fill?: boolean;
     className?: string;
 }
 
 export const PicturePortal = forwardRef<HTMLImageElement, PicturePortalProps>(({ user, size, fill, className }, ref) => {
-    return (
+    if (user) return (
         <>
             {size &&
                 <figure
@@ -47,6 +47,9 @@ export const PicturePortal = forwardRef<HTMLImageElement, PicturePortalProps>(({
             }
         </>
     )
+
+    return <></>;
+
 })
 
 PicturePortal.displayName = 'PicturePortal';

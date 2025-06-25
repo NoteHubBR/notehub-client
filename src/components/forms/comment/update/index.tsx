@@ -95,7 +95,8 @@ export const Form = ({
     const openRepliesList = () => startRepliesTransition(async () => {
         if (hasFetchedRepliesList) return setIsRepliesListOpen(prev => !prev);
         try {
-            const { content, ...rest } = await getReplies(comment.id, 'page=0');
+            const accessToken = token ? token.access_token : null;
+            const { content, ...rest } = await getReplies(accessToken, comment.id, 'page=0');
             setRepliesPage(rest);
             setReplies(content);
             setIsRepliesListOpen(prev => !prev);
@@ -142,7 +143,7 @@ export const Form = ({
                 onSubmit={handleSubmit(onSubmit)}
                 className="relative py-4 last:pb-0"
             >
-                {comment.user.username === user?.username && readOnly &&
+                {comment.user && comment.user.username === user?.username && readOnly &&
                     <MenuButton
                         disabled={isPending}
                         onClick={toggleMenu}

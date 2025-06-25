@@ -10,7 +10,7 @@ export const Creator = ({ note }: { note: LowDetailNote }) => {
     const photoRef = useRef<HTMLAnchorElement>(null);
     const nameRef = useRef<HTMLAnchorElement>(null);
 
-    return (
+    if (note.user) return (
         <>
             <Component.Hovercard ref={photoRef} user={note.user} />
             <Link ref={photoRef} href={`/${note.user.username}`}>
@@ -23,6 +23,13 @@ export const Creator = ({ note }: { note: LowDetailNote }) => {
                     {note.user.display_name}
                 </h4>
             </Link>
+        </>
+    )
+
+    return (
+        <>
+            <Photo user={note.user} size={44} className="absolute top-0 left-0" />
+            <h4 className="line-through text-sm">Deletado</h4>
         </>
     )
 

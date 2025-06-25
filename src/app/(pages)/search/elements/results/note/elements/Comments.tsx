@@ -5,11 +5,11 @@ import Link from "next/link";
 
 export const Comments = ({ note }: { note: LowDetailNote }) => {
 
-    const { id, user: { username }, closed: isClosed, comments_count: count } = note;
+    const { id, user, closed: isClosed, comments_count: count } = note;
 
     return (
         <Link
-            href={`/${username}/${id}`}
+            href={`/${user ? user.username : 'user'}/${id}`}
             className={clsx(
                 isClosed && 'pointer-events-none cursor-not-allowed select-none',
                 'px-2 py-1 insm:p-1 rounded-md insm:rounded-full',

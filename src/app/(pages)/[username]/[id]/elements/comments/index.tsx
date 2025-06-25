@@ -29,7 +29,8 @@ export const Comments = ({ token, user, note, setNote }: CommentsProps) => {
         startTransition(async () => {
             try {
                 isFetching.current = true;
-                const { content, ...rest } = await getComments(note.id, `sort=${sort}&page=0`);
+                const accessToken = token ? token.access_token : null;
+                const { content, ...rest } = await getComments(accessToken, note.id, `sort=${sort}&page=0`);
                 setPage(rest);
                 setComments(content);
             } catch (error) {
@@ -40,7 +41,7 @@ export const Comments = ({ token, user, note, setNote }: CommentsProps) => {
                 setHasFetched(true);
             }
         })
-    }, [getComments, hasFetched, note.comments_count, note.id, sort])
+    }, [getComments, hasFetched, note.comments_count, note.id, sort, token])
 
     const handleScroll = useCallback(async () => {
         if (note.comments_count === 0 || isFetching.current || page.last) return;
@@ -49,7 +50,8 @@ export const Comments = ({ token, user, note, setNote }: CommentsProps) => {
             if (scrollTop + clientHeight >= scrollHeight) {
                 try {
                     isFetching.current = true;
-                    const { content, ...rest } = await getComments(note.id, `sort=${sort}&page=${page.page + 1}`);
+                    const accessToken = token ? token.access_token : null;
+                    const { content, ...rest } = await getComments(accessToken, note.id, `sort=${sort}&page=${page.page + 1}`);
                     setPage(rest);
                     setComments(prev => {
                         const existingIds = new Set(prev.map(c => c.id));
@@ -64,7 +66,7 @@ export const Comments = ({ token, user, note, setNote }: CommentsProps) => {
                 }
             }
         })
-    }, [getComments, note.comments_count, note.id, page.last, page.page, sort])
+    }, [getComments, note.comments_count, note.id, page.last, page.page, sort, token])
 
     useEffect(() => {
         init();

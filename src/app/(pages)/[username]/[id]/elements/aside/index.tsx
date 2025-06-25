@@ -5,7 +5,7 @@ import { Toggle } from "@/components/buttons";
 interface AsideProps extends React.HTMLAttributes<HTMLElement> {
     triggerRef: React.RefObject<HTMLButtonElement>;
     note: Note;
-    author: string;
+    author: string | null;
     currentUser: string | null;
 }
 

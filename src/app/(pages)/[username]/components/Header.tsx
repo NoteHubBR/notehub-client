@@ -26,11 +26,13 @@ export const Header = () => {
 
     const { notFound, user, history } = state;
 
+    const shouldSkipHeader: boolean = params.username === "user";
+
     const isFetching = useRef<boolean>(false);
 
     useEffect(() => {
         const init = async () => {
-            if (isFetching.current) return;
+            if (shouldSkipHeader || isFetching.current) return;
             if (currentUser && params.username === currentUser.username) {
                 return setState((prev) => ({ ...prev, user: currentUser, history: currentHistory }));
             }
@@ -46,7 +48,9 @@ export const Header = () => {
             }
         }
         if (isMounted) init();
-    }, [currentHistory, currentUser, getUser, getUserDisplayNameHistory, isMounted, params.username])
+    }, [currentHistory, currentUser, getUser, getUserDisplayNameHistory, isMounted, params.username, shouldSkipHeader])
+
+    if (shouldSkipHeader) return null;
 
     if (notFound) return <NotFound />;
 

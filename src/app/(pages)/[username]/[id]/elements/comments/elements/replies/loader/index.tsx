@@ -1,10 +1,11 @@
 import { clsx } from "clsx";
-import { Comment, Page, Reply } from "@/core"
+import { Comment, Page, Reply, Token } from "@/core"
 import { IconArrowForward } from "@tabler/icons-react";
 import { useServices } from "@/data/hooks";
 import { useTransition } from "react";
 
 interface LoadMoreProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    token: Token | null;
     isRepliesListOpen: boolean;
     comment: Comment;
     page: Omit<Page<Reply>, 'content'>;
@@ -12,14 +13,15 @@ interface LoadMoreProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     setReplies: React.Dispatch<React.SetStateAction<Reply[]>>;
 }
 
-export const Loader = ({ isRepliesListOpen, comment, page, setPage, setReplies, ...rest }: LoadMoreProps) => {
+export const Loader = ({ token, isRepliesListOpen, comment, page, setPage, setReplies, ...rest }: LoadMoreProps) => {
 
     const { replyService: { getReplies } } = useServices();
 
     const [isPending, startTransition] = useTransition();
 
     const handleClick = () => startTransition(async () => {
-        const { content, ...rest } = await getReplies(comment.id, `page=${page.page + 1}`);
+        const accessToken = token ? token.access_token : null;
+        const { content, ...rest } = await getReplies(accessToken, comment.id, `page=${page.page + 1}`);
         setReplies(prev => [...prev, ...content]);
         setPage(rest);
     })

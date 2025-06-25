@@ -97,13 +97,13 @@ const Page = () => {
                 <Form.Note.TextUpdate
                     token={token}
                     note={note}
-                    author={note.user.username}
+                    author={note.user ? note.user.username : null}
                     currentUser={user ? user.username : null}
                 />
                 <Aside
                     triggerRef={triggerRef}
                     note={note}
-                    author={note.user.username}
+                    author={note.user ? note.user.username : null}
                     currentUser={user ? user.username : null}
                 />
             </section>

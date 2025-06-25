@@ -18,12 +18,12 @@ export const CommentService = () => {
         }
     }
 
-    const getComments = async (id: UUID, parameters?: string): Promise<Page<Comment>> => {
+    const getComments = async (token: string | null, id: UUID, parameters?: string): Promise<Page<Comment>> => {
         const endpoint = `/notes/${id}/comments?${parameters}`;
         try {
-            return await httpGet(endpoint);
+            return await httpGet(endpoint, { useToken: token });
         } catch (error) {
-            throw error;
+            return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useToken: newToken }));
         }
     }
 

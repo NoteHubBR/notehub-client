@@ -27,12 +27,12 @@ export const ReplyService = () => {
         }
     }
 
-    const getReplies = async (id: UUID, parameters?: string): Promise<Page<Reply>> => {
+    const getReplies = async (token: string | null, id: UUID, parameters?: string): Promise<Page<Reply>> => {
         const endpoint = `/notes/comments/${id}/replies?${parameters}`;
         try {
-            return await httpGet(endpoint);
+            return await httpGet(endpoint, { useToken: token });
         } catch (error) {
-            throw error;
+            return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useToken: newToken }));
         }
     }
 

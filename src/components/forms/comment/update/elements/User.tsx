@@ -11,7 +11,7 @@ export const User = ({ comment, ...rest }: UserProps) => {
 
     const ref = useRef<HTMLAnchorElement>(null);
 
-    return (
+    if (comment.user) return (
         <>
             <Component.Hovercard ref={ref} user={comment.user} />
             <Link ref={ref} href={`/${comment.user.username}`}>
@@ -19,5 +19,7 @@ export const User = ({ comment, ...rest }: UserProps) => {
             </Link>
         </>
     )
+
+    return <Component.Photo user={comment.user} size={40} {...rest} />;
 
 }

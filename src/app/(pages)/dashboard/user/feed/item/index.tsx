@@ -10,7 +10,7 @@ export const Item = ({ note }: { note: LowDetailNote }) => {
         Section: { Target, Desc }
     } = Element;
 
-    return (
+    if (note.user) return (
         <Article>
             <header className="flex items-center gap-3">
                 <Creator user={note.user} />

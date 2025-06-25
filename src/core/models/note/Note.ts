@@ -6,7 +6,7 @@ export interface Note {
     title: string;
     description: string;
     tags: string[];
-    user: User;
+    user: User | null;
     created_at: string;
     modified_at: string;
     modified: boolean;

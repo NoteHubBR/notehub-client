@@ -106,7 +106,7 @@ export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, se
                 onSubmit={handleSubmit(onSubmit)}
                 className="relative pl-10 py-2"
             >
-                {reply.user.username === user?.username && readOnly &&
+                {reply.user && reply.user.username === user?.username && readOnly &&
                     <MenuButton
                         disabled={isPending}
                         onClick={toggleMenu}

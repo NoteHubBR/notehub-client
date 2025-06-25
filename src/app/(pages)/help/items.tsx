@@ -36,8 +36,8 @@ export const items: Items[] = [
         question: 'Exclusão da conta',
         answer: (
             <>
-                A exclusão de conta é definitiva: seus dados pessoais serão removidos permanentemente, mas notas,
-                comentários e respostas permanecerão visíveis.
+                A exclusão de conta é definitiva: seus dados pessoais serão removidos permanentemente, mas notas criadas
+                (exceto ocultas; em perfis privados, todas são apagadas), comentários e respostas permanecerão visíveis.
                 <br /><br />
                 Caso deseje apagar completamente seu histórico, recomendamos excluir manualmente suas publicações antes
                 de encerrar a conta.

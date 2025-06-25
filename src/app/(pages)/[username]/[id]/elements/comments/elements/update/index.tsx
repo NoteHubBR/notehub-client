@@ -65,6 +65,7 @@ export const CommentItem = ({ isSorting, token, user, note, comment, setNote, se
                 ))}
             </ul>
             <Loader
+                token={token}
                 isRepliesListOpen={isRepliesListOpen}
                 comment={comment}
                 page={repliesPage}

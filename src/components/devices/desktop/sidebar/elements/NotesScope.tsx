@@ -45,7 +45,7 @@ export const NotesScope = () => {
             {list.map(note =>
                 <Link
                     key={note.id}
-                    href={`/${note.user.username}/${note.id}`}
+                    href={`/${note.user!.username}/${note.id}`}
                     icon={<Component.Photo user={note.user} />}
                     text={note.title}
                 />

@@ -19,9 +19,9 @@ export const Main = ({ notes, ...rest }: MainProps) => {
                     <article className="w-full flex flex-col gap-3">
                         <header className="relative pl-14 flex flex-col gap-1">
                             <Photo user={note.user} size={44} className="absolute top-0 left-0" />
-                            <Element.PlainText className="flex gap-1 ">
-                                <Icon.Sponsor user={note.user} size={24} />
-                                {note.user.display_name}
+                            <Element.PlainText className={`flex gap-1 ${!note.user && 'line-through'}`}>
+                                {note.user && <Icon.Sponsor user={note.user} size={24} />}
+                                {note.user ? note.user.display_name : 'Deletado'}
                             </Element.PlainText>
                             <Element.Time note={note} />
                             <Element.Status note={note} />

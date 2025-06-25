@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     token: Token | null;
     note: Note;
-    author: string;
+    author: string | null;
     currentUser: string | null;
 }
 
@@ -29,7 +29,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
 
     const { handleSubmit } = updateNoteForm;
 
-    const isAuthor = author === currentUser;
+    const isAuthor = author ? author === currentUser : false;
 
     const [initialText, setInitialText] = useState<string>(note.markdown ?? "");
     const [text, setText] = useState<string>(initialText);

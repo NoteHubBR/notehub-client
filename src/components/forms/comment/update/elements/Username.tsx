@@ -11,7 +11,7 @@ export const Username = ({ comment, ...rest }: UsernameProps) => {
 
     const ref = useRef<HTMLAnchorElement>(null);
 
-    return (
+    if (comment.user) return (
         <>
             <Component.Hovercard ref={ref} user={comment.user} />
             <Link ref={ref} href={`/${comment.user.username}`} className="min-w-0">
@@ -24,5 +24,7 @@ export const Username = ({ comment, ...rest }: UsernameProps) => {
             </Link>
         </>
     )
+
+    return <p className="line-through text-sm">Deletado</p>;
 
 }

@@ -4,7 +4,7 @@ import { UUID } from "crypto";
 
 export interface Reply {
     id: UUID,
-    user: User;
+    user: User | null;
     comment: Comment;
     created_at: string;
     modified_at: string;
