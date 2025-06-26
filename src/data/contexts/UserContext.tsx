@@ -61,20 +61,23 @@ export const UserProvider = (props: any) => {
 
     const updateUser = useCallback((user: Partial<User>) => {
         if (state.user) {
-            if (user.username) updateActions(state.user.username, user.username);
             const { avatar, banner, profile_private, username, display_name, message } = user;
-            return setState((prev) => ({
-                ...prev,
-                user: {
-                    ...prev.user,
-                    avatar,
-                    banner,
-                    profile_private,
-                    username,
-                    display_name,
-                    message
-                } as User
-            }))
+            if (username) updateActions(state.user.username, username);
+            return setState((prev) => {
+                if (prev.user) return ({
+                    ...prev,
+                    user: {
+                        ...prev.user,
+                        avatar: avatar ?? prev.user.avatar,
+                        banner: banner ?? prev.user.banner,
+                        profile_private: profile_private ?? prev.user.profile_private,
+                        username: username ?? prev.user.username,
+                        display_name: display_name ?? prev.user.display_name,
+                        message: message ?? prev.user.message
+                    } as User
+                })
+                return prev;
+            })
         }
     }, [state.user, updateActions])
 
