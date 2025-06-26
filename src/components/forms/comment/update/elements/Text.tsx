@@ -1,5 +1,5 @@
 import { CreateCommentFormData, createCommentFormSchema, getSchemaStringConstraints } from "@/core";
-import { forwardRef } from "react";
+import { forwardRef, useLayoutEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
 interface TextProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -12,13 +12,26 @@ export const Text = forwardRef<HTMLTextAreaElement, TextProps>(({ name, ...rest 
     const { ref: registerRef, ...registerRest } = register(name);
     const { max } = getSchemaStringConstraints(createCommentFormSchema, name);
 
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+    const refs = (element: HTMLTextAreaElement) => {
+        registerRef(element);
+        textareaRef.current = element;
+        if (typeof ref === "function") ref(element);
+        else if (ref) ref.current = element;
+    }
+
+    useLayoutEffect(() => {
+        const txtRef = textareaRef.current;
+        if (txtRef) {
+            txtRef.style.height = 'auto';
+            txtRef.style.height = `${txtRef.scrollHeight}px`;
+        }
+    }, [rest.value, rest.readOnly])
+
     return (
         <textarea
-            ref={(element) => {
-                registerRef(element);
-                if (typeof ref === "function") ref(element);
-                else if (ref) ref.current = element;
-            }}
+            ref={refs}
             {...registerRest}
             required
             rows={1}
@@ -26,11 +39,6 @@ export const Text = forwardRef<HTMLTextAreaElement, TextProps>(({ name, ...rest 
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
-            onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
-                const target = e.currentTarget;
-                target.style.height = 'auto';
-                target.style.height = `${target.scrollHeight}px`;
-            }}
             className="peer outline-none resize-none z-10
             w-full py-2 align-middle
             text-sm

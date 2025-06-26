@@ -45,11 +45,11 @@ export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, se
 
     const startEdit = (e: React.MouseEvent) => {
         e.stopPropagation();
-        const txtElemenet = textareaRef.current;
-        if (txtElemenet) {
-            const length = txtElemenet.value.length;
-            txtElemenet.focus();
-            txtElemenet.setSelectionRange(length, length);
+        const txtElement = textareaRef.current;
+        if (txtElement) {
+            const length = txtElement.value.length;
+            txtElement.focus();
+            txtElement.setSelectionRange(length, length);
             setReadOnly(false);
             setIsTyping(true);
             return;
@@ -60,7 +60,6 @@ export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, se
         setReadOnly(true);
         setIsTyping(false);
         setCurrent(initialText);
-        if (textareaRef.current) textareaRef.current.style.height = "auto";
     }
 
     const startDelete = (e: React.MouseEvent) => {
