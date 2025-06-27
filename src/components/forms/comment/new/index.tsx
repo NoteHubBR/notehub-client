@@ -26,22 +26,6 @@ export const Form = ({ token, user, note, setComments, setNote, ...rest }: FormP
     const { handleSubmit, setError } = createCommentForm;
 
     const [isPending, startTransition] = useTransition();
-
-    const onSubmit = (data: CreateCommentFormData) => startTransition(async (): Promise<void> => {
-        try {
-            const comment = await createComment(token.access_token, note.id, data);
-            setIsTyping(false);
-            setComment("");
-            setComments(prev => [comment, ...prev]);
-            return setNote((prev) => {
-                if (prev) return { ...prev, comments_count: prev.comments_count + 1 };
-                else return null;
-            })
-        } catch (errors) {
-            if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
-        }
-    })
-
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [comment, setComment] = useState<string>("");
     const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -54,6 +38,22 @@ export const Form = ({ token, user, note, setComments, setNote, ...rest }: FormP
         setComment("");
         if (textareaRef.current) textareaRef.current.style.height = "auto";
     }
+
+    const onSubmit = (data: CreateCommentFormData) => startTransition(async (): Promise<void> => {
+        try {
+            const comment = await createComment(token.access_token, note.id, data);
+            if (textareaRef.current) textareaRef.current.style.height = "auto";
+            setIsTyping(false);
+            setComment("");
+            setComments(prev => [comment, ...prev]);
+            return setNote((prev) => {
+                if (prev) return { ...prev, comments_count: prev.comments_count + 1 };
+                else return null;
+            })
+        } catch (errors) {
+            if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
+        }
+    })
 
     const { Fieldset, Text, Label, Error, Button } = Element;
 

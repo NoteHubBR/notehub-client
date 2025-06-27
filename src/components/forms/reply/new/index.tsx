@@ -30,22 +30,6 @@ export const Form = ({ useSelfReference, token, user, comment, isReplying, selfR
     const { handleSubmit, setError } = createReplyForm;
 
     const [isPending, startTransition] = useTransition();
-
-    const onSubmit = (data: CreateReplyFormData) => startTransition(async (): Promise<void> => {
-        try {
-            const reply = useSelfReference && selfReferenceReply
-                ? await createSelfReferenceReply(token.access_token, selfReferenceReply.id, data)
-                : await createReply(token.access_token, comment.id, data);
-            setIsTyping(false);
-            setReply("");
-            setReplies(prev => [...prev, reply]);
-            setRepliesCount(prev => prev + 1);
-            setIsReplying(false);
-        } catch (errors) {
-            if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
-        }
-    })
-
     const [isTyping, setIsTyping] = useState<boolean>(false);
     const [reply, setReply] = useState<string>("");
     const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -59,6 +43,22 @@ export const Form = ({ useSelfReference, token, user, comment, isReplying, selfR
         setIsReplying(false);
         if (textareaRef.current) textareaRef.current.style.height = "auto";
     }
+
+    const onSubmit = (data: CreateReplyFormData) => startTransition(async (): Promise<void> => {
+        try {
+            const reply = useSelfReference && selfReferenceReply
+                ? await createSelfReferenceReply(token.access_token, selfReferenceReply.id, data)
+                : await createReply(token.access_token, comment.id, data);
+            if (textareaRef.current) textareaRef.current.style.height = "auto";
+            setIsTyping(false);
+            setReply("");
+            setReplies(prev => [...prev, reply]);
+            setRepliesCount(prev => prev + 1);
+            setIsReplying(false);
+        } catch (errors) {
+            if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
+        }
+    })
 
     const { Fieldset, Text, Label, Error, Button } = Element;
 

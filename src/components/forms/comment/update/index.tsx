@@ -50,6 +50,7 @@ export const Form = ({
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [readOnly, setReadOnly] = useState<boolean>(true);
     const [isTyping, setIsTyping] = useState<boolean>(false);
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [initialText, setInitialText] = useState<string>(comment.text);
     const [current, setCurrent] = useState<string>(initialText);
     const [modified, setModified] = useState<boolean>(comment.modified);
@@ -60,6 +61,8 @@ export const Form = ({
     const [isRepliesFetchPending, startRepliesTransition] = useTransition();
 
     const toggleMenu = () => setIsMenuOpen(prev => !prev);
+
+    const toggleIsExpanded = () => setIsExpanded(prev => !prev);
 
     const closeMenu = () => setIsMenuOpen(false);
 
@@ -80,6 +83,7 @@ export const Form = ({
         setReadOnly(true);
         setIsTyping(false);
         setCurrent(initialText);
+        setIsExpanded(true);
     }
 
     const startDelete = (e: React.MouseEvent) => {
@@ -116,6 +120,7 @@ export const Form = ({
                 setReadOnly(true);
                 setIsTyping(false);
                 setModified(true);
+                setIsExpanded(true);
             }
         } catch (errors) {
             if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
@@ -181,6 +186,8 @@ export const Form = ({
                                 readOnly={readOnly}
                                 ref={textareaRef}
                                 name="text"
+                                isExpanded={isExpanded}
+                                toggleIsExpanded={toggleIsExpanded}
                                 value={current}
                                 onChange={handleChange}
                             />
