@@ -12,7 +12,7 @@ export const Comments = ({ note }: { note: LowDetailNote }) => {
             href={`/${user ? user.username : 'user'}/${id}`}
             className={clsx(
                 isClosed && 'pointer-events-none cursor-not-allowed select-none',
-                'px-2 py-1 insm:p-1 rounded-md insm:rounded-full',
+                'px-2 py-1 rounded-md insm:rounded-full',
                 'flex items-center gap-1',
                 'insm:dark:bg-lighter/25 insm:bg-darker/25',
                 'hover:dark:bg-semidark hover:bg-semilight',
@@ -23,12 +23,12 @@ export const Comments = ({ note }: { note: LowDetailNote }) => {
         >
             <span>
                 {isClosed
-                    ? <IconMessageCircleOff className="insm:!text-white" />
-                    : <IconMessageCircle className="insm:!text-white" />
+                    ? <IconMessageCircleOff size={20} className="insm:!text-white" />
+                    : <IconMessageCircle size={20} className="insm:!text-white" />
                 }
             </span>
             {count > 0 &&
-                <span className="text-sm">
+                <span className="text-sm insm:text-white">
                     {count}
                 </span>
             }

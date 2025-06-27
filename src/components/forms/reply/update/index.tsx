@@ -108,7 +108,7 @@ export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, se
             <form
                 {...rest}
                 onSubmit={handleSubmit(onSubmit)}
-                className="relative pl-10 py-2"
+                className="relative pl-10 insm:pl-5 py-2"
             >
                 {reply.user && reply.user.username === user?.username && readOnly &&
                     <MenuButton
@@ -116,7 +116,7 @@ export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, se
                         onClick={toggleMenu}
                         onBlur={closeMenu}
                         tooltip="Menu"
-                        className="absolute top-4 right-0 z-20"
+                        className="absolute top-2 right-0 z-20"
                     >
                         <Menu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} className="top-auto bottom-[135%]">
                             <MenuItem

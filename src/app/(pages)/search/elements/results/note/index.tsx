@@ -25,12 +25,14 @@ export const Note = ({ note, ...rest }: NoteProps) => {
                 </header>
                 <section className="-mt-1 pl-14 insm:pl-0 flex flex-col gap-1">
                     <Title note={note} />
-                    <Desc className="text-sm">{note.description}</Desc>
-                    <Tags>
-                        {note.tags.map((tag, key) =>
-                            <Tag key={key} tag={tag} />
-                        )}
-                    </Tags>
+                    {note.description && <Desc className="text-sm">{note.description}</Desc>}
+                    {note.tags.length > 0 &&
+                        <Tags>
+                            {note.tags.map((tag, key) =>
+                                <Tag key={key} tag={tag} />
+                            )}
+                        </Tags>
+                    }
                 </section>
                 <footer className="w-full mt-1 pl-12 insm:pl-0 flex items-center justify-between">
                     <Comments note={note} />
