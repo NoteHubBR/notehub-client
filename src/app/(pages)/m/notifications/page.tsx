@@ -44,7 +44,7 @@ const Notifications = () => {
     const handleScroll = useCallback(async () => {
         if (!token || page.last || !sectionRef.current || isFetchingRef.current) return;
         const { scrollTop, scrollHeight, clientHeight } = sectionRef.current;
-        if (scrollTop + clientHeight >= scrollHeight) {
+        if (scrollTop + clientHeight >= scrollHeight - 1) {
             try {
                 isFetchingRef.current = true;
                 setisFetching(true);

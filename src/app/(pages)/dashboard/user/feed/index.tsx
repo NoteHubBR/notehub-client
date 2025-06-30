@@ -55,8 +55,10 @@ export const Feed = () => {
 
     const handleScroll = useCallback(async () => {
         if (!token || page.last || isFetching.current) return;
-        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-        if (scrollTop + clientHeight >= scrollHeight) {
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+        if (scrollY + windowHeight >= docHeight - 1) {
             try {
                 startFetch()
                 const { content, ...rest } = await getFeedNotes(token.access_token, `page=${page.page + 1}`);
@@ -73,8 +75,8 @@ export const Feed = () => {
 
     useEffect(() => {
         if (isMounted) init();
-        document.addEventListener("scroll", handleScroll);
-        return () => document.removeEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
     }, [handleScroll, init, isMounted])
 
     if (isEmpty(page)) return <Skeleton />;

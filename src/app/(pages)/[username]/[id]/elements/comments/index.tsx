@@ -45,9 +45,11 @@ export const Comments = ({ token, user, note, setNote }: CommentsProps) => {
 
     const handleScroll = useCallback(async () => {
         if (note.comments_count === 0 || isFetching.current || page.last) return;
-        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
         startTransition(async () => {
-            if (scrollTop + clientHeight >= scrollHeight) {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const docHeight = document.documentElement.scrollHeight;
+            if (scrollY + windowHeight >= docHeight - 1) {
                 try {
                     isFetching.current = true;
                     const accessToken = token ? token.access_token : null;
