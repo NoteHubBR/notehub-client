@@ -1,7 +1,7 @@
 'use client';
 
-import { Navbar as GNavbar } from "./GuestNavbar";
-import { Navbar as UNavbar } from "./UserNavbar";
+import { Navbar as GuestNavbar } from "./GuestNavbar";
+import { Navbar as UserNavbar } from "./UserNavbar";
 import { shouldUseUserContext } from "@/core";
 import { Skeleton } from "./Skeleton";
 import { useLoading, useScreen, useStore, useUser } from "@/data/hooks"
@@ -12,17 +12,17 @@ export const Navbar = () => {
     const pathname = usePathname();
     const shouldRender = shouldUseUserContext(pathname);
 
+    const { store: { isFirstTimer, isGuest, isExpired } } = useStore();
     const { onDesktop } = useScreen();
     const { isLoaded } = useLoading();
-    const { store: { isFirstTimer, isGuest, isExpired } } = useStore();
     const { user } = useUser();
 
     if (!shouldRender || !onDesktop || !isLoaded) return null;
 
     if (!user && !isFirstTimer && !isGuest && !isExpired) return <Skeleton />;
 
-    if (isFirstTimer || isGuest || isExpired) return <GNavbar />;
+    if (isGuest || isExpired) return <GuestNavbar />;
 
-    if (user) return <UNavbar user={user} />;
+    if (user) return <UserNavbar user={user} />;
 
 }

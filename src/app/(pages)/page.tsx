@@ -7,14 +7,14 @@ import Link from "next/link";
 
 export default function Home() {
 
-  const { store, setStore } = useStore();
+  const { store } = useStore();
   const { user } = useUser();
 
   const { isFirstTimer, isGuest, isExpired } = store;
 
-  const initAsGuest = () => { setStore({ isFirstTimer: false, isGuest: true }); }
-
   if (!store) return null;
+
+  if (isFirstTimer) return <Dashboard.Welcome />;
 
   return (
     <main className="h-full w-full flex flex-col dark:bg-dark bg-light">
@@ -24,13 +24,6 @@ export default function Home() {
         inlg:flex-col-reverse inlg:justify-end inlg:gap-0
         inmd:flex-col inmd:justify-start"
       >
-        {isFirstTimer &&
-          <>
-            <div>be welcome</div>
-            <Link href={'/signin'} className="request-btn">Logar</Link>
-            <button onClick={initAsGuest} className="request-btn">Explorar</button>
-          </>
-        }
         {isGuest &&
           <>
             <h1>Hello Guest!</h1>

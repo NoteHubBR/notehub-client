@@ -18,12 +18,10 @@ export const Page = (props: PageProps) => {
 
     const shouldUseMargin = shouldUseUserContext(pathname);
 
+    const { store: { isGuest, isExpired } } = useStore();
     const { onDesktop, onMobile } = useScreen();
-
     const { isLoaded } = useLoading();
-
     const { isMenuOpen } = useStore();
-
     const { user } = useUser();
 
     if (!isLoaded) return null;
@@ -32,7 +30,7 @@ export const Page = (props: PageProps) => {
         <div
             className={clsx(
                 shouldUseMargin && onDesktop && user ? `${isMenuOpen(user) ? "pl-[240px]" : "pl-[88px]"}` : '',
-                shouldUseMargin && onMobile ? 'pb-[45px]' : '',
+                shouldUseMargin && onMobile && (user || isGuest || isExpired) ? 'pb-[45px]' : '',
                 className
             )}
             {...rest}

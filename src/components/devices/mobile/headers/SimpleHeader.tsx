@@ -17,7 +17,7 @@ export const SimpleHeader = ({ title, ...rest }: { title: string } & React.HTMLA
             <button
                 aria-label="Voltar"
                 className="p-1 rounded-full
-                    hover:dark:bg-lighter/10 hover:bg-dark/10 transition-colors"
+                hover:dark:bg-lighter/10 hover:bg-dark/10 transition-colors"
                 onClick={() => router.back()}
             >
                 <IconArrowLeft />

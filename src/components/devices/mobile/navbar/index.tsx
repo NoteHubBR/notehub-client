@@ -5,7 +5,7 @@ import { IconCompass, IconHome, IconNotes, IconPlus, IconUserCircle } from "@tab
 import { Item } from "./elements/Item";
 import { List } from "./elements/List";
 import { shouldUseUserContext } from "@/core";
-import { useLoading, useScreen, useUser } from "@/data/hooks";
+import { useLoading, useScreen, useStore, useUser } from "@/data/hooks";
 import { usePathname } from "next/navigation";
 
 export const Navbar = () => {
@@ -14,10 +14,9 @@ export const Navbar = () => {
 
     const shouldRender = shouldUseUserContext(pathname);
 
+    const { store: { isGuest, isExpired } } = useStore();
     const { onMobile } = useScreen();
-
     const { isLoaded } = useLoading();
-
     const { user } = useUser();
 
     if (!shouldRender || !onMobile || !isLoaded) return null;
@@ -33,10 +32,10 @@ export const Navbar = () => {
             >
                 {children}
             </nav>
-        );
-    };
+        )
+    }
 
-    if (!user) return (
+    if (isGuest || isExpired) return (
         <Nav>
             <List>
                 <Item href='/' text="Início"><IconHome size={22} /></Item>
@@ -46,9 +45,9 @@ export const Navbar = () => {
                 <Item href='/signin' text="Você"><IconUserCircle size={22} /></Item>
             </List>
         </Nav>
-    );
+    )
 
-    return (
+    if (user) return (
         <Nav>
             <List>
                 <Item href='/' text="Início"><IconHome size={22} /></Item>
