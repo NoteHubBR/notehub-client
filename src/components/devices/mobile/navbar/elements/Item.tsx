@@ -4,31 +4,28 @@ import Link from "next/link";
 
 interface ItemProps extends React.HTMLAttributes<HTMLLIElement> {
     href: string;
-    children: React.ReactNode
-    text?: string;
+    icon?: React.ElementType;
 }
 
-export const Item = (props: ItemProps) => {
+export const Item = ({ href, icon: Icon, children, className, ...rest }: ItemProps) => {
 
-    const { href, children, text, ...rest } = props;
-
-    const pathname = usePathname();
-
-    const IconPlus: boolean = !text;
+    const onPathname: boolean = href === usePathname();
 
     return (
-        <li className={clsx('cursor-pointer route-highlight', pathname === href && 'on')} {...rest}>
-            <Link
-                href={href}
-                className={clsx(
-                    'py-1',
-                    'flex flex-col items-center',
-                    'rounded-full',
-                    IconPlus ? 'px-1 dark:bg-lighter/10 bg-darker/10' : ''
-                )}
-            >
-                {children}
-                <span className="text-2xs">{text}</span>
+        <li className={className} {...rest}>
+            <Link href={href}>
+                {Icon
+                    ? <Icon
+                        size={24}
+                        className={clsx(
+                            'transition-colors duration-300',
+                            onPathname
+                                ? 'dark:text-white text-black'
+                                : 'dark:text-neutral-400 text-neutral-600'
+                        )}
+                    />
+                    : children
+                }
             </Link>
         </li>
     )

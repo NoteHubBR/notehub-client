@@ -1,10 +1,11 @@
 'use client'
 
 import { Component } from "@/components";
-import { IconCompass, IconHome, IconNotes, IconPlus, IconUserCircle } from "@tabler/icons-react"
+import { IconHome, IconNotes, IconPlus, IconSearch, IconUserCircle } from "@tabler/icons-react"
 import { Item } from "./elements/Item";
 import { List } from "./elements/List";
 import { shouldUseUserContext } from "@/core";
+import { Skeleton } from "./skeleton";
 import { useLoading, useScreen, useStore, useUser } from "@/data/hooks";
 import { usePathname } from "next/navigation";
 
@@ -14,7 +15,7 @@ export const Navbar = () => {
 
     const shouldRender = shouldUseUserContext(pathname);
 
-    const { store: { isGuest, isExpired } } = useStore();
+    const { store: { isFirstTimer, isGuest, isExpired } } = useStore();
     const { onMobile } = useScreen();
     const { isLoaded } = useLoading();
     const { user } = useUser();
@@ -35,14 +36,16 @@ export const Navbar = () => {
         )
     }
 
+    if (!isFirstTimer && !isGuest && !user && !isExpired) return <Skeleton />;
+
     if (isGuest || isExpired) return (
         <Nav>
             <List>
-                <Item href='/' text="Início"><IconHome size={22} /></Item>
-                <Item href='/signin' text="Explorar"><IconCompass size={22} /></Item>
-                <Item href='/signin'><IconPlus size={22} /></Item>
-                <Item href='/signin' text="Notas"><IconNotes size={22} /></Item>
-                <Item href='/signin' text="Você"><IconUserCircle size={22} /></Item>
+                <Item href='/' icon={IconHome} />
+                <Item href='/search' icon={IconSearch} />
+                <Item href='/signin' icon={IconPlus} className="p-1 rounded-full dark:bg-semidark bg-semilight" />
+                <Item href='/signin' icon={IconNotes} />
+                <Item href='/signin' icon={IconUserCircle} />
             </List>
         </Nav>
     )
@@ -50,11 +53,11 @@ export const Navbar = () => {
     if (user) return (
         <Nav>
             <List>
-                <Item href='/' text="Início"><IconHome size={22} /></Item>
-                <Item href='/search' text="Explorar"><IconCompass size={22} /></Item>
-                <Item href='/new'><IconPlus size={22} /></Item>
-                <Item href={`/${user.username}/notes`} text="Notas"><IconNotes size={22} /></Item>
-                <Item href={`/${user.username}`} text="Você"><Component.Photo user={user} size={22} /></Item>
+                <Item href='/' icon={IconHome} />
+                <Item href='/search' icon={IconSearch} />
+                <Item href='/new' icon={IconPlus} className="p-1 rounded-full dark:bg-semidark bg-semilight" />
+                <Item href={`/${user.username}/notes`} icon={IconNotes} />
+                <Item href={`/${user.username}`}><Component.Photo user={user} size={24} /></Item>
             </List>
         </Nav>
     )
