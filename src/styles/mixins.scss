@@ -83,6 +83,26 @@
     }
 }
 
+@mixin vignette-checkered ($stripeColor, $gradientSideColor) {
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(to right, $stripeColor 1px, transparent 1px), linear-gradient(to bottom, $stripeColor 1px, transparent 1px);
+        background-size: 66.6px 66.6px;
+        opacity: .666;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, transparent 0%, $gradientSideColor 66.6%);
+    }
+}
+
 @mixin applying {
     z-index: 1;
     overflow: hidden;

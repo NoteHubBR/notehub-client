@@ -1,6 +1,7 @@
 'use client';
 
 import { Device } from "@/components/devices";
+import { Guest } from "./guest";
 import { User } from "./user";
 import { useStore, useUser } from "@/data/hooks";
 import { Welcome } from "./welcome";
@@ -17,6 +18,8 @@ export default function Dashboard() {
 
     if (isFirstTimer) return <Welcome />;
 
+    if (isGuest) return <Guest />;
+
     return (
         <main className="h-full w-full flex flex-col dark:bg-dark bg-light">
             <Device.Mobile.Header.MainHeader />
@@ -25,12 +28,6 @@ export default function Dashboard() {
                 inlg:flex-col-reverse inlg:justify-end inlg:gap-0
                 inmd:flex-col inmd:justify-start"
             >
-                {isGuest &&
-                    <>
-                        <h1>Hello Guest!</h1>
-                        <Link href={'/signin'} className="request-btn">Logar</Link>
-                    </>
-                }
                 {user &&
                     <>
                         <User.Feed />

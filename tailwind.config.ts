@@ -64,7 +64,17 @@ const config: Config = {
         'alpha-l-sm': '0 0 1px rgba(255,255,255,.33)',
         'alpha-l-md': '0 0 1px rgba(255,255,255,.5)',
         'alpha-l': '0 0 1px rgba(255,255,255,1)',
-      }
+      },
+      keyframes: {
+        'border-spin': {
+          '100%': {
+            transform: 'rotate(-360deg)',
+          },
+        },
+      },
+      animation: {
+        'border-spin': 'border-spin 6s linear infinite',
+      },
     },
   },
   plugins: [
@@ -104,23 +114,8 @@ const config: Config = {
             left: '0',
           },
         },
-        '.route-highlight': {
-          position: 'relative',
-          '&::after': {
-            zIndex: '-1',
-            content: "''",
-            position: 'absolute',
-            bottom: '0',
-            right: '0',
-            width: '0',
-            height: '100%',
-            borderBottom: `3px solid ${theme('colors.primary')}`,
-            transition: 'width ease-in-out .25s',
-          },
-          '&.on::after': {
-            width: '100%',
-            left: '0',
-          },
+        '.conic-gradient': {
+          background: `conic-gradient(${theme('colors.primary')} 0deg, ${theme('colors.secondary')} 0deg, transparent 80deg)`
         },
         '.center': {
           position: 'absolute',

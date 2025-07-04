@@ -20,6 +20,14 @@
     @include mixins.checkered-background(black, white);
 }
 
+.dark-vignette-checkered {
+    @include mixins.vignette-checkered(#fafafa, #0a0a0a);
+}
+
+.light-vignette-checkered {
+    @include mixins.vignette-checkered(#0a0a0a, #fafafa);
+}
+
 .applying {
     @include mixins.applying;
 }
