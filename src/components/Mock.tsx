@@ -6,7 +6,7 @@ interface MockProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 }
 
 export const Mock = ({ src, size, ...rest }: MockProps) => (
-    <figure className="select-none overflow-hidden flex-none rounded-full" {...rest}>
+    <figure className="cursor-pointer select-none overflow-hidden flex-none rounded-full" {...rest}>
         <Image
             src={src}
             width={size}

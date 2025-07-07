@@ -12,6 +12,10 @@
     @include mixins.request-btn(0.375rem, rgb(var(--primary)), white);
 }
 
+.invitation-btn {
+    @include mixins.invitation-btn(rgb(var(--primary)));
+}
+
 .dark-checkered-background {
     @include mixins.checkered-background(white, black);
 }

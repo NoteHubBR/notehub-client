@@ -7,7 +7,7 @@ interface ArticleProps extends React.HTMLAttributes<HTMLElement> {
     message: string;
     createdAt: string;
     title: string;
-    desc: string;
+    desc?: string;
     flamesCount: number;
 }
 
@@ -34,7 +34,7 @@ export const Article = ({ photo, author, message, createdAt, title, desc, flames
                 <Component.Mock src={photo} size={25} />
                 <Link>{author} / {title}</Link>
             </header>
-            <Desc>{desc}</Desc>
+            {desc && <Desc>{desc}</Desc>}
             <footer className="flex items-center gap-2">
                 <Flame number={flamesCount} />
             </footer>

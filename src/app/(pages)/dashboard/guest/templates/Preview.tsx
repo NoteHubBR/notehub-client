@@ -2,7 +2,11 @@ import { clsx } from "clsx";
 import { SVG } from "@/components/svgs";
 import { usePref } from "@/data/hooks";
 
-export const Preview = ({ className, children, ...rest }: React.HTMLAttributes<HTMLDivElement>) => {
+interface PreviewProps extends React.HTMLAttributes<HTMLDivElement> {
+    flip?: boolean;
+}
+
+export const Preview = ({ flip, children, ...rest }: PreviewProps) => {
 
     const { pref: { useDarkTheme } } = usePref();
 
@@ -10,29 +14,20 @@ export const Preview = ({ className, children, ...rest }: React.HTMLAttributes<H
         <div
             className={clsx(
                 'relative',
-                'w-full h-full',
+                'w-full h-full px-4 insm:py-4',
                 'flex items-center justify-center',
                 useDarkTheme ? 'dark-vignette-checkered' : 'light-vignette-checkered'
             )}
         >
-            <SVG.Flare className="absolute z-10" flip />
+            <SVG.Flare className="absolute z-20 select-none pointer-events-none" flip={flip} />
             <div
-                className={clsx(
-                    'z-10 overflow-hidden relative',
-                    'max-w-[555px] w-full max-h-[666px] h-full p-1 rounded-md',
-                    'dark:bg-lighter/10 bg-darker/10',
-                    'after:absolute after:left-[-25%] after:top-[-25%] after:h-[150%] after:w-[150%] after:animate-border-spin after:conic-gradient'
-                )}
+                className="z-10
+                max-w-[666px] w-full rounded-xl
+                border-4 dark:border-light/5 border-dark/5
+                dark:bg-darker bg-lighter"
                 {...rest}
             >
-                <div
-                    className={clsx(
-                        'inset-1 absolute z-[1] rounded-md dark:bg-darker bg-lighter',
-                        className
-                    )}
-                >
-                    {children}
-                </div>
+                {children}
             </div>
         </div>
     )

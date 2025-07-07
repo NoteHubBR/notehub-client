@@ -3,7 +3,7 @@ import { IconFlame } from "@tabler/icons-react";
 export const Flame = ({ number }: { number: number }) => (
     <>
         <div
-            className="group
+            className="group cursor-pointer
             p-1 rounded-full
             flex items-center
             !text-white

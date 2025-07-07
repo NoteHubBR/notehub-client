@@ -5,17 +5,21 @@ import { Hero, Preview, Section } from "./templates";
 export const Guest = () => {
 
     return (
-        <main className="h-full w-full">
+        <>
             <Device.Mobile.Header.MainHeader />
-            <Section>
-                <Hero>
-                    <h1>Feed</h1>
-                </Hero>
-                <Preview>
-                    <Feed />
-                </Preview>
-            </Section>
-        </main>
+            <main>
+                <Section>
+                    <Hero
+                        title="Junte-se à comunidade"
+                        subtitle="Conecte-se com outros e receba atualizações."
+                        message="Juntar-se"
+                    />
+                    <Preview flip>
+                        <Feed />
+                    </Preview>
+                </Section>
+            </main>
+        </>
     )
 
 }

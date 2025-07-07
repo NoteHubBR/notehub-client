@@ -114,9 +114,6 @@ const config: Config = {
             left: '0',
           },
         },
-        '.conic-gradient': {
-          background: `conic-gradient(${theme('colors.primary')} 0deg, ${theme('colors.secondary')} 0deg, transparent 80deg)`
-        },
         '.center': {
           position: 'absolute',
           top: '50%',

@@ -59,6 +59,37 @@
 
 }
 
+@mixin invitation-btn($onHoverBgColor) {
+
+    z-index: 1;
+    position: relative;
+    transition: ease-in-out .3s;
+
+    &::after {
+        content: '';
+        z-index: -1;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 0%;
+        height: 100%;
+        border-radius: 4px;
+        background: $onHoverBgColor;
+        transition: width ease-in-out .3s;
+    }
+
+    &:hover,
+    &:focus {
+
+        &::after {
+            left: 0;
+            width: 100%;
+        }
+
+    }
+
+}
+
 @mixin checkered-background($stripeColor, $gradientSideColor) {
     position: relative;
 
