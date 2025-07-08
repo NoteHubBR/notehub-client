@@ -83,6 +83,15 @@ const config: Config = {
     },
     function ({ addUtilities, theme }: { addUtilities: any, theme: any }) {
       const newUtilities = {
+        '.no-scrollbar': {
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          touchAction: 'pan-y',
+          msTouchAction: 'pan-y',
+          '&::-webkit-scrollbar': {
+            display: 'none'
+          }
+        },
         '.scrollbar-desktop': {
           scrollbarColor: 'transparent transparent',
           scrollbarWidth: 'thin',
