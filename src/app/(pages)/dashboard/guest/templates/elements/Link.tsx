@@ -7,6 +7,7 @@ interface LinkProps extends Omit<NextLinkProps, "href"> {
 
 export const Link = ({ children, ...rest }: LinkProps) => (
     <NextLink
+        tabIndex={-1}
         href="/signup"
         className="invitation-btn group
         w-[166.6px] h-[44px]
