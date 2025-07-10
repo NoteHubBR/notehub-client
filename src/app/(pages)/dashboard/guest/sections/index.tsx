@@ -1,3 +1,4 @@
+import { Color } from "./color";
 import { Feed } from "./feed";
 import { Notifications } from "./notifications";
 import { Profile } from "./profile";
@@ -23,5 +24,12 @@ export const sections = [
         subtitle: "Receba atualizações de suas interações na comunidade.",
         message: "Interagir",
         child: <Notifications />
+    },
+    {
+        flip: false,
+        title: "Torne o ambiente mais agradável",
+        subtitle: "Personalize a interface à sua preferência!",
+        message: "Alterar",
+        child: <Color />
     }
 ]

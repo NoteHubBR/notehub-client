@@ -11,11 +11,11 @@ export const Link = ({ children, ...rest }: LinkProps) => (
         href="/signup"
         className="invitation-btn group
         w-[166.6px] h-[44px]
-        inmd:mx-auto
-        insm:w-[133px] insm:h-[36px]
+        insm:mx-auto
+        inmd:w-[133px] inmd:h-[36px]
         rounded px-4 py-2
         flex items-center justify-center gap-3
-        tracking-wider text-xl insm:text-sm dark:text-darker text-lighter
+        tracking-wider text-xl inmd:text-sm dark:text-darker text-lighter
         dark:bg-lighter bg-darker
         hover:!text-white hover:gap-1
         focus:!text-white focus:gap-1"
