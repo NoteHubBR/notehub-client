@@ -1,3 +1,5 @@
+'use client';
+
 import { Header as GuestHeader } from "./GuestHeader";
 import { Header as UserHeader } from "./UserHeader";
 import { Skeleton } from "./Skeleton";

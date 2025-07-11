@@ -1,27 +1,26 @@
+import { clsx } from "clsx";
 import { Icon } from "@/components/icons";
-import { IconSearch } from "@tabler/icons-react";
-import NextLink, { LinkProps } from "next/link";
+import { Toggle } from "@/components/buttons";
+import { usePathname } from "next/navigation";
 
 export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
 
-    const Link = ({ children, ...rest }: { children: React.ReactNode } & LinkProps) => {
-        return (
-            <NextLink
-                className="relative p-1 rounded-full hover:dark:bg-lighter/10 hover:bg-dark/10 transition-colors"
-                {...rest}
-            >
-                {children}
-            </NextLink>
-        )
-    }
+    const pathname = usePathname();
+    const onRoot = pathname === "/" || pathname === "/dashboard";
 
     return (
         <header
-            className="py-2 px-4 flex items-center justify-end gap-4 dark:bg-darker bg-lighter"
+            className={clsx(
+                'z-[997] top-0 left-0',
+                'w-full py-2 px-4',
+                'flex items-center justify-end gap-4',
+                onRoot ? 'absolute' : 'static',
+                onRoot ? 'bg-transparent' : 'dark:bg-darker bg-lighter'
+            )}
             {...props}
         >
             <Icon.Logo width={77} height={0} className="mr-auto" />
-            <Link href={'/m/search'}><IconSearch /></Link>
+            <Toggle.Theme />
         </header>
     )
 

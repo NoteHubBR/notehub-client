@@ -1,8 +1,8 @@
 import { Button, Card } from "./elements";
 import { colorNames } from "@/core";
 import { DefaultColors } from "tailwindcss/types/generated/colors";
+import { useEffect, useState } from "react";
 import { usePref } from "@/data/hooks";
-import { useState } from "react";
 import tailwindColors from "tailwindcss/colors";
 
 export const Color = () => {
@@ -13,6 +13,8 @@ export const Color = () => {
         isDark: useDarkTheme,
         color: shades
     })
+
+    useEffect(() => { setColors({ isDark: useDarkTheme, color: shades }) }, [shades, useDarkTheme]);
 
     return (
         <div className="w-full h-full p-4 flex flex-col gap-4 justify-center">

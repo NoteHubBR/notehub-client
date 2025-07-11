@@ -19,7 +19,7 @@ export const Preview = ({ flip, children, ...rest }: PreviewProps) => {
                 useDarkTheme ? 'dark-vignette-checkered' : 'light-vignette-checkered'
             )}
         >
-            <SVG.Flare className="absolute z-20 select-none pointer-events-none" flip={flip} />
+            <SVG.Flare className="z-20 select-none pointer-events-none absolute insm:bottom-full" flip={flip} />
             <div
                 className="z-10
                 max-w-[666px] w-full rounded-xl

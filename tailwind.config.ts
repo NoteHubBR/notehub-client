@@ -66,14 +66,14 @@ const config: Config = {
         'alpha-l': '0 0 1px rgba(255,255,255,1)',
       },
       keyframes: {
-        'border-spin': {
+        'background-spin': {
           '100%': {
             transform: 'rotate(-360deg)',
           },
         },
       },
       animation: {
-        'border-spin': 'border-spin 6s linear infinite',
+        'background-spin': 'background-spin 3s linear infinite',
       },
     },
   },
@@ -104,24 +104,59 @@ const config: Config = {
           scrollbarColor: `${theme('colors.primary')} transparent`,
           scrollbarWidth: 'thin',
         },
-        '.navigation-hover': {
+        '.gradient-button': {
+          'z-index': '0',
           position: 'relative',
+          padding: '8px 24px',
+          'border-radius': '4px',
+          'text-align': 'center',
+          'font-weight': '600',
+          'font-size': '0.875rem',
+          'line-height': '1.25rem',
+          color: 'white',
+          '&::before': {
+            content: "''",
+            'z-index': '-1',
+            position: 'absolute',
+            inset: '0',
+            'border-radius': '4px',
+            background: 'linear-gradient(to right, #2563EB, #7C3AED, #DC2626)',
+          },
           '&::after': {
             content: "''",
+            'z-index': '-2',
             position: 'absolute',
-            bottom: '-0.5rem',
-            right: '0',
-            width: '0',
-            height: '0.2rem',
-            borderRadius: '9999px',
-            backgroundColor: `${theme('colors.primary')}`,
-            transition: 'width ease-in-out .25s',
+            inset: '0',
+            'border-radius': '4px',
+            background: 'linear-gradient(to right, #2563EB, #7C3AED, #DC2626)',
+            filter: 'blur(12px)'
+          }
+        },
+        '.opaque-button': {
+          'z-index': '0',
+          position: 'relative',
+          padding: '8px 24px',
+          'border-radius': '4px',
+          'text-align': 'center',
+          'font-weight': '600',
+          'font-size': '0.875rem',
+          'line-height': '1.25rem',
+          color: 'white',
+          '&::after': {
+            content: "''",
+            'z-index': '-1',
+            position: 'absolute',
+            inset: '0',
+            'border-radius': '4px',
+            opacity: '0',
+            'transition-property': 'all',
+            'transition-timing-function': 'cubic-bezier(0.4, 0, 0.2, 1)',
+            'transition-duration': '222ms',
           },
           '&:hover::after': {
-            pointerEvents: 'none',
-            width: '100%',
-            left: '0',
-          },
+            filter: 'blur(12px)',
+            opacity: '1'
+          }
         },
         '.center': {
           position: 'absolute',
