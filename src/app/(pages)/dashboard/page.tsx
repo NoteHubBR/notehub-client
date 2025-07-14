@@ -5,7 +5,7 @@ import { Guest } from "./guest";
 import { User } from "./user";
 import { useStore, useUser } from "@/data/hooks";
 import { Welcome } from "./welcome";
-import Link from "next/link";
+import { Expired } from "./expired";
 
 export default function Dashboard() {
 
@@ -20,7 +20,7 @@ export default function Dashboard() {
 
     if (isGuest) return <Guest />;
 
-    return (
+    if (user) return (
         <main className="h-full w-full flex flex-col dark:bg-dark bg-light">
             <Device.Mobile.Header.MainHeader />
             <section
@@ -28,20 +28,14 @@ export default function Dashboard() {
                 inlg:flex-col-reverse inlg:justify-end inlg:gap-0
                 inmd:flex-col inmd:justify-start"
             >
-                {user &&
-                    <>
-                        <User.Feed />
-                        <User.Aside />
-                    </>
-                }
-                {isExpired &&
-                    <>
-                        <h1>Sua sessão expirou!</h1>
-                        <Link href={'/signin'} className="request-btn">Logar</Link>
-                    </>
-                }
+                <User.Feed />
+                <User.Aside />
             </section>
         </main>
     )
+
+    if (isExpired) return <Expired />;
+
+    return <></>;
 
 }

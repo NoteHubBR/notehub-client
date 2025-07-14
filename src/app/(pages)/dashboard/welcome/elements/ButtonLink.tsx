@@ -10,6 +10,7 @@ export const ButtonLink = ({ className, children, href, ...rest }: ButtonLinkPro
     <Link
         href={href}
         className={clsx(
+            'group',
             'w-[300px] inmd:w-[270px] h-[40px] rounded-full',
             'flex items-center justify-center',
             'font-semibold',
@@ -20,6 +21,8 @@ export const ButtonLink = ({ className, children, href, ...rest }: ButtonLinkPro
         )}
         {...rest}
     >
-        {children}
+        <span className="inline-block group-hover:scale-110 transition-transform duration-300">
+            {children}
+        </span>
     </Link>
 )

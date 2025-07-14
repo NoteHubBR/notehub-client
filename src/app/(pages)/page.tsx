@@ -17,8 +17,6 @@ export default function Home() {
 
   if (isGuest) return <Dashboard.Guest />;
 
-  if (isExpired) return <></>;
-
   if (user) return (
     <main className="h-full w-full flex flex-col dark:bg-dark bg-light">
       <Device.Mobile.Header.MainHeader />
@@ -32,5 +30,9 @@ export default function Home() {
       </section>
     </main>
   )
+
+  if (isExpired) return <Dashboard.Expired />;
+
+  return <></>;
 
 }

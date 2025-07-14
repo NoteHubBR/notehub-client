@@ -1,7 +1,7 @@
 import { useStore } from "@/data/hooks";
 import { clsx } from "clsx";
 
-export const Button = ({ className, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+export const Button = ({ className, children, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
 
     const { setStore } = useStore();
 
@@ -11,6 +11,7 @@ export const Button = ({ className, ...rest }: React.ButtonHTMLAttributes<HTMLBu
         <button
             onClick={initAsGuest}
             className={clsx(
+                'group',
                 'w-[300px] inmd:w-[270px] h-[40px] rounded-full',
                 'flex items-center justify-center',
                 'font-semibold',
@@ -20,7 +21,11 @@ export const Button = ({ className, ...rest }: React.ButtonHTMLAttributes<HTMLBu
                 className
             )}
             {...rest}
-        />
+        >
+            <span className="inline-block group-hover:scale-90 transition-transform duration-300">
+                {children}
+            </span>
+        </button>
     )
 
 }
