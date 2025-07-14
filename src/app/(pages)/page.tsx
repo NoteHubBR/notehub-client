@@ -3,7 +3,6 @@
 import { Dashboard } from "./dashboard";
 import { Device } from "@/components/devices";
 import { useStore, useUser } from "@/data/hooks";
-import Link from "next/link";
 
 export default function Home() {
 
@@ -16,7 +15,11 @@ export default function Home() {
 
   if (isFirstTimer) return <Dashboard.Welcome />;
 
-  return (
+  if (isGuest) return <Dashboard.Guest />;
+
+  if (isExpired) return <></>;
+
+  if (user) return (
     <main className="h-full w-full flex flex-col dark:bg-dark bg-light">
       <Device.Mobile.Header.MainHeader />
       <section
@@ -24,24 +27,8 @@ export default function Home() {
         inlg:flex-col-reverse inlg:justify-end inlg:gap-0
         inmd:flex-col inmd:justify-start"
       >
-        {isGuest &&
-          <>
-            <h1>Hello Guest!</h1>
-            <Link href={'/signin'} className="request-btn">Logar</Link>
-          </>
-        }
-        {user &&
-          <>
-            <Dashboard.User.Feed />
-            <Dashboard.User.Aside />
-          </>
-        }
-        {isExpired &&
-          <>
-            <h1>Sua sessão expirou!</h1>
-            <Link href={'/signin'} className="request-btn">Logar</Link>
-          </>
-        }
+        <Dashboard.User.Feed />
+        <Dashboard.User.Aside />
       </section>
     </main>
   )

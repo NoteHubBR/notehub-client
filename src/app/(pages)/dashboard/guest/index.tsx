@@ -22,6 +22,15 @@ export const Guest = () => {
         }
     }, [currentIndex])
 
+    useEffect(() => {
+        const container = containerRef.current;
+        const handleWheel = (e: WheelEvent) => {
+            if (e.shiftKey || Math.abs(e.deltaX) > 0) e.preventDefault();
+        }
+        if (container) container.addEventListener("wheel", handleWheel, { passive: false });
+        if (container) return () => container.removeEventListener("wheel", handleWheel);
+    }, [])
+
     return (
         <>
             <Device.Mobile.Header.MainHeader />
