@@ -56,15 +56,14 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
     }
 
     return (
-        <form onSubmit={onSubmit} onBlur={handleBlur} className="relative flex items-center justify-between">
+        <form onSubmit={onSubmit} onBlur={handleBlur} className="relative xl:center flex items-center justify-between">
             <input
                 ref={ref}
                 inputMode="search"
                 spellCheck={false}
                 autoCorrect="off"
                 autoCapitalize="off"
-                className="outline-none
-                peer
+                className="outline-none peer
                 inlg:w-[333px] w-[444px] py-[6px] pl-4 pr-9
                 text-sm dark:text-lighter text-dark
                 border-2 dark:border-semilight/10 border-semidark/10 rounded-s-3xl

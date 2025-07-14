@@ -19,7 +19,7 @@ export const Navbar = (props: React.HTMLAttributes<HTMLElement>) => {
         'w-screen max-w-full h-[8vh] inmd:h-[8svh] p-4',
         'flex items-center justify-between gap-4',
         onRoot ? 'absolute' : 'sticky',
-        onRoot ? 'bg-transparent' : 'dark:bg-darker bg:lighter'
+        onRoot ? 'bg-transparent' : 'dark:bg-darker bg-lighter'
       )}
       {...props}
     >
