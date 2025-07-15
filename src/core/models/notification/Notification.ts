@@ -9,6 +9,9 @@ export enum Type {
 }
 
 interface Info {
+    from: LowDetailUser;
+    to: LowDetailUser;
+    related: LowDetailUser;
     type: Type;
     message: string;
     target: string;
@@ -18,6 +21,5 @@ export interface Notification {
     id: UUID,
     read: boolean;
     created_at: string;
-    from_user: LowDetailUser;
     info: Info
 }

@@ -9,8 +9,9 @@ import Link from "next/link";
 export const Notification = ({ notification }: { notification: PropsType }) => {
 
     const {
-        from_user: user,
         info: {
+            from,
+            related,
             type,
             target,
             message: text
@@ -18,8 +19,8 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
     } = notification;
 
     const getHref = (type: Type): string => {
-        if (type === Type.FOLLOWER) return `/${user.username}`;
-        else return `/${user.username}/${target}`;
+        if (type === Type.FOLLOWER) return `/${related.username}`;
+        else return `/${related.username}/${target}`;
     }
 
     const getEmote = (type: Type): React.ElementType => {
@@ -56,9 +57,9 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
             <article className="w-full">
                 <section className="flex items-center">
                     <figure className="relative px-2 border-r text-sm dark:border-r-semilight/10 border-r-semidark/10">
-                        <Component.Photo user={user} size={55} />
+                        <Component.Photo user={from} size={55} />
                         <Icon.Sponsor
-                            user={user}
+                            user={from}
                             size={22}
                             className="bot-mid-center drop-shadow-alpha-d-md"
                         />
