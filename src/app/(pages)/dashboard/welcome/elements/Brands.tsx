@@ -12,7 +12,7 @@ export const Brands = (props: React.HTMLAttributes<HTMLDivElement>) => (
         <Image
             src="/imgs/logo.png"
             width={50} height={0}
-            priority alt={"Logo de XYZ"}
+            priority alt={"Logo de NoteHub"}
             className="dark:invert"
         />
         <Image

@@ -37,7 +37,7 @@ export const Answer = ({ hash, useSupport, children, ...rest }: AnswerProps) => 
                 {children}
                 {useSupport &&
                     <span className="font-medium text-sm text-primary hover:underline transition-all">
-                        <Link href="mailto:suporte@xisyz.xyz">
+                        <Link href="mailto:suporte@notehub.com.br">
                             Acessar o suporte
                         </Link>
                     </span>

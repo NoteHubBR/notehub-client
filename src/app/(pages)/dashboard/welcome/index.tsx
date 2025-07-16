@@ -1,4 +1,4 @@
-import { Brands, Button, ButtonLink, Item, Span } from "./elements";
+import { Brands, Button, ButtonLink } from "./elements";
 import { Icon } from "@/components/icons";
 import { useScreen } from "@/data/hooks";
 
@@ -15,7 +15,7 @@ export const Welcome = (props: React.HTMLAttributes<HTMLElement>) => {
                 <section className="inmd:w-full inmd:max-w-[333px] px-3 mr-auto [@media(max-width:1666px)]:mx-auto flex flex-col items-end justify-center gap-16 inmd:gap-6">
                     <header className="w-full">
                         <h1 className="font-extrabold text-7xl inlg:text-6xl inmd:text-5xl">
-                            XYZ
+                            NoteHub
                         </h1>
                         <h2 className="font-semibold text-2xl inlg:text-xl inmd:text-lg">
                             Organize, classifique e encontre.
@@ -39,29 +39,29 @@ export const Welcome = (props: React.HTMLAttributes<HTMLElement>) => {
                             <ButtonLink href="/signup" className="bg-primary text-white">
                                 Criar
                             </ButtonLink>
-                            <p className="text-xs">
+                            {/* <p className="text-xs">
                                 Ao se inscrever, você concorda com os
                                 <Span href="/terms" className="ml-1">Termos de Serviço </Span>
                                 {onDesktop && <br />}
                                 e a <Span href="/policy" className="ml-1">Política de Privacidade</Span>, incluindo o
                                 <Span href="/cookies" className="ml-1">Uso de Cookies</Span>.
-                            </p>
+                            </p> */}
                         </section>
                     </div>
                 </section>
             </div>
-            <footer className="p-2">
+            {/* <footer className="p-2">
                 <ul className="w-full mx-auto flex flex-wrap gap-3 justify-center">
                     <Item href="/" className="pointer-events-none select-none">© 2025 lucas-adm</Item>
-                    <Item href="https://github.com/lucas-adm/springboot-xyz" target="_blank">Backend</Item>
-                    <Item href="https://github.com/lucas-adm/next-react-xyz" target="_blank">Frontend</Item>
+                    <Item href="https://github.com/lucas-adm/springboot-notehub" target="_blank">Backend</Item>
+                    <Item href="https://github.com/lucas-adm/next-react-notehub" target="_blank">Frontend</Item>
                     <Item href="/terms">Termos de Serviço</Item>
                     <Item href="/policy">Política de Privacidade</Item>
                     <Item href="/cookies">Cookies</Item>
                     <Item href="/help" target="_blank">Ajuda</Item>
-                    <Item href="mailto:suporte@xisyz.xyz">Suporte</Item>
+                    <Item href="mailto:suporte@notehub.com.br">Suporte</Item>
                 </ul>
-            </footer>
+            </footer> */}
         </main>
     )
 

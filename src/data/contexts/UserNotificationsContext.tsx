@@ -43,7 +43,7 @@ export const UserNotificationsProvider = (props: any) => {
 
     const setTitle = useCallback((count: number): string => {
         setState((prev) => ({ ...prev, count: count }));
-        const title = `${count > 0 ? `(${count}) XYZ` : 'XYZ'}`;
+        const title = `${count > 0 ? `(${count}) NoteHub` : 'NoteHub'}`;
         return document.title = title;
     }, [])
 
