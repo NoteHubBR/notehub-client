@@ -1,6 +1,7 @@
 'use client';
 
 import { Icon } from "@/components/icons";
+import { Preferences } from "@/core";
 import { Template } from "@/components/templates";
 import { useEffect } from "react";
 import Link from "next/link";
@@ -8,17 +9,19 @@ import Link from "next/link";
 const NotFound = () => {
 
     useEffect(() => {
-        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-        const updateTheme = (e: MediaQueryListEvent | MediaQueryList) => {
-            const isDark = e.matches;
-            document.documentElement.classList.toggle("dark", isDark);
-            document.documentElement.classList.toggle("light", !isDark);
+        const stored = localStorage.getItem('preferences') ?? null;
+        const prefs: Preferences = stored
+            ? JSON.parse(stored)
+            : { useDarkTheme: window.matchMedia('(prefers-color-scheme: dark)').matches }
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const updateTheme = () => {
+            const dark = prefs.useDarkTheme;
+            document.documentElement.classList.toggle('dark', dark);
+            document.documentElement.classList.toggle('light', !dark);
         }
-        updateTheme(mediaQuery);
-        mediaQuery.addEventListener("change", updateTheme);
-        return () => {
-            mediaQuery.removeEventListener("change", updateTheme);
-        }
+        updateTheme();
+        mediaQuery.addEventListener('change', updateTheme);
+        return () => mediaQuery.removeEventListener('change', updateTheme);
     }, [])
 
     return (
