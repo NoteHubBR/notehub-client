@@ -9,9 +9,9 @@ import Link from "next/link";
 export const Notification = ({ notification }: { notification: PropsType }) => {
 
     const {
+        from,
+        related,
         info: {
-            from,
-            related,
             type,
             target,
             message: text
