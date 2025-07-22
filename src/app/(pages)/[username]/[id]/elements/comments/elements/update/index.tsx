@@ -49,21 +49,23 @@ export const CommentItem = ({ isSorting, token, user, note, comment, setNote, se
                 setRepliesCount={setRepliesCount}
                 setIsReplying={setIsReplying}
             />
-            <ul hidden={!isRepliesListOpen}>
-                {replies.map((reply) => (
-                    <li key={reply.id}>
-                        <ReplyItem
-                            token={token}
-                            user={user}
-                            note={note}
-                            comment={comment}
-                            reply={reply}
-                            setReplies={setReplies}
-                            setRepliesCount={setRepliesCount}
-                        />
-                    </li>
-                ))}
-            </ul>
+            {isRepliesListOpen &&
+                <ul>
+                    {replies.map((reply) => (
+                        <li key={reply.id}>
+                            <ReplyItem
+                                token={token}
+                                user={user}
+                                note={note}
+                                comment={comment}
+                                reply={reply}
+                                setReplies={setReplies}
+                                setRepliesCount={setRepliesCount}
+                            />
+                        </li>
+                    ))}
+                </ul>
+            }
             <Loader
                 token={token}
                 isRepliesListOpen={isRepliesListOpen}

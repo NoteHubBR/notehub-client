@@ -20,6 +20,7 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
 
     const getHref = (type: Type): string => {
         if (type === Type.FOLLOWER) return `/${related.username}`;
+        else if (related === null) return `/user/${target}`;
         else return `/${related.username}/${target}`;
     }
 
