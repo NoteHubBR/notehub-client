@@ -3,7 +3,7 @@ import { z } from "zod";
 export const createNoteFormSchema = z.object({
     title: z
         .string().trim()
-        .min(4, 'Mínimo de 4 caracteres.')
+        .min(2, 'Mínimo de 2 caracteres.')
         .max(48, 'Máximo de 48 caracteres.'),
     description: z
         .string().trim()

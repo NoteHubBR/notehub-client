@@ -8,3 +8,4 @@ export * from './File';
 export * from './Object';
 export * from './Query';
 export * from './Colors';
+export * from './Forbidden';

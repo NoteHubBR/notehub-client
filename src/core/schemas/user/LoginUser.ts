@@ -1,11 +1,16 @@
+import { noForbiddenWords } from '@/core/utils';
 import { z } from 'zod';
 
 export const loginUserFormSchema = z.object({
-    username: z
+    username: noForbiddenWords("Não pode")(z
         .string().trim().toLowerCase()
-        .regex(/^[a-zA-Z0-9_.]+$/, "Use letras, números, _ ou ."),
+        .regex(/^[a-zA-Z0-9_.]+$/, "Use letras, números, _ ou .")
+        .min(2, 'Mínimo de 2 caracteres.')
+        .max(12, 'Máximo de 12 caracteres.')),
     password: z
         .string().trim()
+        .min(4, 'Mínimo de 4 caracteres.')
+        .max(255, 'Máximo de 255 caracteres.'),
 });
 
 export type LoginUserFormData = z.infer<typeof loginUserFormSchema>;

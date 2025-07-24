@@ -6,10 +6,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**'
+        hostname: 'viohycfhtdaoecjsiqxy.supabase.co'
       }
     ]
   }
-};
+}
 
 export default nextConfig;
