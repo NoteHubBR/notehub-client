@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "NoteHub",
   description: "Seu bloco de notas social.",
   icons: {
-    icon: "/favicon.ico"
+    icon: "/imgs/favicon.png"
   },
   openGraph: {
     title: "NoteHub",

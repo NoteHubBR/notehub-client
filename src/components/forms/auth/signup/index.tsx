@@ -52,17 +52,17 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
                     <Element.Error field="email" />
                 </Element.Field>
                 <Element.Field>
-                    <Element.Label htmlFor="username" tooltip="O tamanho deve estar entre 4 e 12 caracteres, apenas letras, números, _ e .">Usuário</Element.Label>
+                    <Element.Label htmlFor="username" tooltip="O tamanho deve estar entre 2 e 12 caracteres, apenas letras, números, _ e .">Usuário</Element.Label>
                     <Element.Input name="username" type="text" required icon={<IconAt title="@" />} />
                     <Element.Error field="username" />
                 </Element.Field>
                 <Element.Field>
-                    <Element.Label htmlFor="displayName" tooltip="O tamanho deve estar entre 4 e 24 caracteres.">Nome</Element.Label>
+                    <Element.Label htmlFor="displayName" tooltip="O tamanho deve estar entre 2 e 24 caracteres.">Nome</Element.Label>
                     <Element.Input name="displayName" type="text" required icon={<IconSignature title="Nome" />} />
                     <Element.Error field="displayName" />
                 </Element.Field>
                 <Element.Field>
-                    <Element.Label htmlFor="password" tooltip="O tamanho deve estar entre 4 e 8 caracteres.">Senha</Element.Label>
+                    <Element.Label htmlFor="password" tooltip="O tamanho deve estar entre 4 e 255 caracteres.">Senha</Element.Label>
                     <Element.Input name="password" type="password" autoComplete="on" required />
                     <Element.Strength field="password" />
                     <Element.Error field="password" />
