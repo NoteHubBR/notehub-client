@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "NoteHub",
   description: "Seu bloco de notas social.",
   icons: {
-    icon: "/imgs/favicon.png"
+    icon: "https://notehub.com.br/imgs/favicon.png"
   },
   openGraph: {
     title: "NoteHub",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     siteName: "NoteHub",
     images: [
       {
-        url: "https://github.com/lucas-adm/next-react-notehub/blob/main/public/imgs/favicon.png",
+        url: "https://notehub.com.br/imgs/favicon.png",
         width: 256,
         height: 256,
         alt: "NoteHub Logo",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "NoteHub",
     description: "Seu bloco de notas social.",
-    images: ["https://github.com/lucas-adm/next-react-notehub/blob/main/public/imgs/favicon.png"],
+    images: ["https://notehub.com.br/imgs/favicon.png"],
   }
 };
 
