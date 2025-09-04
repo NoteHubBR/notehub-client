@@ -7,12 +7,12 @@
 
 <div align="center">
   <a href="https://notehub.com.br">
-    <img width="10%" height="10%" src="https://github.com/lucas-adm/springboot-notehub/blob/main/src/main/resources/public/imgs/logo.png">
+    <img width="10%" height="10%" src="https://github.com/notehubbr/notehub-api/blob/main/src/main/resources/public/imgs/logo.png">
   </a>
 </div>
 <br>
 <div align="center">
-  <a href="https://github.com/lucas-adm/next-react-notehub/releases/tag/v1.0">
+  <a href="https://github.com/notehubbr/notehub-client/releases/tag/v1.0">
     <img width="100px" height="25px" src="https://img.shields.io/badge/notehub-v1.0-7c3aed">
   </a>
 </div>
@@ -20,12 +20,12 @@
 ## Instalação
 #### Pré-requisitos:
 
-  - [Backend](https://github.com/lucas-adm/springboot-notehub) (aberto)
+  - [Backend](https://github.com/notehubbr/notehub-api) (aberto)
   - Node
   
   1. Digite os seguintes comandos no terminal dentro da pasta desejada:
   ```bash
-    git clone https://github.com/lucas-adm/next-react-notehub.git
+    git clone https://github.com/notehubbr/notehub-client.git
     cd next-react-notehub
   ```
 

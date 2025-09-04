@@ -53,8 +53,8 @@ export const Welcome = (props: React.HTMLAttributes<HTMLElement>) => {
             {/* <footer className="p-2">
                 <ul className="w-full mx-auto flex flex-wrap gap-3 justify-center">
                     <Item href="/" className="pointer-events-none select-none">© 2025 lucas-adm</Item>
-                    <Item href="https://github.com/lucas-adm/springboot-notehub" target="_blank">Backend</Item>
-                    <Item href="https://github.com/lucas-adm/next-react-notehub" target="_blank">Frontend</Item>
+                    <Item href="https://github.com/notehubbr/notehub-api" target="_blank">Backend</Item>
+                    <Item href="https://github.com/notehubbr/notehub-client" target="_blank">Frontend</Item>
                     <Item href="/terms">Termos de Serviço</Item>
                     <Item href="/policy">Política de Privacidade</Item>
                     <Item href="/cookies">Cookies</Item>
