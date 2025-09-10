@@ -82,11 +82,11 @@ export const UserProvider = (props: any) => {
     }, [state.user, updateActions])
 
     const clearUser = useCallback(async () => {
-        if (state.token) await logoutUser(state.token.access_token);
+        await logoutUser();
         setState((prev) => ({ ...prev, token: null, user: null }));
         setStore({ isGuest: true });
         return Cookies.remove('rtoken');
-    }, [setStore])
+    }, [logoutUser, setStore])
 
     const fetchUser = async (): Promise<void> => {
         try {

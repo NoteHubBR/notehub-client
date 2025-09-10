@@ -34,7 +34,7 @@ export const AuthService = () => {
 
     const refreshUser = async (): Promise<{ token: Token, user: User }> => {
         try {
-            return await httpGet(`/auth/refresh?token=${Cookies.get('rtoken')}`, { useProgress: true });
+            return await httpGet(`/auth/refresh`, { useProgress: true, useRefreshToken: Cookies.get('rtoken') });
         } catch (error) {
             throw error;
         }
@@ -50,9 +50,9 @@ export const AuthService = () => {
         else throw error;
     }
 
-    const logoutUser = async (token: string): Promise<void> => {
+    const logoutUser = async (): Promise<void> => {
         try {
-            return await httpDelete('/auth/logout', undefined, { useToken: token, useProgress: true });
+            return await httpDelete('/auth/logout', undefined, { useProgress: true, useRefreshToken: Cookies.get('rtoken') });
         } catch (error) {
             throw error;
         }

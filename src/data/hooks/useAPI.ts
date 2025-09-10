@@ -1,15 +1,23 @@
 import { useCallback } from "react";
 import { useProgress } from "./useProgress";
+import { useStore } from "./useStore";
+import { UUID } from "crypto";
 
 interface HttpOptions {
     useProgress?: boolean;
+    useRefreshToken?: string;
     useToken?: string | null;
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const createHeaders = (useToken?: string | null): HeadersInit => {
-    const headers: HeadersInit = { 'Content-Type': 'application/json' };
+const createHeaders = (
+    useDeviceId: UUID | string,
+    useRefreshToken?: string,
+    useToken?: string | null
+): HeadersInit => {
+    const headers: HeadersInit = { 'X-Device-Id': useDeviceId, 'Content-Type': 'application/json' };
+    if (useRefreshToken) headers['X-Refresh-Token'] = `${useRefreshToken}`;
     if (useToken) headers['Authorization'] = `Bearer ${useToken}`;
     return headers;
 }
@@ -36,15 +44,16 @@ const handleResponse = async (response: Response) => {
 
 export const useAPI = () => {
 
+    const { store: { device } } = useStore();
     const { setOnProgress } = useProgress();
 
     const request = useCallback(async (method: string, endpoint: string, body?: any, options?: HttpOptions) => {
 
-        const { useProgress: showProgress, useToken } = options || {};
+        const { useProgress: showProgress, useRefreshToken, useToken } = options || {};
 
         const uri = `${baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 
-        const headers = createHeaders(useToken);
+        const headers = createHeaders(device, useRefreshToken, useToken);
 
         if (showProgress) setOnProgress(true);
 
@@ -61,7 +70,7 @@ export const useAPI = () => {
             if (showProgress) setOnProgress(false);
         }
 
-    }, [setOnProgress]);
+    }, [device, setOnProgress]);
 
     const httpPost = useCallback((endpoint: string, body: any, options?: HttpOptions) => {
         return request('POST', endpoint, body, options);
