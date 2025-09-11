@@ -25,7 +25,7 @@ export const Form = () => {
             try {
                 setIsPending(true);
                 await deleteUser(token.access_token, data);
-                clearUser();
+                clearUser({ skipLogout: true });
                 return router.push("/");
             } catch (errors: any) {
                 if (Array.isArray(errors)) return handleFieldErrors(errors, setError);

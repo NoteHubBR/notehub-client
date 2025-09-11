@@ -39,7 +39,7 @@ export const MenuDropdown = ({ user }: { user: User }) => {
                     <Field.Button text="Mudar de conta" useChevron><IconUsers /></Field.Button> 
                 */}
                 <Field.Link href={'/signin'} text="Mudar de conta"><IconUsers /></Field.Link>
-                <Field.Button text="Sair" onClick={clearUser}><IconLogout /></Field.Button>
+                <Field.Button text="Sair" onClick={() => clearUser()}><IconLogout /></Field.Button>
             </Section>
             <Section>
                 <Field.Button

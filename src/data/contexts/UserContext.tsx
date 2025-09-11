@@ -12,7 +12,7 @@ export interface UserContextProps {
     setUser: (token: Token, user: User) => void;
     updateToken: (token: Token) => void;
     updateUser: (user: Partial<User>) => void;
-    clearUser: () => void;
+    clearUser: (options?: { skipLogout?: boolean }) => void;
 }
 
 const UserContext = createContext<UserContextProps>({} as UserContextProps);
@@ -81,8 +81,8 @@ export const UserProvider = (props: any) => {
         }
     }, [state.user, updateActions])
 
-    const clearUser = useCallback(async () => {
-        await logoutUser();
+    const clearUser = useCallback(async ({ skipLogout }: { skipLogout?: boolean } = {}) => {
+        if (!skipLogout) await logoutUser();
         setState((prev) => ({ ...prev, token: null, user: null }));
         setStore({ isGuest: true });
         return Cookies.remove('rtoken');

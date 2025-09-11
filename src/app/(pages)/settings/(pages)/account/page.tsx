@@ -27,7 +27,7 @@ const Page = () => {
                     {onMobile &&
                         <>
                             <Link href={"/signin"} icon={IconUsers}>Mudar de conta</Link>
-                            <Link onClick={clearUser} href={"/"} icon={IconLogout}>Sair</Link>
+                            <Link onClick={() => clearUser()} href={"/"} icon={IconLogout}>Sair</Link>
                         </>
                     }
                 </ul>
