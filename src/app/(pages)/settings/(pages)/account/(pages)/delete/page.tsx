@@ -3,16 +3,19 @@
 import { Element } from "./elements";
 import { Form } from "@/components/forms";
 import { Header } from "../../../Header";
+import { useUser } from "@/data/hooks";
 
 const Page = () => {
 
-    const { Warnings, Card } = Element;
+    const { user } = useUser();
 
-    return (
+    const { UserTitle, OAuthUserTitle, Warnings, Card } = Element;
+
+    if (user) return (
         <section>
             <Header goBack="/settings/account" title="Deletar conta" />
-            <section className="mt-6 flex flex-col gap-3">
-                <h3 className="px-2 py-3">Confirme sua autoridade</h3>
+            <section className="flex flex-col gap-3">
+                {user.host === 'NoteHub' ? <UserTitle /> : <OAuthUserTitle></OAuthUserTitle>}
                 <Form.User.Delete />
                 <Warnings />
                 <Card />

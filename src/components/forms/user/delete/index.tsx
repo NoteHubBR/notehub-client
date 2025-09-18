@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export const Form = () => {
 
     const { userService: { deleteUser } } = useServices();
-    const { token, clearUser } = useUser();
+    const { token, user, clearUser } = useUser();
 
     const deleteUserForm = useForm<DeleteUserFormData>({
         resolver: zodResolver(deleteUserFormSchema)
@@ -36,12 +36,12 @@ export const Form = () => {
 
     const { Wrapper, Label, Input, Button, Error } = Element;
 
-    return (
+    if (user) return (
         <FormProvider {...deleteUserForm}>
             <form onSubmit={handleSubmit(onSubmit)} className="px-2 flex flex-col gap-1">
                 <Wrapper>
                     <Label name="password" />
-                    <Input name="password" />
+                    <Input name="password" placeholder={user.host === 'NoteHub' ? 'Digite sua senha' : 'Digite sua chave'} />
                     <Button disabled={isPending}>
                         Excluir
                     </Button>
