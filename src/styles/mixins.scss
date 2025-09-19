@@ -134,6 +134,32 @@
     }
 }
 
+@mixin changelog-checkered-header($stripeColor, $gradientSideColor) {
+    position: relative;
+
+    &::before {
+        content: '';
+        z-index: -2;
+        position: absolute;
+        inset: 0;
+        top: 0;
+        left: 0;
+        background-image: linear-gradient(to right, $stripeColor 1px, transparent 1px), linear-gradient(to bottom, $stripeColor 1px, transparent 1px);
+        background-size: 40px 40px;
+        opacity: .1;
+    }
+
+    &::after {
+        content: '';
+        z-index: -1;
+        position: absolute;
+        inset: 0;
+        top: 0;
+        left: 0;
+        background: linear-gradient(to top, $gradientSideColor 0%, transparent 50%);
+    }
+}
+
 @mixin applying {
     z-index: 1;
     overflow: hidden;

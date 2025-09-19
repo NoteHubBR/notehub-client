@@ -23,7 +23,8 @@ export enum Routes {
     CHANGE_EMAIL = '/change/email',
     CHANGE_PASSWORD = '/change/password',
     NEW = '/new',
-    HELP = '/help'
+    HELP = '/help',
+    CHANGELOG = '/changelog'
 }
 
 enum NotUserContextRoutes {
@@ -33,7 +34,8 @@ enum NotUserContextRoutes {
     ACTIVATE = '/activate/:jwt',
     CHANGE_EMAIL = '/change/email',
     CHANGE_PASSWORD = '/change/password',
-    HELP = '/help'
+    HELP = '/help',
+    CHANGELOG = '/changelog'
 }
 
 export const shouldUseUserContext = (pathname: string): boolean => {
