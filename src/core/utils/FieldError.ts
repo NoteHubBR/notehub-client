@@ -29,3 +29,18 @@ export function handleFieldErrorsMsg(errors: FieldError[]): { notMutual: boolean
     }
     return { notMutual: false, notCurrent: false };
 }
+
+export function handleOAuthError(
+    errors: FieldError[],
+    setError: React.Dispatch<React.SetStateAction<{
+        isRequesting: boolean;
+        isGoogleAuthInProgress: boolean;
+        isGitHubAuthInProgress: boolean;
+        oAuthError: string | undefined;
+    }>>
+): void {
+    for (const error of errors) {
+        return setError((prev) => ({ ...prev, oAuthError: error.message }));
+    }
+    return;
+}

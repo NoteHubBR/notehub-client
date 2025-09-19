@@ -15,7 +15,6 @@ export const Input = ({ name, ...rest }: InputProps) => {
             id={name}
             {...register(name)}
             type="password"
-            placeholder="Digite sua senha"
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}

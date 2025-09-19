@@ -7,5 +7,6 @@ import Button from "./Button";
 import Link from "./Link";
 import Separator from "./Separator";
 import OAuthButton from "./OAuthButton";
+import OAuthError from "./OAuthError";
 
-export const Element = { Header, Field, Label, Input, Error, Button, Link, Separator, OAuthButton };
+export const Element = { Header, Field, Label, Input, Error, Button, Link, Separator, OAuthButton, OAuthError };

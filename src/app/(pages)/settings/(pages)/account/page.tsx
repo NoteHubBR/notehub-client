@@ -17,9 +17,9 @@ const Page = () => {
                 <ul className="mt-6">
                     <Link href={"/settings/account/info"} icon={IconUser}>Informações</Link>
                     <Link href={"/settings/account/visibility"} icon={IconEye}>Alterar visibilidade</Link>
+                    <Link href={"/settings/account/email"} icon={IconMail}>Alterar email</Link>
                     {user.host === "NoteHub" &&
                         <>
-                            <Link href={"/settings/account/email"} icon={IconMail}>Alterar email</Link>
                             <Link href={"/settings/account/password"} icon={IconKey}>Alterar senha</Link>
                         </>
                     }

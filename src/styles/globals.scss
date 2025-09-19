@@ -28,6 +28,14 @@
     @include mixins.vignette-checkered(#fafafa, #0a0a0a);
 }
 
+.dark-changelog-header {
+    @include mixins.changelog-checkered-header(white, black);
+}
+
+.light-changelog-header {
+    @include mixins.changelog-checkered-header(black, white);
+}
+
 .light-vignette-checkered {
     @include mixins.vignette-checkered(#0a0a0a, #fafafa);
 }

@@ -1,9 +1,9 @@
-import { Cookies } from "@/core";
+import { Cookies, handleOAuthError } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { handleFieldErrors, LoginUserFormData, loginUserFormSchema, Token, User } from "@/core";
 import { IconAt } from "@tabler/icons-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useServices, useStore, useUser } from "@/data/hooks";
@@ -24,19 +24,20 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
     const { handleSubmit, setError } = loginUserForm;
 
     const [state, setState] = useState({
-        isRequesting: false,
-        isGoogleAuthInProgress: false,
-        isGitHubAuthInProgress: false
+        isRequesting: false as boolean,
+        isGoogleAuthInProgress: false as boolean,
+        isGitHubAuthInProgress: false as boolean,
+        oAuthError: undefined as string | undefined
     })
 
     const router = useRouter();
 
-    const login = ({ token, user }: { token: Token, user: User }): void => {
+    const login = useCallback(({ token, user }: { token: Token, user: User }): void => {
         setUser(token, user);
         setStore({ isFirstTimer: false, isGuest: false, isExpired: false });
         Cookies.set('rtoken', token.refresh_token, token.expires_at);
         return router.push('/');
-    }
+    }, [router, setStore, setUser])
 
     const onSubmit = async (data: LoginUserFormData) => {
         setState((prev) => ({ ...prev, isRequesting: true }));
@@ -52,17 +53,22 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
     const googleLogin = useGoogleLogin({
         onSuccess: res => {
             const submit = async () => {
-                login(await loginUserByGoogle({ token: res.access_token }));
+                try {
+                    login(await loginUserByGoogle({ token: res.access_token }));
+                } catch (errors) {
+                    if (Array.isArray(errors)) handleOAuthError(errors, setState);
+                } finally {
+                    setState((prev) => ({ ...prev, isRequesting: false, isGoogleAuthInProgress: false }));
+                }
             }
             submit();
-            setState((prev) => ({ ...prev, isRequesting: false, isGoogleAuthInProgress: false }));
         },
         onError: () => setState((prev) => ({ ...prev, isGoogleAuthInProgress: false })),
         onNonOAuthError: () => setState((prev) => ({ ...prev, isRequesting: false, isGoogleAuthInProgress: false }))
     })
 
     const GHCI = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
-    const gitHubLogin = () => router.push(`https://github.com/login/oauth/authorize?client_id=${GHCI}`);
+    const gitHubLogin = () => router.push(`https://github.com/login/oauth/authorize?client_id=${GHCI}&scope=user:email`);
     const params = useSearchParams();
     const isFetching = useRef<boolean>(false);
     useEffect(() => {
@@ -72,10 +78,15 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
             isFetching.current = true;
             setState((prev) => ({ ...prev, isRequesting: true }));
             const submit = async () => {
-                login(await loginUserByGitHub({ code: code }).finally(() => isFetching.current = false));
+                try {
+                    login(await loginUserByGitHub({ code: code }).finally(() => isFetching.current = false));
+                } catch (errors) {
+                    if (Array.isArray(errors)) handleOAuthError(errors, setState);
+                } finally {
+                    setState((prev) => ({ ...prev, isRequesting: false }));
+                }
             }
             submit();
-            setState((prev) => ({ ...prev, isRequesting: false }));
         }
     }, [params])
 
@@ -108,6 +119,7 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
                 <Element.Button isRequesting={state.isRequesting}>Entrar</Element.Button>
                 <Element.Link href={'/signup'}>Criar conta</Element.Link>
                 <Element.Separator />
+                <Element.OAuthError error={state.oAuthError} />
                 <Element.OAuthButton
                     src='/svgs/google-icon.svg'
                     alt='Google Logo'
@@ -127,4 +139,5 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
             </form>
         </FormProvider>
     )
+
 }

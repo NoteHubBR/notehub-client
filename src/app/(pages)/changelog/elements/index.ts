@@ -1,0 +1,9 @@
+export { GoBack } from './GoBack';
+export { Header } from './Header';
+export { Title } from './Title';
+export { Release } from './Release';
+export { ReleaseTitle } from './ReleaseTitle';
+export { ReleaseUList } from './ReleaseUList';
+export { ReleaseTopic } from './ReleaseTopic';
+export { ReleaseOList } from './ReleaseOList';
+export { ReleaseDesc } from './ReleaseDesc';

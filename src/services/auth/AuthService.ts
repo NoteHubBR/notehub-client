@@ -58,6 +58,14 @@ export const AuthService = () => {
         }
     }
 
+    const sendSecretKeyRequest = useCallback(async (email: { email: string }): Promise<void> => {
+        try {
+            return await httpPost('/auth/secret-key', email, { useProgress: true });
+        } catch (error) {
+            throw error;
+        }
+    }, [httpPost])
+
     const sendEmailChangeRequest = useCallback(async (email: { email: string }): Promise<void> => {
         try {
             return await httpPost('/auth/change-email', email, { useProgress: true });
@@ -81,6 +89,7 @@ export const AuthService = () => {
         refreshUser,
         handleExpiredToken,
         logoutUser,
+        sendSecretKeyRequest,
         sendEmailChangeRequest,
         sendPasswordChangeRequest
     }
