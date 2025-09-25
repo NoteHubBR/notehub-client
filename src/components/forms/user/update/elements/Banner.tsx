@@ -49,7 +49,7 @@ export const Banner = ({ user, onModalOpen, onModalClose, ...rest }: BannerProps
         <>
             <div className="select-none relative" {...rest}>
                 <Component.Banner src={url} user={user} />
-                <Upload ref={triggerRef} name="banner" handleFileChange={handleFileChange} />
+                <Upload ref={triggerRef} name="banner" handleFileChange={handleFileChange} isBlocked={user.blocked} />
                 {rest.children}
             </div>
             <Template.Modal

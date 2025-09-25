@@ -1,17 +1,19 @@
 import { ChangeEvent, forwardRef, InputHTMLAttributes } from "react";
 import { editUserFormSchema } from "@/core";
-import { IconCameraPlus } from "@tabler/icons-react";
+import { IconCameraPlus, IconForbid } from "@tabler/icons-react";
 
 interface UploadProps extends InputHTMLAttributes<HTMLInputElement> {
     name: keyof typeof editUserFormSchema.shape;
     handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    isBlocked: boolean;
 }
 
-export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ name, handleFileChange, ...rest }, ref) => {
+export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ name, handleFileChange, isBlocked, ...rest }, ref) => {
 
     return (
         <>
             <input
+                disabled={isBlocked}
                 aria-label="Zoom"
                 id={name}
                 ref={ref}
@@ -27,9 +29,9 @@ export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ name, handleF
                 rounded-full p-2
                 backdrop-blur-[2px]
                 bg-alpha-d-md
-                hover:bg-alpha-d-sm transition-all "
+                hover:bg-alpha-d-sm transition-all"
             >
-                <IconCameraPlus color="white" />
+                {isBlocked ? <IconForbid color="white" /> : <IconCameraPlus color="white" />}
             </label>
         </>
     )

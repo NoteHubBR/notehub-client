@@ -177,6 +177,21 @@ export const items: Items[] = [
         useSupport: true
     },
     {
+        id: 'blocked',
+        keywords: ["blocked", "block", "bloqueio", "bloqueado", "proibido", "excluido", "apagado", "cancelado", "silenciado", "suporte"],
+        hash: '#blocked',
+        question: 'Bloqueio',
+        answer: (
+            <>
+                Um usuário bloqueado não pode atualizar fotos do perfil, o bloqueio é devido à conteúdo impróprio.
+                <br /><br />
+                Caso discorde de um bloqueio, entre em contato com o suporte ao usuário para contestação.
+                <br /><br />
+            </>
+        ),
+        useSupport: true
+    },
+    {
         id: 'ban',
         keywords: ["ban", "banir", "banido", "banimento", "excluído", "excluido", "apagado", "cancelado", "silenciado", "suporte"],
         hash: '#ban',

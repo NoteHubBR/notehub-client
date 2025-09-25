@@ -19,7 +19,7 @@ export const Banner = forwardRef<HTMLImageElement, BannerProps>((props, ref) => 
         >
             <Image
                 priority
-                src={src ?? user?.banner ?? '/imgs/banner.png'}
+                src={src ? src : user && user.banner ? user.blocked ? '/imgs/banner.png' : user.banner : '/imgs/banner.png'}
                 fill
                 alt={`Avatar de ${user?.username ?? 'ex usuário'}`}
             />
