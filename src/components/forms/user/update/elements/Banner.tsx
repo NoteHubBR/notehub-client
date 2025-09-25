@@ -2,6 +2,7 @@ import { Component, CropperRef } from "@/components";
 import { EditUserFormData, User } from "@/core";
 import { Header } from "./Header";
 import { IconArrowLeft } from "@tabler/icons-react";
+import { Removal } from "./Removal";
 import { Template } from "@/components/templates";
 import { Upload } from "./Upload";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -45,11 +46,30 @@ export const Banner = ({ user, onModalOpen, onModalClose, ...rest }: BannerProps
         }
     }, [setValue])
 
+    const handleRemovalClick = (): void => {
+        setUrl('/imgs/banner.png');
+        setValue('banner', null);
+        return;
+    }
+
     return (
         <>
             <div className="select-none relative" {...rest}>
                 <Component.Banner src={url} user={user} />
-                <Upload ref={triggerRef} name="banner" handleFileChange={handleFileChange} isBlocked={user.blocked} />
+                <div className="center flex items-center gap-3">
+                    <Upload
+                        ref={triggerRef}
+                        name="banner"
+                        handleFileChange={handleFileChange}
+                        isBlocked={user.blocked}
+                    />
+                    <Removal
+                        name="removal"
+                        handleRemovalClick={handleRemovalClick}
+                        isBlocked={user.blocked}
+                        currentImg={url}
+                    />
+                </div>
                 {rest.children}
             </div>
             <Template.Modal

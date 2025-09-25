@@ -68,8 +68,8 @@ export const UserProvider = (props: any) => {
                     ...prev,
                     user: {
                         ...prev.user,
-                        avatar: avatar ?? prev.user.avatar,
-                        banner: banner ?? prev.user.banner,
+                        avatar: avatar !== undefined ? avatar : prev.user.avatar,
+                        banner: banner !== undefined ? banner : prev.user.banner,
                         profile_private: profile_private ?? prev.user.profile_private,
                         username: username ?? prev.user.username,
                         display_name: display_name ?? prev.user.display_name,

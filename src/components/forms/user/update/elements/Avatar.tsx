@@ -55,7 +55,13 @@ export const Avatar = ({ user, onModalOpen, onModalClose, ...props }: AvatarProp
                     src={url} user={user} size={onDesktop ? 111 : 88}
                     className="border-4 dark:border-darker border-lighter" {...props}
                 />
-                <Upload ref={triggerRef} name="avatar" handleFileChange={handleFileChange} isBlocked={user.blocked} />
+                <Upload
+                    ref={triggerRef}
+                    name="avatar"
+                    handleFileChange={handleFileChange}
+                    isBlocked={user.blocked}
+                    className="center"
+                />
             </div>
             <Template.Modal
                 triggerRef={triggerRef}

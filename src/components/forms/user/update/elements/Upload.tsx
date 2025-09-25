@@ -1,4 +1,5 @@
 import { ChangeEvent, forwardRef, InputHTMLAttributes } from "react";
+import { clsx } from "clsx";
 import { editUserFormSchema } from "@/core";
 import { IconCameraPlus, IconForbid } from "@tabler/icons-react";
 
@@ -8,13 +9,13 @@ interface UploadProps extends InputHTMLAttributes<HTMLInputElement> {
     isBlocked: boolean;
 }
 
-export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ name, handleFileChange, isBlocked, ...rest }, ref) => {
+export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ name, handleFileChange, isBlocked, className, ...rest }, ref) => {
 
     return (
         <>
             <input
                 disabled={isBlocked}
-                aria-label="Zoom"
+                aria-label="Carregar"
                 id={name}
                 ref={ref}
                 type="file"
@@ -25,11 +26,14 @@ export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ name, handleF
             />
             <label
                 htmlFor={name}
-                className="cursor-pointer center
-                rounded-full p-2
-                backdrop-blur-[2px]
-                bg-alpha-d-md
-                hover:bg-alpha-d-sm transition-all"
+                className={clsx(
+                    'cursor-pointer',
+                    'rounded-full p-2',
+                    'backdrop-blur-[2px]',
+                    'bg-alpha-d-md',
+                    'hover:bg-alpha-d-sm transition-all',
+                    className
+                )}
             >
                 {isBlocked ? <IconForbid color="white" /> : <IconCameraPlus color="white" />}
             </label>
