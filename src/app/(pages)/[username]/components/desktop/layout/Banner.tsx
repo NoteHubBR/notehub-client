@@ -18,11 +18,10 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
                 ref={bannerRef}
                 user={user}
                 className={clsx(
-                    'cursor-pointer overlay',
-                    user.banner ?? '!cursor-default !overlay-none'
+                    user.blocked || !user.banner ? 'cursor-default' : 'cursor-pointer overlay'
                 )}
             />
-            {user.banner &&
+            {!user.blocked && user.banner &&
                 <Template.Portal triggerRef={bannerRef} childRef={upscaledBannerRef} useDefaultClose>
                     <Component.PicturePortal ref={upscaledBannerRef} user={user} fill />
                 </Template.Portal>
@@ -31,13 +30,12 @@ export const Banner = ({ user, history }: { user: User | LowDetailUser, history:
                 ref={photoRef}
                 user={user} size={111}
                 className={clsx(
-                    'cursor-pointer overlay',
                     'absolute bottom-0 left-4 inlg:left-2 translate-y-1/2',
                     'border-4 dark:border-darker border-lighter',
-                    user.avatar ?? '!cursor-default !overlay-none'
+                    user.blocked || !user.avatar ? 'cursor-default' : 'cursor-pointer overlay'
                 )}
             />
-            {user.avatar &&
+            {!user.blocked && user.avatar &&
                 <Template.Portal triggerRef={photoRef} childRef={upscaledPhotoRef} useDefaultClose>
                     <Component.PicturePortal ref={upscaledPhotoRef} user={user} size={369} className="rounded-full" />
                 </Template.Portal>

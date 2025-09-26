@@ -1,18 +1,21 @@
 import { ChangeEvent, forwardRef, InputHTMLAttributes } from "react";
+import { clsx } from "clsx";
 import { editUserFormSchema } from "@/core";
-import { IconCameraPlus } from "@tabler/icons-react";
+import { IconCameraPlus, IconForbid } from "@tabler/icons-react";
 
 interface UploadProps extends InputHTMLAttributes<HTMLInputElement> {
     name: keyof typeof editUserFormSchema.shape;
     handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    isBlocked: boolean;
 }
 
-export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ name, handleFileChange, ...rest }, ref) => {
+export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ name, handleFileChange, isBlocked, className, ...rest }, ref) => {
 
     return (
         <>
             <input
-                aria-label="Zoom"
+                disabled={isBlocked}
+                aria-label="Carregar"
                 id={name}
                 ref={ref}
                 type="file"
@@ -23,13 +26,16 @@ export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ name, handleF
             />
             <label
                 htmlFor={name}
-                className="cursor-pointer center
-                rounded-full p-2
-                backdrop-blur-[2px]
-                bg-alpha-d-md
-                hover:bg-alpha-d-sm transition-all "
+                className={clsx(
+                    'cursor-pointer',
+                    'rounded-full p-2',
+                    'backdrop-blur-[2px]',
+                    'bg-alpha-d-md',
+                    'hover:bg-alpha-d-sm transition-all',
+                    className
+                )}
             >
-                <IconCameraPlus color="white" />
+                {isBlocked ? <IconForbid color="white" /> : <IconCameraPlus color="white" />}
             </label>
         </>
     )

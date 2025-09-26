@@ -37,8 +37,8 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
         startTransition(async () => {
 
             const newData = { ...data };
-            const shouldUpdateAvatar = user.avatar !== data.avatar;
-            const shouldUpdateBanner = user.banner !== data.banner;
+            const shouldUpdateAvatar = !user.blocked && user.avatar !== data.avatar;
+            const shouldUpdateBanner = !user.blocked && user.banner !== data.banner;
 
             try {
 
@@ -141,6 +141,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
                     </div>
                 </Element.Main>
                 <ul>
+                    <li><Element.Link href="/help#blocked" target="_blank">Bloqueio</Element.Link></li>
                     <li><Element.Link href="/help#mutuals" target="_blank">Mútuos</Element.Link></li>
                     <li><Element.Link href="/settings/account">Configurações</Element.Link></li>
                 </ul>

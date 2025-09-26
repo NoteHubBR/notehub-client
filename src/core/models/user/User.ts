@@ -11,6 +11,7 @@ export interface User {
     host: string;
     profile_private: boolean;
     sponsor: boolean;
+    blocked: boolean;
     score: number;
     created_at: string;
     notifications: number;
