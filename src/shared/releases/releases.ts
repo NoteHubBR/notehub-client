@@ -17,6 +17,26 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        version: 'v1.6',
+        date: '26/09/25 14:00',
+        title: 'Setembro 26, 2025',
+        summary: 'Melhorias na segurança de imagem e no suporte ao perfil.',
+        entries: [
+            {
+                type: 'feat',
+                pr: 3,
+                hash: 'aabd422c07ca4c839d2696ebb525417df9744c4d',
+                desc: 'Permitido a remoção da capa do perfil.'
+            },
+            {
+                type: 'feat',
+                pr: 3,
+                hash: 'bc1678ec66c91e6747673a625331f1a4253210c8',
+                desc: 'Implementado bloqueio para usuários que enviarem imagens impróprias. Usuários bloqueados não podem atualizar as imagens do perfil.'
+            }
+        ]
+    },
+    {
         version: 'v1.5',
         date: '17/09/25 12:34',
         title: 'Setembro 17, 2025',
