@@ -9,11 +9,7 @@ export const Warnings = () => (
         <ol className="list-inside list-disc font-medium text-sm dark:text-midlight/60 text-middark/60">
             <li>
                 Notas criadas.
-                <Link
-                    href="/help#delete"
-                    target="_blank"
-                    className="ml-1 dark:text-secondary text-primary hover:underline"
-                >
+                <Link href="/help#delete" className="ml-1 dark:text-secondary text-primary hover:underline">
                     Saiba mais
                 </Link>
             </li>

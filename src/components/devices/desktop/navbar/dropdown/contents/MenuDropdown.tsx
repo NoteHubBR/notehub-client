@@ -51,7 +51,7 @@ export const MenuDropdown = ({ user }: { user: User }) => {
                 <Field.Link href={'/settings/account'} text="Configurações"><IconSettings /></Field.Link>
             </Section>
             <Section>
-                <Field.Link href="/help" target="_blank" text="Ajuda">
+                <Field.Link href="/help" text="Ajuda">
                     <IconHelp />
                 </Field.Link>
                 <Field.Link href="mailto:contato@notehub.com.br" text="Enviar feedback">

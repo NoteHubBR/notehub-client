@@ -61,7 +61,7 @@ const Page = () => {
                     Quando sua conta está privada, apenas mútuos podem visualizar suas notas, suas chamas, seus seguidores e quem você segue
                     — salvo notas ocultas.
                     <span className="ml-1 text-secondary hover:underline">
-                        <Link href={"/help#mutuals"} target="_blank" >Saiba mais</Link>
+                        <Link href="/help#mutuals">Saiba mais</Link>
                     </span>
                 </p>
             </section>

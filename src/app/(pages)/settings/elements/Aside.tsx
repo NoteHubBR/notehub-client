@@ -22,7 +22,7 @@ export const Aside = ({ onDesktop, onPathname, ...rest }: AsideProps) => {
                 <Link icon={IconChevronRight} href="/settings/account">Conta</Link>
                 <Link icon={IconChevronRight} href="/settings/appearance">Aparência</Link>
                 <Link icon={IconChevronRight} href="/settings/sponsorship">Patrocínio</Link>
-                <Link icon={IconHelp} href="/help" target="_blank">Ajuda</Link>
+                <Link icon={IconHelp} href="/help">Ajuda</Link>
             </ul>
         </aside>
     )

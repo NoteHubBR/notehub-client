@@ -122,15 +122,15 @@ export const UserProvider = (props: any) => {
         }
     }
 
+    const init = useCallback(async (): Promise<void> => {
+        if (store.isFirstTimer || store.isGuest) return;
+        if (shouldUseUserContext(pathname)) return await fetchUser();
+    }, [fetchUser, pathname, store.isFirstTimer, store.isGuest])
+
     useEffect(() => {
-        if (!isStoreReady) return;
-        const init = async () => {
-            if (shouldUseUserContext(pathname) && !store.isFirstTimer && !store.isGuest) {
-                return await fetchUser();
-            }
-        }
-        init().finally(() => setState((prev) => ({ ...prev, isMounted: true })));
-    }, [isStoreReady])
+        if (state.user) return;
+        if (isStoreReady) init().finally(() => setState((prev) => ({ ...prev, isMounted: true })));
+    }, [isStoreReady, pathname])
 
     useEffect(() => {
         const fetchData = async () => {
