@@ -1,7 +1,6 @@
 export interface Items {
     id: string;
     keywords: string[];
-    hash: string;
     question: string;
     answer: React.ReactNode;
     useSupport?: boolean;
@@ -11,14 +10,12 @@ export const items: Items[] = [
     {
         id: 'language',
         keywords: ["language", "idioma", "linguagem", "português", "portugues", "tempo", "gmt", "hora"],
-        hash: '#language',
         question: 'Idioma',
         answer: <>Atualmente, a aplicação está disponível apenas em Português (PT-BR) e opera no fuso horário GMT-3.</>
     },
     {
         id: 'security',
         keywords: ["security", "segurança", "seguranca", "senha", "email", "conta"],
-        hash: '#security',
         question: 'Segurança',
         answer: (
             <>
@@ -32,7 +29,6 @@ export const items: Items[] = [
     {
         id: 'delete',
         keywords: ["delete", "excluir", "apagar", "conta", "remoção", "remover", "cancelar"],
-        hash: '#delete',
         question: 'Exclusão da conta',
         answer: (
             <>
@@ -47,7 +43,6 @@ export const items: Items[] = [
     {
         id: 'history',
         keywords: ["history", "histórico", "historico", "dados", "alterações", "alteracoes", "mudanças", "mudancas"],
-        hash: '#history',
         question: 'Histórico',
         answer: (
             <>
@@ -61,7 +56,6 @@ export const items: Items[] = [
     {
         id: 'searches',
         keywords: ["searches", "pesquisas", "buscas", "procura", "consultas"],
-        hash: '#searches',
         question: 'Pesquisas',
         answer: (
             <>
@@ -73,7 +67,6 @@ export const items: Items[] = [
     {
         id: 'sponsors',
         keywords: ["sponsors", "patrocinadores", "patrocínio", "patrocionio", "verificado", "patrocinar", "apoiar", "apoio"],
-        hash: '#sponsors',
         question: 'Patrocinador',
         answer: (
             <>
@@ -86,7 +79,6 @@ export const items: Items[] = [
     {
         id: 'privacy',
         keywords: ["privacy", "privacidade", "visibilidade", "conta", "perfil", "privado", "privar"],
-        hash: '#privacy',
         question: 'Privacidade',
         answer: (
             <>
@@ -101,7 +93,6 @@ export const items: Items[] = [
     {
         id: 'mutuals',
         keywords: ["mutuals", "mútuos", "iguais", "relação", "relacao", "relacionamento"],
-        hash: '#mutuals',
         question: 'Mútuos',
         answer: (
             <>
@@ -115,14 +106,12 @@ export const items: Items[] = [
     {
         id: 'hiddenNotes',
         keywords: ["hiddennotes", "hidden", "notes", "notas", "ocultas", "privadas"],
-        hash: '#hiddenNotes',
         question: 'Notas ocultas',
         answer: <>Notas ocultas são visíveis apenas para quem as criou, embora contabilizem na contagem total de notas.</>
     },
     {
         id: 'closedNotes',
         keywords: ["closednotes", "closed", "notes", "notas", "fechadas", "trancadas", "bloqueadas"],
-        hash: '#closedNotes',
         question: 'Notas fechadas',
         answer: (
             <>
@@ -136,7 +125,6 @@ export const items: Items[] = [
     {
         id: 'notifications',
         keywords: ["notifications", "notificações", "notificacoes", "alertas", "sino", "mensagens"],
-        hash: '#notifications',
         question: 'Notificações',
         answer: (
             <>
@@ -150,7 +138,6 @@ export const items: Items[] = [
     {
         id: 'feed',
         keywords: ["feed", "início", "inicio", "principal", "central"],
-        hash: '#feed',
         question: 'Feed',
         answer: (
             <>
@@ -164,7 +151,6 @@ export const items: Items[] = [
     {
         id: 'report',
         keywords: ["repots", "denúncias", "denuncias", "avisar", "suporte"],
-        hash: '#report',
         question: 'Denúncia',
         answer: (
             <>
@@ -179,7 +165,6 @@ export const items: Items[] = [
     {
         id: 'blocked',
         keywords: ["blocked", "block", "bloqueio", "bloqueado", "proibido", "excluido", "apagado", "cancelado", "silenciado", "suporte"],
-        hash: '#blocked',
         question: 'Bloqueio',
         answer: (
             <>
@@ -194,7 +179,6 @@ export const items: Items[] = [
     {
         id: 'ban',
         keywords: ["ban", "banir", "banido", "banimento", "excluído", "excluido", "apagado", "cancelado", "silenciado", "suporte"],
-        hash: '#ban',
         question: 'Banimento',
         answer: (
             <>
@@ -207,7 +191,6 @@ export const items: Items[] = [
     {
         id: 'other',
         keywords: ["others", "outras", "outros", "suporte", "email", "mensagem"],
-        hash: '#other',
         question: 'Outra',
         answer: (
             <>

@@ -11,7 +11,6 @@ export const Header = () => {
         <header>
             <Link
                 href="/"
-                target="blank"
                 className={clsx(
                     'group overflow-hidden block',
                     useDarkTheme ? "dark-navigate-logo" : "light-navigate-logo",

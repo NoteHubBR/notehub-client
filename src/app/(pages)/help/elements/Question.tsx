@@ -1,34 +1,28 @@
 import { clsx } from "clsx";
 import { IconPlus } from "@tabler/icons-react";
-import { useCallback, useEffect, useState } from "react";
+import { setScrollTo } from "@/core";
 
 interface QuestionProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    currentId: string;
+    setCurrentId: React.Dispatch<React.SetStateAction<string>>;
     hash: string;
     children: React.ReactNode;
 }
 
-export const Question = ({ hash, children, ...rest }: QuestionProps) => {
+export const Question = ({ currentId, setCurrentId, hash, children, ...rest }: QuestionProps) => {
 
-    const [isActive, setIsActive] = useState<boolean>(hash === window.location.hash);
+    const isActive: boolean = hash === currentId;
 
-    const updateHash = () => window.location.hash = hash;
-
-    const handleHashChange = useCallback(() => {
-        if (hash === window.location.hash) return setIsActive(true);
-        else return setIsActive(false);
-    }, [hash])
-
-    useEffect(() => {
-        window.addEventListener("hashchange", handleHashChange);
-        return () => {
-            window.removeEventListener("hashchange", handleHashChange);
-        }
-    }, [handleHashChange])
+    const updateCurrentId = (): void => {
+        setScrollTo(hash);
+        setCurrentId(hash);
+        return;
+    }
 
     return (
         <button
             disabled={isActive}
-            onClick={updateHash}
+            onClickCapture={updateCurrentId}
             className={clsx(
                 'group',
                 'w-full h-full',

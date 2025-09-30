@@ -2,10 +2,12 @@
 
 import { Element } from "./elements";
 import { Items, items } from "./items";
+import { tryScrollTo } from "@/core";
 import { useEffect, useState } from "react";
 
 const Page = () => {
 
+    const [currentId, setCurrentId] = useState<string>(sessionStorage.getItem('scrollTo') ?? 'none');
     const [query, setQuery] = useState<string>("");
 
     const filteredItems = query.length > 0
@@ -13,12 +15,8 @@ const Page = () => {
         : [] as Items[];
 
     useEffect(() => {
-        if (window.location.hash) {
-            const id = window.location.hash.slice(1);
-            const element = document.getElementById(id);
-            if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-    }, [])
+        return tryScrollTo();
+    }, [currentId])
 
     const { Header, Input, Li, Question, Answer } = Element;
 
@@ -39,8 +37,8 @@ const Page = () => {
                             ?
                             filteredItems.map((item) => (
                                 <Li key={item.id} id={item.id}>
-                                    <Question hash={item.hash}>{item.question}</Question>
-                                    <Answer hash={item.hash} useSupport={item.useSupport}>
+                                    <Question currentId={currentId} setCurrentId={setCurrentId} hash={item.id}>{item.question}</Question>
+                                    <Answer currentId={currentId} hash={item.id} useSupport={item.useSupport}>
                                         {item.answer}
                                     </Answer>
                                 </Li>
@@ -48,8 +46,8 @@ const Page = () => {
                             :
                             items.map((item) => (
                                 <Li key={item.id} id={item.id}>
-                                    <Question hash={item.hash}>{item.question}</Question>
-                                    <Answer hash={item.hash} useSupport={item.useSupport}>
+                                    <Question currentId={currentId} setCurrentId={setCurrentId} hash={item.id}>{item.question}</Question>
+                                    <Answer currentId={currentId} hash={item.id} useSupport={item.useSupport}>
                                         {item.answer}
                                     </Answer>
                                 </Li>

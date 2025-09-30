@@ -3,6 +3,7 @@
 import { clsx } from "clsx";
 import { Header } from "../../../Header";
 import { Icon } from "@/components/icons";
+import { scrollTo } from "@/core";
 import { useServices, useUser } from "@/data/hooks";
 import { useTransition } from "react";
 import Link from "next/link";
@@ -61,7 +62,7 @@ const Page = () => {
                     Quando sua conta está privada, apenas mútuos podem visualizar suas notas, suas chamas, seus seguidores e quem você segue
                     — salvo notas ocultas.
                     <span className="ml-1 text-secondary hover:underline">
-                        <Link href="/help#mutuals">Saiba mais</Link>
+                        <Link href="/help" onClickCapture={scrollTo('mutuals')}>Saiba mais</Link>
                     </span>
                 </p>
             </section>

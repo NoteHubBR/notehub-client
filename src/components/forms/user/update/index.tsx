@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 import { deleteImage, storeImg } from "@/supabase";
-import { EditUserFormData, editUserFormSchema, handleFieldErrors } from "@/core";
+import { EditUserFormData, editUserFormSchema, handleFieldErrors, scrollTo } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { forwardRef, useState, useTransition } from "react";
@@ -141,8 +141,8 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
                     </div>
                 </Element.Main>
                 <ul>
-                    <li><Element.Link href="/help#blocked">Bloqueio</Element.Link></li>
-                    <li><Element.Link href="/help#mutuals">Mútuos</Element.Link></li>
+                    <li><Element.Link href="/help" onClick={scrollTo('blocked')}>Bloqueio</Element.Link></li>
+                    <li><Element.Link href="/help" onClick={scrollTo('mutuals')}>Mútuos</Element.Link></li>
                     <li><Element.Link href="/settings/account">Configurações</Element.Link></li>
                 </ul>
             </form>
