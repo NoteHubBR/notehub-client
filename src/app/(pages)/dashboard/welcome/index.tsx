@@ -58,7 +58,7 @@ export const Welcome = (props: React.HTMLAttributes<HTMLElement>) => {
                     <Item href="/terms">Termos de Serviço</Item>
                     <Item href="/policy">Política de Privacidade</Item>
                     <Item href="/cookies">Cookies</Item>
-                    <Item href="/help" target="_blank">Ajuda</Item>
+                    <Item href="/help">Ajuda</Item>
                     <Item href="mailto:suporte@notehub.com.br">Suporte</Item>
                 </ul>
             </footer> */}

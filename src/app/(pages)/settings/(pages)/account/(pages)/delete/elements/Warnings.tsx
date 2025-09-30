@@ -1,3 +1,4 @@
+import { scrollTo } from "@/core";
 import Link from "next/link";
 
 export const Warnings = () => (
@@ -10,10 +11,9 @@ export const Warnings = () => (
             <li>
                 Notas criadas.
                 <Link
-                    href="/help#delete"
-                    target="_blank"
-                    className="ml-1 dark:text-secondary text-primary hover:underline"
-                >
+                    href="/help"
+                    onClickCapture={scrollTo('delete')}
+                    className="ml-1 dark:text-secondary text-primary hover:underline">
                     Saiba mais
                 </Link>
             </li>

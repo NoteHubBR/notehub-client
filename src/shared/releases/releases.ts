@@ -17,6 +17,20 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        version: 'v1.6.1',
+        date: '29/09/25 10:56',
+        title: 'Setembro 29, 2025',
+        summary: 'Suporte a nomes de usuários no estilo GitHub com hífen',
+        entries: [
+            {
+                type: 'fix',
+                pr: 4,
+                hash: '3e4ce2bc9ce9d2ea8fce92bcf0af8e5225ac05b8',
+                desc: 'Permitido hífen na atualização de nome de usuário.'
+            }
+        ]
+    },
+    {
         version: 'v1.6',
         date: '26/09/25 14:00',
         title: 'Setembro 26, 2025',

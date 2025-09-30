@@ -1,4 +1,4 @@
-import { IconBoltFilled, IconBookFilled, IconFileTypeCss, IconFlaskFilled, IconLockFilled, IconPackage, IconRecycle, IconSparkles } from "@tabler/icons-react";
+import { IconBoltFilled, IconBookFilled, IconBugFilled, IconFileTypeCss, IconFlaskFilled, IconLockFilled, IconPackage, IconRecycle, IconSparkles } from "@tabler/icons-react";
 import { ReleaseEntryType } from "@/shared";
 
 interface TopicProps extends React.HTMLAttributes<HTMLHeadingElement> {
@@ -38,7 +38,7 @@ export const ReleaseTopic = ({ type, children, ...rest }: ReleaseTopicProps) => 
 
     if (type === 'fix') return (
         <li className="flex flex-col gap-3" {...rest}>
-            <Topic icon={IconSparkles}>Correção</Topic>
+            <Topic icon={IconBugFilled}>Correção</Topic>
             {children}
         </li>
     )

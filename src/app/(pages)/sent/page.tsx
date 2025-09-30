@@ -27,7 +27,7 @@ const Page = () => {
         >
             <SVG.Flare className="absolute" />
             <header>
-                <Link href={'/'} target="blank" className="z-[1] group relative">
+                <Link href='/' className="z-[1] group relative">
                     <Icon.Logo width={300} height={0} />
                 </Link>
             </header>
