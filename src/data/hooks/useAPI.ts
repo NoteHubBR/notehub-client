@@ -23,6 +23,7 @@ const createHeaders = (
 }
 
 const handleResponse = async (response: Response) => {
+
     if (response.status === 204) return null;
 
     const text = await response.text();
@@ -32,14 +33,11 @@ const handleResponse = async (response: Response) => {
     } catch {
         data = text;
     }
-    if (!response.ok) {
-        if (response.status === 404) {
-            throw data || new Error();
-        }
-        throw data;
-    }
 
-    return data;
+    if (response.ok) return data;
+    if (response.status === 404) throw { data, response };
+    throw data;
+
 }
 
 export const useAPI = () => {

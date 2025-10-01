@@ -83,7 +83,7 @@ const Page = () => {
     )
 
     if (note) return (
-        <section className="max-w-[999px] w-full m-auto">
+        <section className="max-w-[999px] w-full m-auto pb-64">
             <section className="flex inlg:flex-col-reverse">
                 <Template.Portal blur="sm" triggerRef={triggerRef} childRef={childRef} closeRef={closeRef}>
                     <Form.Note.Update

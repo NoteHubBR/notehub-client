@@ -1,7 +1,7 @@
 import { noForbiddenWords } from '@/core/utils';
 import { z } from 'zod';
 
-export const loginUserFormSchema = z.object({
+export const loginFormSchema = z.object({
     username: noForbiddenWords("Não pode")(z
         .string().trim().toLowerCase()
         .regex(/^[a-zA-Z0-9_.-]+$/, "Use letras, números, _, . ou -")
@@ -13,4 +13,4 @@ export const loginUserFormSchema = z.object({
         .max(255, 'Máximo de 255 caracteres.'),
 });
 
-export type LoginUserFormData = z.infer<typeof loginUserFormSchema>;
+export type LoginFormData = z.infer<typeof loginFormSchema>;
