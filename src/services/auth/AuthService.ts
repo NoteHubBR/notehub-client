@@ -1,4 +1,4 @@
-import { LoginUserFormData, Token, User, Cookies } from "@/core";
+import { LoginFormData, Token, User, Cookies, RecoverFormData } from "@/core";
 import { useAPI, useUser } from "@/data/hooks";
 import { useCallback } from "react";
 
@@ -8,7 +8,7 @@ export const AuthService = () => {
 
     const { updateToken } = useUser();
 
-    const loginUserByDefault = async (data: LoginUserFormData): Promise<{ token: Token, user: User }> => {
+    const loginUserByDefault = async (data: LoginFormData): Promise<{ token: Token, user: User }> => {
         try {
             return await httpPost('/auth/login', data, { useProgress: true });
         } catch (error) {
@@ -74,9 +74,9 @@ export const AuthService = () => {
         }
     }, [httpPost])
 
-    const sendPasswordChangeRequest = useCallback(async (email: { email: string }): Promise<void> => {
+    const sendPasswordChangeRequest = useCallback(async (data: RecoverFormData | { email: string }): Promise<void> => {
         try {
-            return await httpPost('/auth/change-password', email, { useProgress: true });
+            return await httpPost('/auth/change-password', data, { useProgress: true });
         } catch (error) {
             throw error;
         }

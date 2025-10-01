@@ -2,6 +2,7 @@ export enum Routes {
     BASE = '/',
     SIGNUP = '/signup',
     SIGNIN = '/signin',
+    RECOVER = '/recover',
     SENT = '/sent',
     ACTIVATE = '/activate/:jwt',
     SEARCH_DESKTOP = '/search',
@@ -30,6 +31,7 @@ export enum Routes {
 enum NotUserContextRoutes {
     SIGNUP = '/signup',
     SIGNIN = '/signin',
+    RECOVER = '/recover',
     SENT = '/sent',
     ACTIVATE = '/activate/:jwt',
     CHANGE_EMAIL = '/change/email',

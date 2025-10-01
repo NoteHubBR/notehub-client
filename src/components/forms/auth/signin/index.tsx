@@ -1,7 +1,7 @@
 import { Cookies, handleOAuthError } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
-import { handleFieldErrors, LoginUserFormData, loginUserFormSchema, Token, User } from "@/core";
+import { handleFieldErrors, LoginFormData, loginFormSchema, Token, User } from "@/core";
 import { IconAt } from "@tabler/icons-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -17,8 +17,8 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
     const { setStore } = useStore();
     const { setUser } = useUser();
 
-    const loginUserForm = useForm<LoginUserFormData>({
-        resolver: zodResolver(loginUserFormSchema)
+    const loginUserForm = useForm<LoginFormData>({
+        resolver: zodResolver(loginFormSchema)
     })
 
     const { handleSubmit, setError } = loginUserForm;
@@ -39,7 +39,7 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
         return router.push('/');
     }, [router, setStore, setUser])
 
-    const onSubmit = async (data: LoginUserFormData) => {
+    const onSubmit = async (data: LoginFormData) => {
         setState((prev) => ({ ...prev, isRequesting: true }));
         try {
             login(await loginUserByDefault(data));

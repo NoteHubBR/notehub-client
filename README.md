@@ -12,7 +12,7 @@
 </div>
 <br>
 <div align="center">
-  <a href="https://github.com/notehubbr/notehub-client/releases/tag/1.6.1">
+  <a href="https://github.com/notehubbr/notehub-client/releases/tag/v1.6.1">
     <img width="100px" height="25px" src="https://img.shields.io/badge/notehub-1.6.1-7c3aed">
   </a>
 </div>
