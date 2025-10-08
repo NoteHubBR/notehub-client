@@ -149,6 +149,21 @@ export const items: Items[] = [
         )
     },
     {
+        id: 'subscriptions',
+        keywords: ["subscriptions", "inscrição", "inscrições", "inscrito", "tópico", "email", "notificações", "notificacoes"],
+        question: 'Inscrição',
+        answer: (
+            <>
+                Ao se inscrever em um tópico, você passará a receber atualizações por e-mail sobre o que for mais relevante para você.
+                <br /><br />
+                Essas atualizações são importantes para que você acompanhe novidades e melhorias do serviço.
+                Recomendamos que mantenha suas inscrições ativas, mas você pode cancelá-las a qualquer momento.
+                <br /><br />
+                Não enviamos spam nem e-mails promocionais — apenas informações úteis e relacionadas aos tópicos escolhidos.
+            </>
+        )
+    },
+    {
         id: 'report',
         keywords: ["repots", "denúncias", "denuncias", "avisar", "suporte"],
         question: 'Denúncia',

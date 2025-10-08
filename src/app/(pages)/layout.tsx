@@ -16,6 +16,7 @@ import { UserNotificationsProvider } from "@/data/contexts/UserNotificationsCont
 import { UserPreferencesProvider } from "@/data/contexts/UserPreferencesContext";
 import { UserProvider } from "@/data/contexts/UserContext";
 import { UserStoreProvider } from "@/data/contexts/UserStoreContext";
+import { UserSubscriptionsProvider } from "@/data/contexts/UserSubscriptionsContext";
 import { UserTagsProvider } from "@/data/contexts/UserTagsContext";
 
 const UserProviders = ({ children }: { children: React.ReactNode }) => {
@@ -29,11 +30,13 @@ const UserProviders = ({ children }: { children: React.ReactNode }) => {
                             <UserFlamesProvider>
                                 <UserTagsProvider>
                                     <UserHistoryProvider>
-                                        <UserProvider>
-                                            <UserNotificationsProvider>
-                                                {children}
-                                            </UserNotificationsProvider>
-                                        </UserProvider>
+                                        <UserSubscriptionsProvider>
+                                            <UserProvider>
+                                                <UserNotificationsProvider>
+                                                    {children}
+                                                </UserNotificationsProvider>
+                                            </UserProvider>
+                                        </UserSubscriptionsProvider>
                                     </UserHistoryProvider>
                                 </UserTagsProvider>
                             </UserFlamesProvider>
@@ -62,14 +65,11 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
                 </ProgressBarProvider>
             </ScreenWidthProvider>
         </ScreenProvider>
-
     )
 }
 
 const layout = (props: any) => {
-
     const { Desktop, Mobile } = Device;
-
     return (
         <Providers>
             <Component.ProgressBar />

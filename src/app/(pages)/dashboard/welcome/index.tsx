@@ -9,10 +9,10 @@ export const Welcome = (props: React.HTMLAttributes<HTMLElement>) => {
     return (
         <main className="w-full h-full flex flex-col dark:bg-darker bg-lighter" {...props}>
             <div className="w-full flex-1 flex inmd:flex-col inmd:justify-center gap-8 inmd:gap-6">
-                <section className="inmd:w-full inmd:max-w-[333px] px-3 mx-auto flex flex-col items-center justify-center inmd:items-start">
+                <section className="inmd:w-full inmd:max-w-[333px] px-3 insm:px-9 mx-auto flex flex-col items-center justify-center inmd:items-start">
                     <Icon.Logo width={onDesktop ? 666 : 111} height={0} />
                 </section>
-                <section className="inmd:w-full inmd:max-w-[333px] px-3 mr-auto [@media(max-width:1666px)]:mx-auto flex flex-col items-end justify-center gap-16 inmd:gap-6">
+                <section className="inmd:w-full inmd:max-w-[333px] px-3 insm:px-9 mr-auto [@media(max-width:1666px)]:mx-auto flex flex-col items-end justify-center gap-16 inmd:gap-6">
                     <header className="w-full">
                         <h1 className="font-extrabold text-7xl inlg:text-6xl inmd:text-5xl">
                             NoteHub
@@ -21,7 +21,7 @@ export const Welcome = (props: React.HTMLAttributes<HTMLElement>) => {
                             Organize, classifique e encontre.
                         </h2>
                     </header>
-                    <div className="w-full flex flex-col gap-12 inmd:gap-6">
+                    <div className="w-full flex flex-col gap-12 inmd:gap-6 inmd:items-center">
                         <section className="flex flex-col gap-4">
                             <header className="w-fit flex items-center gap-3">
                                 <h3 className="font-medium text-xl">Conecte-se</h3>
