@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useEffect, useState } from "react";
 import { Token, User, Cookies, shouldUseUserContext } from "@/core";
-import { useFlames, useFollowing, useHistory, useLoading, useNotes, useServices, useStore, useTags } from "../hooks";
+import { useFlames, useFollowing, useHistory, useLoading, useNotes, useServices, useStore, useSubscriptions, useTags } from "../hooks";
 import { usePathname } from "next/navigation";
 
 export interface UserContextProps {
@@ -21,7 +21,7 @@ export const UserProvider = (props: any) => {
 
     const {
         authService: { refreshUser, logoutUser },
-        userService: { getUserDisplayNameHistory, searchUserFollowing },
+        userService: { getUserDisplayNameHistory, getUserSubscriptions, searchUserFollowing },
         noteService: { getUserNotes, findUserTags },
         flameService: { getUserFlames }
     } = useServices();
@@ -32,6 +32,7 @@ export const UserProvider = (props: any) => {
     const { clearNotes, setNotes } = useNotes();
     const { clearFlames, setFlames } = useFlames();
     const { clearTags, setTags } = useTags();
+    const { clearSubscriptions, setSubscriptions } = useSubscriptions();
 
     const pathname = usePathname();
 
@@ -88,7 +89,7 @@ export const UserProvider = (props: any) => {
         return Cookies.remove('rtoken');
     }, [logoutUser, setStore])
 
-    const fetchUser = async (): Promise<void> => {
+    const fetchUser = useCallback(async (): Promise<void> => {
         try {
             const { token, user } = await refreshUser();
             Cookies.set('rtoken', token.refresh_token, token.expires_at);
@@ -98,7 +99,7 @@ export const UserProvider = (props: any) => {
             Cookies.remove('rtoken');
             return setUser(null, null);
         }
-    }
+    }, [refreshUser, setStore, setUser])
 
     const clearData = useCallback(async () => {
         clearHistory();
@@ -106,7 +107,8 @@ export const UserProvider = (props: any) => {
         clearNotes();
         clearFlames();
         clearTags();
-    }, [clearFlames, clearFollowing, clearHistory, clearNotes, clearTags])
+        clearSubscriptions();
+    }, [clearFlames, clearFollowing, clearHistory, clearNotes, clearSubscriptions, clearTags])
 
     const fetchUserData = async (accessToken: string, username: string): Promise<void> => {
         try {
@@ -116,6 +118,7 @@ export const UserProvider = (props: any) => {
             setNotes(await getUserNotes(accessToken));
             setFlames(await getUserFlames(accessToken, username, 'size=9999'));
             setTags(await findUserTags(accessToken, username));
+            setSubscriptions(await getUserSubscriptions(accessToken));
             return;
         } finally {
             setIsLoaded(true);

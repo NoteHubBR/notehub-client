@@ -17,6 +17,26 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        version: 'v1.7',
+        date: '8/10/25 14:45',
+        title: 'Outubro 8, 2025',
+        summary: 'Inscrições de usuários e notificações por e-mail baseadas em tópicos',
+        entries: [
+            {
+                type: 'feat',
+                pr: 5,
+                hash: '2c76f18eec1aa1871a7a61998d393f9520f620cb',
+                desc: 'Adicionada coleção de inscrições aos usuários.'
+            },
+            {
+                type: 'feat',
+                pr: 5,
+                hash: '2c76f18eec1aa1871a7a61998d393f9520f620cb',
+                desc: 'Implementado suporte para ativar ou remover inscrições de tópicos.'
+            }
+        ]
+    },
+    {
         version: 'v1.6.1',
         date: '29/09/25 10:56',
         title: 'Setembro 29, 2025',

@@ -1,5 +1,5 @@
 import { AuthService } from '../auth';
-import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData, EmailChangeFormData, PasswordUpdateFormData, DeleteUserFormData } from '@/core';
+import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData, EmailChangeFormData, PasswordUpdateFormData, DeleteUserFormData, Subscription } from '@/core';
 import { useAPI } from '@/data/hooks';
 import { useCallback } from 'react';
 
@@ -136,6 +136,33 @@ export const UserService = () => {
         }
     }, [httpGet])
 
+    const getUserSubscriptions = useCallback(async (token: string): Promise<Subscription[]> => {
+        const endpoint: string = '/users/subscriptions';
+        try {
+            return await httpGet(endpoint, { useToken: token });
+        } catch (error: any) {
+            return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useToken: newToken }));
+        }
+    }, [httpGet, handleExpiredToken])
+
+    const enableSubscription = useCallback(async (token: string, subscription: Subscription): Promise<void> => {
+        const endpoint = `/users/subscriptions/${subscription}`;
+        try {
+            return await httpPost(endpoint, undefined, { useToken: token });
+        } catch (error) {
+            return handleExpiredToken(error, (newToken) => httpPost(endpoint, undefined, { useToken: newToken }));
+        }
+    }, [httpPost, handleExpiredToken])
+
+    const disableSubscription = useCallback(async (token: string, subscription: Subscription): Promise<void> => {
+        const endpoint = `/users/subscriptions/${subscription}`;
+        try {
+            return await httpDelete(endpoint, undefined, { useToken: token });
+        } catch (error) {
+            return handleExpiredToken(error, (newToken) => httpDelete(endpoint, undefined, { useToken: newToken }));
+        }
+    }, [httpDelete, handleExpiredToken])
+
     const deleteUser = useCallback(async (token: string, data: DeleteUserFormData) => {
         const endpoint = '/users/delete';
         try {
@@ -160,6 +187,9 @@ export const UserService = () => {
         searchUserFollowers,
         getUserNotifications,
         searchUsers,
+        getUserSubscriptions,
+        enableSubscription,
+        disableSubscription,
         deleteUser
     }
 
