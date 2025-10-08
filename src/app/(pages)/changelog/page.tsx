@@ -39,7 +39,7 @@ const Page = () => {
                                     <ReleaseTopic key={type} type={type}>
                                         <ReleaseOList>
                                             {entries.map((entry: Entry, idx: number) => (
-                                                <ReleaseDesc key={entry.hash ?? idx} pr={entry.pr} hash={entry.hash}>
+                                                <ReleaseDesc key={idx} pr={entry.pr} hash={entry.hash}>
                                                     {entry.desc}
                                                 </ReleaseDesc>
                                             ))}
