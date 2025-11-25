@@ -27,8 +27,11 @@ export const Modal = ({ className, triggerRef, closeRef, applyRef, onOpen, onClo
     }, [onClose])
 
     const handleChangeOnTrigger = useCallback((): void => {
+        const el = triggerRef.current;
+        if (el && el.files && el.files.length < 1) return;
+        if (el && el.files && el.files[0].type.endsWith('gif')) return;
         return handleOpenModal();
-    }, [handleOpenModal])
+    }, [handleOpenModal, triggerRef])
 
     const handleClickOnClose = useCallback((e: MouseEvent): void => {
         if (closeRef && closeRef.current?.contains(e.target as HTMLButtonElement)) {

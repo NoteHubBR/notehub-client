@@ -24,6 +24,7 @@ export const PicturePortal = forwardRef<HTMLImageElement, PicturePortalProps>(({
                         alt={`Avatar de ${user.username}`}
                         width={size}
                         height={size}
+                        className="w-full h-full object-cover object-center"
                     />
                 </figure>
             }

@@ -16,7 +16,7 @@ interface BannerProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Banner = ({ user, onModalOpen, onModalClose, ...rest }: BannerProps) => {
 
-    const { setValue } = useFormContext<EditUserFormData>();
+    const { setValue, setError } = useFormContext<EditUserFormData>();
 
     const triggerRef = useRef<HTMLInputElement>(null);
     const closeRef = useRef<HTMLButtonElement>(null);
@@ -31,11 +31,13 @@ export const Banner = ({ user, onModalOpen, onModalClose, ...rest }: BannerProps
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
         const file = e.target.files?.[0];
         if (file) {
+            setError('avatar', {});
+            if (file.type.endsWith('gif')) return setError('avatar', { message: 'GIFs são proibidos como banner.' });
             const preview = URL.createObjectURL(file);
             setPreview(preview);
         }
         if (triggerRef.current) triggerRef.current.value = '';
-    }, [])
+    }, [setError])
 
     const handleApplyClick = useCallback(async (): Promise<string | void> => {
         if (!triggerRef.current || !cropperRef.current) return;
@@ -59,6 +61,7 @@ export const Banner = ({ user, onModalOpen, onModalClose, ...rest }: BannerProps
                 <div className="center flex items-center gap-3">
                     <Upload
                         ref={triggerRef}
+                        user={user}
                         name="banner"
                         handleFileChange={handleFileChange}
                         isBlocked={user.blocked}

@@ -4,9 +4,9 @@ import { StoreProps, UploadProps } from "./types";
 import { v4 as uuidv4 } from "uuid";
 import imageCompression from 'browser-image-compression';
 
-export const uploadImage = async ({ file, bucket, folder, username }: UploadProps): Promise<string> => {
-    const path = `${folder}/${username}/${uuidv4()}.png`;
-    file = await imageCompression(file, { maxSizeMB: 1, })
+const uploadImage = async ({ file, bucket, folder, username }: UploadProps): Promise<string> => {
+    file = file.type === 'image/png' ? await imageCompression(file, { maxSizeMB: 1, }) : file;
+    const path = `${folder}/${username}/${uuidv4()}${file.type === 'image/png' ? '.png' : '.gif'}`;
     const { storage } = createSupabaseClient();
     const { data } = await storage.from(bucket).upload(path, file);
     return `${process.env.NEXT_PUBLIC_SUPABASE_URL!}/storage/v1/object/public/${bucket}/${data!.path}`

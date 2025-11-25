@@ -1,15 +1,17 @@
 import { ChangeEvent, forwardRef, InputHTMLAttributes } from "react";
 import { clsx } from "clsx";
-import { editUserFormSchema } from "@/core";
+import { editUserFormSchema, User } from "@/core";
 import { IconCameraPlus, IconForbid } from "@tabler/icons-react";
 
 interface UploadProps extends InputHTMLAttributes<HTMLInputElement> {
+    user: User;
+    allowGif?: boolean
     name: keyof typeof editUserFormSchema.shape;
     handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
     isBlocked: boolean;
 }
 
-export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ name, handleFileChange, isBlocked, className, ...rest }, ref) => {
+export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ user, allowGif, name, handleFileChange, isBlocked, className, ...rest }, ref) => {
 
     return (
         <>
@@ -19,7 +21,7 @@ export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ name, handleF
                 id={name}
                 ref={ref}
                 type="file"
-                accept="image/*"
+                accept={user.sponsor && allowGif ? "image/png, image/jpeg, image/gif" : "image/png, image/jpeg"}
                 className="hidden"
                 onChange={handleFileChange}
                 {...rest}

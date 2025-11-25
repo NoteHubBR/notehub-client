@@ -18,7 +18,7 @@ export const Avatar = ({ user, onModalOpen, onModalClose, ...props }: AvatarProp
 
     const { onDesktop } = useScreen();
 
-    const { setValue } = useFormContext<EditUserFormData>();
+    const { setValue, setError } = useFormContext<EditUserFormData>();
 
     const triggerRef = useRef<HTMLInputElement>(null);
     const closeRef = useRef<HTMLButtonElement>(null);
@@ -33,11 +33,19 @@ export const Avatar = ({ user, onModalOpen, onModalClose, ...props }: AvatarProp
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
         const file = e.target.files?.[0];
         if (file) {
+            setError('avatar', {});
+            if (file.type.endsWith('gif')) {
+                if (!user.sponsor) return setError('avatar', { message: 'GIFs apenas para patrocinadores.' });
+                if (file.size > 12 * 1024 * 1024) return setError('avatar', { message: 'GIFs não podem ultrapassar 12MB.' });
+                const gif = URL.createObjectURL(file);
+                setUrl(gif);
+                return setValue('avatar', gif);
+            }
             const preview = URL.createObjectURL(file);
             setPreview(preview);
         }
         if (triggerRef.current) triggerRef.current.value = '';
-    }, [])
+    }, [setError, setValue, user.sponsor])
 
     const handleApplyClick = useCallback(async (): Promise<string | void> => {
         if (!triggerRef.current || !cropperRef.current) return;
@@ -57,6 +65,8 @@ export const Avatar = ({ user, onModalOpen, onModalClose, ...props }: AvatarProp
                 />
                 <Upload
                     ref={triggerRef}
+                    user={user}
+                    allowGif
                     name="avatar"
                     handleFileChange={handleFileChange}
                     isBlocked={user.blocked}
