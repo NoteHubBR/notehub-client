@@ -1,6 +1,7 @@
 export * from './useAPI';
 export * from './useServices';
 export * from './usePreferences';
+export * from './useSessionPreferences';
 export * from './useStore';
 export * from './useUser';
 export * from './useNotifications';
