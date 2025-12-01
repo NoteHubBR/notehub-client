@@ -15,6 +15,7 @@ import { UserNotesProvider } from "@/data/contexts/UserNotesContext";
 import { UserNotificationsProvider } from "@/data/contexts/UserNotificationsContext";
 import { UserPreferencesProvider } from "@/data/contexts/UserPreferencesContext";
 import { UserProvider } from "@/data/contexts/UserContext";
+import { UserSessionPreferencesProvider } from "@/data/contexts/UserSessionPreferencesContext";
 import { UserStoreProvider } from "@/data/contexts/UserStoreContext";
 import { UserSubscriptionsProvider } from "@/data/contexts/UserSubscriptionsContext";
 import { UserTagsProvider } from "@/data/contexts/UserTagsContext";
@@ -24,25 +25,27 @@ const UserProviders = ({ children }: { children: React.ReactNode }) => {
     return (
         <GoogleOAuthProvider clientId={GCI ?? 'GCI'}>
             <UserPreferencesProvider>
-                <UserStoreProvider>
-                    <UserFollowingProvider>
-                        <UserNotesProvider>
-                            <UserFlamesProvider>
-                                <UserTagsProvider>
-                                    <UserHistoryProvider>
-                                        <UserSubscriptionsProvider>
-                                            <UserProvider>
-                                                <UserNotificationsProvider>
-                                                    {children}
-                                                </UserNotificationsProvider>
-                                            </UserProvider>
-                                        </UserSubscriptionsProvider>
-                                    </UserHistoryProvider>
-                                </UserTagsProvider>
-                            </UserFlamesProvider>
-                        </UserNotesProvider>
-                    </UserFollowingProvider>
-                </UserStoreProvider>
+                <UserSessionPreferencesProvider>
+                    <UserStoreProvider>
+                        <UserFollowingProvider>
+                            <UserNotesProvider>
+                                <UserFlamesProvider>
+                                    <UserTagsProvider>
+                                        <UserHistoryProvider>
+                                            <UserSubscriptionsProvider>
+                                                <UserProvider>
+                                                    <UserNotificationsProvider>
+                                                        {children}
+                                                    </UserNotificationsProvider>
+                                                </UserProvider>
+                                            </UserSubscriptionsProvider>
+                                        </UserHistoryProvider>
+                                    </UserTagsProvider>
+                                </UserFlamesProvider>
+                            </UserNotesProvider>
+                        </UserFollowingProvider>
+                    </UserStoreProvider>
+                </UserSessionPreferencesProvider>
             </UserPreferencesProvider>
         </GoogleOAuthProvider>
     )

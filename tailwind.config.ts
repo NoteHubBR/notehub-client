@@ -56,6 +56,7 @@ const config: Config = {
         '2xs': '0.55rem'
       },
       dropShadow: {
+        'primary': '0 0 22px rgba(var(--secondary), 1)',
         'alpha-d-xs': '0 0 2px rgba(0,0,0,.25)',
         'alpha-d-sm': '0 0 1px rgba(0,0,0,.33)',
         'alpha-d-md': '0 0 1px rgba(0,0,0,.5)',
@@ -71,9 +72,18 @@ const config: Config = {
             transform: 'rotate(-360deg)',
           },
         },
+        'shiny': {
+          'from': {
+            transform: 'translateX(-100%)',
+          },
+          'to': {
+            transform: 'translateX(100%)'
+          }
+        },
       },
       animation: {
         'background-spin': 'background-spin 3s linear infinite',
+        'shiny': 'shiny 2211ms linear infinite',
       },
     },
   },
@@ -83,6 +93,25 @@ const config: Config = {
     },
     function ({ addUtilities, theme }: { addUtilities: any, theme: any }) {
       const newUtilities = {
+        '.shine': {
+          overflow: 'hidden',
+          position: 'relative',
+          '&::after': {
+            content: "''",
+            zIndex: '1',
+            pointerEvents: 'none',
+            position: 'absolute',
+            inset: '0',
+            transform: 'translateX(-100%)',
+            background: 'linear-gradient(to right, transparent, rgba(255,255,255,.25), transparent)',
+            transitionProperty: 'transform',
+            transitionDuration: '555ms',
+            transitionTimingFunction: 'linear',
+          },
+          '&:hover::after, &:focus::after, &:focus-within::after': {
+            transform: 'translateX(100%)',
+          }
+        },
         '.no-scrollbar': {
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
@@ -211,7 +240,10 @@ const config: Config = {
         },
         '.bg-l-gradient': {
           background: 'linear-gradient(rgba(255,255,255,.5), #fafafa 90%)'
-        }
+        },
+        '.text-shadow': {
+          textShadow: '0px 1px 2px rgb(0 0 0 / 0.1), 0px 3px 2px rgb(0 0 0 / 0.1), 0px 4px 8px rgb(0 0 0 / 0.1)'
+        },
       }
       addUtilities(newUtilities);
     }

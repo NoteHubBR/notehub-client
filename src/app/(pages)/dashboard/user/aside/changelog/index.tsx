@@ -1,11 +1,14 @@
 import { Element } from "./elements";
 import { releases } from "@/shared";
+import { useUser } from "@/data/hooks";
 
 export const Changelog = () => {
 
+    const { user } = useUser();
+
     const { Title, Li, Time, Change, Link } = Element;
 
-    return (
+    if (user) return (
         <section
             className="w-full h-fit p-3 rounded-[5px]
             dark:bg-darker bg-lighter
@@ -17,7 +20,7 @@ export const Changelog = () => {
                 <Title>Últimas alterações</Title>
             </header>
             <ul className="p-3">
-                {releases.slice(0, 4).map((release, key) => (
+                {releases.slice(0, user.sponsor ? 4 : 2).map((release, key) => (
                     <Li key={key}>
                         <Time time={release.date} />
                         <Change toId={release.version}>{release.summary}</Change>
@@ -27,5 +30,7 @@ export const Changelog = () => {
             </ul>
         </section>
     )
+
+    return <></>;
 
 }

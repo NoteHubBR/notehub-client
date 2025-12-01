@@ -1,6 +1,8 @@
 'use client';
 
 import { Header } from "../Header";
+import { SponsorCard } from "./card/SponsorCard";
+import { Sponsorship } from "@/app/(pages)/dashboard/user/aside/sponsorship";
 import { useUser } from "@/data/hooks";
 
 const Page = () => {
@@ -10,12 +12,16 @@ const Page = () => {
     if (user) return (
         <section>
             <Header goBack="/settings" title="Patrocínio" />
-            <section className="mt-6">
-                <p className="font-medium text-sm dark:text-midlight/60 text-middark/60">
-                    Ainda estamos preparando essa funcionalidade.
-                    Em breve você poderá apoiar o projeto e desbloquear benefícios exclusivos!
-                </p>
-            </section>
+            {user.sponsor
+                ?
+                <SponsorCard />
+                :
+                <Sponsorship
+                    isSponsorshipInviteAllowed
+                    skipClose
+                    className="mt-6 dark:drop-shadow-alpha-l-md drop-shadow-alpha-d-md"
+                />
+            }
         </section>
     )
 
