@@ -7,7 +7,7 @@ export const donationFormSchema = z.object({
         .default('BRL'),
     amount: z
         .number()
-        .min(0, 'Valor inválido')
+        .min(1, 'Valor inválido.')
         .default(0),
 })
 

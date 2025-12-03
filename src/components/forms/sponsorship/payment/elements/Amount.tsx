@@ -1,5 +1,6 @@
 import { Country } from "../types";
 import { DonationFormData } from "@/core";
+import { clsx } from "clsx";
 import { useFormContext } from "react-hook-form";
 
 interface AmountProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -10,7 +11,7 @@ interface AmountProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export const Amount = ({ amount, setAmount, country, ...rest }: AmountProps) => {
 
-    const { setValue } = useFormContext<DonationFormData>();
+    const { setValue, setError } = useFormContext<DonationFormData>();
 
     const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
         e.currentTarget.setSelectionRange(
@@ -44,7 +45,8 @@ export const Amount = ({ amount, setAmount, country, ...rest }: AmountProps) => 
         if (rawValue === '') return setAmount(country.locale === 'ja-JP' ? '0' : country.locale === 'pt-BR' ? '0,00' : '0.00');
         const amount = parseInt(rawValue, 10);
         setAmount(formatCurrency(amount, country));
-        setValue('amount', amount)
+        setValue('amount', amount);
+        setError('amount', { type: 'value', message: '' });
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -62,7 +64,11 @@ export const Amount = ({ amount, setAmount, country, ...rest }: AmountProps) => 
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             placeholder={country.isZeroDecimal ? '0' : (country.locale === 'pt-BR' ? '0,00' : '0.00')}
-            className="text-middark min-w-[150px] p-2 rounded-e-md font-semibold bg-light"
+            className={clsx(
+                'insm:max-w-[177px] p-2 border dark:border-middark/50 border-midlight/50',
+                'font-semibold dark:text-midlight text-middark',
+                'dark:bg-darker bg-lighter',
+            )}
             {...rest}
         />
     )
