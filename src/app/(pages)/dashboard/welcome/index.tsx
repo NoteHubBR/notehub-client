@@ -27,7 +27,7 @@ export const Welcome = (props: React.HTMLAttributes<HTMLElement>) => {
                                 <h3 className="font-medium text-xl">Conecte-se</h3>
                                 <Brands />
                             </header>
-                            <ButtonLink href="/signin" className="bg-gradient-to-r from-blue-600 via-purple-600 to-red-600 text-white">
+                            <ButtonLink href="/signin" className="bg-gradient-to-r from-primary to-inverted text-white">
                                 Entrar
                             </ButtonLink>
                             <Button className="dark:bg-semidark bg-semilight ">

@@ -10,6 +10,7 @@
   --foreground: #000000;
   --primary: 124, 58, 237;
   --secondary: 139, 92, 246;
+  --inverted: 131, 197, 18;
   --shadow: 0 0 0 6px rgba(var(--primary), .25)
 }
 
@@ -19,6 +20,7 @@
     --foreground: #ffffff;
     --primary: 124, 58, 237;
     --secondary: 139, 92, 246;
+    --inverted: 131, 197, 18;
     --shadow: 0 0 0 6px rgba(var(--primary), .5)
   }
 }
@@ -28,6 +30,7 @@ html.dark {
   --foreground: #ffffff;
   --primary: 124, 58, 237;
   --secondary: 139, 92, 246;
+  --inverted: 131, 197, 18;
   --shadow: 0 0 0 6px rgba(var(--primary), .5)
 }
 
@@ -36,6 +39,7 @@ html.light {
   --foreground: #000000;
   --primary: 124, 58, 237;
   --secondary: 139, 92, 246;
+  --inverted: 131, 197, 18;
   --shadow: 0 0 0 6px rgba(var(--primary), .25)
 }
 

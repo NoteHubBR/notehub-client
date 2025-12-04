@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 import { DefaultColors } from "tailwindcss/types/generated/colors";
-import { hexToRGB } from "@/core";
+import { hexToRGB, invertRGB } from "@/core";
 import { usePref } from "@/data/hooks";
 import colors from "tailwindcss/colors";
 
@@ -38,7 +38,8 @@ export const Button = ({ setColors, gradient, useDark, color, ...rest }: ButtonP
             useColors: {
                 shades: color,
                 primary: hexToRGB(colors[color][600]),
-                secondary: hexToRGB(colors[color][500])
+                secondary: hexToRGB(colors[color][500]),
+                inverted: invertRGB(hexToRGB(colors[color][600]))
             }
         })
     }

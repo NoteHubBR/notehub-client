@@ -21,10 +21,16 @@ const config: Config = {
             ? `rgba(var(--primary), ${opacityValue})`
             : `rgb(var(--primary))`;
         }) as any,
+        'primary-inverted': 'color-mix(in srgb, rgb(var(--primary)) 0%, white)',
         secondary: (({ opacityValue }: { opacityValue?: number }) => {
           return opacityValue !== undefined
             ? `rgba(var(--secondary), ${opacityValue})`
             : `rgb(var(--secondary))`;
+        }) as any,
+        inverted: (({ opacityValue }: { opacityValue?: number }) => {
+          return opacityValue !== undefined
+            ? `rgba(var(--inverted), ${opacityValue})`
+            : `rgb(var(--inverted))`;
         }) as any,
         'alpha-d-xs': 'rgba(0,0,0,.15)',
         'alpha-d-sm': 'rgba(0,0,0,.25)',
@@ -149,7 +155,7 @@ const config: Config = {
             position: 'absolute',
             inset: '0',
             'border-radius': '4px',
-            background: 'linear-gradient(to right, #2563EB, #7C3AED, #DC2626)',
+            background: `linear-gradient(to right, ${theme('colors.primary')}, ${theme('colors.inverted')})`,
           },
           '&::after': {
             content: "''",
@@ -157,7 +163,7 @@ const config: Config = {
             position: 'absolute',
             inset: '0',
             'border-radius': '4px',
-            background: 'linear-gradient(to right, #2563EB, #7C3AED, #DC2626)',
+            background: `linear-gradient(to right, ${theme('colors.primary')}, ${theme('colors.inverted')})`,
             filter: 'blur(12px)'
           }
         },
