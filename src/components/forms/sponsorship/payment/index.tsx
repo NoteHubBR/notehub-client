@@ -1,4 +1,4 @@
-import { Amount, Currencies, CurrenciesDropdown, Currency, CurrencySelector, Error, Submit } from "./elements";
+import { Amount, Currencies, CurrenciesDropdown, Currency, CurrencySelector, Icon, Submit } from "./elements";
 import { countries, Country } from "./types";
 import { DonationFormData, donationFormSchema } from "@/core";
 import { FormProvider, useForm } from "react-hook-form";
@@ -18,6 +18,7 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
     const [amount, setAmount] = useState<string>('0');
     const [country, setCountry] = useState<Country>(countries.BR);
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+    const isPending: boolean = false;
 
     useEffect(() => {
         return setAmount(country.isZeroDecimal ? '0' : country.locale === 'pt-BR' ? '0,00' : '0.00');
@@ -35,12 +36,13 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
         <FormProvider {...donationForm}>
             <form
                 onSubmit={handleSubmit(onSubmit, onError)}
-                className="flex"
+                className="flex flex-col gap-6 dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
                 {...props}
             >
-                <div className="relative">
+                <fieldset className="relative flex">
                     <CurrencySelector
                         ref={selectorRef}
+                        disabled={isPending}
                         id="currencySelector"
                         aria-controls="currenciesDropdown"
                         aria-haspopup="menu"
@@ -73,23 +75,17 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
                             ))}
                         </Currencies>
                     </CurrenciesDropdown>
-                </div>
-                <fieldset className="relative flex">
-                    <label
-                        htmlFor="amount"
-                        className="absolute left-0 bottom-12 font-medium text-sm dark:text-midlight text-middark"
-                    >
-                        Quantia
-                    </label>
-                    <Error />
+                    <label htmlFor="amount" className="hidden">Quantia</label>
                     <Amount
+                        disabled={isPending}
                         id="amount"
                         amount={amount}
                         setAmount={setAmount}
                         country={country}
                     />
+                    <Icon />
                 </fieldset>
-                <Submit amount={amount} />
+                <Submit disabled={isPending} amount={amount} />
             </form>
         </FormProvider>
     )

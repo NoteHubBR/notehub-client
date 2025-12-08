@@ -40,33 +40,32 @@ export const Currency = ({ country, currentCountry, setCountry, ...rest }: Curre
                     'w-full h-full px-2 py-1 rounded-md',
                     'flex items-center justify-center gap-1',
                     'transition-colors duration-150',
-                    country === currentCountry
-                        ? 'bg-primary/25'
-                        : 'dark:hover:bg-midlight/15 hover:bg-middark/15 dark:focus-visible:bg-midlight/15 focus-visible:bg-middark/15'
+                    'dark:hover:bg-midlight/15 hover:bg-middark/15 dark:focus-visible:bg-midlight/15 focus-visible:bg-middark/15',
+                    country === currentCountry && 'bg-primary/25'
                 )}
                 {...rest}
             >
-                <figure className="flex-1 pointer-events-none">
+                <figure className="flex-1 pointer-events-none flex items-center justify-center">
                     <Image
                         src={`/svgs/flags/${country.flag}.svg`}
                         alt={`Flag of ${country.flag}`}
-                        width={30}
+                        width={24}
                         height={0}
                     />
                 </figure>
                 <div
                     aria-hidden='true'
                     className={clsx(
-                        'h-6 border-l',
-                        country === currentCountry
-                            ? 'dark:border-secondary border-primary'
-                            : 'dark:border-semilight/25 border-semidark/25'
+                        'h-3 border-l',
+                        'dark:border-semilight/25 border-semidark/25',
+                        country === currentCountry && 'dark:border-secondary border-primary'
                     )}
                 />
                 <p
                     className={clsx(
                         'flex-1 text-xs font-medium',
-                        country === currentCountry ? 'dark:text-secondary text-primary' : 'dark:text-midlight/75 text-middark/75'
+                        'dark:text-midlight/75 text-middark/75',
+                        country === currentCountry && 'dark:text-secondary text-primary'
                     )}
                 >
                     {country.currency}

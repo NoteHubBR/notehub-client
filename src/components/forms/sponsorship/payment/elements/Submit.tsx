@@ -1,5 +1,5 @@
+import { Icon } from "@/components/icons";
 import { clsx } from "clsx";
-import { IconGiftFilled } from "@tabler/icons-react";
 
 interface SubmitProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     amount: string;
@@ -11,28 +11,27 @@ export const Submit = ({ amount, ...rest }: SubmitProps) => {
 
     return (
         <button
-            tabIndex={0}
-            aria-label="Resgatar"
             type="submit"
             className={clsx(
-                'relative overflow-hidden p-2 rounded-e-md',
-                'border-y border-r dark:border-middark/50 border-midlight/50',
+                'z-0 group relative overflow-hidden disabled:pointer-events-none',
+                'p-2 rounded-md',
+                'font-semibold dark:text-light text-dark',
                 'transition-all ease-linear',
+                'active:top-[1px]',
+                'disabled:bg-gradient-to-b disabled:dark:from-semidark disabled:dark:via-dark disabled:dark:to-dark disabled:from-semilight disabled:via-light disabled:to-light',
                 isValid
-                    ? 'bg-primary hover:opacity-75 focus-visible:opacity-75'
-                    : 'dark:bg-middark/50 bg-midlight/50 dark:focus-visible:bg-red-500/50 focus-visible:bg-red-500'
+                    ? '!text-light bg-gradient-to-r dark:from-secondary dark:to-inverted from-primary to-inverted'
+                    : 'bg-gradient-to-b dark:from-semidark dark:via-dark dark:to-dark from-semilight via-light to-light hover:opacity-75 focus-visible:opacity-50'
             )}
             {...rest}
         >
-            <IconGiftFilled
-                aria-hidden='true'
-                size={24}
-                className={clsx(
-                    'drop-shadow-alpha-d-xs',
-                    'transition-colors ease-linear',
-                    isValid ? 'fill-lighter' : 'dark:fill-midlight/75 fill-middark/75'
-                )}
-            />
+            <span className={clsx(
+                'opacity-100 drop-shadow-alpha-d-sm',
+                'transition-opacity duration-500 ease-linear',
+                'group-disabled:opacity-0'
+            )}>
+                Confirmar
+            </span>
             <div
                 aria-hidden='true'
                 className={clsx(
@@ -40,8 +39,20 @@ export const Submit = ({ amount, ...rest }: SubmitProps) => {
                     'absolute inset-0',
                     'bg-gradient-to-r from-transparent via-white/35 to-transparent',
                     'animate-shiny',
-                    isValid ? 'block' : 'hidden'
-                )} />
+                    'group-disabled:block',
+                    isValid ? 'hidden group-hover:block group-focus-visible:block group-disabled:block' : 'hidden'
+                )}
+            />
+            <div
+                aria-hidden='true'
+                className={clsx(
+                    'absolute left-0 top-0 inset-0',
+                    'origin-center transition-all duration-500 ease-linear',
+                    'opacity-0 scale-0 group-disabled:opacity-100 group-disabled:scale-100'
+                )}
+            >
+                <Icon.Dots />
+            </div>
         </button>
     )
 

@@ -24,15 +24,17 @@ export const CurrencySelector = forwardRef<HTMLButtonElement, CurrencySelectorPr
             type='button'
             onClick={handleClick}
             className={clsx(
-                'group select-none cursor-pointer',
-                'min-w-[64px] h-full p-2 rounded-s-md',
-                'border-y border-l dark:border-middark/50 border-midlight/50',
+                'group select-none cursor-pointer disabled:pointer-events-none',
+                'p-2 rounded-s-md',
                 'flex items-center justify-center gap-1',
                 'dark:bg-darker bg-lighter',
                 'transition-colors ease-linear',
-                'hover:bg-semilight dark:hover:bg-semidark',
-                'focus:bg-semilight dark:focus:bg-semidark',
-                'focus-visible:bg-semilight dark:focus-visible:bg-semidark'
+                'hover:bg-gradient-to-b hover:dark:from-semidark hover:dark:via-dark hover:dark:to-dark',
+                'hover:bg-gradient-to-b hover:from-semilight hover:via-light hover:to-light',
+                'focus:bg-gradient-to-b focus:dark:from-semidark focus:dark:via-dark focus:dark:to-dark',
+                'focus:bg-gradient-to-b focus:from-semilight focus:via-light focus:to-light',
+                'focus-visible:bg-gradient-to-b focus-visible:dark:from-semidark focus-visible:dark:via-dark focus-visible:dark:to-dark',
+                'focus-visible:bg-gradient-to-b focus-visible:from-semilight focus-visible:via-light focus-visible:to-light',
             )}
             {...rest}
         >

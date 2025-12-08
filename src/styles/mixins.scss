@@ -1,3 +1,185 @@
+// @mixin badge-ribbon($size, $closing, $ribbonCornerColors, $ribbonCenterColors) {
+//     position: absolute;
+//     overflow: hidden;
+//     width: $size;
+//     height: $size;
+//     top: -10px;
+//     right: -10px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+
+//     &:before {
+//         content: '';
+//         position: absolute;
+//         width: 150%;
+//         height: 40px;
+//         background-image: linear-gradient(45deg, $ribbonCornerColors 0%, $ribbonCenterColors 51%, $ribbonCornerColors 100%);
+//         transform: rotate(45deg) translateY(-20px);
+//         display: flex;
+//         align-items: center;
+//         justify-content: center;
+//         color: #fff;
+//         font-weight: 600;
+//         letter-spacing: 0.1em;
+//         text-transform: uppercase;
+//         box-shadow: 0 5px 10px rgba(0, 0, 0, .33);
+//     }
+
+//     &:after {
+//         content: '';
+//         position: absolute;
+//         width: 10px;
+//         top: 0;
+//         left: 0;
+//         height: 10px;
+//         z-index: -1;
+//         box-shadow: calc($size - $closing) calc($size - $closing) $ribbonCornerColors;
+//         background-image: linear-gradient(45deg, $ribbonCornerColors 0%, $ribbonCornerColors 51%, $ribbonCornerColors);
+//     }
+
+//     .badge-content {
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//         inset: 0;
+//         display: flex;
+//         align-items: center;
+//         justify-content: center;
+//         transform: rotate(45deg) translateY(-20px);
+//     }
+
+//     .badge-content>* {
+//         position: absolute;
+//         transform: rotate(-45deg);
+//     }
+
+// }
+
+@mixin badge-ribbon($size: 150px,
+    $ribbon-height: null,
+    $corner-size: null,
+    $position: top-right,
+    $offset: null,
+    $ribbon-corner-color: rgb(var(--primary)),
+    $ribbon-center-color: rgb(var(--secondary))) {
+
+    $calculated-ribbon-height: if($ribbon-height, $ribbon-height, $size * 0.267);
+    $calculated-corner-size: if($corner-size, $corner-size, $size * 0.067);
+    $calculated-offset: if($offset, $offset, $size * -0.067);
+    $translate-y: $calculated-ribbon-height / -2;
+
+    $top: null;
+    $right: null;
+    $bottom: null;
+    $left: null;
+    $rotation: 45deg;
+
+    @if $position ==top-right {
+        $top: $calculated-offset;
+        $right: $calculated-offset;
+        $rotation: 45deg;
+    }
+
+    @else if $position ==top-left {
+        $top: $calculated-offset;
+        $left: $calculated-offset;
+        $rotation: -45deg;
+    }
+
+    @else if $position ==bottom-right {
+        $bottom: $calculated-offset;
+        $right: $calculated-offset;
+        $rotation: -45deg;
+    }
+
+    @else if $position ==bottom-left {
+        $bottom: $calculated-offset;
+        $left: $calculated-offset;
+        $rotation: 45deg;
+    }
+
+    position: absolute;
+    overflow: hidden;
+    width: $size;
+    height: $size;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 150%;
+        height: $calculated-ribbon-height;
+        background-image: linear-gradient(45deg, $ribbon-corner-color 0%, $ribbon-center-color 51%, $ribbon-corner-color 100%);
+        transform: rotate($rotation) translateY($translate-y);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.33);
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        width: $calculated-corner-size;
+        height: $calculated-corner-size;
+        z-index: -1;
+        background-image: linear-gradient(45deg,
+                $ribbon-corner-color 0%,
+                $ribbon-corner-color 51%,
+                $ribbon-corner-color );
+
+        @if $position ==top-right {
+            top: 0;
+            left: 0;
+            box-shadow: ($size - $calculated-corner-size) ($size - $calculated-corner-size) $ribbon-corner-color;
+        }
+
+        @else if $position ==top-left {
+            top: 0;
+            right: 0;
+            box-shadow: -($size - $calculated-corner-size) ($size - $calculated-corner-size) $ribbon-corner-color;
+        }
+
+        @else if $position ==bottom-right {
+            bottom: 0;
+            left: 0;
+            box-shadow: ($size - $calculated-corner-size) -($size - $calculated-corner-size) $ribbon-corner-color;
+        }
+
+        @else if $position ==bottom-left {
+            bottom: 0;
+            right: 0;
+            box-shadow: -($size - $calculated-corner-size) -($size - $calculated-corner-size) $ribbon-corner-color;
+        }
+    }
+
+    .badge-content {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: rotate($rotation) translateY($translate-y);
+
+        >* {
+            position: absolute;
+            transform: rotate(-$rotation);
+        }
+    }
+
+}
+
 @mixin navigate-logo($border, $onHoverBgColor, $onHoverBorderColor, $onHoverBoxShadowColor) {
     z-index: 1;
     position: relative;
@@ -158,6 +340,10 @@
         left: 0;
         background: linear-gradient(to top, $gradientSideColor 0%, transparent 50%);
     }
+}
+
+@mixin diagonal-stripes($stripeColor, $bgColor) {
+    background: repeating-linear-gradient(45deg, $stripeColor 0, $stripeColor 2px, transparent 2px, transparent 12px) $bgColor;
 }
 
 @mixin applying {

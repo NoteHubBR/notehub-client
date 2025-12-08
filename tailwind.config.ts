@@ -11,7 +11,8 @@ const config: Config = {
     extend: {
       fontFamily: {
         'playwrite': ['Playwrite GB S', 'sans-serif'],
-        'faculty': ['Faculty Glyphic', 'serif']
+        'faculty': ['Faculty Glyphic', 'serif'],
+        'firacode': ['Fira Code', 'monospace'],
       },
       colors: {
         background: "var(--background)",
@@ -21,7 +22,6 @@ const config: Config = {
             ? `rgba(var(--primary), ${opacityValue})`
             : `rgb(var(--primary))`;
         }) as any,
-        'primary-inverted': 'color-mix(in srgb, rgb(var(--primary)) 0%, white)',
         secondary: (({ opacityValue }: { opacityValue?: number }) => {
           return opacityValue !== undefined
             ? `rgba(var(--secondary), ${opacityValue})`

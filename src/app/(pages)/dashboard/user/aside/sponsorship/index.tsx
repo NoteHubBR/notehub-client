@@ -36,7 +36,7 @@ export const Sponsorship = ({ isSponsorshipInviteAllowed, skipClose, className, 
                     Torne-se um patrocinador
                 </Title>
                 <Desc id='sponsorshipDesc'>
-                    Apoie o projeto com qualquer valor e receba benefícios exclusivos vitalícios!
+                    Apoie o projeto e receba benefícios exclusivos vitalícios!
                 </Desc>
             </header>
             <footer>

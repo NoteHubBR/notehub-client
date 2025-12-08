@@ -1,6 +1,6 @@
+import { clsx } from "clsx";
 import { Country } from "../types";
 import { DonationFormData } from "@/core";
-import { clsx } from "clsx";
 import { useFormContext } from "react-hook-form";
 
 interface AmountProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -11,7 +11,7 @@ interface AmountProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export const Amount = ({ amount, setAmount, country, ...rest }: AmountProps) => {
 
-    const { setValue, setError } = useFormContext<DonationFormData>();
+    const { setValue, setError, formState } = useFormContext<DonationFormData>();
 
     const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
         e.currentTarget.setSelectionRange(
@@ -42,7 +42,11 @@ export const Amount = ({ amount, setAmount, country, ...rest }: AmountProps) => 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const rawValue = e.target.value.replace(/\D/g, '');
-        if (rawValue === '') return setAmount(country.locale === 'ja-JP' ? '0' : country.locale === 'pt-BR' ? '0,00' : '0.00');
+        if (rawValue === '') {
+            setAmount(country.locale === 'ja-JP' ? '0' : country.locale === 'pt-BR' ? '0,00' : '0.00');
+            setValue('amount', 0);
+            return
+        }
         const amount = parseInt(rawValue, 10);
         setAmount(formatCurrency(amount, country));
         setValue('amount', amount);
@@ -53,6 +57,8 @@ export const Amount = ({ amount, setAmount, country, ...rest }: AmountProps) => 
         const allowedKeys = ['Backspace', 'Delete', 'Tab'];
         if (!allowedKeys.includes(e.key) && (e.key < '0' || e.key > '9')) e.preventDefault();
     }
+
+    const hasErrorMessage: boolean = !!formState.errors.amount?.message;
 
     return (
         <input
@@ -65,9 +71,10 @@ export const Amount = ({ amount, setAmount, country, ...rest }: AmountProps) => 
             onKeyDown={handleKeyDown}
             placeholder={country.isZeroDecimal ? '0' : (country.locale === 'pt-BR' ? '0,00' : '0.00')}
             className={clsx(
-                'insm:max-w-[177px] p-2 border dark:border-middark/50 border-midlight/50',
-                'font-semibold dark:text-midlight text-middark',
+                'w-full p-2',
+                'font-semibold',
                 'dark:bg-darker bg-lighter',
+                hasErrorMessage ? 'dark:text-red-500 text-red-600' : 'dark:text-midlight text-middark',
             )}
             {...rest}
         />
