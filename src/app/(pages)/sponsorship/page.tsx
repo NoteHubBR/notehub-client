@@ -2,11 +2,12 @@
 
 import { Aside, Card, Header, LinesContainer, Section } from "./elements";
 import { clsx } from "clsx";
-import { usePref } from "@/data/hooks";
+import { usePref, useUser } from "@/data/hooks";
 
 const Page = () => {
 
     const { pref: { useDarkTheme } } = usePref();
+    const { token } = useUser();
 
     return (
         <LinesContainer>
@@ -20,7 +21,7 @@ const Page = () => {
                     useDarkTheme ? 'dark-vignette-checkered' : 'light-vignette-checkered'
                 )}
             >
-                <Card />
+                <Card token={token} />
             </Section>
         </LinesContainer >
     )

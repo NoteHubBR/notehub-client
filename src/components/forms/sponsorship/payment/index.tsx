@@ -1,43 +1,53 @@
 import { Amount, Currencies, CurrenciesDropdown, Currency, CurrencySelector, Icon, Submit } from "./elements";
 import { countries, Country } from "./types";
-import { DonationFormData, donationFormSchema } from "@/core";
+import { DonationFormData, donationFormSchema, Token } from "@/core";
 import { FormProvider, useForm } from "react-hook-form";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { useServices } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
+interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
+    token: Token | null
+}
+
+export const Form = ({ token, ...rest }: FormProps) => {
+
+    const { sponsorshipService: { buySponsorship } } = useServices();
 
     const donationForm = useForm<DonationFormData>({
         resolver: zodResolver(donationFormSchema)
     })
 
-    const { handleSubmit } = donationForm;
+    const { handleSubmit, setError } = donationForm;
 
     const selectorRef = useRef<HTMLButtonElement | null>(null);
 
     const [amount, setAmount] = useState<string>('0');
     const [country, setCountry] = useState<Country>(countries.BR);
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-    const isPending: boolean = false;
+    const [isPending, startTransition] = useTransition();
+    const router = useRouter();
 
     useEffect(() => {
         return setAmount(country.isZeroDecimal ? '0' : country.locale === 'pt-BR' ? '0,00' : '0.00');
     }, [country.isZeroDecimal, country.locale]);
 
-    const onSubmit = async (data: DonationFormData) => {
-        console.log(data);
-    }
-
-    const onError = (errors: any) => {
-        console.log(errors);
-    }
+    const onSubmit = (data: DonationFormData) => startTransition(async (): Promise<void> => {
+        if (token) {
+            await buySponsorship(token.access_token, data)
+                .then(res => router.push(res.sessionUrl))
+                .catch(error => setError('amount', { type: 'value', message: error }))
+        }
+        return;
+    })
 
     return (
         <FormProvider {...donationForm}>
             <form
-                onSubmit={handleSubmit(onSubmit, onError)}
+                onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-6 dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
-                {...props}
+                {...rest}
             >
                 <fieldset className="relative flex">
                     <CurrencySelector
