@@ -4,7 +4,7 @@ import { Component } from "@/components";
 import { IconHome, IconNotes, IconPlus, IconSearch, IconUserCircle } from "@tabler/icons-react"
 import { Item } from "./elements/Item";
 import { List } from "./elements/List";
-import { shouldUseUserContext } from "@/core";
+import { shouldRenderNavbarAndSidebar } from "@/core";
 import { Skeleton } from "./skeleton";
 import { useLoading, useScreen, useStore, useUser } from "@/data/hooks";
 import { usePathname } from "next/navigation";
@@ -13,7 +13,7 @@ export const Navbar = () => {
 
     const pathname = usePathname();
 
-    const shouldRender = shouldUseUserContext(pathname);
+    const shouldRender = shouldRenderNavbarAndSidebar(pathname);
 
     const { store: { isFirstTimer, isGuest, isExpired } } = useStore();
     const { onMobile } = useScreen();

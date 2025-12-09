@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from "./icons";
-import { shouldUseUserContext } from "@/core";
+import { shouldRenderNavbarAndSidebar } from "@/core";
 import { Template } from "./templates";
 import { useEffect } from "react";
 import { useLoading, useScreen, useWidth } from "@/data/hooks";
@@ -15,7 +15,7 @@ export const SplashScreen = () => {
 
     const pathname = usePathname();
 
-    const shouldRender = shouldUseUserContext(pathname);
+    const shouldRender = shouldRenderNavbarAndSidebar(pathname);
 
     const { isLoaded, setIsLoaded } = useLoading();
 

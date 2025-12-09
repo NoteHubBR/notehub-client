@@ -1,7 +1,7 @@
 'use client';
 
 import { clsx } from "clsx";
-import { shouldUseUserContext } from "@/core";
+import { shouldRenderNavbarAndSidebar } from "@/core";
 import { useLoading, useScreen, useStore, useUser } from "@/data/hooks";
 import { usePathname } from "next/navigation";
 
@@ -16,7 +16,7 @@ export const Page = (props: PageProps) => {
 
     const pathname = usePathname();
 
-    const shouldUseMargin = shouldUseUserContext(pathname);
+    const shouldUseMargin = shouldRenderNavbarAndSidebar(pathname);
 
     const { store: { isGuest, isExpired } } = useStore();
     const { onDesktop, onMobile } = useScreen();

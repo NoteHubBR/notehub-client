@@ -35,6 +35,18 @@ enum NotUserContextRoutes {
     RECOVER = '/recover',
     SENT = '/sent',
     ACTIVATE = '/activate/:jwt',
+    CHANGE_EMAIL = '/change/email',
+    CHANGE_PASSWORD = '/change/password',
+    HELP = '/help',
+    CHANGELOG = '/changelog'
+}
+
+enum NotNavbarAndSidebarRoutes {
+    SIGNUP = '/signup',
+    SIGNIN = '/signin',
+    RECOVER = '/recover',
+    SENT = '/sent',
+    ACTIVATE = '/activate/:jwt',
     SPONSORSHIP = '/sponsorship',
     CHANGE_EMAIL = '/change/email',
     CHANGE_PASSWORD = '/change/password',
@@ -45,5 +57,11 @@ enum NotUserContextRoutes {
 export const shouldUseUserContext = (pathname: string): boolean => {
     const getStaticRoute = (route: string) => { return route.split('/:')[0] }
     const ignoredRoutes = Object.values(NotUserContextRoutes).map(getStaticRoute)
+    return !ignoredRoutes.some(prefix => pathname.startsWith(prefix))
+}
+
+export const shouldRenderNavbarAndSidebar = (pathname: string): boolean => {
+    const getStaticRoute = (route: string) => { return route.split('/:')[0] }
+    const ignoredRoutes = Object.values(NotNavbarAndSidebarRoutes).map(getStaticRoute)
     return !ignoredRoutes.some(prefix => pathname.startsWith(prefix))
 }
