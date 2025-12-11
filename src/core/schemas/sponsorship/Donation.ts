@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
 export const donationFormSchema = z.object({
+    locale: z
+        .string().trim().toUpperCase()
+        .default('PT_BR'),
     currency: z
         .string().trim().toUpperCase()
         .max(3, 'Moeda inválida.')

@@ -14,7 +14,9 @@ type SponsorshipPurchaseReturn = {
 type PurchaseStatusReturn = {
     sessionId: string;
     paymentStatus: string;
-    status: string
+    status: string;
+    locale: string;
+    currency: string;
     amountTotal: number;
 }
 

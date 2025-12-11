@@ -1,20 +1,17 @@
 import { clsx } from "clsx";
 
 interface CountdownProps extends React.HTMLAttributes<HTMLParagraphElement> {
-    isPending: boolean;
-    hasSucceeded: boolean;
-    hasFailed: boolean;
-    successfulCountdown: number;
-    failCountdown: number;
+    status: 'pending' | 'success' | 'failed' | 'none';
+    countdown: { success: number, failed: number };
 }
 
-export const Countdown = ({ isPending, hasSucceeded, hasFailed, successfulCountdown, failCountdown, ...rest }: CountdownProps) => (
+export const Countdown = ({ status, countdown, ...rest }: CountdownProps) => (
     <p
         className={clsx(
             'relative w-full h-[20px] rounded',
             'font-medium text-sm',
             'transition-colors ease-linear duration-500',
-            isPending
+            status === 'pending'
                 ? 'overflow-hidden dark:bg-middark bg-midlight'
                 : 'overflow-visible bg-transparent',
         )}
@@ -27,31 +24,31 @@ export const Countdown = ({ isPending, hasSucceeded, hasFailed, successfulCountd
                 'absolute inset-0',
                 'bg-gradient-to-r from-transparent via-white/35 to-transparent',
                 'animate-shiny',
-                isPending ? 'opacity-100' : 'opacity-0'
+                status === 'pending' ? 'opacity-100' : 'opacity-0'
             )}
         />
         <span
-            aria-hidden={!hasSucceeded}
+            aria-hidden={status !== 'success'}
             className={clsx(
                 'center w-full',
                 'text-center dark:text-secondary text-primary',
                 'transition-opacity ease-linear duration-500',
-                hasSucceeded ? 'opacity-100' : 'opacity-0'
+                status === 'success' ? 'opacity-100' : 'opacity-0'
             )}
         >
-            Você será redirecionado ao inícios em {successfulCountdown}s...
+            Você será redirecionado ao inícios em {countdown.success}s...
         </span>
         <span
-            aria-hidden={!hasFailed}
+            aria-hidden={status !== 'failed'}
             className={clsx(
                 'center w-full',
                 'text-center dark:text-yellow-500 text-yellow-500',
                 'transition-opacity ease-linear duration-500',
-                hasFailed ? 'opacity-100' : 'opacity-0'
+                status === 'failed' ? 'opacity-100' : 'opacity-0'
             )}
         >
-            {hasFailed && failCountdown > 0
-                ? `Faça uma nova requisição após ${failCountdown}s...`
+            {status === 'failed' && countdown.failed > 0
+                ? `Faça uma nova requisição após ${countdown.failed}s...`
                 : 'Consulte novamente'
             }
         </span>

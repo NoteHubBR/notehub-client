@@ -3,62 +3,95 @@
 import { Card, Countdown, Detail, Details, GoHome, Icon, Navigator, Paragraph, Section, Title } from "./elements";
 import { IconCheck, IconCurrencyDollar } from "@tabler/icons-react";
 import { SVG } from "@/components/svgs";
-import { useEffect, useState, useCallback } from "react";
-import { usePref } from "@/data/hooks";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { usePref, useServices, useUser } from "@/data/hooks";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Page = () => {
 
+    const { sponsorshipService: { verifyPaymentStatus } } = useServices();
+    const { token } = useUser();
     const { pref: { useDarkTheme } } = usePref();
+
+    const sessionId = useSearchParams().get('session_id');
+
     const router = useRouter();
 
-    const [isPending, setIsPending] = useState<boolean>(true);
-    const [hasSucceeded, setHasSucceeded] = useState<boolean>(false);
-    const [hasFailed, setHasFailed] = useState<boolean>(false);
-    const [successfulCountdown, setSuccessfulCountdown] = useState<number>(12);
-    const [failCountdown, setFailCountdown] = useState<number>(60);
+    const hasVerified = useRef<boolean>(false);
+    const [status, setStatus] = useState<'pending' | 'success' | 'failed' | 'none'>('pending');
+    const [countdown, setCountdown] = useState({ success: 36, failed: 60 });
+    const [amountTotal, setAmountTotal] = useState<string>('0');
 
-    const sendRequest = useCallback(() => {
-        setHasFailed(false);
-        setHasSucceeded(false);
-        setSuccessfulCountdown(12);
-        setFailCountdown(60);
-        setTimeout(() => setIsPending(true), 666);
-        setTimeout(() => setIsPending(false), 1332);
-        setTimeout(() => setHasSucceeded(true), 1998);
-    }, []);
+    const setStatusWithDealy = (status: 'pending' | 'success' | 'failed') => {
+        return setTimeout(() => setStatus(status), 666);
+    }
 
-    const prolongsFail = useCallback(() => {
-        setIsPending(false);
-        setTimeout(() => setHasFailed(true), 666);
-    }, [])
+    const setAmountTotalFormatted = (locale: string, currency: string, amountTotal: number): void => {
+        const ZERO_DECIMAL_CURRENCIES = [
+            'bif', 'clp', 'djf', 'gnf', 'jpy', 'kmf', 'krw',
+            'mga', 'pyg', 'rwf', 'ugx', 'vnd', 'vuv', 'xaf',
+            'xof', 'xpf'
+        ]
+        const finalAmount = ZERO_DECIMAL_CURRENCIES.includes(currency.toLowerCase())
+            ? amountTotal
+            : amountTotal / 100;
+        return setAmountTotal(new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency: currency.toUpperCase()
+        }).format(finalAmount));
+    }
+
+    const verifyStatus = useCallback(async (token: string, sessionId: string): Promise<NodeJS.Timeout> => {
+        setStatus('none');
+        setStatusWithDealy('pending');
+        setCountdown({ success: 36, failed: 60 });
+        try {
+            const res = await verifyPaymentStatus(token, sessionId);
+            if (res.status === 'complete' && res.paymentStatus === 'paid') {
+                setAmountTotalFormatted(res.locale, res.currency, res.amountTotal);
+                return setStatusWithDealy('success');
+            }
+            else return setStatusWithDealy('pending');
+        } catch {
+            return setStatusWithDealy('failed');
+        }
+    }, [verifyPaymentStatus])
+
+    const retryVerifyStatus = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (sessionId && token && status === 'failed') {
+            e.preventDefault();
+            return verifyStatus(token.access_token, sessionId);
+        }
+        return;
+    }
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            prolongsFail();
-        }, 2000)
-        return () => clearTimeout(timeout);
-    }, [prolongsFail])
+        if (hasVerified.current) return;
+        if (sessionId && token) {
+            hasVerified.current = true;
+            verifyStatus(token.access_token, sessionId);
+        }
+    }, [sessionId, token, verifyStatus])
 
     useEffect(() => {
-        if (!hasSucceeded || successfulCountdown <= 0) return;
+        if (status !== 'success' || countdown.success <= 0) return;
         const timer = setInterval(() => {
-            setSuccessfulCountdown((prev) => prev - 1);
+            setCountdown((prev) => ({ ...prev, success: prev.success - 1 }));
         }, 1000)
         return () => clearInterval(timer);
-    }, [hasSucceeded, successfulCountdown])
+    }, [countdown.success, status])
 
     useEffect(() => {
-        if (hasSucceeded && successfulCountdown === 0) router.push('/');
-    }, [hasSucceeded, successfulCountdown, router])
-
-    useEffect(() => {
-        if (!hasFailed || failCountdown <= 0) return;
+        if (status !== 'failed' || countdown.failed <= 0) return;
         const timer = setInterval(() => {
-            setFailCountdown((prev) => Math.max(0, prev - 1));
+            setCountdown((prev) => ({ ...prev, failed: Math.max(0, prev.failed - 1) }));
         }, 1000)
         return () => clearInterval(timer);
-    }, [hasFailed, failCountdown])
+    }, [countdown.failed, status])
+
+    useEffect(() => {
+        if (status === 'success' && countdown.success === 0) router.push('/');
+    }, [countdown.success, router, status])
 
     return (
         <main className="w-full h-full dark:bg-darker bg-lighter flex items-center justify-center">
@@ -66,40 +99,15 @@ const Page = () => {
             <GoHome href='/' />
             <Section useDarkTheme={useDarkTheme}>
                 <Card>
-                    <Icon isPending={isPending} hasSucceeded={hasSucceeded} hasFailed={hasFailed} />
-                    <Title isPending={isPending} hasSucceeded={hasSucceeded} hasFailed={hasFailed} />
-                    <Paragraph isPending={isPending} hasSucceeded={hasSucceeded} hasFailed={hasFailed} />
+                    <Icon status={status} />
+                    <Title status={status} />
+                    <Paragraph status={status} />
                     <Details>
-                        <Detail
-                            hasSucceeded={hasSucceeded}
-                            hasFailed={hasFailed}
-                            icon={IconCheck}
-                            label="Status"
-                            value="Pago"
-                        />
-                        <Detail
-                            hasSucceeded={hasSucceeded}
-                            hasFailed={hasFailed}
-                            icon={IconCurrencyDollar}
-                            label="Quantia"
-                            value="11,11"
-                        />
+                        <Detail status={status} icon={IconCheck} label="Status" value="Pago" />
+                        <Detail status={status} icon={IconCurrencyDollar} label="Quantia" value={amountTotal} />
                     </Details>
-                    <Navigator
-                        href='/'
-                        isPending={isPending}
-                        hasSucceeded={hasSucceeded}
-                        hasFailed={hasFailed}
-                        failCountdown={failCountdown}
-                        sendRequest={sendRequest}
-                    />
-                    <Countdown
-                        isPending={isPending}
-                        hasSucceeded={hasSucceeded}
-                        hasFailed={hasFailed}
-                        successfulCountdown={successfulCountdown}
-                        failCountdown={failCountdown}
-                    />
+                    <Navigator href='/' onClick={retryVerifyStatus} status={status} countdown={countdown.failed} />
+                    <Countdown status={status} countdown={countdown} />
                 </Card>
             </Section>
         </main>

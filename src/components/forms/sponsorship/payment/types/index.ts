@@ -3,6 +3,7 @@ export type Country = {
     symbol: string;
     flag: string;
     locale: string;
+    stripeLocale: string;
     isZeroDecimal: boolean;
 }
 
@@ -14,6 +15,7 @@ export const countries: CountriesMap = {
         symbol: 'R$',
         flag: 'br',
         locale: 'pt-BR',
+        stripeLocale: 'PT_BR',
         isZeroDecimal: false,
     },
     US: {
@@ -21,6 +23,7 @@ export const countries: CountriesMap = {
         symbol: '$',
         flag: 'us',
         locale: 'en-US',
+        stripeLocale: 'EN',
         isZeroDecimal: false,
     },
     CA: {
@@ -28,6 +31,7 @@ export const countries: CountriesMap = {
         symbol: '$',
         flag: 'ca',
         locale: 'en-CA',
+        stripeLocale: 'EN',
         isZeroDecimal: false,
     },
     EU: {
@@ -35,6 +39,7 @@ export const countries: CountriesMap = {
         symbol: '€',
         flag: 'eu',
         locale: 'de-DE',
+        stripeLocale: 'DE',
         isZeroDecimal: false,
     },
     UK: {
@@ -42,6 +47,7 @@ export const countries: CountriesMap = {
         symbol: '£',
         flag: 'uk',
         locale: 'en-GB',
+        stripeLocale: 'EN',
         isZeroDecimal: false,
     },
     JP: {
@@ -49,6 +55,7 @@ export const countries: CountriesMap = {
         symbol: '¥',
         flag: 'jp',
         locale: 'ja-JP',
+        stripeLocale: 'JA',
         isZeroDecimal: true,
     },
     AU: {
@@ -56,6 +63,7 @@ export const countries: CountriesMap = {
         symbol: '$',
         flag: 'au',
         locale: 'en-AU',
+        stripeLocale: 'EN',
         isZeroDecimal: false,
     }
 }

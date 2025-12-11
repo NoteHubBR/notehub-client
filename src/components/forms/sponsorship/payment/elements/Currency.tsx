@@ -16,6 +16,7 @@ export const Currency = ({ country, currentCountry, setCountry, ...rest }: Curre
 
     const handleClick = (): void => {
         setCountry(country);
+        setValue('locale', country.stripeLocale);
         setValue('currency', country.currency);
     }
 
@@ -23,6 +24,7 @@ export const Currency = ({ country, currentCountry, setCountry, ...rest }: Curre
         const key = e.key;
         if (key === 'Enter' || key === ' ') {
             setCountry(country);
+            setValue('locale', country.stripeLocale);
             setValue('currency', country.currency);
             return;
         }
