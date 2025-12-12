@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import Link from "next/link";
 
-interface AnswerProps extends React.HTMLAttributes<HTMLParagraphElement> {
+interface AnswerProps extends React.HTMLAttributes<HTMLDivElement> {
     currentId: string;
     hash: string;
     useSupport?: boolean;
@@ -13,7 +13,7 @@ export const Answer = ({ currentId, hash, useSupport, children, ...rest }: Answe
 
     return (
         <>
-            <p
+            <div
                 className={clsx(
                     'overflow-hidden origin-top-left',
                     isActive ? 'h-auto mt-3 scale-100' : 'h-0 mt-0 scale-0',
@@ -30,7 +30,7 @@ export const Answer = ({ currentId, hash, useSupport, children, ...rest }: Answe
                         </Link>
                     </span>
                 }
-            </p>
+            </div>
         </>
     )
 
