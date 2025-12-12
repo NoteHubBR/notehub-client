@@ -45,7 +45,7 @@ export const CurrencySelector = forwardRef<HTMLButtonElement, CurrencySelectorPr
                     'dark:text-midlight/75 text-middark/75',
                     'transition-all ease-linear',
                     'group-hover:text-primary group-focus:text-primary group-focus-visible:text-primary',
-                    isDropdownOpen ? 'rotate-180' : 'rotate-0'
+                    isDropdownOpen ? 'rotate-180 inmd:rotate-0' : 'rotate-0 inmd:rotate-180'
                 )}
             />
             <span className='min-w-6 flex items-center justify-center font-medium dark:text-midlight/75 text-middark/75'>

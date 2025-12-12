@@ -2,14 +2,17 @@
 
 import { Aside, Card, Header, LinesContainer, Section } from "./elements";
 import { clsx } from "clsx";
+import { Template } from "@/components/templates";
 import { usePref, useUser } from "@/data/hooks";
 
 const Page = () => {
 
     const { pref: { useDarkTheme } } = usePref();
-    const { token } = useUser();
+    const { isMounted, user, token } = useUser();
 
-    return (
+    if (!isMounted) return;
+
+    if (user) return (
         <LinesContainer>
             <Header />
             <Section className="inlg:hidden">
@@ -25,6 +28,8 @@ const Page = () => {
             </Section>
         </LinesContainer >
     )
+
+    return <Template.Forbidden />;
 
 }
 

@@ -32,16 +32,15 @@ export const Currency = ({ country, currentCountry, setCountry, ...rest }: Curre
     }
 
     return (
-        <li className="p-1">
+        <li>
             <button
                 type="button"
                 onClick={handleClick}
                 onKeyDown={handleKeydown}
                 className={clsx(
                     'select-none',
-                    'w-full h-full px-2 py-1 rounded-md',
-                    'flex items-center justify-center gap-1',
-                    'transition-colors duration-150',
+                    'w-full h-full p-1 rounded-md',
+                    'flex items-center justify-between',
                     'dark:hover:bg-midlight/15 hover:bg-middark/15 dark:focus-visible:bg-midlight/15 focus-visible:bg-middark/15',
                     country === currentCountry && 'bg-primary/25'
                 )}
@@ -51,14 +50,14 @@ export const Currency = ({ country, currentCountry, setCountry, ...rest }: Curre
                     <Image
                         src={`/svgs/flags/${country.flag}.svg`}
                         alt={`Flag of ${country.flag}`}
-                        width={24}
+                        width={22}
                         height={0}
                     />
                 </figure>
                 <div
                     aria-hidden='true'
                     className={clsx(
-                        'h-3 border-l',
+                        'h-4 border-l',
                         'dark:border-semilight/25 border-semidark/25',
                         country === currentCountry && 'dark:border-secondary border-primary'
                     )}

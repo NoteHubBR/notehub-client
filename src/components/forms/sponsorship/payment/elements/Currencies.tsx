@@ -1,6 +1,6 @@
 export const Currencies = (props: React.HTMLAttributes<HTMLUListElement>) => (
     <ul
-        className="flex flex-col px-1"
+        className="p-1 flex flex-col gap-1"
         {...props}
     />
 )

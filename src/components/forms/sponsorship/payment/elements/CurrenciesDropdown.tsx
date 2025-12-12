@@ -77,7 +77,7 @@ export const CurrenciesDropdown = ({ triggerRef, isDropdownOpen, setIsDropdownOp
             ref={dropdownRef}
             className={clsx(
                 'z-10 absolute left-0 top-12 inmd:top-auto inmd:bottom-12',
-                'w-28 rounded-md',
+                'w-24 rounded-md',
                 'dark:bg-darker bg-lighter',
                 'transform-gpu origin-top-left inmd:origin-bottom-left',
                 'transition-transform duration-300 ease-out',

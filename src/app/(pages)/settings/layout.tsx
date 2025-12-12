@@ -1,9 +1,9 @@
 'use client';
 
 import { Element } from "./elements";
+import { Template } from "@/components/templates";
 import { usePathname } from "next/navigation";
 import { useScreen, useUser } from "@/data/hooks";
-import { NotFound } from "./NotFound";
 
 const Layout = (props: any) => {
 
@@ -11,9 +11,11 @@ const Layout = (props: any) => {
     const onPathname = pathname === "/settings";
 
     const { onDesktop } = useScreen();
-    const { user } = useUser();
+    const { isMounted, user } = useUser();
 
     const { Aside, Main } = Element;
+
+    if (!isMounted) return <></>;
 
     if (user) return (
         <section className="w-full h-full px-4 inmd:px-0 flex items-center justify-center dark:bg-darker bg-lighter">
@@ -26,7 +28,7 @@ const Layout = (props: any) => {
         </section>
     )
 
-    return <NotFound />;
+    return < Template.Forbidden />;
 
 }
 

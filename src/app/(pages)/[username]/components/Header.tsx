@@ -3,7 +3,7 @@
 import { Desktop } from "./desktop";
 import { LowDetailUser, User } from "@/core";
 import { Mobile } from "./mobile";
-import { NotFound } from "./NotFound";
+import { Template } from "@/components/templates";
 import { useEffect, useRef, useState } from "react";
 import { useHistory, useScreen, useServices, useUser } from "@/data/hooks";
 import { useParams } from "next/navigation";
@@ -52,7 +52,7 @@ export const Header = () => {
 
     if (shouldSkipHeader) return null;
 
-    if (notFound) return <NotFound />;
+    if (notFound) return <Template.Forbidden />;
 
     if (onDesktop && !user) return <Desktop.HeaderSkeleton />;
 
