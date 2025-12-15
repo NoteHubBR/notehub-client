@@ -12,8 +12,8 @@
 </div>
 <br>
 <div align="center">
-  <a href="https://github.com/notehubbr/notehub-client/releases/tag/v1.7">
-    <img width="100px" height="25px" src="https://img.shields.io/badge/notehub-1.7-7c3aed">
+  <a href="https://github.com/notehubbr/notehub-client/releases/tag/v2.0">
+    <img width="100px" height="25px" src="https://img.shields.io/badge/notehub-2.0-7c3aed">
   </a>
 </div>
 

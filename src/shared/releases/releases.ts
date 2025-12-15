@@ -17,6 +17,20 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        version: 'v2.0',
+        date: '12/12/25 14:11',
+        title: 'Dezembro 12, 2025',
+        summary: 'Doação via Stripe',
+        entries: [
+            {
+                type: 'feat',
+                pr: 9,
+                hash: '8ff970d89f8c453fef9ae20d3b526efd8cbced34',
+                desc: 'Adicionado sistema de doação via Stripe.'
+            }
+        ]
+    },
+    {
         version: 'v1.7',
         date: '8/10/25 14:45',
         title: 'Outubro 8, 2025',
