@@ -1,7 +1,7 @@
 'use client';
 
 import { IconArrowRight, IconCompass, IconFlame, IconHome, IconNotes, IconPlus, IconUserCircle } from "@tabler/icons-react";
-import { shouldUseUserContext, User } from "@/core";
+import { shouldRenderNavbarAndSidebar, User } from "@/core";
 import { Sidebar as Sb } from "./elements";
 import { useLoading, useScreen, useStore, useUser } from "@/data/hooks";
 import { usePathname } from "next/navigation";
@@ -54,7 +54,7 @@ const Maximized = ({ user, ...rest }: { user: User } & React.HTMLAttributes<HTML
 export const Sidebar = () => {
 
     const pathname = usePathname();
-    const shouldRender = shouldUseUserContext(pathname);
+    const shouldRender = shouldRenderNavbarAndSidebar(pathname);
 
     const { onDesktop } = useScreen();
     const { isLoaded } = useLoading();

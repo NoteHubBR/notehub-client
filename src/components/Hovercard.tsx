@@ -112,7 +112,7 @@ export const Hovercard = ({ ref, user }: HovercardProps) => {
             aria-describedby="dialogDesc"
             className="px-6 py-3 flex items-center gap-3 border-y dark:border-middark/50 border-midlight/50"
         >
-            <div className="p-[2px] rounded-full bg-gradient-to-r from-blue-600 via-purple-600 to-red-600">
+            <div className="p-[2px] rounded-full bg-gradient-to-r from-primary to-inverted">
                 <figure className="p-2 rounded-full dark:bg-darker bg-lighter">
                     <IconComponent size={30} className="rounded-full dark:text-midlight text-middark" />
                 </figure>
@@ -148,7 +148,7 @@ export const Hovercard = ({ ref, user }: HovercardProps) => {
         >
             {user.sponsor && (
                 <figure
-                    className="z-10 absolute top-0 right-0 p-1 rounded-tr bg-gradient-to-r from-blue-600 via-purple-600 to-red-600"
+                    className="z-10 absolute top-0 right-0 p-1 rounded-tr bg-gradient-to-r from-primary to-inverted"
                     style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 0)' }}
                 >
                     <Icon.Sponsor size={22} user={user} useWhite className="ml-5 mb-5" />

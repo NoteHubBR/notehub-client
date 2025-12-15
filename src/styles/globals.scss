@@ -1,5 +1,24 @@
 @use 'mixins.scss';
 
+// .badge-example {
+//     @include mixins.badge-ribbon($size: 200px,
+//         $ribbon-height: 60px,
+//         $corner-size: 15px,
+//         $offset: -15px,
+//         $position: top-right,
+//         $ribbon-corner-color: #3498db,
+//         $ribbon-center-color: #2ecc71);
+// }
+
+.badge-top-right {
+    @include mixins.badge-ribbon($position: top-right, $size: 125px, $ribbon-height: 35px, $corner-size: 10px, $offset: -10px);
+}
+
+.badge-top-left {
+    @include mixins.badge-ribbon($position: top-left, $size: 125px, $corner-size: 10px, $offset: -10px);
+}
+
+
 .dark-navigate-logo {
     @include mixins.navigate-logo(2px, rgba(var(--primary), .5), rgb(var(--primary)), rgba(var(--primary), 1));
 }
@@ -25,7 +44,7 @@
 }
 
 .dark-vignette-checkered {
-    @include mixins.vignette-checkered(#fafafa, #0a0a0a);
+    @include mixins.vignette-checkered(#737373, #0a0a0a);
 }
 
 .dark-changelog-header {
@@ -37,7 +56,31 @@
 }
 
 .light-vignette-checkered {
-    @include mixins.vignette-checkered(#0a0a0a, #fafafa);
+    @include mixins.vignette-checkered(#737373, #fafafa);
+}
+
+// .dark-diagonal-stripes {
+//     @include mixins.diagonal-stripes(#262626, #0a0a0a);
+// }
+
+// .light-diagonal-stripes {
+//     @include mixins.diagonal-stripes(#e5e5e5, #fafafa);
+// }
+
+.dark-left-diagonal-stripes {
+    @include mixins.diagonal-stripes(rgb(var(--primary)), #0a0a0a);
+}
+
+.dark-right-diagonal-stripes {
+    @include mixins.diagonal-stripes(rgb(var(--inverted)), #0a0a0a);
+}
+
+.light-left-diagonal-stripes {
+    @include mixins.diagonal-stripes(rgb(var(--primary)), #fafafa);
+}
+
+.light-right-diagonal-stripes {
+    @include mixins.diagonal-stripes(rgb(var(--inverted)), #fafafa);
 }
 
 .applying {

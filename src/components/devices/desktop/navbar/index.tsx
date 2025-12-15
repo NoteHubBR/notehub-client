@@ -2,7 +2,7 @@
 
 import { Navbar as GuestNavbar } from "./GuestNavbar";
 import { Navbar as UserNavbar } from "./UserNavbar";
-import { shouldUseUserContext } from "@/core";
+import { shouldRenderNavbarAndSidebar } from "@/core";
 import { Skeleton } from "./Skeleton";
 import { useLoading, useScreen, useStore, useUser } from "@/data/hooks"
 import { usePathname } from "next/navigation";
@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 export const Navbar = () => {
 
     const pathname = usePathname();
-    const shouldRender = shouldUseUserContext(pathname);
+    const shouldRender = shouldRenderNavbarAndSidebar(pathname);
 
     const { store: { isFirstTimer, isGuest, isExpired } } = useStore();
     const { onDesktop } = useScreen();

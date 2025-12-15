@@ -13,7 +13,7 @@ export const ProgressBar = () => {
             'fixed top-0', onProgress ? "left-0" : "right-0",
             'transition-all ease-out duration-700',
             'w-screen', onProgress ? "max-w-full" : "max-w-0", 'h-1',
-            'bg-gradient-to-r from-indigo-600 via-fuchsia-600 to-primary',
+            'bg-gradient-to-r from-primary via-secondary to-inverted',
             'animate-gradient'
         )} />
     )

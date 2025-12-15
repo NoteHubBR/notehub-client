@@ -5,6 +5,8 @@ export enum Routes {
     RECOVER = '/recover',
     SENT = '/sent',
     ACTIVATE = '/activate/:jwt',
+    SPONSORSHIP = '/sponsorship',
+    SPONSORSHIP_SUCCESS = '/sponsorship/success',
     SEARCH_DESKTOP = '/search',
     SEARCH_MOBILE = '/m/search',
     NOTIFICATIONS_MOBILE = '/m/notifications',
@@ -40,8 +42,28 @@ enum NotUserContextRoutes {
     CHANGELOG = '/changelog'
 }
 
+enum NotNavbarAndSidebarRoutes {
+    SIGNUP = '/signup',
+    SIGNIN = '/signin',
+    RECOVER = '/recover',
+    SENT = '/sent',
+    ACTIVATE = '/activate/:jwt',
+    SPONSORSHIP = '/sponsorship',
+    SPONSORSHIP_SUCCESS = '/sponsorship/success',
+    CHANGE_EMAIL = '/change/email',
+    CHANGE_PASSWORD = '/change/password',
+    HELP = '/help',
+    CHANGELOG = '/changelog'
+}
+
 export const shouldUseUserContext = (pathname: string): boolean => {
     const getStaticRoute = (route: string) => { return route.split('/:')[0] }
     const ignoredRoutes = Object.values(NotUserContextRoutes).map(getStaticRoute)
+    return !ignoredRoutes.some(prefix => pathname.startsWith(prefix))
+}
+
+export const shouldRenderNavbarAndSidebar = (pathname: string): boolean => {
+    const getStaticRoute = (route: string) => { return route.split('/:')[0] }
+    const ignoredRoutes = Object.values(NotNavbarAndSidebarRoutes).map(getStaticRoute)
     return !ignoredRoutes.some(prefix => pathname.startsWith(prefix))
 }

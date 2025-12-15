@@ -32,6 +32,7 @@ export const ThemeProvider = (props: any) => {
         if (pref.useColors) {
             document.documentElement.style.setProperty("--primary", pref.useColors.primary);
             document.documentElement.style.setProperty("--secondary", pref.useColors.secondary);
+            document.documentElement.style.setProperty("--inverted", pref.useColors.inverted);
         }
     }, [pref.useColors])
 

@@ -22,7 +22,8 @@ export const UserPreferencesProvider = (props: any) => {
             useColors: {
                 shades: data.useColors?.shades ?? pref.useColors.shades ?? "violet",
                 primary: data.useColors?.primary ?? pref.useColors.primary ?? "124, 58, 237",
-                secondary: data.useColors?.secondary ?? pref.useColors.secondary ?? "139, 92, 246"
+                secondary: data.useColors?.secondary ?? pref.useColors.secondary ?? "139, 92, 246",
+                inverted: data.useColors?.inverted ?? pref.useColors.inverted ?? "131, 197, 18"
             }
         }
         localStorage.setItem('preferences', JSON.stringify(prefs));
@@ -39,7 +40,8 @@ export const UserPreferencesProvider = (props: any) => {
             useColors: {
                 shades: colors.shades,
                 primary: colors.primary,
-                secondary: colors.secondary
+                secondary: colors.secondary,
+                inverted: colors.inverted
             }
         })
     }, [setter])
