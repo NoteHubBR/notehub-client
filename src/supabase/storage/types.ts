@@ -8,7 +8,7 @@ export type UploadProps = {
 }
 
 export type StoreProps = {
-    blobUrl: string;
+    blobUrl: string | null;
     folder: "avatars" | "banners";
     username: User["username"];
 }

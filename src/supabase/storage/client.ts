@@ -28,12 +28,15 @@ export const deleteImage = async (url: string) => {
 
 }
 
-export const storeImg = async ({ folder, username, blobUrl }: StoreProps): Promise<string> => {
-    const file = await convertBlobUrlToFile(blobUrl);
-    return await uploadImage({
-        file: file,
-        bucket: "images",
-        folder: folder,
-        username: username
-    })
+export const storeImg = async ({ folder, username, blobUrl }: StoreProps): Promise<string | void> => {
+    if (blobUrl) {
+        const file = await convertBlobUrlToFile(blobUrl);
+        return await uploadImage({
+            file: file,
+            bucket: "images",
+            folder: folder,
+            username: username
+        })
+    }
+    return;
 }
