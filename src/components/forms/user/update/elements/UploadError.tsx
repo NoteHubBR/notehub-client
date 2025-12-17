@@ -1,15 +1,17 @@
 import { editUserFormSchema } from "@/core";
 import { useFormContext } from "react-hook-form";
 
-interface AvatarErrorProps extends React.HTMLAttributes<HTMLSpanElement> {
-    field: keyof typeof editUserFormSchema.shape;
+interface UploadErrorProps extends React.HTMLAttributes<HTMLSpanElement> {
+    fields: Array<keyof typeof editUserFormSchema.shape>;
 }
 
-export const AvatarError = ({ field, ...rest }: AvatarErrorProps) => {
+export const UploadError = ({ fields, ...rest }: UploadErrorProps) => {
 
     const { formState: { errors } } = useFormContext();
 
-    const error = errors[field]?.message;
+    const error = fields
+        .map(field => errors[field]?.message)
+        .find(msg => msg !== undefined);
 
     if (error) return (
         <span

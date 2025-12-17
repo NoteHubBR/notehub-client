@@ -123,7 +123,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
                     </Element.Banner>
                     <Element.Privacy />
                     <div className="flex flex-col gap-6 px-4">
-                        <Element.AvatarError field="avatar" />
+                        <Element.UploadError fields={['avatar', 'banner']} />
                         <Element.Field>
                             <Element.Input name="username" defaultValue={user.username} type="text" required />
                             <Element.Label htmlFor="username" labelFor="Usuário" />

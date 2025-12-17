@@ -31,8 +31,7 @@ export const Banner = ({ user, onModalOpen, onModalClose, ...rest }: BannerProps
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
         const file = e.target.files?.[0];
         if (file) {
-            setError('avatar', {});
-            if (file.type.endsWith('gif')) return setError('avatar', { message: 'GIFs são proibidos como banner.' });
+            setError('banner', {});
             const preview = URL.createObjectURL(file);
             setPreview(preview);
         }
@@ -51,6 +50,7 @@ export const Banner = ({ user, onModalOpen, onModalClose, ...rest }: BannerProps
     const handleRemovalClick = (): void => {
         setUrl('/imgs/banner.png');
         setValue('banner', null);
+        setError('banner', {});
         return;
     }
 
