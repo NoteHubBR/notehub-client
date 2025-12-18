@@ -1,7 +1,7 @@
 import { Header } from "./Header";
 import { Main } from "./Main";
 import { Banner } from "./Banner";
-import { AvatarError } from "./AvatarError";
+import { UploadError } from "./UploadError";
 import { Avatar } from "./Avatar";
 import { Privacy } from "./Privacy";
 import { Dropdown } from "./Dropdown";
@@ -13,4 +13,4 @@ import { Counter } from "./Counter";
 import { Error } from "./Error";
 import { Link } from "./Link";
 
-export const Element = { Header, Main, Privacy, Dropdown, Banner, AvatarError, Avatar, Field, Label, Input, Textarea, Counter, Error, Link };
+export const Element = { Header, Main, Privacy, Dropdown, Banner, UploadError, Avatar, Field, Label, Input, Textarea, Counter, Error, Link };

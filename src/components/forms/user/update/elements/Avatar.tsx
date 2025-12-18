@@ -35,7 +35,6 @@ export const Avatar = ({ user, onModalOpen, onModalClose, ...props }: AvatarProp
         if (file) {
             setError('avatar', {});
             if (file.type.endsWith('gif')) {
-                if (!user.sponsor) return setError('avatar', { message: 'GIFs apenas para patrocinadores.' });
                 if (file.size > 12 * 1024 * 1024) return setError('avatar', { message: 'GIFs não podem ultrapassar 12MB.' });
                 const gif = URL.createObjectURL(file);
                 setUrl(gif);
@@ -45,7 +44,7 @@ export const Avatar = ({ user, onModalOpen, onModalClose, ...props }: AvatarProp
             setPreview(preview);
         }
         if (triggerRef.current) triggerRef.current.value = '';
-    }, [setError, setValue, user.sponsor])
+    }, [setError, setValue])
 
     const handleApplyClick = useCallback(async (): Promise<string | void> => {
         if (!triggerRef.current || !cropperRef.current) return;

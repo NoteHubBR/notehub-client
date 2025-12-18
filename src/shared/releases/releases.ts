@@ -17,6 +17,20 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        version: 'v2.0.1',
+        date: '17/12/25 11:24',
+        title: '17 de Dezembro de 2025',
+        summary: 'Correção de segurança e restrição de cosméticos.',
+        entries: [
+            {
+                type: 'fix',
+                pr: 10,
+                hash: '19d3b3446a3a9803742be8330b36530dd3c912bc',
+                desc: 'Corrigida vulnerabilidade na API que permitia o uso de avatares animados (.gif) por usuários sem assinatura de patrocinador.'
+            }
+        ]
+    },
+    {
         version: 'v2.0',
         date: '12/12/25 14:11',
         title: 'Dezembro 12, 2025',

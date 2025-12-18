@@ -44,10 +44,10 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
 
                 const [avatarPromise, bannerPromise] = [
                     shouldUpdateAvatar
-                        ? storeImg({ folder: "avatars", username: data.username, blobUrl: data.avatar! })
+                        ? storeImg({ folder: "avatars", username: data.username, blobUrl: data.avatar })
                         : Promise.resolve(user.avatar),
                     shouldUpdateBanner
-                        ? storeImg({ folder: "banners", username: data.username, blobUrl: data.banner! })
+                        ? storeImg({ folder: "banners", username: data.username, blobUrl: data.banner })
                         : Promise.resolve(user.banner)
                 ]
 
@@ -123,7 +123,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
                     </Element.Banner>
                     <Element.Privacy />
                     <div className="flex flex-col gap-6 px-4">
-                        <Element.AvatarError field="avatar" />
+                        <Element.UploadError fields={['avatar', 'banner']} />
                         <Element.Field>
                             <Element.Input name="username" defaultValue={user.username} type="text" required />
                             <Element.Label htmlFor="username" labelFor="Usuário" />
