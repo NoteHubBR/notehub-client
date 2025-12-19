@@ -43,8 +43,11 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
         setState((prev) => ({ ...prev, isRequesting: true }));
         try {
             login(await loginUserByDefault(data));
-        } catch (errors) {
-            if (Array.isArray(errors)) handleFieldErrors(errors, setError);
+        } catch (error: any) {
+            if (Array.isArray(error)) handleFieldErrors(error, setError);
+            if (typeof error === 'object' && 'data' in error && Array.isArray(error.data)) {
+                handleFieldErrors(error.data, setError);
+            }
         } finally {
             setState((prev) => ({ ...prev, isRequesting: false }));
         }
