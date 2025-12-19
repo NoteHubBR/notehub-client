@@ -31,6 +31,7 @@ export const FileFieldset = ({ name, children: legend, ...rest }: FieldsetProps)
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) processFile(file);
+        return e.target.value = '';
     }
 
     const handleDrop = (e: React.DragEvent<HTMLFieldSetElement>) => {
