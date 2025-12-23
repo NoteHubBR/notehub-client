@@ -4,7 +4,7 @@ import { IconCheck, IconDotsVertical, IconEdit, IconTrash, IconX } from "@tabler
 import { Menu, MenuItem } from "@/components/menu";
 import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
 import { useEffect, useState } from "react";
-import { useNotes, useServices } from "@/data/hooks";
+import { useNotes, useServices, useTags } from "@/data/hooks";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -19,6 +19,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
 
     const { noteService: { updateNoteText, deleteNote } } = useServices();
     const { setNoteToFirst, removeNote } = useNotes();
+    const { removeTags } = useTags();
 
     const updateNoteForm = useForm<NoteTextUpdateFormData>({
         resolver: zodResolver(noteTextUpdateFormSchema),
@@ -72,6 +73,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
             return await deleteNote(token.access_token, note.id)
                 .then(() => {
                     setIsPending(false);
+                    removeTags(note.tags);
                     removeNote(note.id);
                     router.push(`/${currentUser}/notes`);
                 })

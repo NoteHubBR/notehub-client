@@ -23,7 +23,7 @@ export const InputTags = ({ name, noteTags, ...rest }: InputProps) => {
     const [input, setInput] = useState<string>("");
     const [selectedTags, setSelectedTags] = useState<string[]>(noteTags);
 
-    const filteredTags = input.length > 0
+    const filteredTags = tags === null ? null : input.length > 0
         ? tags.filter((tag) => tag.toLowerCase().includes(input.toLowerCase()))
         : [] as string[];
 
@@ -120,8 +120,8 @@ export const InputTags = ({ name, noteTags, ...rest }: InputProps) => {
                 max={12}
                 className={clsx(hasError && "dark:text-red-500 text-red-600")}
             />
-            <TagsList filteredTags={filteredTags}>
-                {filteredTags.map((tag, key) => (
+            <TagsList filteredTags={filteredTags ?? [] as string[]}>
+                {(filteredTags ?? [] as string[]).map((tag, key) => (
                     <TagsListItem
                         key={key}
                         tag={tag}
