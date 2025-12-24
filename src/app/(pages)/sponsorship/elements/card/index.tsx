@@ -17,7 +17,7 @@ export const Card = ({ token, ...rest }: CardProps) => (
                 <H3>Eterno</H3>
                 <div className="select-none flex">
                     <GreaterThanOrEqual></GreaterThanOrEqual>
-                    <H4>R$0,50</H4>
+                    <H4>R$ 0,50</H4>
                     <Period />
                 </div>
                 <H5>Seja eternizado como patrocinador e obtenha benefícios exclusivos.</H5>

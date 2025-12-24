@@ -3,7 +3,7 @@
 import { clsx } from 'clsx';
 import { createPortal } from 'react-dom';
 import { Icon } from './icons';
-import { IconLock, IconWorld } from '@tabler/icons-react';
+import { IconCheck, IconLock, IconWorld } from '@tabler/icons-react';
 import { LowDetailUser, User } from '@/core';
 import { Photo } from './Photo';
 import { Toggle } from './buttons';
@@ -147,12 +147,11 @@ export const Hovercard = ({ ref, user }: HovercardProps) => {
             )}
         >
             {user.sponsor && (
-                <figure
-                    className="z-10 absolute top-0 right-0 p-1 rounded-tr bg-gradient-to-r from-primary to-inverted"
-                    style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 0)' }}
-                >
-                    <Icon.Sponsor size={22} user={user} useWhite className="ml-5 mb-5" />
-                </figure>
+                <div aria-hidden="true" className="badge-small-top-right">
+                    <div className="select-none pointer-events-none badge-content">
+                        <Icon.Sponsor user={user} useWhite />
+                    </div>
+                </div>
             )}
             <header className="px-6 pt-3 flex items-center gap-3">
                 <Link href={`/${user.username}`}>

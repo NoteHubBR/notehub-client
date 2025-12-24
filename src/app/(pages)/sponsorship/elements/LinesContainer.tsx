@@ -27,7 +27,7 @@ export const LinesContainer = ({ children, ...rest }: React.HTMLAttributes<HTMLD
 
     return (
         <div
-            className="overflow-hidden w-full h-full flex flex-col gap-[1px] bg-gradient-to-r from-primary to-inverted animated-gradient-border"
+            className="overflow-hidden w-full h-full flex flex-col gap-[1px] dark:bg-middark bg-midlight"
             {...rest}
         >
             <div className="w-full h-16 inmd:h-8 flex gap-[1px]">
