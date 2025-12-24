@@ -2,7 +2,7 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { forwardRef, useState } from "react";
 import { handleFieldErrors, Note, NoteUpdateFormData, noteUpdateFormSchema, Token } from "@/core";
-import { useNotes, useServices } from "@/data/hooks";
+import { useNotes, useServices, useTags } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -18,6 +18,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
     const { noteService: { updateNote } } = useServices();
 
     const { updateNote: updateNoteContext } = useNotes();
+    const { setNewTags } = useTags();
 
     const updateNoteForm = useForm<NoteUpdateFormData>({
         resolver: zodResolver(noteUpdateFormSchema)
@@ -32,7 +33,8 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
             try {
                 setIsPending(true);
                 await updateNote(token.access_token, note.id, data);
-                updateNoteContext(note.id, data.title);
+                updateNoteContext(note.id, data);
+                setNewTags(data.tags);
                 setNote(prev => {
                     if (prev) return {
                         ...prev,

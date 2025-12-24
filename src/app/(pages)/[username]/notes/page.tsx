@@ -26,7 +26,7 @@ const Page = () => {
         args: sParams.get('q'),
         page: {} as Omit<NotesPage<LowDetailNote>, 'content'>,
         notes: [] as LowDetailNote[],
-        tags: [] as string[],
+        tags: null as string[] | null,
         emptyList: false,
         notCurrent: false,
         notMutual: false,
@@ -55,7 +55,7 @@ const Page = () => {
             startFetch();
             const isCurrentUser = user ? user.username === username : false;
             const baseTags = isCurrentUser ? currentTags : tags;
-            const userTags = baseTags.length > 0 ? baseTags : await findUserTags(accessToken, username);
+            const userTags = baseTags !== null ? baseTags : await findUserTags(accessToken, username);
             const { content, ...rest } = await searchUserNotes(accessToken, username, query);
             return setState((prev) => ({
                 ...prev,
@@ -119,7 +119,7 @@ const Page = () => {
 
     return (
         <Section className="p-4 flex flex-col">
-            <Element.Header tags={tags} />
+            <Element.Header tags={tags ?? [] as string[]} />
             {onFetch
                 ? <Element.Loading />
                 : emptyList
