@@ -1,7 +1,7 @@
 'use client';
 
-import { createContext, useCallback, useEffect, useState } from "react";
-import { SessionPreferences, storeSessionPref } from "@/core";
+import { createContext, useCallback, useState } from "react";
+import { SessionPreferences } from "@/core";
 
 interface UserSessionPreferencesProps {
     pref: SessionPreferences;
@@ -12,20 +12,16 @@ const UserSessionPreferencesContext = createContext<UserSessionPreferencesProps>
 
 export const UserSessionPreferencesProvider = (props: any) => {
 
-    const [pref, setPref] = useState({} as SessionPreferences);
+    const [pref, setPref] = useState<SessionPreferences>({
+        isSponsorshipInviteAllowed: true
+    });
 
     const setter = useCallback((data: Partial<SessionPreferences>): void => {
         const prefs: SessionPreferences = {
             isSponsorshipInviteAllowed: data.isSponsorshipInviteAllowed ?? pref.isSponsorshipInviteAllowed ?? true,
         }
-        sessionStorage.setItem('preferences', JSON.stringify(prefs));
         return setPref(prefs);
     }, [pref])
-
-    useEffect(() => {
-        storeSessionPref();
-        return setPref(JSON.parse(sessionStorage.getItem('preferences') ?? '{}'));
-    }, [])
 
     return (
         <UserSessionPreferencesContext.Provider value={{
