@@ -62,28 +62,20 @@
     @include mixins.vignette-checkered(#737373, #fafafa);
 }
 
-// .dark-diagonal-stripes {
-//     @include mixins.diagonal-stripes(#262626, #0a0a0a);
-// }
-
-// .light-diagonal-stripes {
-//     @include mixins.diagonal-stripes(#e5e5e5, #fafafa);
-// }
-
 .dark-left-diagonal-stripes {
-    @include mixins.diagonal-stripes(rgb(var(--primary)), #0a0a0a);
+    @include mixins.diagonal-stripes(#404040, #0a0a0a);
 }
 
 .dark-right-diagonal-stripes {
-    @include mixins.diagonal-stripes(rgb(var(--inverted)), #0a0a0a);
+    @include mixins.diagonal-stripes(#404040, #0a0a0a);
 }
 
 .light-left-diagonal-stripes {
-    @include mixins.diagonal-stripes(rgb(var(--primary)), #fafafa);
+    @include mixins.diagonal-stripes(#e5e5e5, #fafafa);
 }
 
 .light-right-diagonal-stripes {
-    @include mixins.diagonal-stripes(rgb(var(--inverted)), #fafafa);
+    @include mixins.diagonal-stripes(#e5e5e5, #fafafa);
 }
 
 .applying {
