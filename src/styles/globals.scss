@@ -14,10 +14,13 @@
     @include mixins.badge-ribbon($position: top-right, $size: 125px, $ribbon-height: 35px, $corner-size: 10px, $offset: -10px);
 }
 
+.badge-small-top-right {
+    @include mixins.badge-ribbon($position: top-right, $size: 65px, $ribbon-height: 25px, $corner-size: 6.66px, $offset: -6.66px);
+}
+
 .badge-top-left {
     @include mixins.badge-ribbon($position: top-left, $size: 125px, $corner-size: 10px, $offset: -10px);
 }
-
 
 .dark-navigate-logo {
     @include mixins.navigate-logo(2px, rgba(var(--primary), .5), rgb(var(--primary)), rgba(var(--primary), 1));
