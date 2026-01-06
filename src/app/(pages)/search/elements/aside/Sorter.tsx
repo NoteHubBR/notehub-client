@@ -18,6 +18,7 @@ export const Sorter = ({ sParam, values, icon: Icon, className, children, ...res
 
     const handleParamUpdate = useCallback(() => {
         const params = new URLSearchParams(sParams);
+        params.delete('page');
         params.set(sParam, values[0] ? values[0] : '');
         window.history.replaceState(null, '', `${pathname}?${params}`);
     }, [pathname, sParam, sParams, values])
