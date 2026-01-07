@@ -17,6 +17,20 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        version: 'v2.0.2',
+        date: '5/1/26 10:35',
+        title: 'Janeiro 5, 2026',
+        summary: 'Proteção contra DDoS',
+        entries: [
+            {
+                type: 'sec',
+                pr: 12,
+                hash: '1465edae93f75675eb6e9892c47305b6244b9b85',
+                desc: 'Implementada proteção contra ataques DDoS por meio de rate limiting baseado em IP, aumentando a resiliência da aplicação contra requisições excessivas.'
+            }
+        ]
+    },
+    {
         version: 'v2.0.1',
         date: '17/12/25 11:24',
         title: '17 de Dezembro de 2025',
@@ -26,7 +40,7 @@ export const releases: Release[] = [
                 type: 'fix',
                 pr: 10,
                 hash: '19d3b3446a3a9803742be8330b36530dd3c912bc',
-                desc: 'Corrigida vulnerabilidade na API que permitia o uso de avatares animados (.gif) por usuários sem assinatura de patrocinador.'
+                desc: 'Corrigida vulnerabilidade na API que permitia o uso de avatares animados (.gif) por usuários sem assinatura de patrocinador'
             }
         ]
     },
