@@ -1,4 +1,5 @@
 import { Element } from "./elements";
+import { IconCopy, IconDownload, IconMessageCircle, IconMessageCircleOff } from '@tabler/icons-react';
 import { Note } from "@/core";
 import { Toggle } from "@/components/buttons";
 
@@ -13,7 +14,26 @@ export const Aside = ({ triggerRef, note, author, currentUser, ...rest }: AsideP
 
     const isAuthor = author === currentUser;
 
-    const { Settings, Time, Author, Tags, Comments } = Element;
+    const { Settings, Time, Author, Tags, Action } = Element;
+
+    const download = () => {
+        const blob = new Blob([note.markdown], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${note.title}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    const copy = async () => await navigator.clipboard.writeText(note.markdown);
+
+    const scrollToCommentBox = () => {
+        const commentWrapperEl = document.getElementById("comment-wrapper");
+        const commentBoxEl = document.getElementById("comment");
+        if (commentWrapperEl) commentWrapperEl.scrollIntoView({ behavior: "smooth" });
+        if (commentBoxEl) commentBoxEl.focus({ preventScroll: true });
+    }
 
     return (
         <aside className="max-w-[275px] inlg:max-w-full w-full inmd:dark:bg-darker inmd:bg-lighter" {...rest}>
@@ -27,9 +47,15 @@ export const Aside = ({ triggerRef, note, author, currentUser, ...rest }: AsideP
                 {note.description && <p>{note.description}</p>}
                 {note.tags.length > 0 && <Tags note={note} />}
             </section>
-            <footer className="px-4 py-6 flex flex-col inlg:flex-row gap-4">
-                <Toggle.Flame size={20} note={note} useCount />
-                <Comments note={note} />
+            <footer className="px-4 py-6 flex flex-col inlg:flex-row gap-4 insm:gap-2">
+                <Action icon={IconDownload} action="Baixar" onClick={download} />
+                <Action icon={IconCopy} action="Copiar" onClick={copy} />
+                <Toggle.Flame size={18} note={note} useCount />
+                <Action
+                    icon={note.closed ? IconMessageCircleOff : IconMessageCircle}
+                    action={note.comments_count}
+                    onClick={scrollToCommentBox}
+                />
             </footer>
         </aside>
     )
