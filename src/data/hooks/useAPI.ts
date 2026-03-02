@@ -35,8 +35,7 @@ const handleResponse = async (response: Response) => {
     }
 
     if (response.ok) return data;
-    if (response.status === 404) throw { data, response };
-    throw data;
+    throw { response, data };
 
 }
 

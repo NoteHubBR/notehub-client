@@ -1,115 +1,43 @@
 'use client';
 
-import { buildQueryStrings, handleFieldErrorsMsg, isEmpty, LowDetailNote, Page as NotesPage } from "@/core";
+import { buildQueryStrings, handleFieldErrorsMsg } from "@/core";
 import { Element } from "./elements";
 import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
+import { NoteServiceQueries } from '@/services';
 import { Section } from "../components/Section";
-import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { useServices, useTags, useUser } from "@/data/hooks";
+import { useUser, useTags } from "@/data/hooks";
 
 const Page = () => {
 
     const { username } = useParams<{ username: string }>();
     const sParams = useSearchParams();
-
     const query = buildQueryStrings(sParams);
 
-    const { noteService: { findUserTags, searchUserNotes } } = useServices();
-
-    const { isMounted, token, user } = useUser();
+    const { token, user } = useUser();
     const { tags: currentTags } = useTags();
 
-    const [state, setState] = useState({
-        onFetch: false,
-        hasFetched: false,
-        args: sParams.get('q'),
-        page: {} as Omit<NotesPage<LowDetailNote>, 'content'>,
-        notes: [] as LowDetailNote[],
-        tags: null as string[] | null,
-        emptyList: false,
-        notCurrent: false,
-        notMutual: false,
-        notFound: false,
-    })
+    const accessToken = token ? token.access_token : null;
+    const isCurrentUser = user ? user.username === username : false;
 
-    const { onFetch, hasFetched, args, page, notes, tags, emptyList, notCurrent, notMutual, notFound } = state;
+    const { useFindUserTags, useFindUserNotes } = NoteServiceQueries();
 
-    const isFetching = useRef<boolean>(false);
-
-    const startFetch = useCallback(() => {
-        isFetching.current = true;
-        return setState((prev) => ({ ...prev, onFetch: true }));
-    }, [])
-
-    const endFetch = useCallback(() => {
-        isFetching.current = false;
-        return setState((prev) => ({ ...prev, onFetch: false, hasFetched: true }));
-    }, [])
-
-    const init = useCallback(async () => {
-        const accessToken = token ? token.access_token : null;
-        const secret = `${query}:${accessToken}`;
-        if (isFetching.current || hasFetched && args === secret) return;
-        try {
-            startFetch();
-            const isCurrentUser = user ? user.username === username : false;
-            const baseTags = isCurrentUser ? currentTags : tags;
-            const userTags = baseTags !== null ? baseTags : await findUserTags(accessToken, username);
-            const { content, ...rest } = await searchUserNotes(accessToken, username, query);
-            return setState((prev) => ({
-                ...prev,
-                args: secret,
-                page: rest,
-                notes: content,
-                tags: userTags,
-                emptyList: content.length === 0,
-                notCurrent: false,
-                notMutual: false,
-                notFound: false
-            }))
-        } catch (errors) {
-            if (Array.isArray(errors)) {
-                const { notCurrent, notMutual } = handleFieldErrorsMsg(errors);
-                return setState((prev) => ({
-                    ...prev,
-                    args: query,
-                    notCurrent: notCurrent,
-                    notMutual: notMutual
-                }))
-            } else return setState((prev) => ({ ...prev, notFound: true }));
-        } finally {
-            endFetch();
-        }
-    }, [isMounted, sParams])
-
-    useEffect(() => {
-        if (isMounted) init();
-    }, [init, isMounted])
-
-    if (notFound) return null;
-
-    if (notCurrent) return (
-        <Section className="p-6 flex">
-            <Element.Dialog
-                icon={IconEyeOff}
-                title="Notas ocultas"
-                desc="Nome auto explicativo."
-            />
-        </Section>
+    const { data: tagsResponse, isLoading: tagsLoading } = useFindUserTags(
+        accessToken,
+        username,
+        !isCurrentUser
     )
 
-    if (notMutual) return (
-        <Section className="p-6 flex">
-            <Element.Dialog
-                icon={IconLock}
-                title="Perfil privado"
-                desc="Necessário que ambos de vocês se sigam."
-            />
-        </Section>
+    const { data: notesResponse, isLoading: notesLoading, isFetching: notesFetching } = useFindUserNotes(
+        accessToken,
+        username,
+        query,
+        true
     )
 
-    if (isEmpty(page) || isEmpty(notes)) return (
+    const tags = isCurrentUser ? currentTags : tagsResponse ? tagsResponse.data as string[] : null;
+
+    if (notesLoading || tagsLoading) return (
         <Section className="p-4">
             <Element.header />
             <Element.main />
@@ -117,25 +45,54 @@ const Page = () => {
         </Section>
     )
 
-    return (
-        <Section className="p-4 flex flex-col">
-            <Element.Header tags={tags ?? [] as string[]} />
-            {onFetch
-                ? <Element.Loading />
-                : emptyList
-                    ? <Element.Dialog
-                        icon={IconNotesOff}
-                        title="Zero"
-                        desc="Nada encontrado."
+    if (notesResponse) {
+        if (notesResponse.type === 'notfound') return null;
+        if (notesResponse.type === 'forbidden') {
+            const { notCurrent, notMutual } = handleFieldErrorsMsg(notesResponse.data);
+            if (notCurrent) return (
+                <Section className="p-6 flex">
+                    <Element.Dialog
+                        icon={IconEyeOff}
+                        title="Notas ocultas"
+                        desc="Nome auto explicativo."
                     />
-                    :
-                    <>
-                        <Element.Main notes={notes} />
-                        <Element.Footer page={page} isEmpty={emptyList} />
-                    </>
-            }
-        </Section>
-    )
+                </Section>
+            )
+            if (notMutual) return (
+                <Section className="p-6 flex">
+                    <Element.Dialog
+                        icon={IconLock}
+                        title="Perfil privado"
+                        desc="Necessário que ambos de vocês se sigam."
+                    />
+                </Section>
+            )
+        }
+        if (notesResponse.type === 'ok') {
+            const { content: notes, ...page } = notesResponse.data;
+            const emptyList = notes.length === 0;
+            return (
+                <Section className="p-4 flex flex-col">
+                    <Element.Header tags={tags ?? [] as string[]} />
+                    {notesFetching
+                        ? <Element.Loading />
+                        : emptyList
+                            ? <Element.Dialog
+                                icon={IconNotesOff}
+                                title="Zero"
+                                desc="Nada encontrado."
+                            />
+                            :
+                            <>
+                                <Element.Main notes={notes} />
+                                <Element.Footer page={page} isEmpty={emptyList} />
+                            </>
+                    }
+                </Section>
+            )
+        }
+        return null;
+    }
 
 }
 
