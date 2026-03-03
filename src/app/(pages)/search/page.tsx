@@ -1,11 +1,11 @@
 'use client';
 
-import { buildQueryStrings, isEmpty, LowDetailNote, LowDetailUser, Page as Pageable } from "@/core";
+import { buildQueryStrings, LowDetailNote, LowDetailUser } from "@/core";
 import { Device } from "@/components/devices";
 import { Element } from "./elements";
-import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useServices, useUser } from "@/data/hooks";
+import { useServices } from "@/data/hooks";
+import { useState } from "react";
 
 const Page = () => {
 
@@ -15,73 +15,28 @@ const Page = () => {
     const type = sParams.get('type');
 
     const {
-        userService: { searchUsers },
-        noteService: { searchNotes, searchTags }
+        userServiceQueries: { useSearchUsers },
+        noteServiceQueries: { useSearchNotes, useSearchTags }
     } = useServices();
 
-    const { isMounted } = useUser();
+    const { data: notesData, isLoading: notesLoading, isFetching: notesFetching } = useSearchNotes(query, type === 'notes' || !type);
+    const { data: usersData, isLoading: usersLoading, isFetching: usersFetching } = useSearchUsers(query, type === 'users');
+    const { data: tagsData, isLoading: tagsLoading, isFetching: tagsFetching } = useSearchTags(query, type === 'tags');
 
-    const [state, setState] = useState({
-        onFetch: false,
-        page: {} as Omit<Pageable<(LowDetailUser | LowDetailNote)>, "content">,
-        contents: [] as (LowDetailUser | LowDetailNote)[],
-        emptyList: false
-    })
+    const isLoading = usersLoading || notesLoading || tagsLoading;
+    const isFetching = usersFetching || notesFetching || tagsFetching;
 
-    const { onFetch, page, contents, emptyList } = state;
-
-    const isFetching = useRef<boolean>(false);
-
-    const startFetch = useCallback(() => {
-        isFetching.current = true;
-        return setState((prev) => ({ ...prev, onFetch: true }));
-    }, [])
-
-    const endFetch = useCallback(() => {
-        isFetching.current = false;
-        return setState((prev) => ({ ...prev, onFetch: false, hasFetched: true }));
-    }, [])
-
-    const getPage = useCallback(async (query: string): Promise<Pageable<(LowDetailUser | LowDetailNote)>> => {
-        if (type === "tags") return await searchTags(query);
-        else if (type === "users") return await searchUsers(query);
-        else if (type === "notes") return await searchNotes(query);
-        else return await searchNotes(query);
-    }, [searchNotes, searchTags, searchUsers, type])
-
-    const init = useCallback(async () => {
-        if (isFetching.current) return;
-        try {
-            startFetch();
-            const { content, ...rest } = await getPage(query);
-            return setState((prev) => ({
-                ...prev,
-                page: rest,
-                contents: content,
-                emptyList: content.length === 0,
-            }))
-        } catch (error) {
-            throw error;
-        } finally {
-            endFetch();
-        }
-    }, [isMounted, sParams])
-
-    useEffect(() => {
-        if (isMounted) init()
-    }, [init, isMounted])
+    const page = type === 'users' ? usersData : type === 'tags' ? tagsData : notesData;
+    const contents = page ? page.content as (LowDetailUser | LowDetailNote)[] : [];
 
     const { Header, Aside, Results, Loading } = Element;
 
-    if (isEmpty(page)) return (
+    if (isLoading) return (
         <div className="w-full h-full py-4 px-4 inlg:px-2 inmd:p-0 flex flex-col gap-6 inmd:gap-0 dark:bg-dark bg-light">
             <Device.Mobile.Header.SearchHeader query={q} setQuery={setQ} disabled />
             <div className="w-full h-full flex flex-col">
                 <Element.header />
-                <div
-                    className="max-w-[888px] w-full m-auto flex-1 flex justify-center gap-3
-                    inlg:flex-col inlg:gap-0"
-                >
+                <div className="max-w-[888px] w-full m-auto flex-1 flex justify-center gap-3 inlg:flex-col inlg:gap-0">
                     <Element.aside />
                     <Element.results />
                 </div>
@@ -89,32 +44,29 @@ const Page = () => {
         </div>
     )
 
-    return (
+    if (page) return (
         <main className="w-full h-full py-4 px-4 inlg:px-2 inmd:p-0 flex flex-col gap-6 inmd:gap-0 dark:bg-dark bg-light">
             <Device.Mobile.Header.SearchHeader query={q} setQuery={setQ} />
             <section className="w-full h-full flex flex-col">
                 <Header />
-                <section
-                    className="max-w-[888px] w-full m-auto flex-1 flex justify-center gap-3
-                    inlg:flex-col inlg:gap-0"
-                >
+                <section className="max-w-[888px] w-full m-auto flex-1 flex justify-center gap-3 inlg:flex-col inlg:gap-0">
                     <Aside />
-                    {onFetch
-                        ?
-                        <Loading />
-                        :
-                        <Results
+                    {isFetching
+                        ? <Loading />
+                        : <Results
                             page={page}
                             contents={contents}
-                            isEmpty={emptyList}
+                            isEmpty={contents.length === 0}
                             totalElements={page.totalElements}
                         />
                     }
                 </section>
             </section>
-        </main >
+        </main>
     )
+
+    return null;
 
 }
 
-export default Page
+export default Page;

@@ -1,29 +1,19 @@
 import { Element } from "./elements"
-import { isEmpty, LowDetailNote, Page } from "@/core";
 import { Skeleton } from "./skeleton";
 import { Toggle } from "@/components/buttons";
-import { useCallback, useEffect, useState } from "react";
 import { useServices } from "@/data/hooks";
 
 export const Ranking = () => {
 
-    const { noteService: { searchNotes } } = useServices();
+    const { noteServiceQueries: { useSearchNotes } } = useServices();
 
-    const [ranking, setRanking] = useState<Page<LowDetailNote>>({} as Page<LowDetailNote>);
-
-    const getTopThreeNotes = useCallback(async () => {
-        return setRanking(await searchNotes('size=3'));
-    }, [searchNotes])
-
-    useEffect(() => {
-        getTopThreeNotes();
-    }, [getTopThreeNotes])
+    const { data: ranking, isLoading } = useSearchNotes('sort=flamesCount,desc&size=3');
 
     const { Title, Li, Target, Desc, Link } = Element;
 
-    if (isEmpty(ranking)) return <Skeleton />;
+    if (isLoading) return <Skeleton />;
 
-    return (
+    if (ranking) return (
         <section
             className="w-full h-fit p-3 rounded-[5px]
             dark:bg-darker bg-lighter
@@ -46,5 +36,7 @@ export const Ranking = () => {
             <Link />
         </section>
     )
+
+    return null;
 
 }

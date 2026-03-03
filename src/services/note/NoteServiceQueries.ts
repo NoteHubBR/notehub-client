@@ -62,10 +62,34 @@ export const NoteServiceQueries = () => {
         })
     }
 
+    const useSearchNotes = (parameters?: string, enabled: boolean = true) => {
+        return useQuery({
+            queryKey: ['searchNotes', parameters],
+            queryFn: () => service.searchNotes(parameters),
+            enabled: enabled,
+            staleTime: 1000 * 60 * 5,
+            placeholderData: keepPreviousData,
+            retry: 3
+        })
+    }
+
+    const useSearchTags = (parameters?: string, enabled: boolean = true) => {
+        return useQuery({
+            queryKey: ['searchTags', parameters],
+            queryFn: () => service.searchTags(parameters),
+            enabled: enabled,
+            staleTime: 1000 * 60 * 5,
+            placeholderData: keepPreviousData,
+            retry: 3
+        })
+    }
+
     return {
         useFindUserTags,
         useFindUserNotes,
-        useGetFeed
+        useGetFeed,
+        useSearchNotes,
+        useSearchTags
     }
 
 }
