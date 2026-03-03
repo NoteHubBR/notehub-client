@@ -1,5 +1,6 @@
 import { keepPreviousData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { NoteService } from './NoteService';
+import { UUID } from 'crypto';
 
 type CustomResponse =
     | { type: 'ok', data: any }
@@ -84,12 +85,24 @@ export const NoteServiceQueries = () => {
         })
     }
 
+    const useGetNote = (token: string | null, id: UUID, enabled: boolean = true) => {
+        return useQuery({
+            queryKey: ['note', id],
+            queryFn: customQueryFn(() => service.getNote(token, id)),
+            enabled: enabled,
+            staleTime: 1000 * 60 * 5,
+            placeholderData: keepPreviousData,
+            retry: smartRetry
+        })
+    }
+
     return {
         useFindUserTags,
         useFindUserNotes,
         useGetFeed,
         useSearchNotes,
-        useSearchTags
+        useSearchTags,
+        useGetNote
     }
 
 }

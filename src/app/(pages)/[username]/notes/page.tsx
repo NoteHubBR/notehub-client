@@ -13,7 +13,7 @@ const Page = () => {
     const sParams = useSearchParams();
     const query = buildQueryStrings(sParams);
 
-    const { token, user } = useUser();
+    const { isMounted, token, user } = useUser();
     const { tags: currentTags } = useTags();
 
     const accessToken = token ? token.access_token : null;
@@ -24,14 +24,14 @@ const Page = () => {
     const { data: tagsResponse, isLoading: tagsLoading } = useFindUserTags(
         accessToken,
         username,
-        !isCurrentUser
+        isMounted && !isCurrentUser
     )
 
     const { data: notesResponse, isLoading: notesLoading, isFetching: notesFetching } = useFindUserNotes(
         accessToken,
         username,
         query,
-        true
+        isMounted
     )
 
     const tags = isCurrentUser ? currentTags : tagsResponse ? tagsResponse.data as string[] : null;
