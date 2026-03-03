@@ -3,10 +3,9 @@
 import { buildQueryStrings, handleFieldErrorsMsg } from "@/core";
 import { Element } from "./elements";
 import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
-import { NoteServiceQueries } from '@/services';
 import { Section } from "../components/Section";
 import { useParams, useSearchParams } from "next/navigation";
-import { useUser, useTags } from "@/data/hooks";
+import { useUser, useTags, useServices } from "@/data/hooks";
 
 const Page = () => {
 
@@ -20,7 +19,7 @@ const Page = () => {
     const accessToken = token ? token.access_token : null;
     const isCurrentUser = user ? user.username === username : false;
 
-    const { useFindUserTags, useFindUserNotes } = NoteServiceQueries();
+    const { noteServiceQueries: { useFindUserTags, useFindUserNotes } } = useServices();
 
     const { data: tagsResponse, isLoading: tagsLoading } = useFindUserTags(
         accessToken,

@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { NoteService } from './NoteService';
 
 type CustomResponse =
@@ -28,6 +28,18 @@ export const NoteServiceQueries = () => {
         return failureCount < 3;
     }
 
+    const useGetFeed = (token: string, enabled: boolean = true) => {
+        return useInfiniteQuery({
+            queryKey: ['feed'],
+            queryFn: ({ pageParam = 0 }: { pageParam: number }) => service.getFeedNotes(token, `page=${pageParam}`),
+            initialPageParam: 0,
+            getNextPageParam: (page, _, pageParam) => page.last ? undefined : pageParam + 1,
+            enabled: enabled,
+            staleTime: 1000 * 60 * 5,
+            retry: 3
+        })
+    }
+
     const useFindUserTags = (token: string | null, username: string, enabled: boolean = true) => {
         return useQuery({
             queryKey: ['userTags', username],
@@ -52,7 +64,8 @@ export const NoteServiceQueries = () => {
 
     return {
         useFindUserTags,
-        useFindUserNotes
+        useFindUserNotes,
+        useGetFeed
     }
 
 }
