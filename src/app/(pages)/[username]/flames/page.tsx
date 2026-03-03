@@ -1,10 +1,9 @@
 'use client';
 
-import { buildQueryStrings, Flame, Page as FlamesPage, handleFieldErrorsMsg, isEmpty } from "@/core";
+import { buildQueryStrings, handleFieldErrorsMsg } from "@/core";
 import { Element } from "./elements";
 import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
 import { Section } from "../components/Section";
-import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useServices, useUser } from "@/data/hooks";
 
@@ -12,98 +11,20 @@ const Page = () => {
 
     const { username } = useParams<{ username: string }>();
     const sParams = useSearchParams();
-
     const query = buildQueryStrings(sParams);
 
-    const { flameService: { searchUserFlames } } = useServices();
+    const { flameServiceQueries: { useSearchUserFlames } } = useServices();
 
     const { isMounted, token } = useUser();
 
-    const [state, setState] = useState({
-        onFetch: false,
-        hasFetched: false,
-        params: sParams.get('q'),
-        page: {} as Omit<FlamesPage<Flame>, 'content'>,
-        flames: [] as Flame[],
-        emptyList: false,
-        notCurrent: false,
-        notMutual: false,
-        notFound: false,
-    })
-
-    const { onFetch, hasFetched, params, page, flames, emptyList, notCurrent, notMutual, notFound } = state;
-
-    const isFetching = useRef<boolean>(false);
-
-    const startFetch = useCallback(() => {
-        isFetching.current = true;
-        return setState((prev) => ({ ...prev, onFetch: true }));
-    }, [])
-
-    const endFetch = useCallback(() => {
-        isFetching.current = false;
-        return setState((prev) => ({ ...prev, onFetch: false, hasFetched: true }));
-    }, [])
-
-    const init = useCallback(async () => {
-        const accessToken = token ? token.access_token : null;
-        const secret = `${query}:${accessToken}`;
-        if (isFetching.current || hasFetched && params === secret) return;
-        try {
-            startFetch();
-            const { content, ...rest } = await searchUserFlames(accessToken, username, query);
-            return setState((prev) => ({
-                ...prev,
-                params: secret,
-                page: rest,
-                flames: content,
-                emptyList: content.length === 0,
-                notCurrent: false,
-                notMutual: false,
-                notFound: false
-            }))
-        } catch (errors) {
-            if (Array.isArray(errors)) {
-                const { notCurrent, notMutual } = handleFieldErrorsMsg(errors);
-                return setState((prev) => ({
-                    ...prev,
-                    params: secret,
-                    notCurrent: notCurrent,
-                    notMutual: notMutual
-                }))
-            } else return setState((prev) => ({ ...prev, params: secret, notFound: true }));
-        } finally {
-            endFetch();
-        }
-    }, [isMounted, sParams])
-
-    useEffect(() => {
-        if (isMounted) init()
-    }, [init, isMounted])
-
-    if (notFound) return null;
-
-    if (notCurrent) return (
-        <Section className="p-6 flex">
-            <Element.Dialog
-                icon={IconEyeOff}
-                title="Notas ocultas"
-                desc="Nome auto explicativo."
-            />
-        </Section>
+    const { data: response, isLoading, isFetching } = useSearchUserFlames(
+        token ? token.access_token : null,
+        username,
+        query,
+        isMounted
     )
 
-    if (notMutual) return (
-        <Section className="p-6 flex">
-            <Element.Dialog
-                icon={IconLock}
-                title="Perfil privado"
-                desc="Necessário que ambos de vocês se sigam."
-            />
-        </Section>
-    )
-
-    if (isEmpty(page) || isEmpty(flames)) return (
+    if (isLoading) return (
         <Section className="p-4">
             <Element.header />
             <Element.main />
@@ -111,26 +32,57 @@ const Page = () => {
         </Section>
     )
 
-    return (
-        <Section className="p-4 flex flex-col">
-            <Element.Header />
-            {onFetch
-                ? <Element.Loading />
-                : emptyList
-                    ? <Element.Dialog
-                        icon={IconNotesOff}
-                        title="Zero"
-                        desc="Nada encontrado."
+    if (response) {
+        if (response.type === 'notfound') return null;
+        if (response.type === 'forbidden') {
+            const { notCurrent, notMutual } = handleFieldErrorsMsg(response.data);
+            if (notCurrent) return (
+                <Section className="p-6 flex">
+                    <Element.Dialog
+                        icon={IconEyeOff}
+                        title="Notas ocultas"
+                        desc="Nome auto explicativo."
                     />
-                    :
-                    <>
-                        <Element.Main flames={flames} />
-                        <Element.Footer page={page} isEmpty={emptyList} />
-                    </>
+                </Section>
+            )
+            if (notMutual) return (
+                <Section className="p-6 flex">
+                    <Element.Dialog
+                        icon={IconLock}
+                        title="Perfil privado"
+                        desc="Necessário que ambos de vocês se sigam."
+                    />
+                </Section>
+            )
+        }
+        if (response.type === 'ok') {
+            const { content: flames, ...page } = response.data;
+            const emptyList = flames.length === 0;
+            return (
+                <Section className="p-4 flex flex-col">
+                    <Element.Header />
+                    {isFetching
+                        ? <Element.Loading />
+                        : emptyList
+                            ? <Element.Dialog
+                                icon={IconNotesOff}
+                                title="Zero"
+                                desc="Nada encontrado."
+                            />
+                            :
+                            <>
+                                <Element.Main flames={flames} />
+                                <Element.Footer page={page} isEmpty={emptyList} />
+                            </>
 
-            }
-        </Section>
-    )
+                    }
+                </Section>
+            )
+        }
+        return null;
+    }
+
+    return null;
 
 }
 
