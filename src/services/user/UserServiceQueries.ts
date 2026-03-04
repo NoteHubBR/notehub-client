@@ -6,8 +6,6 @@ export const UserServiceQueries = () => {
 
     const service = UserService();
 
-    // searchUserFollowing searchUserFollowers
-
     const useGetUser = (username: string, enabled: boolean = true) => {
         return useQuery({
             queryKey: ['user', username],
@@ -21,7 +19,7 @@ export const UserServiceQueries = () => {
 
     const useGetUserDisplayNameHistory = (username: string, enabled: boolean = true) => {
         return useQuery({
-            queryKey: ['getUserDisplayNameHistory', username],
+            queryKey: ['history', username],
             queryFn: customQueryFn(() => service.getUserDisplayNameHistory(username)),
             enabled: enabled,
             staleTime: 1000 * 60 * 5,
@@ -41,10 +39,34 @@ export const UserServiceQueries = () => {
         })
     }
 
+    const useSearchUserFollowing = (token: string | null, username: string, parameters?: string, enabled: boolean = true) => {
+        return useQuery({
+            queryKey: ['following', username, parameters],
+            queryFn: customQueryFn(() => service.searchUserFollowing(token, username, parameters)),
+            enabled: enabled,
+            staleTime: 1000 * 60 * 5,
+            placeholderData: keepPreviousData,
+            retry: customRetry
+        })
+    }
+
+    const useSearchUserFollowers = (token: string | null, username: string, parameters?: string, enabled: boolean = true) => {
+        return useQuery({
+            queryKey: ['followers', username, parameters],
+            queryFn: customQueryFn(() => service.searchUserFollowers(token, username, parameters)),
+            enabled: enabled,
+            staleTime: 1000 * 60 * 5,
+            placeholderData: keepPreviousData,
+            retry: customRetry
+        })
+    }
+
     return {
         useGetUser,
         useGetUserDisplayNameHistory,
-        useSearchUsers
+        useSearchUsers,
+        useSearchUserFollowing,
+        useSearchUserFollowers
     }
 
 }
