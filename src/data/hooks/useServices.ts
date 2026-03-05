@@ -1,6 +1,7 @@
 import {
     AuthService,
     CommentService,
+    CommentServiceQueries,
     FlameService,
     FlameServiceQueries,
     NoteService,
@@ -20,6 +21,7 @@ export const useServices = () => {
     const flameService = FlameService();
     const flameServiceQueries = FlameServiceQueries();
     const commentService = CommentService();
+    const commentServiceQueries = CommentServiceQueries();
     const replyService = ReplyService();
     const sponsorshipService = SponsorshipService();
     return {
@@ -27,7 +29,7 @@ export const useServices = () => {
         userService, userServiceQueries,
         noteService, noteServiceQueries,
         flameService, flameServiceQueries,
-        commentService,
+        commentService, commentServiceQueries,
         replyService,
         sponsorshipService
     }
