@@ -1,5 +1,4 @@
-import { customQueryFn, customRetry } from '../utils';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useGuardedQuery, usePublicQuery } from '../utils';
 import { UserService } from './UserService';
 
 export const UserServiceQueries = () => {
@@ -7,57 +6,42 @@ export const UserServiceQueries = () => {
     const service = UserService();
 
     const useGetUser = (username: string, enabled: boolean = true) => {
-        return useQuery({
-            queryKey: ['user', username],
-            queryFn: customQueryFn(() => service.getUser(username)),
-            enabled: enabled,
-            staleTime: 1000 * 60 * 5,
-            placeholderData: keepPreviousData,
-            retry: customRetry
+        return useGuardedQuery({
+            keys: ['user', username],
+            function: () => service.getUser(username),
+            enabled: enabled
         })
     }
 
     const useGetUserDisplayNameHistory = (username: string, enabled: boolean = true) => {
-        return useQuery({
-            queryKey: ['history', username],
-            queryFn: customQueryFn(() => service.getUserDisplayNameHistory(username)),
-            enabled: enabled,
-            staleTime: 1000 * 60 * 5,
-            placeholderData: keepPreviousData,
-            retry: customRetry
+        return useGuardedQuery({
+            keys: ['history', username],
+            function: () => service.getUserDisplayNameHistory(username),
+            enabled: enabled
         })
     }
 
     const useSearchUsers = (parameters?: string, enabled: boolean = true) => {
-        return useQuery({
-            queryKey: ['searchUsers', parameters],
-            queryFn: () => service.searchUsers(parameters),
-            enabled: enabled,
-            staleTime: 1000 * 60 * 5,
-            placeholderData: keepPreviousData,
-            retry: 3
+        return usePublicQuery({
+            keys: ['searchUsers', parameters],
+            function: () => service.searchUsers(parameters),
+            enabled: enabled
         })
     }
 
     const useSearchUserFollowing = (token: string | null, username: string, parameters?: string, enabled: boolean = true) => {
-        return useQuery({
-            queryKey: ['following', username, parameters],
-            queryFn: customQueryFn(() => service.searchUserFollowing(token, username, parameters)),
-            enabled: enabled,
-            staleTime: 1000 * 60 * 5,
-            placeholderData: keepPreviousData,
-            retry: customRetry
+        return useGuardedQuery({
+            keys: ['following', token, username, parameters],
+            function: () => service.searchUserFollowing(token, username, parameters),
+            enabled: enabled
         })
     }
 
     const useSearchUserFollowers = (token: string | null, username: string, parameters?: string, enabled: boolean = true) => {
-        return useQuery({
-            queryKey: ['followers', username, parameters],
-            queryFn: customQueryFn(() => service.searchUserFollowers(token, username, parameters)),
-            enabled: enabled,
-            staleTime: 1000 * 60 * 5,
-            placeholderData: keepPreviousData,
-            retry: customRetry
+        return useGuardedQuery({
+            keys: ['followers', token, username, parameters],
+            function: () => service.searchUserFollowers(token, username, parameters),
+            enabled: enabled
         })
     }
 
