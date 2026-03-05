@@ -1,4 +1,4 @@
-import { Comment, Note, Page, Reply, Token, User } from "@/core";
+import { Comment, Note, Reply, Token, User } from "@/core";
 import { Form } from "@/components/forms";
 import { Loader, ReplyBox, ReplyItem } from "../replies";
 import { Skeleton } from "./skeleton";
@@ -17,7 +17,6 @@ interface CommentItemProps {
 export const CommentItem = ({ isSorting, token, user, note, comment, setNote, setComments }: CommentItemProps) => {
 
     const [repliesCount, setRepliesCount] = useState<number>(comment.replies_count ?? 0);
-    const [repliesPage, setRepliesPage] = useState<Omit<Page<Reply>, 'content'>>({} as Omit<Page<Reply>, 'content'>);
     const [replies, setReplies] = useState<Reply[]>([]);
     const [isReplying, setIsReplying] = useState<boolean>(false);
     const [isRepliesListOpen, setIsRepliesListOpen] = useState<boolean>(false);
@@ -35,7 +34,6 @@ export const CommentItem = ({ isSorting, token, user, note, comment, setNote, se
                 isRepliesListOpen={isRepliesListOpen}
                 setNote={setNote}
                 setComments={setComments}
-                setRepliesPage={setRepliesPage}
                 setReplies={setReplies}
                 setIsReplying={setIsReplying}
                 setIsRepliesListOpen={setIsRepliesListOpen}
@@ -70,8 +68,6 @@ export const CommentItem = ({ isSorting, token, user, note, comment, setNote, se
                 token={token}
                 isRepliesListOpen={isRepliesListOpen}
                 comment={comment}
-                page={repliesPage}
-                setPage={setRepliesPage}
                 setReplies={setReplies}
             />
         </>

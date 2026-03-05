@@ -1,34 +1,35 @@
 import { clsx } from "clsx";
-import { Comment, Page, Reply, Token } from "@/core"
+import { Comment, Reply, Token } from "@/core"
 import { IconArrowForward } from "@tabler/icons-react";
 import { useServices } from "@/data/hooks";
-import { useTransition } from "react";
 
 interface LoadMoreProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     token: Token | null;
     isRepliesListOpen: boolean;
     comment: Comment;
-    page: Omit<Page<Reply>, 'content'>;
-    setPage: React.Dispatch<React.SetStateAction<Omit<Page<Reply>, 'content'>>>;
     setReplies: React.Dispatch<React.SetStateAction<Reply[]>>;
 }
 
-export const Loader = ({ token, isRepliesListOpen, comment, page, setPage, setReplies, ...rest }: LoadMoreProps) => {
+export const Loader = ({ token, isRepliesListOpen, comment, setReplies, ...rest }: LoadMoreProps) => {
 
-    const { replyService: { getReplies } } = useServices();
+    const { replyServiceQueries: { useGetReplies } } = useServices();
 
-    const [isPending, startTransition] = useTransition();
+    const accessToken = token ? token.access_token : null;
+    const { fetchNextPage, hasNextPage, isFetchingNextPage } = useGetReplies(accessToken, comment.id, false);
 
-    const handleClick = () => startTransition(async () => {
-        const accessToken = token ? token.access_token : null;
-        const { content, ...rest } = await getReplies(accessToken, comment.id, `page=${page.page + 1}`);
-        setReplies(prev => [...prev, ...content]);
-        setPage(rest);
-    })
+    const handleClick = () => {
+        fetchNextPage().then((result) => {
+            if (result.data) {
+                const lastPage = result.data.pages.at(-1);
+                const replies = lastPage ? lastPage.content : [];
+                setReplies(prev => [...prev, ...replies]);
+            }
+        })
+    }
 
-    if (isRepliesListOpen && !page.last) return (
+    if (isRepliesListOpen && hasNextPage) return (
         <button
-            disabled={isPending}
+            disabled={isFetchingNextPage}
             onClick={handleClick}
             className={clsx(
                 'disabled:cursor-wait',
@@ -44,5 +45,7 @@ export const Loader = ({ token, isRepliesListOpen, comment, page, setPage, setRe
             Carregar mais
         </button>
     )
+
+    return null;
 
 }
