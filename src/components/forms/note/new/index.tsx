@@ -3,6 +3,7 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconEyeClosed, IconMessage, IconMessageOff, IconWorld } from "@tabler/icons-react";
 import { useNotes, useServices } from "@/data/hooks";
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export const Form = ({ token, username }: { token: string; username: string; }) => {
 
     const { noteService: { createNote } } = useServices();
+    const qc = useQueryClient();
 
     const { setNewNote } = useNotes();
 
@@ -27,6 +29,12 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
         try {
             setIsPending(true);
             const note = await createNote(token, data);
+            await Promise.all([
+                qc.invalidateQueries({ queryKey: ['userNotes', token, username] }),
+                qc.invalidateQueries({ queryKey: ['userTags', token, username] }),
+                qc.invalidateQueries({ queryKey: ['searchNotes'] }),
+                qc.invalidateQueries({ queryKey: ['searchTags'] })
+            ])
             setNewNote(note);
             router.push(`/${username}/${note.id}`);
         } catch (errors) {

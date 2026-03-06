@@ -5,6 +5,7 @@ import { Menu, MenuItem } from "@/components/menu";
 import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
 import { useEffect, useState } from "react";
 import { useNotes, useServices, useTags } from "@/data/hooks";
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -18,6 +19,8 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) => {
 
     const { noteService: { updateNoteText, deleteNote } } = useServices();
+    const qc = useQueryClient();
+
     const { setNoteToFirst, removeNote } = useNotes();
     const { removeTags } = useTags();
 
@@ -53,7 +56,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
     const onSubmit = async (data: NoteTextUpdateFormData): Promise<void> => {
         if (token) {
             setIsPending(true);
-            return await updateNoteText(token.access_token, note.id, data)
+            await updateNoteText(token.access_token, note.id, data)
                 .then(() => {
                     setIsSubmiting(false);
                     setIsEditing(false);
@@ -63,6 +66,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                     setNoteToFirst(note.id);
                     setIsPending(false);
                 })
+            return await qc.invalidateQueries({ queryKey: ['note', token.access_token, note.id] });
         }
     }
 
@@ -70,13 +74,20 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         e.stopPropagation();
         if (token) {
             setIsPending(true);
-            return await deleteNote(token.access_token, note.id)
+            await deleteNote(token.access_token, note.id)
                 .then(() => {
                     setIsPending(false);
                     removeTags(note.tags);
                     removeNote(note.id);
-                    router.push(`/${currentUser}/notes`);
                 })
+            await Promise.all([
+                qc.invalidateQueries({ queryKey: ['userNotes', token.access_token] }),
+                qc.invalidateQueries({ queryKey: ['userTags', token.access_token] }),
+                qc.invalidateQueries({ queryKey: ['searchNotes'] }),
+                qc.invalidateQueries({ queryKey: ['searchTags'] }),
+                qc.invalidateQueries({ queryKey: ['note', token.access_token, note.id] })
+            ])
+            return router.push(`/${currentUser}/notes`);
         }
     }
 
