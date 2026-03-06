@@ -22,8 +22,8 @@ export const Header = () => {
     const { data: userData, isLoading: isUserLoading } = useGetUser(params.username, isMounted && !shouldSkipHeader && !shouldSkipFetch);
     const { data: historyData } = useGetUserDisplayNameHistory(params.username, isMounted && !shouldSkipHeader && !shouldSkipFetch);
 
-    const user = currentUser ? currentUser : userData && userData.type === 'ok' ? userData.data : null;
-    const history = currentHistory ? currentHistory : historyData && historyData.type === 'ok' ? historyData.data : null;
+    const user = shouldSkipFetch ? currentUser : userData && userData.type === 'ok' ? userData.data : null;
+    const history = shouldSkipFetch ? currentHistory : historyData && historyData.type === 'ok' ? historyData.data : null;
 
     if (shouldSkipHeader) return null;
 

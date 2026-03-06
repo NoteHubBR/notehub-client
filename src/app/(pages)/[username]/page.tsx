@@ -20,7 +20,7 @@ const Page = () => {
 
     const { data: userData, isLoading } = useGetUser(params.username, isMounted && !shouldSkipHeader && !shouldSkipFetch);
 
-    const user = currentUser ? currentUser : userData && userData.type === 'ok' ? userData.data : null;
+    const user = shouldSkipFetch ? currentUser : userData && userData.type === 'ok' ? userData.data : null;
 
     if (isLoading) return <Overview.Skeleton />;
 

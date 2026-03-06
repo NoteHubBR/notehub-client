@@ -1,6 +1,7 @@
 import { DeleteUserFormData, deleteUserFormSchema, handleFieldErrors } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
 import { useServices, useUser } from "@/data/hooks";
 import { useState } from "react";
@@ -9,6 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export const Form = () => {
 
     const { userService: { deleteUser } } = useServices();
+    const qc = useQueryClient();
+
     const { token, user, clearUser } = useUser();
 
     const deleteUserForm = useForm<DeleteUserFormData>({
@@ -21,10 +24,14 @@ export const Form = () => {
     const router = useRouter();
 
     const onSubmit = async (data: DeleteUserFormData): Promise<void> => {
-        if (token)
+        if (token && user)
             try {
                 setIsPending(true);
                 await deleteUser(token.access_token, data);
+                await Promise.all([
+                    qc.invalidateQueries({ queryKey: ['user', user.username] }),
+                    qc.invalidateQueries({ queryKey: ['searchUsers'] }),
+                ])
                 clearUser({ skipLogout: true });
                 return router.push("/");
             } catch (errors: any) {

@@ -5,6 +5,7 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { forwardRef, useState, useTransition } from "react";
 import { IconX } from "@tabler/icons-react";
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
 import { useServices, useUser } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +18,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortalClose, ...rest }, ref) => {
 
     const { userService: { updateUser } } = useServices();
+    const qc = useQueryClient();
 
     const { token, user, updateUser: editUser } = useUser();
 
@@ -26,20 +28,17 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
 
     const { handleSubmit, setError } = editUserForm;
 
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isPending, startTransition] = useTransition();
 
     const router = useRouter();
 
     const onSubmit = async (data: EditUserFormData) => {
-
         if (!token || !user) return;
-
         startTransition(async () => {
-
             const newData = { ...data };
             const shouldUpdateAvatar = !user.blocked && user.avatar !== data.avatar;
             const shouldUpdateBanner = !user.blocked && user.banner !== data.banner;
-
             try {
 
                 const [avatarPromise, bannerPromise] = [
@@ -66,6 +65,14 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
                     shouldUpdateBanner && deleteImage(user.banner)
                 ])
 
+                await Promise.all([
+                    qc.invalidateQueries({ queryKey: ['user', user.username] }),
+                    qc.invalidateQueries({ queryKey: ['history', user.username] }),
+                    qc.invalidateQueries({ queryKey: ['following', token, user.username] }),
+                    qc.invalidateQueries({ queryKey: ['followers', token, user.username] }),
+                    qc.invalidateQueries({ queryKey: ['searchUsers'] }),
+                ])
+
                 editUser(updated);
                 onPortalClose?.();
                 return router.push(`/${data.username}`);
@@ -77,12 +84,8 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
                 ])
                 if (Array.isArray(errors)) handleFieldErrors(errors, setError);
             }
-
         })
-
     }
-
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     if (user) return (
         <FormProvider {...editUserForm}>
