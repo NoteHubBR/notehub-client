@@ -3,6 +3,7 @@ import { Comment, CreateCommentFormData, createCommentFormSchema, handleFieldErr
 import { Component } from "@/components";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
+import { useQueryClient } from '@tanstack/react-query';
 import { useRef, useState, useTransition } from "react";
 import { useServices } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +19,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 export const Form = ({ token, user, note, setComments, setNote, ...rest }: FormProps) => {
 
     const { commentService: { createComment } } = useServices();
+    const qc = useQueryClient();
 
     const createCommentForm = useForm<CreateCommentFormData>({
         resolver: zodResolver(createCommentFormSchema)
@@ -42,6 +44,7 @@ export const Form = ({ token, user, note, setComments, setNote, ...rest }: FormP
     const onSubmit = (data: CreateCommentFormData) => startTransition(async (): Promise<void> => {
         try {
             const comment = await createComment(token.access_token, note.id, data);
+            await qc.invalidateQueries({ queryKey: ['comments', token.access_token, note.id], refetchType: 'none' });
             if (textareaRef.current) textareaRef.current.style.height = "auto";
             setIsTyping(false);
             setComment("");

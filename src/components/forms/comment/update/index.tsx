@@ -4,7 +4,8 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconEdit, IconX } from "@tabler/icons-react";
 import { Menu, MenuButton, MenuItem } from "@/components/menu";
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
+import { useQueryClient } from '@tanstack/react-query';
 import { useServices } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -40,6 +41,7 @@ export const Form = ({
         commentService: { editComment, deleteComment },
         replyServiceQueries: { useGetReplies }
     } = useServices();
+    const qc = useQueryClient();
 
     const editCommentForm = useForm<CreateCommentFormData>({
         resolver: zodResolver(createCommentFormSchema)
@@ -58,6 +60,12 @@ export const Form = ({
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const [isPending, startTransition] = useTransition();
+
+    useEffect(() => {
+        setInitialText(comment.text);
+        setCurrent(comment.text);
+        setModified(comment.modified);
+    }, [comment.text, comment.modified])
 
     const toggleMenu = () => setIsMenuOpen(prev => !prev);
 
@@ -116,6 +124,7 @@ export const Form = ({
         try {
             if (token) {
                 await editComment(token.access_token, comment.id, data);
+                await qc.invalidateQueries({ queryKey: ['comments', token.access_token, note.id], refetchType: 'none' });
                 setInitialText(data.text);
                 setCurrent(data.text);
                 setReadOnly(true);
@@ -131,6 +140,7 @@ export const Form = ({
     const handleDeleteComment = () => startTransition(async () => {
         if (token) {
             await deleteComment(token.access_token, comment.id);
+            await qc.invalidateQueries({ queryKey: ['comments', token.access_token, note.id], refetchType: 'none' });
             setComments(prev => prev.filter((c) => c.id != comment.id));
             setNote((prev) => {
                 if (prev) return { ...prev, comments_count: prev.comments_count - 1 };
