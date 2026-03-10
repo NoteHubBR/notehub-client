@@ -3,6 +3,7 @@ import { IconFlame } from '@tabler/icons-react';
 import { LowDetailNote } from '@/core';
 import { useCallback, useState } from 'react';
 import { useFlames, useServices, useUser } from '@/data/hooks';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface FlameProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     size?: number;
@@ -13,6 +14,7 @@ interface FlameProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 export const Flame = ({ size = 24, note, useCount, ...rest }: FlameProps) => {
 
     const { flameService: { inflameNote, deflameNote } } = useServices();
+    const qc = useQueryClient();
 
     const { token, user } = useUser();
     const { flames, setNewFlame, removeFlame } = useFlames();
@@ -26,24 +28,26 @@ export const Flame = ({ size = 24, note, useCount, ...rest }: FlameProps) => {
     const [reqDeflame, setReqDeflame] = useState<boolean>(false);
 
     const inflame = useCallback(async () => {
-        if (!token) return;
+        if (!token || !user) return;
         setRequesting(true);
         setReqInflame(true);
         try {
             setNewFlame(await inflameNote(token.access_token, note.id));
+            await qc.invalidateQueries({ queryKey: ['flames', token.access_token, user.username], refetchType: 'none' });
         } finally {
             setRequesting(false);
             setReqInflame(false);
             setCount((prev) => (prev + 1));
         }
-    }, [inflameNote, note.id, setNewFlame, token])
+    }, [inflameNote, note.id, qc, setNewFlame, token, user])
 
     const deflame = useCallback(async () => {
-        if (!token) return;
+        if (!token || !user) return;
         setRequesting(true);
         setReqDeflame(true);
         try {
             await deflameNote(token.access_token, note.id);
+            await qc.invalidateQueries({ queryKey: ['flames', token.access_token, user.username], refetchType: 'none' });
             removeFlame(note);
         } finally {
             setHovering(false);
@@ -51,7 +55,7 @@ export const Flame = ({ size = 24, note, useCount, ...rest }: FlameProps) => {
             setReqDeflame(false);
             setCount((prev) => (prev - 1));
         }
-    }, [deflameNote, note, removeFlame, token])
+    }, [deflameNote, note, qc, removeFlame, token, user])
 
     const Button = ({ className, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
         <button
