@@ -1,8 +1,9 @@
 import { clsx } from "clsx";
-import { Comment, createCommentFormSchema, CreateReplyFormData, handleFieldErrors, Reply, Token, User } from "@/core";
+import { Comment, createCommentFormSchema, CreateReplyFormData, handleFieldErrors, Page, Reply, Token, User } from "@/core";
 import { Component } from "@/components";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
+import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState, useTransition } from "react";
 import { useServices } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,9 +20,12 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     setIsReplying: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+type RepliesCache = InfiniteData<Page<Reply>>;
+
 export const Form = ({ useSelfReference, token, user, comment, isReplying, selfReferenceReply, setReplies, setRepliesCount, setIsReplying, ...rest }: FormProps) => {
 
     const { replyService: { createReply, createSelfReferenceReply } } = useServices();
+    const qc = useQueryClient();
 
     const createReplyForm = useForm<CreateReplyFormData>({
         resolver: zodResolver(createCommentFormSchema)
@@ -55,6 +59,19 @@ export const Form = ({ useSelfReference, token, user, comment, isReplying, selfR
             setReplies(prev => [...prev, reply]);
             setRepliesCount(prev => prev + 1);
             setIsReplying(false);
+            qc.setQueryData<RepliesCache>(
+                ['replies', token.access_token, comment.id],
+                (oldData) => {
+                    if (oldData) return {
+                        ...oldData,
+                        pages: oldData.pages.map((page, index: number) => {
+                            if (index === 0) return { ...page, content: [...page.content, reply] };
+                            return page;
+                        })
+                    }
+                    return oldData;
+                }
+            )
         } catch (errors) {
             if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
         }

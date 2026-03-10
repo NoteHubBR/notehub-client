@@ -23,6 +23,7 @@ export const ReplyItem = ({ token, user, note, comment, reply, setReplies, setRe
                 token={token}
                 user={user}
                 note={note}
+                comment={comment}
                 reply={reply}
                 setReplies={setReplies}
                 setRepliesCount={setRepliesCount}
