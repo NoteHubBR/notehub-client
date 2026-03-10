@@ -36,7 +36,7 @@ export const ReplyService = () => {
         }
     }
 
-    const editReply = async (token: string, id: UUID, data: CreateReplyFormData): Promise<Reply> => {
+    const editReply = async (token: string, id: UUID, data: CreateReplyFormData): Promise<void> => {
         const endpoint = `/notes/comments/replies/${id}/edit`;
         try {
             return await httpPatch(endpoint, data, { useToken: token });
@@ -45,7 +45,7 @@ export const ReplyService = () => {
         }
     }
 
-    const deleteReply = async (token: string, id: UUID) => {
+    const deleteReply = async (token: string, id: UUID): Promise<void> => {
         const endpoint = `/notes/comments/replies/${id}/delete`;
         try {
             return await httpDelete(endpoint, undefined, { useToken: token });

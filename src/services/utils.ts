@@ -1,4 +1,5 @@
 import { keepPreviousData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { Page } from '@/core';
 import FieldError from '@/core/utils/FieldError';
 
 type QueryInput<T> = {
@@ -7,8 +8,7 @@ type QueryInput<T> = {
     enabled?: boolean;
 }
 
-type PagedResponse = { last: boolean };
-type InfiniteQueryInput<T extends PagedResponse> = {
+type InfiniteQueryInput<T extends Page<unknown>> = {
     keys: unknown[];
     function: (pageParam: number) => Promise<T>;
     enabled?: boolean;
@@ -63,7 +63,7 @@ const useGuardedQuery = <T>({ keys, function: fn, enabled = true }: QueryInput<T
     })
 }
 
-const useInfinitePagedQuery = <T extends PagedResponse>({ keys, function: fn, enabled = true }: InfiniteQueryInput<T>) => {
+const useInfinitePagedQuery = <T extends Page<unknown>>({ keys, function: fn, enabled = true }: InfiniteQueryInput<T>) => {
     return useInfiniteQuery({
         queryKey: keys,
         queryFn: ({ pageParam }: { pageParam: number }) => fn(pageParam),
@@ -73,7 +73,7 @@ const useInfinitePagedQuery = <T extends PagedResponse>({ keys, function: fn, en
         staleTime: STALE_TIME,
         refetchOnWindowFocus: false,
         retry: 3
-    });
+    })
 }
 
 export {

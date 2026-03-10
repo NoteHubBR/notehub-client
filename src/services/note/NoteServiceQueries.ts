@@ -1,3 +1,4 @@
+import { LowDetailNote, Page } from '@/core';
 import { NoteService } from './NoteService';
 import { useGuardedQuery, useInfinitePagedQuery, usePublicQuery } from '../utils';
 import { UUID } from 'crypto';
@@ -7,7 +8,7 @@ export const NoteServiceQueries = () => {
     const service = NoteService();
 
     const useGetFeed = (token: string, enabled: boolean = true) => {
-        return useInfinitePagedQuery({
+        return useInfinitePagedQuery<Page<LowDetailNote>>({
             keys: ['feed', token],
             function: (page) => service.getFeedNotes(token, `page=${page}`),
             enabled: enabled
