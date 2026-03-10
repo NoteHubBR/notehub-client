@@ -5,6 +5,7 @@ import { IconUserCheck, IconUserMinus, IconUserPlus } from "@tabler/icons-react"
 import { LowDetailUser } from "@/core";
 import { useCallback, useState } from "react";
 import { useFollowing, useServices, useUser } from "@/data/hooks";
+import { useQueryClient } from '@tanstack/react-query';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     user: LowDetailUser;
@@ -15,6 +16,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 export const Follow = ({ user, useIcon, useText, className, ...rest }: ButtonProps) => {
 
     const { userService: { followUser, unfollowUser } } = useServices();
+    const qc = useQueryClient();
 
     const { token, user: current } = useUser();
     const { users, setNewFollowing, removeFollowing } = useFollowing();
@@ -27,31 +29,39 @@ export const Follow = ({ user, useIcon, useText, className, ...rest }: ButtonPro
     const [reqUnfollow, setReqUnfollow] = useState<boolean>(false);
 
     const follow = useCallback(async () => {
-        if (!token) return;
+        if (!token || !current) return;
         setRequesting(true);
         setReqFollow(true);
         try {
             await followUser(token.access_token, user.username);
+            await Promise.all([
+                qc.invalidateQueries({ queryKey: ['feed', token.access_token], refetchType: 'none' }),
+                qc.invalidateQueries({ queryKey: ['following', token.access_token, current.username], refetchType: 'none' })
+            ])
             setNewFollowing(user);
         } finally {
             setRequesting(false);
             setReqFollow(false);
         }
-    }, [followUser, setNewFollowing, token, user])
+    }, [current, followUser, qc, setNewFollowing, token, user])
 
     const unfollow = useCallback(async () => {
-        if (!token) return;
+        if (!token || !current) return;
         setRequesting(true);
         setReqUnfollow(true);
         try {
             await unfollowUser(token.access_token, user.username);
+            await Promise.all([
+                qc.invalidateQueries({ queryKey: ['feed', token.access_token], refetchType: 'none' }),
+                qc.invalidateQueries({ queryKey: ['following', token.access_token, current.username], refetchType: 'none' })
+            ])
             removeFollowing(user);
         } finally {
             setHovering(false);
             setRequesting(false);
             setReqUnfollow(false);
         }
-    }, [removeFollowing, token, unfollowUser, user])
+    }, [current, qc, removeFollowing, token, unfollowUser, user])
 
     const HTMLButton = ({ className, ...rest }: { className?: string } & React.HTMLAttributes<HTMLButtonElement>) => (
         <button
