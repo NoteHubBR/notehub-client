@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useCallback, useEffect, useState } from "react";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Token, User, Cookies, shouldUseUserContext } from "@/core";
 import { useFlames, useFollowing, useHistory, useLoading, useNotes, useServices, useStore, useSubscriptions, useTags } from "../hooks";
 import { usePathname } from "next/navigation";
@@ -38,6 +39,7 @@ export const UserProvider = (props: any) => {
 
     const { setIsLoaded } = useLoading();
 
+    const [queryClient] = useState(() => new QueryClient());
     const [state, setState] = useState({
         isMounted: false,
         token: null as Token | null,
@@ -154,7 +156,9 @@ export const UserProvider = (props: any) => {
             setUser,
             clearUser,
         }}>
-            {props.children}
+            <QueryClientProvider client={queryClient}>
+                {props.children}
+            </QueryClientProvider>
         </UserContext.Provider>
     )
 

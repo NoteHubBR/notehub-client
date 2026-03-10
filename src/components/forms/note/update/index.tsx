@@ -3,6 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { forwardRef, useState } from "react";
 import { handleFieldErrors, Note, NoteUpdateFormData, noteUpdateFormSchema, Token } from "@/core";
 import { useNotes, useServices, useTags } from "@/data/hooks";
+import { useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -16,6 +17,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, closeRef, token, note, setNote, ...rest }, ref) => {
 
     const { noteService: { updateNote } } = useServices();
+    const qc = useQueryClient();
 
     const { updateNote: updateNoteContext } = useNotes();
     const { setNewTags } = useTags();
@@ -33,6 +35,13 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
             try {
                 setIsPending(true);
                 await updateNote(token.access_token, note.id, data);
+                await Promise.all([
+                    qc.invalidateQueries({ queryKey: ['userNotes', token.access_token] }),
+                    qc.invalidateQueries({ queryKey: ['userTags', token.access_token] }),
+                    qc.invalidateQueries({ queryKey: ['searchNotes'] }),
+                    qc.invalidateQueries({ queryKey: ['searchTags'] }),
+                    qc.invalidateQueries({ queryKey: ['note', token.access_token, note.id] })
+                ])
                 updateNoteContext(note.id, data);
                 setNewTags(data.tags);
                 setNote(prev => {

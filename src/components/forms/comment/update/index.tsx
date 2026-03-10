@@ -1,10 +1,11 @@
 import { clsx } from "clsx";
-import { Comment, CreateCommentFormData, createCommentFormSchema, handleFieldErrors, Note, Page, Reply, Token, User } from "@/core";
+import { Comment, CreateCommentFormData, createCommentFormSchema, handleFieldErrors, Note, Reply, Token, User } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconEdit, IconX } from "@tabler/icons-react";
 import { Menu, MenuButton, MenuItem } from "@/components/menu";
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
+import { useQueryClient } from '@tanstack/react-query';
 import { useServices } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -17,7 +18,6 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     isRepliesListOpen: boolean;
     setNote: React.Dispatch<React.SetStateAction<Note | null>>;
     setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
-    setRepliesPage: React.Dispatch<React.SetStateAction<Omit<Page<Reply>, 'content'>>>;
     setReplies: React.Dispatch<React.SetStateAction<Reply[]>>;
     setIsRepliesListOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setIsReplying: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,13 +32,16 @@ export const Form = ({
     isRepliesListOpen,
     setNote,
     setComments,
-    setRepliesPage,
     setReplies,
     setIsReplying,
     setIsRepliesListOpen,
     ...rest }: FormProps) => {
 
-    const { commentService: { editComment, deleteComment }, replyService: { getReplies } } = useServices();
+    const {
+        commentService: { editComment, deleteComment },
+        replyServiceQueries: { useGetReplies }
+    } = useServices();
+    const qc = useQueryClient();
 
     const editCommentForm = useForm<CreateCommentFormData>({
         resolver: zodResolver(createCommentFormSchema)
@@ -54,11 +57,15 @@ export const Form = ({
     const [initialText, setInitialText] = useState<string>(comment.text);
     const [current, setCurrent] = useState<string>(initialText);
     const [modified, setModified] = useState<boolean>(comment.modified);
-    const [hasFetchedRepliesList, setHasFetchedRepliesList] = useState<boolean>(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const [isPending, startTransition] = useTransition();
-    const [isRepliesFetchPending, startRepliesTransition] = useTransition();
+
+    useEffect(() => {
+        setInitialText(comment.text);
+        setCurrent(comment.text);
+        setModified(comment.modified);
+    }, [comment.text, comment.modified])
 
     const toggleMenu = () => setIsMenuOpen(prev => !prev);
 
@@ -95,19 +102,21 @@ export const Form = ({
 
     const openReplyBox = () => setIsReplying(true);
 
-    const openRepliesList = () => startRepliesTransition(async () => {
-        if (hasFetchedRepliesList) return setIsRepliesListOpen(prev => !prev);
-        try {
-            const accessToken = token ? token.access_token : null;
-            const { content, ...rest } = await getReplies(accessToken, comment.id, 'page=0');
-            setRepliesPage(rest);
-            setReplies(content);
+    const { data, fetchNextPage, isLoading } = useGetReplies(token ? token.access_token : null, comment.id, false);
+    const openRepliesList = () => {
+        if (data) {
             setIsRepliesListOpen(prev => !prev);
-            setHasFetchedRepliesList(true);
-        } catch (error) {
-            throw error;
+            setReplies(data.pages.flatMap(p => p.content));
+            return;
         }
-    })
+        fetchNextPage().then((result) => {
+            if (result.data) {
+                const replies = result.data.pages.flatMap(p => p.content);
+                setReplies(replies);
+                setIsRepliesListOpen(prev => !prev);
+            }
+        })
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setCurrent(e.target.value);
 
@@ -115,6 +124,7 @@ export const Form = ({
         try {
             if (token) {
                 await editComment(token.access_token, comment.id, data);
+                await qc.invalidateQueries({ queryKey: ['comments', token.access_token, note.id], refetchType: 'none' });
                 setInitialText(data.text);
                 setCurrent(data.text);
                 setReadOnly(true);
@@ -130,6 +140,7 @@ export const Form = ({
     const handleDeleteComment = () => startTransition(async () => {
         if (token) {
             await deleteComment(token.access_token, comment.id);
+            await qc.invalidateQueries({ queryKey: ['comments', token.access_token, note.id], refetchType: 'none' });
             setComments(prev => prev.filter((c) => c.id != comment.id));
             setNote((prev) => {
                 if (prev) return { ...prev, comments_count: prev.comments_count - 1 };
@@ -236,7 +247,7 @@ export const Form = ({
                         <Button
                             type="button"
                             disabled={repliesCount < 1}
-                            isPending={isRepliesFetchPending}
+                            isPending={isLoading}
                             onClick={openRepliesList}
                             className="flex items-center gap-1 font-medium dark:text-secondary text-primary dark:hover:secondary/20 hover:bg-primary/20"
                         >

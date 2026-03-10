@@ -1,104 +1,64 @@
 import { Empty } from "./empty";
 import { Header } from "./header";
 import { Icon } from "@/components/icons";
-import { isEmpty, LowDetailNote, Page } from "@/core";
 import { Item } from "./item";
+import { LowDetailNote } from "@/core";
 import { Skeleton } from "./skeleton";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useCallback } from "react";
 import { useServices, useUser } from "@/data/hooks";
 
 export const Feed = () => {
 
-    const { noteService: { getFeedNotes } } = useServices();
-
+    const { noteServiceQueries: { useGetFeed } } = useServices();
     const { isMounted, token } = useUser();
 
-    const [state, setState] = useState({
-        onFetch: false,
-        hasFetched: false,
-        page: {} as Omit<Page<LowDetailNote>, 'content'>,
-        notes: [] as LowDetailNote[],
-        emptyFeed: false
-    })
+    const accessToken = token ? token.access_token : 'token';
 
-    const { onFetch, hasFetched, page, notes, emptyFeed } = state;
+    const {
+        data: data,
+        isLoading,
+        isFetchingNextPage,
+        hasNextPage,
+        fetchNextPage,
+    } = useGetFeed(accessToken, isMounted)
 
-    const isFetching = useRef<boolean>(false);
-
-    const startFetch = useCallback(() => {
-        isFetching.current = true;
-        return setState((prev) => ({ ...prev, onFetch: true }));
-    }, [])
-
-    const endFetch = useCallback(() => {
-        isFetching.current = false;
-        return setState((prev) => ({ ...prev, onFetch: false, hasFetched: true }));
-    }, [])
-
-    const init = useCallback(async () => {
-        if (isFetching.current || hasFetched || !token) return;
-        try {
-            startFetch();
-            const { content, ...rest } = await getFeedNotes(token.access_token, 'page=0');
-            return setState((prev) => ({
-                ...prev,
-                page: rest,
-                notes: content,
-                emptyFeed: content.length === 0
-            }))
-        } catch (error) {
-            throw error;
-        } finally {
-            endFetch();
-        }
-    }, [endFetch, getFeedNotes, hasFetched, startFetch, token])
-
-    const handleScroll = useCallback(async () => {
-        if (!token || page.last || isFetching.current) return;
+    const handleScroll = useCallback(() => {
+        if (!hasNextPage || isFetchingNextPage) return;
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
         const docHeight = document.documentElement.scrollHeight;
-        if (scrollY + windowHeight >= docHeight - 1) {
-            try {
-                startFetch()
-                const { content, ...rest } = await getFeedNotes(token.access_token, `page=${page.page + 1}`);
-                return setState((prev) => ({
-                    ...prev,
-                    page: rest,
-                    notes: [...prev.notes, ...content]
-                }))
-            } finally {
-                endFetch();
-            }
-        }
-    }, [endFetch, getFeedNotes, page.last, page.page, startFetch, token]);
+        if (scrollY + windowHeight >= docHeight - 1) fetchNextPage();
+    }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
     useEffect(() => {
-        if (isMounted) init();
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
-    }, [handleScroll, init, isMounted])
+    }, [handleScroll])
 
-    if (isEmpty(page)) return <Skeleton />;
+    if (isLoading) return <Skeleton />;
 
-    if (emptyFeed) return <Empty />;
+    if (data) {
+        const notes: LowDetailNote[] = data.pages.flatMap(p => p.content) ?? [];
+        if (notes.length === 0) return <Empty />;
+        return (
+            <section
+                className="max-w-[777px] inlg:max-w-full w-full my-3 p-3 rounded-[5px]
+                dark:bg-darker bg-lighter
+                dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
+            >
+                <Header />
+                <ul className="flex flex-col gap-4">
+                    {notes.map((note) => (
+                        <li key={note.id}>
+                            <Item note={note} />
+                        </li>
+                    ))}
+                </ul>
+                <Icon.Loading hidden={!isFetchingNextPage} size={50} className="py-6" />
+            </section>
+        )
+    }
 
-    return (
-        <section
-            className="max-w-[777px] inlg:max-w-full w-full my-3 p-3 rounded-[5px]
-            dark:bg-darker bg-lighter
-            dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
-        >
-            <Header />
-            <ul className="flex flex-col gap-4">
-                {notes.map((note) => (
-                    <li key={note.id}>
-                        <Item note={note} />
-                    </li>
-                ))}
-            </ul>
-            <Icon.Loading hidden={!onFetch} size={50} className="py-6" />
-        </section>
-    )
+    return null;
 
 }

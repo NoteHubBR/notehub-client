@@ -1,16 +1,14 @@
 'use client';
 
 import { Desktop } from "./desktop";
-import { LowDetailUser, User } from "@/core";
 import { Mobile } from "./mobile";
 import { Template } from "@/components/templates";
-import { useEffect, useRef, useState } from "react";
 import { useHistory, useScreen, useServices, useUser } from "@/data/hooks";
 import { useParams } from "next/navigation";
 
 export const Header = () => {
 
-    const { userService: { getUser, getUserDisplayNameHistory } } = useServices();
+    const { userServiceQueries: { useGetUser, useGetUserDisplayNameHistory } } = useServices();
 
     const params = useParams<{ username: string }>();
 
@@ -18,48 +16,28 @@ export const Header = () => {
     const { isMounted, user: currentUser } = useUser();
     const { history: currentHistory } = useHistory();
 
-    const [state, setState] = useState({
-        notFound: false,
-        user: null as User | null as LowDetailUser,
-        history: [] as string[]
-    })
-
-    const { notFound, user, history } = state;
-
     const shouldSkipHeader: boolean = params.username === "user";
+    const shouldSkipFetch: boolean = currentUser ? currentUser.username === params.username : false;
 
-    const isFetching = useRef<boolean>(false);
+    const { data: userData, isLoading: isUserLoading } = useGetUser(params.username, isMounted && !shouldSkipHeader && !shouldSkipFetch);
+    const { data: historyData } = useGetUserDisplayNameHistory(params.username, isMounted && !shouldSkipHeader && !shouldSkipFetch);
 
-    useEffect(() => {
-        const init = async () => {
-            if (shouldSkipHeader || isFetching.current) return;
-            if (currentUser && params.username === currentUser.username) {
-                return setState((prev) => ({ ...prev, user: currentUser, history: currentHistory }));
-            }
-            isFetching.current = true;
-            try {
-                const user = await getUser(params.username);
-                const history = await getUserDisplayNameHistory(params.username);
-                return setState((prev) => ({ ...prev, user: user, history: history }));
-            } catch {
-                return setState((prev) => ({ ...prev, notFound: true }));
-            } finally {
-                return isFetching.current = false;
-            }
-        }
-        if (isMounted) init();
-    }, [currentHistory, currentUser, getUser, getUserDisplayNameHistory, isMounted, params.username, shouldSkipHeader])
+    const user = shouldSkipFetch ? currentUser : userData && userData.type === 'ok' ? userData.data : null;
+    const history = shouldSkipFetch ? currentHistory : historyData && historyData.type === 'ok' ? historyData.data : null;
 
     if (shouldSkipHeader) return null;
 
-    if (notFound) return <Template.Forbidden />;
+    if (onDesktop && isUserLoading) return <Desktop.HeaderSkeleton />;
 
-    if (onDesktop && !user) return <Desktop.HeaderSkeleton />;
+    if (onMobile && isUserLoading) return <Mobile.HeaderSkeleton />;
 
-    if (onMobile && !user) return <Mobile.HeaderSkeleton />;
+    if (userData && userData.type === 'notfound') return <Template.Forbidden />
 
-    if (onDesktop && user) return <Desktop.Header user={user} history={history} />;
+    if (user && history) {
+        if (onDesktop) return <Desktop.Header user={user} history={history} />;
+        if (onMobile) return <Mobile.Header user={user} />;
+    }
 
-    if (onMobile && user) return <Mobile.Header user={user} />;
+    return null;
 
 }

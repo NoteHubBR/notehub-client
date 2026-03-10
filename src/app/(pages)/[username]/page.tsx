@@ -1,46 +1,32 @@
 'use client';
 
 import { IconAt, IconBalloon, IconBubbleText, IconUsers, IconUsersGroup } from "@tabler/icons-react";
-import { LowDetailUser, toSpecificTime, User } from "@/core";
 import { Overview } from "./overview";
 import { Section } from "./components/Section";
-import { useEffect, useRef, useState } from "react";
+import { toSpecificTime } from "@/core";
 import { useParams } from "next/navigation";
 import { useServices, useUser } from "@/data/hooks";
 
 const Page = () => {
 
-    const { userService: { getUser } } = useServices();
-
-    const { isMounted, user: current } = useUser();
+    const { userServiceQueries: { useGetUser } } = useServices();
 
     const params = useParams<{ username: string }>();
 
-    const [notFound, setNotFound] = useState<boolean>(false);
-    const [user, setUser] = useState<User | LowDetailUser | null>(null);
+    const { isMounted, user: currentUser } = useUser();
 
-    const isFetching = useRef<boolean>(false);
-    useEffect(() => {
-        const init = async () => {
-            if (isFetching.current) return;
-            if (current && params.username === current.username) return setUser(current);
-            isFetching.current = true;
-            try {
-                return setUser(await getUser(params.username));
-            } catch {
-                return setNotFound(true);
-            } finally {
-                return isFetching.current = false;
-            }
-        }
-        if (isMounted) init();
-    }, [current, getUser, isMounted, params.username])
+    const shouldSkipHeader: boolean = params.username === "user";
+    const shouldSkipFetch: boolean = currentUser ? currentUser.username === params.username : false;
 
-    if (notFound) return null;
+    const { data: userData, isLoading } = useGetUser(params.username, isMounted && !shouldSkipHeader && !shouldSkipFetch);
 
-    if (!user) return <Overview.Skeleton />;
+    const user = shouldSkipFetch ? currentUser : userData && userData.type === 'ok' ? userData.data : null;
 
-    return (
+    if (isLoading) return <Overview.Skeleton />;
+
+    if (userData && userData.type === 'notfound') return null;
+
+    if (user) return (
         <Section>
             <header className="py-5 px-8 border-b dark:border-neutral-700/50 border-dark/10">
                 <h2 className="font-semibold text-xl inmd:text-center">Visão Geral</h2>
@@ -86,6 +72,8 @@ const Page = () => {
             </ul>
         </Section>
     )
+
+    return null;
 
 }
 

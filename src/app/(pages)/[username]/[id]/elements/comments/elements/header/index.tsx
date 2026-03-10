@@ -7,11 +7,10 @@ import { useState } from "react";
 interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
     sort: "repliesCount,desc" | "createdAt,desc";
     note: Note;
-    setHasFetched: React.Dispatch<React.SetStateAction<boolean>>;
     setSort: React.Dispatch<React.SetStateAction<"repliesCount,desc" | "createdAt,desc">>;
 }
 
-export const Header = ({ sort, note, setSort, setHasFetched, ...rest }: HeaderProps) => {
+export const Header = ({ sort, note, setSort, ...rest }: HeaderProps) => {
 
     const { Title, Sorter } = Element;
 
@@ -26,7 +25,6 @@ export const Header = ({ sort, note, setSort, setHasFetched, ...rest }: HeaderPr
         if (sort === "repliesCount,desc") return;
         setSort("repliesCount,desc");
         setIsMenuOpen(false);
-        setHasFetched(false);
     }
 
     const sortByCreatedAt = (e: React.MouseEvent<HTMLLIElement>) => {
@@ -34,7 +32,6 @@ export const Header = ({ sort, note, setSort, setHasFetched, ...rest }: HeaderPr
         if (sort === "createdAt,desc") return;
         setSort("createdAt,desc");
         setIsMenuOpen(false);
-        setHasFetched(false);
     }
 
     return (

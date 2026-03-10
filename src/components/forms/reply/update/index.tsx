@@ -1,8 +1,9 @@
 import { clsx } from "clsx";
-import { CreateReplyFormData, createReplyFormSchema, handleFieldErrors, Note, Reply, Token, User } from "@/core";
+import { Comment, CreateReplyFormData, createReplyFormSchema, handleFieldErrors, Note, Page, Reply, Token, User } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconEdit, IconX } from "@tabler/icons-react";
+import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import { Menu, MenuButton, MenuItem } from "@/components/menu";
 import { useRef, useState, useTransition } from "react";
 import { useServices } from "@/data/hooks";
@@ -12,15 +13,19 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     token: Token | null;
     user: User | null;
     note: Note;
+    comment: Comment;
     reply: Reply;
     setReplies: React.Dispatch<React.SetStateAction<Reply[]>>;
     setRepliesCount: React.Dispatch<React.SetStateAction<number>>;
     setIsReplying: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, setIsReplying, ...rest }: FormProps) => {
+type RepliesCache = InfiniteData<Page<Reply>>;
+
+export const Form = ({ token, user, note, comment, reply, setReplies, setRepliesCount, setIsReplying, ...rest }: FormProps) => {
 
     const { replyService: { editReply, deleteReply } } = useServices();
+    const qc = useQueryClient();
 
     const editReplyForm = useForm<CreateReplyFormData>({
         resolver: zodResolver(createReplyFormSchema)
@@ -87,6 +92,21 @@ export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, se
                 setIsTyping(false);
                 setModified(true);
                 setIsExpanded(true);
+                qc.setQueryData<RepliesCache>(
+                    ['replies', token.access_token, comment.id],
+                    (oldData) => {
+                        if (oldData) return {
+                            ...oldData,
+                            pages: oldData.pages.map((page) => ({
+                                ...page,
+                                content: page.content.map((item) =>
+                                    item.id === reply.id ? { ...item, text: data.text, modified: true } : item
+                                )
+                            }))
+                        }
+                        return oldData;
+                    }
+                )
             }
         } catch (errors) {
             if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
@@ -98,6 +118,19 @@ export const Form = ({ token, user, note, reply, setReplies, setRepliesCount, se
             await deleteReply(token.access_token, reply.id);
             setReplies(prev => prev.filter((r) => r.id != reply.id));
             setRepliesCount(prev => prev - 1);
+            qc.setQueryData<RepliesCache>(
+                ['replies', token.access_token, comment.id],
+                (oldData) => {
+                    if (oldData) return {
+                        ...oldData,
+                        pages: oldData.pages.map((page) => ({
+                            ...page,
+                            content: page.content.filter((item) => item.id !== reply.id)
+                        }))
+                    }
+                    return oldData;
+                }
+            )
         }
     })
 
