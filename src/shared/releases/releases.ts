@@ -10,6 +10,7 @@ export interface ReleaseEntry {
 export interface Release {
     version: string;
     date: string;
+    scope: 'server' | 'client' | 'server & client';
     title: string;
     summary: string;
     entries: ReleaseEntry[];
@@ -17,8 +18,63 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        version: 'v2.1',
+        date: '10/3/26 4:04',
+        scope: 'client',
+        title: 'Março 10, 2026',
+        summary: 'Cache para consultas',
+        entries: [
+            {
+                type: 'perf',
+                pr: 16,
+                hash: 'b6a8efa5ff0b052413fea843f37faa57284913bf',
+                desc: 'Cache de dados do usuário após a primeira consulta.'
+            },
+            {
+                type: 'perf',
+                pr: 16,
+                hash: '53cca526a9f5f63dc728bbc69bfbce3b641add51',
+                desc: 'Cache de notas após a primeira consulta.'
+            },
+            {
+                type: 'perf',
+                pr: 16,
+                hash: 'b47a0c26f384fb1b19185d3d25704c9762728c82',
+                desc: 'Cache de comentários de notas após a primeira consulta.'
+            },
+            {
+                type: 'perf',
+                pr: 16,
+                hash: 'e29bf174cb1972e23c1340978a9fe53b27a44ca8',
+                desc: 'Cache de respostas de comentários após a primeira consulta.'
+            },
+            {
+                type: 'perf',
+                pr: 16,
+                hash: '287030b24b5d59954316f97faf3006b48be7caa9',
+                desc: 'Cache de resultados de busca após a primeira consulta.'
+            },
+        ]
+    },
+    {
+        version: 'v2.0.4',
+        date: '27/2/26 10:49',
+        scope: 'client',
+        title: 'Fevereiro 27, 2026',
+        summary: 'Copiar e baixar notas',
+        entries: [
+            {
+                type: 'feat',
+                pr: 15,
+                hash: '6b4b681fd35e6202b15eb0a4471c7e084b7b3375',
+                desc: 'Adicionadas opções para copiar e baixar o conteúdo de uma nota.'
+            }
+        ]
+    },
+    {
         version: 'v2.0.2',
         date: '5/1/26 10:35',
+        scope: 'server',
         title: 'Janeiro 5, 2026',
         summary: 'Proteção contra DDoS',
         entries: [
@@ -33,6 +89,7 @@ export const releases: Release[] = [
     {
         version: 'v2.0.1',
         date: '17/12/25 11:24',
+        scope: 'server',
         title: '17 de Dezembro de 2025',
         summary: 'Correção de segurança e restrição de cosméticos.',
         entries: [
@@ -47,6 +104,7 @@ export const releases: Release[] = [
     {
         version: 'v2.0',
         date: '12/12/25 14:11',
+        scope: 'server',
         title: 'Dezembro 12, 2025',
         summary: 'Doação via Stripe',
         entries: [
@@ -61,6 +119,7 @@ export const releases: Release[] = [
     {
         version: 'v1.7',
         date: '8/10/25 14:45',
+        scope: 'server',
         title: 'Outubro 8, 2025',
         summary: 'Inscrições de usuários e notificações por e-mail baseadas em tópicos',
         entries: [
@@ -81,6 +140,7 @@ export const releases: Release[] = [
     {
         version: 'v1.6.1',
         date: '29/09/25 10:56',
+        scope: 'server',
         title: 'Setembro 29, 2025',
         summary: 'Suporte a nomes de usuários no estilo GitHub com hífen',
         entries: [
@@ -95,6 +155,7 @@ export const releases: Release[] = [
     {
         version: 'v1.6',
         date: '26/09/25 14:00',
+        scope: 'server',
         title: 'Setembro 26, 2025',
         summary: 'Melhorias na segurança de imagem e no suporte ao perfil.',
         entries: [
@@ -115,6 +176,7 @@ export const releases: Release[] = [
     {
         version: 'v1.5',
         date: '17/09/25 12:34',
+        scope: 'server',
         title: 'Setembro 17, 2025',
         summary: 'Melhorias para usuários vindos de aplicações externas.',
         entries: [

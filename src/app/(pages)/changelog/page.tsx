@@ -33,13 +33,13 @@ const Page = () => {
                     const grouped = groupByType(release.entries);
                     return (
                         <Release key={release.version} id={release.version}>
-                            <ReleaseTitle tag={release.version}>({release.title})</ReleaseTitle>
+                            <ReleaseTitle scope={release.scope} tag={release.version}>({release.title})</ReleaseTitle>
                             <ReleaseUList isActive={currentVersion === release.version}>
                                 {(Object.entries(grouped) as [ReleaseEntryType, Entry[]][]).map(([type, entries]) => (
                                     <ReleaseTopic key={type} type={type}>
                                         <ReleaseOList>
                                             {entries.map((entry: Entry, idx: number) => (
-                                                <ReleaseDesc key={idx} pr={entry.pr} hash={entry.hash}>
+                                                <ReleaseDesc key={idx} scope={release.scope} pr={entry.pr} hash={entry.hash}>
                                                     {entry.desc}
                                                 </ReleaseDesc>
                                             ))}
