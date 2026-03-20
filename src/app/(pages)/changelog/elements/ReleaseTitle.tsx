@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import Link from "next/link";
 
 interface ReleaseTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
@@ -17,5 +18,12 @@ export const ReleaseTitle = ({ scope, tag, children, ...rest }: ReleaseTitleProp
             {tag.replace('v', '')}
         </Link>
         <span className="ml-3">{children}</span>
+        <span className={clsx(
+            'align-middle ml-3 px-1 py-0.5 rounded',
+            'uppercase tracking-wider text-xs dark:text-lighter text-darker ',
+            'dark:bg-lighter/15 bg-darker/15'
+        )}>
+            {scope}
+        </span>
     </h2>
 )
