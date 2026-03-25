@@ -107,9 +107,9 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
             >
                 <Element.Header />
                 <Element.Field>
-                    <Element.Label htmlFor="username">Usuário</Element.Label>
-                    <Element.Input name="username" type="text" required icon={<IconAt title="@" />} />
-                    <Element.Error field="username" />
+                    <Element.Label htmlFor="identifier">Usuário ou email</Element.Label>
+                    <Element.Input name="identifier" type="text" required icon={<IconAt title="@" />} />
+                    <Element.Error field="identifier" />
                 </Element.Field>
                 <Element.Field>
                     <Element.Label htmlFor="password">Senha</Element.Label>

@@ -1,11 +1,12 @@
 import { IconEye, IconEyeClosed } from "@tabler/icons-react";
 import { InputHTMLAttributes, useState } from "react";
+import { LoginFormData } from '@/core';
 import { useFormContext } from "react-hook-form";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-    name: string;
+    name: keyof LoginFormData;
     icon?: React.ReactNode;
-};
+}
 
 const Input = ({ name, icon, type = "text", ...rest }: InputProps) => {
 
@@ -67,8 +68,8 @@ const Input = ({ name, icon, type = "text", ...rest }: InputProps) => {
                 </button>
             }
         </div>
-    );
+    )
 
-};
+}
 
 export default Input;

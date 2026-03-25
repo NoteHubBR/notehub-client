@@ -1,14 +1,16 @@
-import { LabelHTMLAttributes } from "react";
 import { IconQuestionMark } from "@tabler/icons-react";
+import { LabelHTMLAttributes } from "react";
+import { LoginFormData } from '@/core';
 
 interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+    htmlFor: keyof LoginFormData;
     tooltip?: React.ReactNode;
 }
 
-const Label = ({ tooltip, ...rest }: LabelProps) => {
+const Label = ({ htmlFor, tooltip, ...rest }: LabelProps) => {
     return (
         <div className="flex items-center gap-1 px-1 ">
-            <label className="text-md dark:text-slate-100 text-dark" {...rest} />
+            <label htmlFor={htmlFor} className="text-md dark:text-slate-100 text-dark" {...rest} />
             {tooltip &&
                 <div className="group relative">
                     <IconQuestionMark size={17} className="text-slate-100 rounded-full dark:bg-slate-300/50 bg-neutral-500" />
@@ -26,6 +28,6 @@ const Label = ({ tooltip, ...rest }: LabelProps) => {
                 </div>}
         </div>
     )
-};
+}
 
 export default Label;

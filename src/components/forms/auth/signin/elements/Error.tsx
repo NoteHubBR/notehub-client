@@ -1,8 +1,9 @@
+import { LoginFormData } from '@/core';
 import { useFormContext } from "react-hook-form";
 
 interface ErrorProps extends React.HTMLAttributes<HTMLParagraphElement> {
-    field: string;
-};
+    field: keyof LoginFormData;
+}
 
 const Error = ({ field, ...rest }: ErrorProps) => {
 
@@ -17,6 +18,7 @@ const Error = ({ field, ...rest }: ErrorProps) => {
             {error.toString()}
         </p>
     )
-};
+
+}
 
 export default Error;
