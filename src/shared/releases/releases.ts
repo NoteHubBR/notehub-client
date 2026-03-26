@@ -18,6 +18,21 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        version: 'v2.0.3',
+        date: '25/3/26 9:56',
+        scope: 'server',
+        title: 'Março 25, 2026',
+        summary: 'Login com username ou email',
+        entries: [
+            {
+                type: 'feat',
+                pr: 13,
+                hash: 'ac24db97461c65863bc75def6092c741fcb71e01',
+                desc: 'Autenticação flexível com suporte a username ou email no campo identifier.'
+            }
+        ]
+    },
+    {
         version: 'v2.1',
         date: '10/3/26 4:04',
         scope: 'client',
