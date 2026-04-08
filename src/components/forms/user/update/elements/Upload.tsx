@@ -21,7 +21,7 @@ export const Upload = forwardRef<HTMLInputElement, UploadProps>(({ user, allowGi
                 id={name}
                 ref={ref}
                 type="file"
-                accept={user.sponsor && allowGif ? "image/png, image/jpeg, image/gif" : "image/png, image/jpeg"}
+                accept={(user.dev || user.sponsor) && allowGif ? "image/png, image/jpeg, image/gif" : "image/png, image/jpeg"}
                 className="hidden"
                 onChange={handleFileChange}
                 {...rest}

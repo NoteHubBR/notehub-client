@@ -11,7 +11,7 @@ export const Sponsorship = ({ isSponsorshipInviteAllowed, skipClose, className, 
 
     const { user } = useUser();
 
-    if (user && user.sponsor) return <></>;
+    if (user && (user.dev || user.sponsor)) return <></>;
 
     if (isSponsorshipInviteAllowed) return (
         <section

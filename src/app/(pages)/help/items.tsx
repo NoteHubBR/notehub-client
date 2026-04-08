@@ -89,7 +89,7 @@ export const items: Items[] = [
         answer: (
             <>
                 <p>
-                    Usuários que doarem a partir de <strong>R$ 0,50</strong> ao projeto se tornam patrocinadores vitalícios,
+                    Usuários que colaborarem com o aplicativo ou doarem a partir de <strong>R$ 0,50</strong> ao projeto se tornam patrocinadores vitalícios,
                     com acesso a benefícios exclusivos.
                 </p>
                 <br />
