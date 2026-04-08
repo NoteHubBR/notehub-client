@@ -19,7 +19,10 @@ export const User = ({ user }: { user: LowDetailUser }) => {
             <Component.Hovercard ref={nameRef} user={user} />
             <Link ref={nameRef} href={`/${user.username}`}>
                 <h4 className="truncate w-[150px] hover:underline hover:text-secondary">
-                    <Icon.Sponsor user={user} size={24} className="mr-1" />
+                    {user.dev
+                        ? <Icon.Dev user={user} size={24} className="mr-1" />
+                        : <Icon.Sponsor user={user} size={24} className="mr-1" />
+                    }
                     {user.display_name}
                 </h4>
             </Link>

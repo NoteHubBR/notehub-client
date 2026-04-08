@@ -31,7 +31,7 @@ export const FollowingScope = () => {
                     key={user.username}
                     href={`/${user.username}`}
                     icon={<Component.Photo user={user} />}
-                    useBadge={user.sponsor}
+                    useBadge={user.dev ? 'dev' : user.sponsor ? 'sponsor' : 'none'}
                     text={user.username}
                 />
             ))}

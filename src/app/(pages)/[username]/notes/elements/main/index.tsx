@@ -22,7 +22,11 @@ export const Main = ({ notes, ...rest }: MainProps) => {
                         <header className="relative pl-14 flex flex-col gap-1">
                             <Photo user={note.user} size={44} className="absolute top-0 left-0" />
                             <PlainText className={`flex gap-1 ${!note.user && 'line-through'}`}>
-                                {note.user && <Icon.Sponsor user={note.user} size={24} />}
+                                {note.user && (
+                                    note.user.dev
+                                        ? <Icon.Dev user={note.user} size={24} />
+                                        : <Icon.Sponsor user={note.user} size={24} />
+                                )}
                                 {note.user ? note.user.display_name : 'Deletado'}
                             </PlainText>
                             <Time note={note} />

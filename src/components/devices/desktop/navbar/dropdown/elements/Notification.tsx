@@ -59,11 +59,18 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
                 <section className="flex items-center">
                     <figure className="relative px-2 border-r text-sm dark:border-r-semilight/10 border-r-semidark/10">
                         <Component.Photo user={from} size={55} />
-                        <Icon.Sponsor
-                            user={from}
-                            size={22}
-                            className="bot-mid-center drop-shadow-alpha-d-md"
-                        />
+                        {from.dev
+                            ? <Icon.Dev
+                                user={from}
+                                size={22}
+                                className="bot-mid-center drop-shadow-alpha-d-md"
+                            />
+                            : <Icon.Sponsor
+                                user={from}
+                                size={22}
+                                className="bot-mid-center drop-shadow-alpha-d-md"
+                            />
+                        }
                     </figure>
                     <section className="px-2">
                         <p className="line-clamp-6 text-sm">

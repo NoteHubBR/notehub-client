@@ -22,7 +22,11 @@ export const Message = ({ user, ...rest }: MessageProps) => {
                         href={`/${user.username}`}
                         className="font-semibold hover:underline hover:text-secondary"
                     >
-                        <Icon.Sponsor user={user} size={22} className="mr-1" />{user.display_name}
+                        {user.dev
+                            ? <Icon.Dev user={user} size={22} className="mr-1.5" />
+                            : <Icon.Sponsor user={user} size={22} className="mr-1" />
+                        }
+                        {user.display_name}
                     </Link>
                 </span>
                 <span className="font-medium dark:text-lighter/75 text-darker/75"> criou uma nota</span>

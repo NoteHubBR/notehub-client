@@ -8,7 +8,7 @@ import NextLink, { LinkProps as NextLinkProps } from "next/link";
 interface LinkProps extends NextLinkProps {
     user?: User | LowDetailUser;
     icon?: React.ReactNode;
-    useBadge?: boolean;
+    useBadge?: 'dev' | 'sponsor' | 'none';
     text?: string;
     strong?: boolean;
     reverse?: boolean;
@@ -50,7 +50,9 @@ export const Link = (props: LinkProps) => {
                     ?
                     <>
                         {icon && icon}
-                        {user && useBadge && <Icon.Sponsor user={user} size={22} useWhite={active} className="-mr-2" />}
+                        {user && useBadge === 'dev' && <Icon.Dev user={user} size={22} useWhite={active} className="-mr-2" />}
+                        {user && useBadge === 'sponsor' && <Icon.Sponsor user={user} size={22} useWhite={active} className="-mr-2" />}
+                        {user && useBadge === 'none' && null}
                         {strong
                             ?
                             <strong><Span className="text-md">{text}</Span></strong>
