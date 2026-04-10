@@ -22,7 +22,11 @@ export const Main = ({ flames, ...rest }: MainProps) => {
                         <header className="relative pl-14 flex flex-col gap-1">
                             <Photo user={flame.note.user} size={44} className="absolute top-0 left-0" />
                             <PlainText className={`flex gap-1 ${!flame.note.user && 'line-through'}`}>
-                                {flame.note.user && <Icon.Sponsor user={flame.note.user} size={24} />}
+                                {flame.note.user && (
+                                    flame.note.user.dev
+                                        ? <Icon.Dev user={flame.note.user} size={24} />
+                                        : <Icon.Sponsor user={flame.note.user} size={24} />
+                                )}
                                 {flame.note.user ? flame.note.user.display_name : 'Deletado'}
                             </PlainText>
                             <Time flame={flame} />

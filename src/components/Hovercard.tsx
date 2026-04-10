@@ -146,13 +146,22 @@ export const Hovercard = ({ ref, user }: HovercardProps) => {
                 position.leftHalf ? 'after:left-4' : 'after:right-4'
             )}
         >
-            {user.sponsor && (
+            {user.dev
+                ?
                 <div aria-hidden="true" className="badge-small-top-right">
                     <div className="select-none pointer-events-none badge-content">
-                        <Icon.Sponsor user={user} useWhite />
+                        <Icon.Dev user={user} useWhite size={21} className='overflow-clip rounded-full' />
                     </div>
                 </div>
-            )}
+                : user.sponsor
+                    ?
+                    <div aria-hidden="true" className="badge-small-top-right">
+                        <div className="select-none pointer-events-none badge-content">
+                            <Icon.Sponsor user={user} useWhite />
+                        </div>
+                    </div>
+                    : null
+            }
             <header className="px-6 pt-3 flex items-center gap-3">
                 <Link href={`/${user.username}`}>
                     <Photo size={50} user={user} />

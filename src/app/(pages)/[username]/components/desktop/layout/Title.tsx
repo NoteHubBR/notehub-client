@@ -46,7 +46,10 @@ export const Title = ({ user, history, ...rest }: TitleProps) => {
                 {...rest}
             >
 
-                <Icon.Sponsor user={user} size={25} />
+                {user.dev
+                    ? <Icon.Dev user={user} size={25} />
+                    : <Icon.Sponsor user={user} size={25} />
+                }
                 {user.display_name}
                 {history.length > 0 &&
                     <span

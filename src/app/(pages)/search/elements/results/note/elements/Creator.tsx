@@ -19,7 +19,10 @@ export const Creator = ({ note }: { note: LowDetailNote }) => {
             <Component.Hovercard ref={nameRef} user={note.user} />
             <Link ref={nameRef} href={`/${note.user.username}`}>
                 <h4 className="hover:underline hover:text-secondary">
-                    <Icon.Sponsor user={note.user} size={24} className="mr-1" />
+                    {note.user.dev
+                        ? <Icon.Dev user={note.user} size={24} className="mr-1" />
+                        : <Icon.Sponsor user={note.user} size={24} className="mr-1" />
+                    }
                     {note.user.display_name}
                 </h4>
             </Link>

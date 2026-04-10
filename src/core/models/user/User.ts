@@ -10,6 +10,7 @@ export interface User {
     message: string;
     host: string;
     profile_private: boolean;
+    dev: boolean;
     sponsor: boolean;
     blocked: boolean;
     score: number;

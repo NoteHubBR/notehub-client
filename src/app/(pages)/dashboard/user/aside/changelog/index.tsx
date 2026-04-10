@@ -20,7 +20,7 @@ export const Changelog = () => {
                 <Title>Últimas alterações</Title>
             </header>
             <ul className="p-3">
-                {releases.slice(0, user.sponsor ? 4 : 2).map((release, key) => (
+                {releases.slice(0, user.dev || user.sponsor ? 4 : 2).map((release, key) => (
                     <Li key={key}>
                         <div className='relative -top-1 flex items-center gap-1'>
                             <Scope scope={release.scope} />

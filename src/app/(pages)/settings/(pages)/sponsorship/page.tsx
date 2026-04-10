@@ -12,7 +12,7 @@ const Page = () => {
     if (user) return (
         <section>
             <Header goBack="/settings" title="Patrocínio" />
-            {user.sponsor
+            {user.dev || user.sponsor
                 ?
                 <SponsorCard />
                 :
