@@ -1,6 +1,6 @@
 import { Element } from "./elements";
-import { EmailChangeFormData, emailChangeFormSchema, handleFieldErrors, handleInvalidTokenFieldError } from "@/core";
-import { FormProvider, useForm } from "react-hook-form";
+import { EmailChangeFormData, emailChangeFormSchema, handleFieldErrors, handleInvalidTokenFieldError, scrollTo } from "@/core";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useServices, useUser } from "@/data/hooks";
 import { useState } from "react";
@@ -12,10 +12,15 @@ export const Form = ({ token }: { token: string }) => {
     const { clearUser } = useUser();
 
     const emailChangeForm = useForm<EmailChangeFormData>({
-        resolver: zodResolver(emailChangeFormSchema)
+        resolver: zodResolver(emailChangeFormSchema),
+        defaultValues: {
+            disconnectAll: true,
+            keepCurrentSession: false,
+        }
     })
 
     const { handleSubmit, setError } = emailChangeForm;
+    const disconnectAll = useWatch({ name: 'disconnectAll', control: emailChangeForm.control });
 
     const [isPending, setIsPending] = useState<boolean>(false);
     const [invalid, setInvalid] = useState<boolean>(false);
@@ -25,17 +30,18 @@ export const Form = ({ token }: { token: string }) => {
         try {
             setIsPending(true);
             await updateUserEmail(token, data);
-            clearUser();
+            if (data.disconnectAll && !data.keepCurrentSession) clearUser();
             return router.push("/");
-        } catch (errors: any) {
-            if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
-            return handleInvalidTokenFieldError(errors, setInvalid);
+        } catch (error: unknown) {
+            const err = error as { response: Response, data: any };
+            if (Array.isArray(err.data)) return handleFieldErrors(err.data, setError);
+            return handleInvalidTokenFieldError(err.data, setInvalid);
         } finally {
             setIsPending(false);
         }
     }
 
-    const { Field, Input, Label, Error, Button } = Element;
+    const { Field, Input, Label, InputCheck, InputCheckLabel, Caption, Error, Button } = Element;
 
     return (
         <FormProvider {...emailChangeForm}>
@@ -53,6 +59,17 @@ export const Form = ({ token }: { token: string }) => {
                     <Label htmlFor="repeatEmail">Repetir email</Label>
                     <Error name="repeatEmail" />
                 </Field>
+                <Field className='-my-4'>
+                    <InputCheck name='disconnectAll' defaultChecked={true} />
+                    <InputCheckLabel htmlFor="disconnectAll">Desconectar todas as sessões</InputCheckLabel>
+                </Field>
+                <Field className='-my-4'>
+                    <InputCheck name='keepCurrentSession' disabled={!disconnectAll} defaultChecked={false} />
+                    <InputCheckLabel htmlFor="keepCurrentSession">Manter sessão atual</InputCheckLabel>
+                </Field>
+                <Caption scrollTo='sessions'>
+                    Gerencie os dispositivos conectados à sua conta.
+                </Caption>
                 <Button disabled={isPending}>
                     Definir
                 </Button>

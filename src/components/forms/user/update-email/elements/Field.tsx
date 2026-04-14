@@ -1,3 +1,11 @@
-export const Field = (props: React.HTMLAttributes<HTMLDivElement>) => (
-    <div className="relative p-2" {...props} />
+import { clsx } from 'clsx';
+
+export const Field = ({ className, ...rest }: React.HTMLAttributes<HTMLDivElement>) => (
+    <div
+        className={clsx(
+            'relative p-2',
+            className
+        )}
+        {...rest}
+    />
 )
