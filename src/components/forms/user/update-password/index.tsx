@@ -1,5 +1,5 @@
 import { Element } from "./elements";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { handleFieldErrors, handleInvalidTokenFieldError, PasswordUpdateFormData, passwordUpdateFormSchema } from "@/core";
 import { useRouter } from "next/navigation";
 import { useServices, useUser } from "@/data/hooks";
@@ -12,10 +12,15 @@ export const Form = ({ token }: { token: string }) => {
     const { clearUser } = useUser();
 
     const passwordUpdateForm = useForm<PasswordUpdateFormData>({
-        resolver: zodResolver(passwordUpdateFormSchema)
+        resolver: zodResolver(passwordUpdateFormSchema),
+        defaultValues: {
+            disconnectAll: true,
+            keepCurrentSession: false,
+        }
     })
 
     const { handleSubmit, setError } = passwordUpdateForm;
+    const disconnectAll = useWatch({ name: 'disconnectAll', control: passwordUpdateForm.control });
 
     const [isPending, setIsPending] = useState<boolean>(false);
     const [invalid, setInvalid] = useState<boolean>(false);
@@ -25,17 +30,18 @@ export const Form = ({ token }: { token: string }) => {
         try {
             setIsPending(true);
             await updateUserPassword(token, data);
-            clearUser();
+            if (data.disconnectAll && !data.keepCurrentSession) clearUser();
             return router.push("/");
-        } catch (errors: any) {
-            if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
-            return handleInvalidTokenFieldError(errors, setInvalid);
+        } catch (error: unknown) {
+            const err = error as { response: Response, data: any };
+            if (Array.isArray(err.data)) return handleFieldErrors(err.data, setError);
+            return handleInvalidTokenFieldError(err.data, setInvalid);
         } finally {
             setIsPending(false);
         }
     }
 
-    const { Field, Input, Label, Error, Strength, Button } = Element;
+    const { Field, Input, Label, Error, Strength, InputCheck, InputCheckLabel, Caption, Button } = Element;
 
     return (
         <FormProvider {...passwordUpdateForm}>
@@ -54,6 +60,17 @@ export const Form = ({ token }: { token: string }) => {
                     <Label htmlFor="repeatPassword">Repetir senha</Label>
                     <Error name="repeatPassword" />
                 </Field>
+                <Field className='-my-4'>
+                    <InputCheck name='disconnectAll' defaultChecked={true} />
+                    <InputCheckLabel htmlFor="disconnectAll">Desconectar todas as sessões</InputCheckLabel>
+                </Field>
+                <Field className='-my-4'>
+                    <InputCheck name='keepCurrentSession' disabled={!disconnectAll} defaultChecked={false} />
+                    <InputCheckLabel htmlFor="keepCurrentSession">Manter sessão atual</InputCheckLabel>
+                </Field>
+                <Caption scrollTo='sessions'>
+                    Gerencie os dispositivos conectados à sua conta.
+                </Caption>
                 <Button disabled={isPending}>
                     Definir
                 </Button>

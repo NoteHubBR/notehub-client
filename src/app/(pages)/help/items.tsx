@@ -31,6 +31,26 @@ export const items: Items[] = [
         )
     },
     {
+        id: 'sessions',
+        keywords: ["sessions", "sessões", "sessoes", "dispositivos", "conexão", "conectados", "conta", "senha", "email"],
+        question: 'Sessões',
+        answer: (
+            <>
+                <p>
+                    Sessões representam os dispositivos conectados à sua conta.
+                    Ao atualizar sua senha ou email, você pode escolher desconectar
+                    todos os dispositivos, incluindo o atual.
+                </p>
+                <br />
+                <p>
+                    Caso queira permanecer conectado no dispositivo atual, marque
+                    a opção <strong>manter sessão atual</strong> — ela só tem efeito
+                    quando <strong>desconectar todas</strong> estiver habilitada.
+                </p>
+            </>
+        )
+    },
+    {
         id: 'delete',
         keywords: ["delete", "excluir", "apagar", "conta", "remoção", "remover", "cancelar"],
         question: 'Exclusão da conta',

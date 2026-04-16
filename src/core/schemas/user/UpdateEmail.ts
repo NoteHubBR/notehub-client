@@ -7,6 +7,8 @@ export const emailChangeFormSchema = z.object({
     repeatEmail: z
         .string().trim().toLowerCase()
         .email('Email inválido.'),
+    disconnectAll: z.boolean().default(true),
+    keepCurrentSession: z.boolean().default(false),
 })
     .refine((data) => data.repeatEmail === data.email, { message: "Emails diferentes.", path: ['repeatEmail'] });
 
