@@ -18,6 +18,27 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        version: 'v2.1',
+        date: '15/4/26 9:17',
+        scope: 'server',
+        title: 'Abril 15, 2026',
+        summary: 'Gerenciamento de sessões',
+        entries: [
+            {
+                type: 'sec',
+                pr: 15,
+                hash: '7e8113afdc67d22cd066dd538bd7d1049416f202',
+                desc: 'Implementado gerenciamento de sessões para permitir que os usuários revoguem sessões ativas ao alterar campos sensíveis, aumentando a segurança e o controle sobre suas contas.'
+            },
+            {
+                type: 'feat',
+                pr: 14,
+                hash: '06be91ba916d776ec7f4b1f17ff69c4d52b78584',
+                desc: 'Adicionada nova badge para desenvolvedores, exibida ao lado do nome de usuário, destacando a contribuição para o projeto.'
+            }
+        ]
+    },
+    {
         version: 'v2.0.3',
         date: '25/3/26 9:56',
         scope: 'server',
