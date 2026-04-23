@@ -1,7 +1,7 @@
 'use client';
 
 import { Header } from "../Header";
-import { IconBellRingingFilled, IconCancel, IconEye, IconKey, IconLogout, IconMail, IconUser, IconUsers } from "@tabler/icons-react";
+import { IconBellRingingFilled, IconCancel, IconDevices2, IconEye, IconKey, IconLogout, IconMail, IconUser, IconUsers } from "@tabler/icons-react";
 import { Link } from "./Link";
 import { useScreen, useUser } from "@/data/hooks";
 
@@ -24,6 +24,7 @@ const Page = () => {
                             <Link href="/settings/account/password" icon={IconKey}>Alterar senha</Link>
                         </>
                     }
+                    <Link href="/settings/account/sessions" icon={IconDevices2}>Seus dispositivos</Link>
                     <Link href="/settings/account/delete" icon={IconCancel}>Deletar conta</Link>
                     {onMobile &&
                         <>
