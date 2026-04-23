@@ -1,3 +1,2 @@
-import { Token } from "./Token";
-
-export type { Token };
+export type { Token } from "./Token";
+export type { Session } from "./Session";
