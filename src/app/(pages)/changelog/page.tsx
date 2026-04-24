@@ -29,10 +29,10 @@ const Page = () => {
         <main className="max-w-full w-screen insm:px-3 flex flex-col gap-12">
             <Header />
             <div className="max-w-[666px] w-full mx-auto pb-24 flex flex-col gap-12">
-                {releases.map((release: ReleaseType) => {
+                {releases.map((release: ReleaseType, key: number) => {
                     const grouped = groupByType(release.entries);
                     return (
-                        <Release key={release.version} id={release.version}>
+                        <Release key={key} id={release.version}>
                             <ReleaseTitle scope={release.scope} tag={release.version}>({release.title})</ReleaseTitle>
                             <ReleaseUList isActive={currentVersion === release.version}>
                                 {(Object.entries(grouped) as [ReleaseEntryType, Entry[]][]).map(([type, entries]) => (

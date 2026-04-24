@@ -18,6 +18,21 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        version: 'v2.2',
+        date: '24/4/26 9:05',
+        scope: 'server',
+        title: 'Abril 24, 2026',
+        summary: 'Gerenciamento de dispositivos',
+        entries: [
+            {
+                type: 'sec',
+                pr: 16,
+                hash: '8e29bac12d3b60a07e1d35c1c615498020d17303',
+                desc: 'Implementado gerenciamento de sessões ativas com informações de dispositivo, navegador, sistema operacional e localização aproximada. A lista de sessões é protegidas por senha com suporte a desconexão individual.'
+            }
+        ]
+    },
+    {
         version: 'v2.1',
         date: '15/4/26 9:17',
         scope: 'server',

@@ -38,14 +38,15 @@ export const items: Items[] = [
             <>
                 <p>
                     Sessões representam os dispositivos conectados à sua conta.
-                    Ao atualizar sua senha ou email, você pode escolher desconectar
-                    todos os dispositivos, incluindo o atual.
+                    Você pode visualizar todas as sessões ativas em <strong>Configurações → Seus dispositivos</strong>,
+                    onde é possível desconectar sessões individualmente.
                 </p>
                 <br />
                 <p>
-                    Caso queira permanecer conectado no dispositivo atual, marque
-                    a opção <strong>manter sessão atual</strong> — ela só tem efeito
-                    quando <strong>desconectar todas</strong> estiver habilitada.
+                    Ao atualizar sua senha ou email, você pode escolher desconectar
+                    todos os dispositivos, incluindo o atual. Caso queira permanecer
+                    conectado no dispositivo atual, marque a opção <strong>manter sessão atual</strong> —
+                    ela só tem efeito quando <strong>desconectar todas</strong> estiver habilitada.
                 </p>
             </>
         )
