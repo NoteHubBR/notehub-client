@@ -15,7 +15,7 @@ const Page = () => {
         <section>
             <Header goBack="/settings/account" title="Deletar conta" />
             <section className="flex flex-col gap-3">
-                {user.host === 'NoteHub' ? <UserTitle /> : <OAuthUserTitle></OAuthUserTitle>}
+                {user.host === 'NoteHub' ? <UserTitle /> : <OAuthUserTitle />}
                 <Form.User.Delete />
                 <Warnings />
                 <Card />

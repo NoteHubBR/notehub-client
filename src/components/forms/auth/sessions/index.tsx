@@ -13,7 +13,7 @@ export const Form = ({ onSuccess, ...rest }: FormProps) => {
 
     const { authService: { findAllSessions } } = useServices();
 
-    const { token } = useUser();
+    const { user, token } = useUser();
 
     const findSessionsForm = useForm<FindSessionsFormData>({
         resolver: zodResolver(findSessionsFormSchema)
@@ -41,7 +41,7 @@ export const Form = ({ onSuccess, ...rest }: FormProps) => {
 
     const { Field, Input, Label, Error, Button } = Element;
 
-    if (token) return (
+    if (user && token) return (
         <FormProvider {...findSessionsForm} {...rest}>
             <form
                 onSubmit={handleSubmit(onSubmit)}
@@ -49,7 +49,7 @@ export const Form = ({ onSuccess, ...rest }: FormProps) => {
             >
                 <Field>
                     <Input name="password" />
-                    <Label htmlFor="password">Senha</Label>
+                    <Label htmlFor="password">{user.host === 'NoteHub' ? 'Senha' : 'Chave'}</Label>
                 </Field>
                 <Field className='h-12'>
                     <Error name="password" />
