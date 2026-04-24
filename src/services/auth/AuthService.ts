@@ -1,6 +1,7 @@
-import { LoginFormData, Token, User, Cookies, RecoverFormData } from "@/core";
+import { LoginFormData, Token, User, Cookies, RecoverFormData, Session, FindSessionsFormData } from "@/core";
 import { useAPI, useUser } from "@/data/hooks";
 import { useCallback } from "react";
+import { UUID } from 'crypto';
 
 export const AuthService = () => {
 
@@ -82,6 +83,22 @@ export const AuthService = () => {
         }
     }, [httpPost])
 
+    const findAllSessions = async (token: string, data: FindSessionsFormData): Promise<Session[]> => {
+        try {
+            return await httpPost('/auth/sessions', data, { useProgress: true, useToken: token });
+        } catch (error) {
+            return handleExpiredToken(error, (newToken) => httpPost('/auth/sessions', data, { useProgress: true, useToken: newToken }));
+        }
+    }
+
+    const disconnectSession = async (id: UUID): Promise<void> => {
+        try {
+            return await httpDelete(`/auth/session/${id}`, undefined, { useProgress: true });
+        } catch (error) {
+            throw error;
+        }
+    }
+
     return {
         loginUserByDefault,
         loginUserByGoogle,
@@ -91,7 +108,9 @@ export const AuthService = () => {
         logoutUser,
         sendSecretKeyRequest,
         sendEmailChangeRequest,
-        sendPasswordChangeRequest
+        sendPasswordChangeRequest,
+        findAllSessions,
+        disconnectSession
     }
 
 }

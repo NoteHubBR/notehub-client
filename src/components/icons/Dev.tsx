@@ -16,6 +16,7 @@ export const Dev = ({ user, size = 24, useWhite, className, ...rest }: Dev) => {
             className={clsx(
                 'select-none pointer-events-none relative',
                 'flex-none inline-block align-middle',
+                'drop-shadow-alpha-d-sm',
                 className
             )}
             {...rest}
@@ -24,7 +25,7 @@ export const Dev = ({ user, size = 24, useWhite, className, ...rest }: Dev) => {
                 aria-hidden="true"
                 style={{ width: `${size}px`, height: `${size}px` }}
                 className={clsx(
-                    'rounded',
+                    'rounded-full',
                     useWhite ? 'bg-white' : 'bg-inverted',
                     'transition-colors'
                 )}
@@ -35,8 +36,8 @@ export const Dev = ({ user, size = 24, useWhite, className, ...rest }: Dev) => {
                 className={clsx(
                     'center',
                     useWhite
-                        ? 'text-primary drop-shadow-alpha-none'
-                        : 'text-white drop-shadow-alpha-d-md',
+                        ? 'text-primary'
+                        : 'text-white',
                     'transition-colors'
                 )}
             />
