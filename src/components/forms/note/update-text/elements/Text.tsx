@@ -1,6 +1,6 @@
 import { NoteTextUpdateFormData } from "@/core";
+import { useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
-import { useRef } from "react";
 
 interface TextProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     setText: React.Dispatch<React.SetStateAction<string>>;
@@ -38,6 +38,14 @@ export const Text = ({ setText, value, ...rest }: TextProps) => {
         }
     }
 
+    useEffect(() => {
+        if (textareaRef.current) {
+            const len = textareaRef.current.value.length;
+            textareaRef.current.selectionStart = len;
+            textareaRef.current.selectionEnd = len;
+        }
+    }, [])
+
     return (
         <textarea
             ref={textareaRef}
@@ -46,6 +54,7 @@ export const Text = ({ setText, value, ...rest }: TextProps) => {
             spellCheck={false}
             autoCorrect="off"
             autoCapitalize="off"
+            autoFocus
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
