@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useNotes, useServices, useTags } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
+import { useShortcuts } from './shortcuts';
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -70,8 +71,8 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         }
     }
 
-    const handleDeleteNote = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
-        e.stopPropagation();
+    const handleDeleteNote = async (e?: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+        if (e) e.stopPropagation();
         if (token) {
             setIsPending(true);
             await deleteNote(token.access_token, note.id)
@@ -97,32 +98,42 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
 
     const togglePreview = () => setIsPreviewing(prev => !prev);
 
-    const startEdit = (e: React.MouseEvent) => {
-        e.stopPropagation();
+    const startEdit = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
         setIsEditing(true);
         setIsPreviewing(false);
         return;
     }
 
-    const startSubmit = (e: React.MouseEvent) => {
-        e.stopPropagation();
+    const startSubmit = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
         setIsSubmiting(true);
         return;
     }
 
-    const startDelete = (e: React.MouseEvent) => {
-        e.stopPropagation();
+    const startDelete = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
         toggleMenu();
         setIsDeleting(true);
         return;
     }
 
-    const cancelEdit = () => {
+    const cancelEdit = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
         setText(initialText);
         setIsEditing(false);
         setIsPreviewing(true);
         return;
     }
+
+    useShortcuts({
+        isAuthor,
+        isEditing,
+        onStartEdit: startEdit,
+        onCancel: cancelEdit,
+        onDelete: handleDeleteNote,
+        onSave: handleSubmit(onSubmit)
+    })
 
     useEffect(() => { scrollToNote() }, []);
 
