@@ -31,7 +31,7 @@ const Page = () => {
         if (response && response.type === 'ok') setNote(response.data);
     }, [response])
 
-    const { Aside, Comments, Dialog } = Element;
+    const { Navigator, Aside, Comments, Dialog } = Element;
 
     if (isLoading) return <Skeleton />;
 
@@ -72,6 +72,7 @@ const Page = () => {
 
         if (note) return (
             <section className="max-w-[999px] w-full m-auto pb-64">
+                <Navigator />
                 <section className="flex inlg:flex-col-reverse">
                     <Template.Portal blur="sm" triggerRef={triggerRef} childRef={childRef} closeRef={closeRef}>
                         <Form.Note.Update

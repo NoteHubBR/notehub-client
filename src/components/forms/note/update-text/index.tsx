@@ -47,13 +47,6 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
 
     const router = useRouter();
 
-    const scrollToNote = () => {
-        const noteEl = document.getElementById("note");
-        if (noteEl) {
-            noteEl.scrollIntoView({ behavior: "smooth" });
-        }
-    }
-
     const onSubmit = async (data: NoteTextUpdateFormData): Promise<void> => {
         if (token) {
             setIsPending(true);
@@ -134,8 +127,6 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         onDelete: handleDeleteNote,
         onSave: handleSubmit(onSubmit)
     })
-
-    useEffect(() => { scrollToNote() }, []);
 
     const { Title, EditingTitle, ActionButton, Text, Dialog } = Element;
 
