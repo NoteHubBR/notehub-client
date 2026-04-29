@@ -11,11 +11,23 @@ interface ShortcutsProps {
 
 export const useShortcuts = ({ isAuthor, isEditing, onStartEdit, onCancel, onDelete, onSave }: ShortcutsProps) => {
 
+    const scrollToNote = () => {
+        const noteEl = document.getElementById('note');
+        if (noteEl) return noteEl.scrollIntoView({ behavior: "smooth" });
+    }
+
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
         if (isEditing) e.preventDefault();
     }
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+        if (!e.altKey) return;
+        switch (e.key.toLowerCase()) {
+            case "c": e.preventDefault(); scrollToNote(); break;
+        }
+    }
+
+    const handleAuthorKeyDown = (e: KeyboardEvent) => {
         if (!isAuthor) return;
         const isCtrl = e.ctrlKey || e.metaKey;
         if (!isCtrl) return;
@@ -32,13 +44,17 @@ export const useShortcuts = ({ isAuthor, isEditing, onStartEdit, onCancel, onDel
     }
 
     useEffect(() => {
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [isAuthor, isEditing, onStartEdit, onSave, onCancel, onDelete])
-
-    useEffect(() => {
         window.addEventListener("beforeunload", handleBeforeUnload);
         return () => window.removeEventListener("beforeunload", handleBeforeUnload);
     }, [isEditing])
+
+    useEffect(() => {
+        window.addEventListener("keydown", handleGlobalKeyDown);
+        window.addEventListener("keydown", handleAuthorKeyDown);
+        return () => {
+            window.removeEventListener("keydown", handleGlobalKeyDown);
+            window.removeEventListener("keydown", handleAuthorKeyDown);
+        }
+    }, [isAuthor, isEditing, onStartEdit, onSave, onCancel, onDelete])
 
 }
