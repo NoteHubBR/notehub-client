@@ -3,11 +3,11 @@ import { FormProvider, useForm } from "react-hook-form";
 import { IconCheck, IconDotsVertical, IconEdit, IconTrash, IconX } from "@tabler/icons-react";
 import { Menu, MenuItem } from "@/components/menu";
 import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
-import { useEffect, useState } from "react";
 import { useNotes, useServices, useTags } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
 import { useShortcuts } from './shortcuts';
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -32,7 +32,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         }
     })
 
-    const { handleSubmit } = updateNoteForm;
+    const { handleSubmit, setValue } = updateNoteForm;
 
     const isAuthor = author ? author === currentUser : false;
 
@@ -113,6 +113,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
 
     const cancelEdit = (e?: React.MouseEvent) => {
         if (e) e.stopPropagation();
+        setValue('markdown', initialText);
         setText(initialText);
         setIsEditing(false);
         setIsPreviewing(true);
