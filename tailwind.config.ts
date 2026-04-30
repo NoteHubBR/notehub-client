@@ -99,6 +99,28 @@ const config: Config = {
     },
     function ({ addUtilities, theme }: { addUtilities: any, theme: any }) {
       const newUtilities = {
+        '.expand': {
+          position: 'relative',
+          '&::after': {
+            content: '""',
+            zIndex: '-1',
+            position: 'absolute',
+            inset: '0',
+            borderRadius: '9999px',
+            transform: 'scale(0)',
+            transformOrigin: 'center',
+            transitionProperty: 'all',
+            transitionDuration: '333ms',
+          },
+          '&:hover::after': {
+            transform: 'scale(1)',
+            backgroundColor: theme('colors.primary'),
+          },
+          '&:focus-visible::after': {
+            transform: 'scale(1)',
+            backgroundColor: theme('colors.primary'),
+          },
+        },
         '.shine': {
           overflow: 'hidden',
           position: 'relative',

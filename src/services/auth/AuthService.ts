@@ -42,7 +42,7 @@ export const AuthService = () => {
     }
 
     const handleExpiredToken = async (error: any, func: (token: string) => Promise<any>) => {
-        if (error.data.message === 'Token inválido.') {
+        if (error.data && error.data.message === 'Token inválido.') {
             const { token } = await refreshUser();
             Cookies.set('rtoken', token.refresh_token, token.expires_at);
             updateToken(token);

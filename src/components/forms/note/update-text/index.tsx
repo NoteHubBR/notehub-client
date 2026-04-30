@@ -3,10 +3,11 @@ import { FormProvider, useForm } from "react-hook-form";
 import { IconCheck, IconDotsVertical, IconEdit, IconTrash, IconX } from "@tabler/icons-react";
 import { Menu, MenuItem } from "@/components/menu";
 import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
-import { useEffect, useState } from "react";
 import { useNotes, useServices, useTags } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
+import { useShortcuts } from './shortcuts';
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -31,7 +32,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         }
     })
 
-    const { handleSubmit } = updateNoteForm;
+    const { handleSubmit, setValue } = updateNoteForm;
 
     const isAuthor = author ? author === currentUser : false;
 
@@ -45,13 +46,6 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
     const [isPending, setIsPending] = useState<boolean>(false);
 
     const router = useRouter();
-
-    const scrollToNote = () => {
-        const noteEl = document.getElementById("note");
-        if (noteEl) {
-            noteEl.scrollIntoView({ behavior: "smooth" });
-        }
-    }
 
     const onSubmit = async (data: NoteTextUpdateFormData): Promise<void> => {
         if (token) {
@@ -70,8 +64,8 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         }
     }
 
-    const handleDeleteNote = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
-        e.stopPropagation();
+    const handleDeleteNote = async (e?: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+        if (e) e.stopPropagation();
         if (token) {
             setIsPending(true);
             await deleteNote(token.access_token, note.id)
@@ -97,34 +91,43 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
 
     const togglePreview = () => setIsPreviewing(prev => !prev);
 
-    const startEdit = (e: React.MouseEvent) => {
-        e.stopPropagation();
+    const startEdit = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
         setIsEditing(true);
         setIsPreviewing(false);
         return;
     }
 
-    const startSubmit = (e: React.MouseEvent) => {
-        e.stopPropagation();
+    const startSubmit = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
         setIsSubmiting(true);
         return;
     }
 
-    const startDelete = (e: React.MouseEvent) => {
-        e.stopPropagation();
+    const startDelete = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
         toggleMenu();
         setIsDeleting(true);
         return;
     }
 
-    const cancelEdit = () => {
+    const cancelEdit = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        setValue('markdown', initialText);
         setText(initialText);
         setIsEditing(false);
         setIsPreviewing(true);
         return;
     }
 
-    useEffect(() => { scrollToNote() }, []);
+    useShortcuts({
+        isAuthor,
+        isEditing,
+        onStartEdit: startEdit,
+        onCancel: cancelEdit,
+        onDelete: handleDeleteNote,
+        onSave: handleSubmit(onSubmit)
+    })
 
     const { Title, EditingTitle, ActionButton, Text, Dialog } = Element;
 
