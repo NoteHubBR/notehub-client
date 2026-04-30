@@ -7,13 +7,13 @@
 
 <div align="center">
   <a href="https://notehub.com.br">
-    <img width="10%" height="10%" src="https://github.com/notehubbr/notehub-api/blob/main/src/main/resources/public/imgs/logo.png">
+    <img width="10%" height="10%" src="https://notehub.com.br/imgs/logo.png">
   </a>
 </div>
 <br>
 <div align="center">
-  <a href="https://github.com/notehubbr/notehub-client/releases/tag/v2.3">
-    <img width="100px" height="25px" src="https://img.shields.io/badge/notehub-2.3-7c3aed">
+  <a href="https://github.com/notehubbr/notehub-client/releases/tag/v2.3.1">
+    <img width="100px" height="25px" src="https://img.shields.io/badge/notehub-2.3.1-7c3aed">
   </a>
 </div>
 

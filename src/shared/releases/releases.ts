@@ -18,6 +18,21 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        version: 'v2.3.1',
+        date: '30/4/26 8:36',
+        scope: 'client',
+        title: 'Abril 30, 2026',
+        summary: 'Atalhos de teclado',
+        entries: [
+            {
+                type: 'feat',
+                pr: 22,
+                hash: '99dd2ebaf6ee7d7731521d660e8a562efda8ddc7',
+                desc: 'Atalhos de teclado para autores e navegação global:\n\nAlt+C → Centralizar nota\nCtrl+E → Iniciar edição\nCtrl+Q → Cancelar edição\nCtrl+S → Salvar edição (instantâneo)\nCtrl+D → Excluir nota (instantâneo)'
+            }
+        ]
+    },
+    {
         version: 'v2.2',
         date: '24/4/26 9:05',
         scope: 'server',

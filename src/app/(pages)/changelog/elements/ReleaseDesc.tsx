@@ -9,7 +9,7 @@ interface ReleaseDescProps extends React.HTMLAttributes<HTMLParagraphElement> {
 export const ReleaseDesc = ({ scope, pr, hash, children, ...rest }: ReleaseDescProps) => (
     <li>
         <p
-            className="font-semibold text-sm dark:text-lighter text-darker"
+            className="whitespace-pre-wrap font-semibold text-sm dark:text-lighter text-darker"
             {...rest}
         >
             <Link
