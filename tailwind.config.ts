@@ -94,6 +94,7 @@ const config: Config = {
     },
   },
   plugins: [
+    require('@tailwindcss/typography'),
     function ({ addVariant }: { addVariant: any }) {
       addVariant('moz', '@-moz-document url-prefix()')
     },
