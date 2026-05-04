@@ -17,8 +17,8 @@ export const EditingTitle = ({ isPreviewing, isEditing, children, ...rest }: Edi
                 ? 'block visible opacity-100'
                 : 'insm:hidden invisible opacity-0',
             isPreviewing
-                ? 'after:left-0 after:right-0 after:w-0'
-                : 'after:left-0 after:w-full',
+                ? 'after:left-0 after:w-full'
+                : 'after:left-0 after:right-0 after:w-0',
             'transition-all duration-300',
             'after:transition-all after:duration-300'
         )}
@@ -28,8 +28,8 @@ export const EditingTitle = ({ isPreviewing, isEditing, children, ...rest }: Edi
             className={clsx(
                 'p-2 rounded-lg insm:rounded-none',
                 isPreviewing
-                    ? 'dark:hover:bg-semilight/15 hover:bg-semidark/15'
-                    : 'dark:bg-primary/25 bg-primary/15',
+                    ? 'dark:bg-primary/25 bg-primary/15'
+                    : 'dark:hover:bg-semilight/15 hover:bg-semidark/15',
                 'transition-colors'
             )}
         >

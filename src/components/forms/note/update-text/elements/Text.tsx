@@ -1,4 +1,5 @@
-import { NoteTextUpdateFormData } from "@/core";
+import { clsx } from 'clsx';
+import { NoteTextUpdateFormData, renderMarkdown } from "@/core";
 import { useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -58,11 +59,13 @@ export const Text = ({ setText, value, ...rest }: TextProps) => {
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            className="resize-none outline-none flex-1
-            p-4
-            overscroll-contain inmd:overscroll-auto
-            scrollbar-desktop inmd:scrollbar-mobile
-            bg-transparent"
+            className={clsx(
+                'resize-none outline-none',
+                'overscroll-contain inmd:overscroll-auto',
+                'p-4 flex-1',
+                'scrollbar-desktop inmd:scrollbar-mobile',
+                'bg-transparent'
+            )}
             {...rest}
         />
     )

@@ -1,6 +1,8 @@
+import { clsx } from 'clsx';
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconCheck, IconDotsVertical, IconEdit, IconTrash, IconX } from "@tabler/icons-react";
+import { Markdown } from '@/components/markdown';
 import { Menu, MenuItem } from "@/components/menu";
 import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
 import { useNotes, useServices, useTags } from "@/data/hooks";
@@ -40,7 +42,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
     const [text, setText] = useState<string>(initialText);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [isPreviewing, setIsPreviewing] = useState<boolean>(true);
+    const [isPreviewing, setIsPreviewing] = useState<boolean>(false);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
     const [isPending, setIsPending] = useState<boolean>(false);
@@ -56,7 +58,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                     setIsEditing(false);
                     setText(data.markdown);
                     setInitialText(data.markdown);
-                    setIsPreviewing(true);
+                    setIsPreviewing(false);
                     setNoteToFirst(note.id);
                     setIsPending(false);
                 })
@@ -116,7 +118,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         setValue('markdown', initialText);
         setText(initialText);
         setIsEditing(false);
-        setIsPreviewing(true);
+        setIsPreviewing(false);
         return;
     }
 
@@ -136,29 +138,31 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
             <form
                 id="note"
                 onSubmit={handleSubmit(onSubmit)}
-                className="scroll-mt-[9vh] inmd:scroll-mt-0
-                relative min-h-[90vh] inmd:min-h-[100svh] rounded-[5px]
-                border inmd:dark:border-none dark:border-middark/50 border-midlight/50
-                flex flex-col flex-1
-                dark:bg-darker bg-lighter"
+                className={clsx(
+                    'scroll-mt-[9vh] inmd:scroll-mt-0',
+                    'relative min-h-[90vh] max-h-[90vh] inmd:min-h-[93.25svh] inmd:max-h-[93.25svh]',
+                    'rounded-[5px] border inmd:dark:border-none dark:border-middark/50 border-midlight/50',
+                    'flex flex-col flex-1',
+                    'dark:bg-darker bg-lighter',
+                )}
                 {...rest}
             >
                 <header className="px-4 inmd:px-2 flex items-center justify-between gap-3 border-b dark:border-middark/50 border-midlight/50">
                     <div className="insm:overflow-hidden w-fit flex gap-3">
                         <Title
-                            disabled={isPreviewing}
+                            disabled={!isPreviewing}
                             onClick={togglePreview}
                             isPreviewing={isPreviewing}
                         >
-                            {note.title}
+                            {isEditing ? "Editar" : note.title}
                         </Title>
                         <EditingTitle
-                            disabled={!isPreviewing}
+                            disabled={isPreviewing}
                             onClick={togglePreview}
                             isPreviewing={isPreviewing}
                             isEditing={isEditing}
                         >
-                            Editando
+                            Visualizar
                         </EditingTitle>
                     </div>
                     {isAuthor &&
@@ -209,11 +213,14 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                         </div>
                     }
                 </header>
-                <Text
-                    readOnly={isPreviewing}
-                    setText={setText}
-                    value={isPreviewing ? initialText : text}
-                />
+                {!isEditing || isPreviewing
+                    ? <Markdown markdown={isPreviewing ? text : initialText} />
+                    : <Text
+                        readOnly={isPreviewing}
+                        setText={setText}
+                        value={isPreviewing ? initialText : text}
+                    />
+                }
                 <Dialog
                     msg="Tem certeza de que deseja apagar esta nota?"
                     desc="Esta ação é irreversível e todos os dados serão perdidos permanentemente."

@@ -6,14 +6,15 @@ interface TitleProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Title = ({ isPreviewing, children, ...rest }: TitleProps) => (
     <button
+        title='md-title'
         type="button"
         className={clsx(
             'relative insm:truncate',
             'min-w-0 flex-1 py-3',
             'after:pointer-events-none after:absolute after:top-full after:h-full after:border-t-2 after:border-primary',
             isPreviewing
-                ? 'cursor-default after:right-0 after:w-full'
-                : 'cursor-pointer after:right-0 after:w-0',
+                ? 'cursor-pointer after:right-0 after:w-0'
+                : 'cursor-default after:right-0 after:w-full',
             'transition-all duration-300',
             'after:transition-all after:duration-300'
         )}
@@ -23,8 +24,8 @@ export const Title = ({ isPreviewing, children, ...rest }: TitleProps) => (
             className={clsx(
                 'w-fit p-2 rounded-lg insm:rounded-none',
                 isPreviewing
-                    ? 'dark:bg-semilight/15 bg-semidark/15'
-                    : 'dark:hover:bg-semilight/15 hover:bg-semidark/15',
+                    ? 'dark:hover:bg-semilight/15 hover:bg-semidark/15'
+                    : 'dark:bg-semilight/15 bg-semidark/15',
                 'transition-colors'
             )}
         >
