@@ -213,14 +213,18 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                         </div>
                     }
                 </header>
-                {!isEditing || isPreviewing
-                    ? <Markdown markdown={isPreviewing ? text : initialText} />
-                    : <Text
-                        readOnly={isPreviewing}
-                        setText={setText}
-                        value={isPreviewing ? initialText : text}
-                    />
-                }
+                <Markdown
+                    isEditing={isEditing}
+                    isPreviewing={isPreviewing}
+                    markdown={isPreviewing ? text : initialText}
+                />
+                <Text
+                    isEditing={isEditing}
+                    isPreviewing={isPreviewing}
+                    readOnly={isPreviewing}
+                    setText={setText}
+                    value={isPreviewing ? initialText : text}
+                />
                 <Dialog
                     msg="Tem certeza de que deseja apagar esta nota?"
                     desc="Esta ação é irreversível e todos os dados serão perdidos permanentemente."

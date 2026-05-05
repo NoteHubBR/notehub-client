@@ -4,11 +4,13 @@ import { useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
 interface TextProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+    isEditing: boolean;
+    isPreviewing: boolean;
     setText: React.Dispatch<React.SetStateAction<string>>;
     value: string;
 }
 
-export const Text = ({ setText, value, ...rest }: TextProps) => {
+export const Text = ({ isEditing, isPreviewing, setText, value, ...rest }: TextProps) => {
 
     const { setValue } = useFormContext<NoteTextUpdateFormData>();
 
@@ -62,8 +64,9 @@ export const Text = ({ setText, value, ...rest }: TextProps) => {
             className={clsx(
                 'resize-none outline-none',
                 'overscroll-contain inmd:overscroll-auto',
-                'p-4 flex-1',
                 'scrollbar-desktop inmd:scrollbar-mobile',
+                !isEditing || isPreviewing ? 'hidden' : 'block',
+                'p-4 flex-1',
                 'bg-transparent'
             )}
             {...rest}
