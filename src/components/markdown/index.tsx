@@ -1,5 +1,5 @@
-import { renderMarkdown } from '@/core';
 import { clsx } from 'clsx';
+import { renderMarkdown } from '@/core';
 
 type MarkdownProps = React.HTMLAttributes<HTMLElement> & {
     isEditing: boolean;
@@ -46,6 +46,7 @@ export const Markdown = ({ isEditing, isPreviewing, markdown, ...rest }: Markdow
             'dark:prose-code:text-light prose-code:text-dark',
             'dark:prose-code:bg-middark/50 prose-code:bg-midlight/50',
             // pre
+            '[&_pre]:whitespace-pre-wrap [&_pre]:break-words',
             'dark:prose-pre:bg-semidark/50 prose-pre:bg-semilight/50',
             'dark:[&_pre_code]:text-semilight [&_pre_code]:text-semidark',
             '[&_pre_code]:bg-transparent dark:[&_pre_code]:bg-transparent',
