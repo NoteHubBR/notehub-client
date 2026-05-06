@@ -1,0 +1,45 @@
+.cm-root {
+    height: 100%;
+    font-size: 0.875rem;
+    font-family: var(--font-firacode, monospace);
+    background: transparent;
+}
+
+.cm-root .cm-scroller {
+    overflow: auto;
+}
+
+.cm-root .cm-content {
+    padding: 1rem;
+}
+
+.cm-root .cm-focused {
+    outline: none;
+}
+
+.cm-root .cm-line {
+    padding: 0;
+}
+
+.cm-root .cm-gutters {
+    background: transparent;
+    border: none;
+}
+
+.cm-root .cm-activeLine,
+.cm-root .cm-activeLineGutter {
+    background: transparent !important;
+}
+
+.cm-selectionBackground,
+::selection {
+    background-color: rgba(var(--primary), 0.75) !important;
+}
+
+.cm-root .cm-selectionMatch.cm-selectionMatch-main {
+    background: rgba(var(--primary), 0.75);
+}
+
+.cm-root .cm-selectionMatch {
+    background: rgba(var(--primary), 0.25);
+}
