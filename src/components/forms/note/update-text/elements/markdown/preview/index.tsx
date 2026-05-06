@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { renderMarkdown } from '@/core';
+import { useMarkdown } from './hook';
 
 type MarkdownProps = React.HTMLAttributes<HTMLElement> & {
     isEditing: boolean;
@@ -7,7 +7,7 @@ type MarkdownProps = React.HTMLAttributes<HTMLElement> & {
     markdown: string;
 }
 
-export const Markdown = ({ isEditing, isPreviewing, markdown, ...rest }: MarkdownProps) => (
+export const MdPreview = ({ isEditing, isPreviewing, markdown, ...rest }: MarkdownProps) => (
     <article
         aria-labelledby='md-title'
         className={clsx(
@@ -83,7 +83,7 @@ export const Markdown = ({ isEditing, isPreviewing, markdown, ...rest }: Markdow
             'dark:[&_.footnotes]:text-midlight [&_.footnotes]:text-middark [&_.footnotes]:text-sm',
             '[&_.footnote-backref]:text-primary',
         )}
-        dangerouslySetInnerHTML={{ __html: renderMarkdown(markdown) }}
+        dangerouslySetInnerHTML={{ __html: useMarkdown(markdown) }}
         {...rest}
     />
 )

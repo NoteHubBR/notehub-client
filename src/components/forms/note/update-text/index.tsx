@@ -2,7 +2,6 @@ import { clsx } from 'clsx';
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconCheck, IconDotsVertical, IconEdit, IconTrash, IconX } from "@tabler/icons-react";
-import { Markdown } from '@/components/markdown';
 import { Menu, MenuItem } from "@/components/menu";
 import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
 import { useNotes, useServices, useTags } from "@/data/hooks";
@@ -131,7 +130,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         onSave: handleSubmit(onSubmit)
     })
 
-    const { Title, EditingTitle, ActionButton, Text, Dialog } = Element;
+    const { Title, EditingTitle, ActionButton, Dialog, MdEditor, MdPreview } = Element;
 
     return (
         <FormProvider {...updateNoteForm}>
@@ -213,18 +212,6 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                         </div>
                     }
                 </header>
-                <Markdown
-                    isEditing={isEditing}
-                    isPreviewing={isPreviewing}
-                    markdown={isPreviewing ? text : initialText}
-                />
-                <Text
-                    isEditing={isEditing}
-                    isPreviewing={isPreviewing}
-                    readOnly={isPreviewing}
-                    setText={setText}
-                    value={isPreviewing ? initialText : text}
-                />
                 <Dialog
                     msg="Tem certeza de que deseja apagar esta nota?"
                     desc="Esta ação é irreversível e todos os dados serão perdidos permanentemente."
@@ -249,6 +236,17 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                     className="dark:text-secondary text-primary
                     dark:hover:bg-secondary hover:bg-primary
                     dark:disabled:bg-secondary disabled:bg-primary"
+                />
+                <MdPreview
+                    isEditing={isEditing}
+                    isPreviewing={isPreviewing}
+                    markdown={isPreviewing ? text : initialText}
+                />
+                <MdEditor
+                    isEditing={isEditing}
+                    isPreviewing={isPreviewing}
+                    setText={setText}
+                    value={text}
                 />
             </form>
         </FormProvider>

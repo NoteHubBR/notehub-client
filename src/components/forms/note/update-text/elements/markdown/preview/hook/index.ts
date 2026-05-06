@@ -37,7 +37,7 @@ export const md = new MarkdownIt({
     .use(container, 'info')
     .use(container, 'danger');
 
-export const renderMarkdown = (markdown: string) => {
+export const useMarkdown = (markdown: string) => {
     const rendered = md.render(markdown);
     return DOMPurify.sanitize(rendered);
 }

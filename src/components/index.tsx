@@ -8,7 +8,6 @@ import { PicturePortal } from "./PicturePortal";
 import { ProgressBar } from "./ProgressBar";
 import { SplashScreen } from "./SplashScreen";
 import { TsParticles } from "./TsParticles";
-import { Markdown } from './markdown';
 
 export type { CropperRef };
 
@@ -23,5 +22,4 @@ export const Component = {
     Banner,
     PicturePortal,
     Hovercard,
-    Markdown
 }

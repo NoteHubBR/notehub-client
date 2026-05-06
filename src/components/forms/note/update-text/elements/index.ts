@@ -1,7 +1,7 @@
 import { ActionButton } from "./ActionButton";
 import { Dialog } from "./Dialog";
 import { EditingTitle } from "./EditingTitlte";
-import { Text } from "./Text";
+import { MdEditor, MdPreview } from "./markdown";
 import { Title } from "./Title";
 
-export const Element = { Title, EditingTitle, ActionButton, Text, Dialog };
+export const Element = { Title, EditingTitle, ActionButton, Dialog, MdEditor, MdPreview };
