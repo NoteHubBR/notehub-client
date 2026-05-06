@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { NoteTextUpdateFormData, renderMarkdown } from "@/core";
+import { NoteTextUpdateFormData } from "@/core";
 import { useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -18,6 +18,7 @@ export const Text = ({ isEditing, isPreviewing, setText, value, ...rest }: TextP
     const historyRef = useRef<string[]>([value]);
     const historyIndexRef = useRef<number>(0);
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const savedCursorRef = useRef<number>(0);
     const MAX_HISTORY = 100;
 
     const pushHistory = (newValue: string) => {
@@ -32,6 +33,21 @@ export const Text = ({ isEditing, isPreviewing, setText, value, ...rest }: TextP
                 historyIndexRef.current = historyRef.current.length - 1;
             }
         }, 500);
+    }
+
+    const saveCursor = () => {
+        if (textareaRef.current) {
+            savedCursorRef.current = textareaRef.current.selectionStart;
+        }
+    }
+
+    const restoreCursor = (position: number) => {
+        requestAnimationFrame(() => {
+            if (textareaRef.current) {
+                textareaRef.current.selectionStart = position;
+                textareaRef.current.selectionEnd = position;
+            }
+        })
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -53,6 +69,7 @@ export const Text = ({ isEditing, isPreviewing, setText, value, ...rest }: TextP
                 const prev = historyRef.current[historyIndexRef.current];
                 setValue("markdown", prev);
                 setText(prev);
+                restoreCursor(Math.min(savedCursorRef.current, prev.length));
             }
             return;
         }
@@ -66,6 +83,7 @@ export const Text = ({ isEditing, isPreviewing, setText, value, ...rest }: TextP
                 const next = historyRef.current[historyIndexRef.current];
                 setValue("markdown", next);
                 setText(next);
+                restoreCursor(Math.min(savedCursorRef.current, next.length));
             }
             return;
         }
@@ -113,6 +131,8 @@ export const Text = ({ isEditing, isPreviewing, setText, value, ...rest }: TextP
             autoFocus
             value={value}
             onChange={handleChange}
+            onMouseUp={saveCursor}
+            onKeyUp={saveCursor}
             onKeyDown={handleKeyDown}
             className={clsx(
                 'resize-none outline-none',
