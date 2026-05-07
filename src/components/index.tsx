@@ -11,4 +11,15 @@ import { TsParticles } from "./TsParticles";
 
 export type { CropperRef };
 
-export const Component = { SplashScreen, ProgressBar, TsParticles, Cropper, Bone, Mock, Photo, Banner, PicturePortal, Hovercard };
+export const Component = {
+    SplashScreen,
+    ProgressBar,
+    TsParticles,
+    Cropper,
+    Bone,
+    Mock,
+    Photo,
+    Banner,
+    PicturePortal,
+    Hovercard,
+}

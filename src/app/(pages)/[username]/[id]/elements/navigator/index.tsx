@@ -1,15 +1,17 @@
 import { clsx } from 'clsx';
 import { IconKeyframeAlignVertical } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export const Navigator = () => {
 
+    const btnRef = useRef<HTMLButtonElement>(null);
     const [isCentered, setIsCentered] = useState(false);
     const [top, setTop] = useState(0);
 
     const scrollToNote = () => {
         const noteEl = document.getElementById('note');
-        if (noteEl) return noteEl.scrollIntoView({ behavior: "smooth" });
+        if (noteEl) noteEl.scrollIntoView({ behavior: "smooth" });
+        if (btnRef.current) btnRef.current.blur();
     }
 
     const handleScroll = () => {
@@ -72,6 +74,7 @@ export const Navigator = () => {
             )}
         >
             <button
+                ref={btnRef}
                 onClick={scrollToNote}
                 className={clsx(
                     'overflow-clip relative',
