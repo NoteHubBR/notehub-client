@@ -13,7 +13,7 @@ export const MdPreview = ({ isEditing, isPreviewing, markdown, ...rest }: Markdo
         className={clsx(
             // base
             'prose',
-            'max-w-none min-h-0 p-6 flex-1',
+            'max-w-[999px] p-6',
             'overflow-y-auto overscroll-contain inmd:overscroll-auto',
             'scrollbar-desktop inmd:scrollbar-mobile',
             !isEditing || isPreviewing ? 'block' : 'hidden',

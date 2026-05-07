@@ -1,3 +1,4 @@
+import { markdown } from '@codemirror/lang-markdown';
 export type ReleaseEntryType = 'sec' | 'feat' | 'fix' | 'docs' | 'style' | 'refactor' | 'perf' | 'test' | 'chore';
 
 export interface ReleaseEntry {
@@ -17,6 +18,27 @@ export interface Release {
 }
 
 export const releases: Release[] = [
+    {
+        version: 'v3.0',
+        date: '7/5/26 8:26',
+        scope: 'client',
+        title: 'Maio 7, 2026',
+        summary: 'Visualização e edição de notas com Markdown',
+        entries: [
+            {
+                type: 'feat',
+                pr: 23,
+                hash: 'b3d0eb0e1f52ed776ba4e02a62ea695d471d625f',
+                desc: 'Novo componente de preview com renderização Markdown, suporte a plugins estendidos (emojis, footnotes, tabelas, containers, highlight de código) e estilização completa com dark mode reativo.'
+            },
+            {
+                type: 'feat',
+                pr: 23,
+                hash: '2fc44c24358e6e0a3848b33821bd94abf6a78726',
+                desc: 'Substituição da área de texto simples por editor CodeMirror com syntax highlighting, undo/redo nativo, multi-cursor, indentação por Tab, autocomplete para tags e tema reativo ao dark mode.'
+            }
+        ]
+    },
     {
         version: 'v2.3.1',
         date: '30/4/26 8:36',

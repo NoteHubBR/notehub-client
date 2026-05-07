@@ -177,6 +177,33 @@ export const items: Items[] = [
         )
     },
     {
+        id: 'notes',
+        keywords: ["notes", "notas", "texto", "edição", "visualizar", "visualização", "preview", "markdown", "html", "editor", "formatar", "formatação", "format"],
+        question: 'Notas',
+        answer: (
+            <>
+                <p>
+                    As notas oferecem suporte a formatação avançada, permitindo
+                    criar conteúdos mais organizados e fáceis de visualizar.
+                </p>
+
+                <br />
+
+                <p>
+                    Para conhecer todas as opções de formatação disponíveis, visite
+                    <a
+                        href="https://markdown-it.github.io/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ml-1 font-semibold text-primary"
+                    >
+                        markdown-it
+                    </a>.
+                </p>
+            </>
+        )
+    },
+    {
         id: 'hiddenNotes',
         keywords: ["hiddennotes", "hidden", "notes", "notas", "ocultas", "privadas"],
         question: 'Notas ocultas',
