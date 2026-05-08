@@ -42,6 +42,7 @@ export const MdPreview = ({ isEditing, isPreviewing, markdown, ...rest }: Markdo
             // blockquote
             'dark:prose-blockquote:border-middark/50 prose-blockquote:border-midlight/50',
             // code
+            'prose-code:before:content-none prose-code:after:content-none',
             'prose-code:px-1 prose-code:py-0.5 prose-code:rounded',
             'dark:prose-code:text-light prose-code:text-dark',
             'dark:prose-code:bg-middark/50 prose-code:bg-midlight/50',

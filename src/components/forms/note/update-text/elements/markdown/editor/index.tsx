@@ -1,9 +1,9 @@
 import { clsx } from 'clsx';
 import { NoteTextUpdateFormData } from '@/core';
 import { useEditor } from './hook';
+import { useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { usePref } from '@/data/hooks';
-import { useRef } from 'react';
 
 interface MdEditorProps {
     isEditing: boolean;
@@ -24,12 +24,21 @@ export const MdEditor = ({ isEditing, isPreviewing, setText, value }: MdEditorPr
         setValue('markdown', newValue)
     }
 
-    useEditor({
+    const viewRef = useEditor({
         parentRef: editorRef,
         value,
         isDark: pref.useDarkTheme,
         onChange: handleChange,
     })
+
+    useEffect(() => {
+        if (!viewRef.current) return;
+        if (isEditing && !isPreviewing) {
+            requestAnimationFrame(() => {
+                if (viewRef.current) viewRef.current.focus();
+            })
+        }
+    }, [isEditing, isPreviewing])
 
     return (
         <div

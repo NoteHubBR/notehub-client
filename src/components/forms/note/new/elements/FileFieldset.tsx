@@ -16,16 +16,98 @@ export const FileFieldset = ({ name, children: legend, ...rest }: FieldsetProps)
     const [file, setFile] = useState<File | null>(null);
     const [dragging, setDragging] = useState<boolean>(false);
 
+    const ALLOWED_FILENAMES = new Set([
+        "Dockerfile",
+        "Makefile",
+        "CMakeLists.txt",
+        ".env",
+        ".gitignore",
+        ".gitattributes",
+        ".dockerignore",
+    ])
+
+    const ALLOWED_EXTENSIONS = new Set([
+        "txt",
+        "md",
+        "markdown",
+        "rst",
+        "csv",
+        "tsv",
+        "json",
+        "xml",
+        "yaml",
+        "yml",
+        "toml",
+        "ini",
+        "conf",
+        "config",
+        "properties",
+        "log",
+        "rtf",
+        "sql",
+        "java",
+        "kt",
+        "groovy",
+        "js",
+        "jsx",
+        "ts",
+        "tsx",
+        "py",
+        "rb",
+        "php",
+        "go",
+        "rs",
+        "c",
+        "cpp",
+        "h",
+        "hpp",
+        "cs",
+        "swift",
+        "scala",
+        "lua",
+        "sh",
+        "bash",
+        "zsh",
+        "bat",
+        "cmd",
+        "ps1",
+        "html",
+        "htm",
+        "css",
+        "scss",
+        "less",
+        "vue",
+        "svelte",
+        "tex",
+    ])
+
+    const isAllowedTextFile = (file: File) => {
+        const fileName = file.name;
+        const lowerName = fileName.toLowerCase();
+        if (ALLOWED_FILENAMES.has(fileName) || ALLOWED_FILENAMES.has(lowerName)) return true;
+        const extension = fileName.includes(".") ? fileName.split(".").pop()?.toLowerCase() : "";
+        if (extension && ALLOWED_EXTENSIONS.has(extension)) return true;
+        return (
+            file.type.startsWith("text/") ||
+            file.type === "application/json" ||
+            file.type === "application/xml" ||
+            file.type === "application/sql"
+        )
+    }
+
     const processFile = (file: File) => {
+        if (!isAllowedTextFile(file)) return;
         const reader = new FileReader();
         reader.onload = () => {
-            setValue(name, reader.result as string, {
+            const result = reader.result;
+            if (typeof result !== "string") return;
+            setValue(name, result, {
                 shouldValidate: true,
                 shouldDirty: true,
             })
+            setFile(file);
         }
-        reader.readAsText(file, "UTF-8");
-        setFile(file);
+        return reader.readAsText(file, "UTF-8");
     }
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +121,7 @@ export const FileFieldset = ({ name, children: legend, ...rest }: FieldsetProps)
         e.stopPropagation();
         setDragging(false);
         const file = e.dataTransfer.files?.[0];
-        if (file && file.type === "text/plain") processFile(file);
+        if (file) processFile(file);
     }
 
     const handleDragEnter = (e: React.DragEvent<HTMLElement>) => {
@@ -60,11 +142,14 @@ export const FileFieldset = ({ name, children: legend, ...rest }: FieldsetProps)
     }
 
     const onLabelKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
-        if (inputRef.current && e.key === "Enter") {
+        if (!inputRef.current) return;
+        if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             inputRef.current.click();
         }
     }
+
+    const onLabelMouseDown = (e: React.MouseEvent<HTMLLabelElement>) => e.preventDefault();
 
     return (
         <fieldset
@@ -89,7 +174,7 @@ export const FileFieldset = ({ name, children: legend, ...rest }: FieldsetProps)
                 ref={inputRef}
                 id={name}
                 type="file"
-                accept="text/plain"
+                accept=".txt,.md,.markdown,.rst,.csv,.tsv,.json,.xml,.yaml,.yml,.toml,.ini,.conf,.config,.properties,.env,.log,.rtf,.sql,.java,.kt,.groovy,.js,.jsx,.ts,.tsx,.py,.rb,.php,.go,.rs,.c,.cpp,.h,.hpp,.cs,.swift,.scala,.lua,.sh,.bash,.zsh,.bat,.cmd,.ps1,.html,.htm,.css,.scss,.less,.vue,.svelte,.tex,.gitignore,.gitattributes,.dockerignore,Dockerfile,Makefile,CMakeLists.txt,text/*,application/json,application/xml,application/sql"
                 onChange={handleFileChange}
                 className="hidden"
             />
@@ -97,22 +182,22 @@ export const FileFieldset = ({ name, children: legend, ...rest }: FieldsetProps)
                 tabIndex={0}
                 htmlFor={name}
                 onKeyDown={onLabelKeyDown}
-                onMouseDown={(e: React.MouseEvent<HTMLLabelElement>) => e.preventDefault()}
+                onMouseDown={onLabelMouseDown}
                 className={clsx(
                     'outline-none cursor-pointer',
                     'rounded p-2',
                     'font-semibold text-center dark:text-middark text-midlight',
                     'dark:hover:text-secondary/50 hover:text-primary/50',
                     'dark:focus-visible:text-secondary/50 focus-visible:text-primary/50',
-                    'transition-color duration-300',
+                    'transition-colors duration-300',
                     dragging && 'dark:text-secondary/25 text-primary/25',
                     file && 'dark:text-secondary text-primary'
                 )}
             >
                 <IconNotes size={44} className="mx-auto" />
-                {file ? file.name : ".txt"}
+                {file ? file.name : "Arquivo"}
             </label>
-        </fieldset >
+        </fieldset>
     )
 
 }
