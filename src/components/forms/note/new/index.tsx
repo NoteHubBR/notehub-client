@@ -60,7 +60,7 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
                 <Section className="gap-3">
                     <Fieldset className="relative">
                         <Label htmlFor="title" tip="*" className="block">Título</Label>
-                        <InputText required name="title" countPosition="half" className="w-1/2 insm:w-full" />
+                        <InputText autoFocus required name="title" countPosition="half" className="w-1/2 insm:w-full" />
                         <Error field="title" />
                     </Fieldset>
                     <Fieldset className="relative">
