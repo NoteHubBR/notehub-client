@@ -1,3 +1,4 @@
+export * from './healthcheck';
 export * from './auth';
 export * from './user';
 export * from './note';

@@ -4,6 +4,7 @@ import {
     CommentServiceQueries,
     FlameService,
     FlameServiceQueries,
+    HealthService,
     NoteService,
     NoteServiceQueries,
     ReplyService,
@@ -14,6 +15,7 @@ import {
 } from "@/services";
 
 export const useServices = () => {
+    const healthService = HealthService();
     const authService = AuthService();
     const userService = UserService();
     const userServiceQueries = UserServiceQueries();
@@ -27,6 +29,7 @@ export const useServices = () => {
     const replyServiceQueries = ReplyServiceQueries();
     const sponsorshipService = SponsorshipService();
     return {
+        healthService,
         authService,
         userService, userServiceQueries,
         noteService, noteServiceQueries,
