@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Token, User, Cookies, shouldUseUserContext } from "@/core";
 import { useFlames, useFollowing, useHistory, useLoading, useNotes, useServices, useStore, useSubscriptions, useTags } from "../hooks";
@@ -27,6 +27,7 @@ export const UserProvider = (props: any) => {
         flameService: { getUserFlames }
     } = useServices();
 
+    const { setIsLoaded } = useLoading();
     const { isStoreReady, store, setStore, setActions, updateActions } = useStore();
     const { clearHistory, setHistory } = useHistory();
     const { clearFollowing, setFollowing } = useFollowing();
@@ -37,8 +38,8 @@ export const UserProvider = (props: any) => {
 
     const pathname = usePathname();
 
-    const { setIsLoaded } = useLoading();
-
+    const fetchingUserRef = useRef<Promise<void> | null>(null);
+    const fetchingUserDataRef = useRef<Promise<void> | null>(null);
     const [queryClient] = useState(() => new QueryClient());
     const [state, setState] = useState({
         isMounted: false,
@@ -92,15 +93,20 @@ export const UserProvider = (props: any) => {
     }, [logoutUser, setStore])
 
     const fetchUser = useCallback(async (): Promise<void> => {
-        try {
-            const { token, user } = await refreshUser();
-            Cookies.set('rtoken', token.refresh_token, token.expires_at);
-            return setUser(token, user);
-        } catch {
-            setStore({ isExpired: true });
-            Cookies.remove('rtoken');
-            return setUser(null, null);
-        }
+        if (fetchingUserRef.current) return fetchingUserRef.current;
+        const promise = (async () => {
+            try {
+                const { token, user } = await refreshUser();
+                Cookies.set('rtoken', token.refresh_token, token.expires_at);
+                return setUser(token, user);
+            } catch {
+                setStore({ isExpired: true });
+                Cookies.remove('rtoken');
+                return setUser(null, null);
+            }
+        })()
+        fetchingUserRef.current = promise;
+        return promise;
     }, [refreshUser, setStore, setUser])
 
     const clearData = useCallback(async () => {
@@ -113,18 +119,31 @@ export const UserProvider = (props: any) => {
     }, [clearFlames, clearFollowing, clearHistory, clearNotes, clearSubscriptions, clearTags])
 
     const fetchUserData = async (accessToken: string, username: string): Promise<void> => {
-        try {
-            await clearData();
-            setHistory(await getUserDisplayNameHistory(username));
-            setFollowing(await searchUserFollowing(accessToken, username, 'sort=username,asc&size=9999'));
-            setNotes(await getUserNotes(accessToken));
-            setFlames(await getUserFlames(accessToken, username, 'size=9999'));
-            setTags(await findUserTags(accessToken, username));
-            setSubscriptions(await getUserSubscriptions(accessToken));
-            return;
-        } finally {
-            setIsLoaded(true);
-        }
+        if (fetchingUserDataRef.current) return fetchingUserDataRef.current;
+        const promise = (async () => {
+            try {
+                await clearData();
+                const [history, following, notes, flames, tags, subscriptions] = await Promise.all([
+                    await getUserDisplayNameHistory(username),
+                    await searchUserFollowing(accessToken, username, 'sort=username,asc&size=9999'),
+                    await getUserNotes(accessToken),
+                    await getUserFlames(accessToken, username, 'size=9999'),
+                    await findUserTags(accessToken, username),
+                    await getUserSubscriptions(accessToken)
+                ])
+                setHistory(history);
+                setFollowing(following);
+                setNotes(notes);
+                setFlames(flames);
+                setTags(tags);
+                setSubscriptions(subscriptions);
+                return;
+            } finally {
+                setIsLoaded(true);
+            }
+        })()
+        fetchingUserDataRef.current = promise;
+        return promise;
     }
 
     const init = useCallback(async (): Promise<void> => {
