@@ -2,6 +2,7 @@ import { Component } from "@/components";
 import { Device } from "@/components/devices";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { LoadingProvider } from "@/data/contexts/LoadingContext";
+import { MaintenanceProvider } from '@/data/contexts/MaintenanceContext';
 import { MenuProvider } from "@/data/contexts/MenuContext";
 import { ProgressBarProvider } from "@/data/contexts/ProgressContext";
 import { ScreenProvider } from "@/data/contexts/ScreenContext";
@@ -27,23 +28,25 @@ const UserProviders = ({ children }: { children: React.ReactNode }) => {
             <UserPreferencesProvider>
                 <UserSessionPreferencesProvider>
                     <UserStoreProvider>
-                        <UserFollowingProvider>
-                            <UserNotesProvider>
-                                <UserFlamesProvider>
-                                    <UserTagsProvider>
-                                        <UserHistoryProvider>
-                                            <UserSubscriptionsProvider>
-                                                <UserProvider>
-                                                    <UserNotificationsProvider>
-                                                        {children}
-                                                    </UserNotificationsProvider>
-                                                </UserProvider>
-                                            </UserSubscriptionsProvider>
-                                        </UserHistoryProvider>
-                                    </UserTagsProvider>
-                                </UserFlamesProvider>
-                            </UserNotesProvider>
-                        </UserFollowingProvider>
+                        <MaintenanceProvider>
+                            <UserFollowingProvider>
+                                <UserNotesProvider>
+                                    <UserFlamesProvider>
+                                        <UserTagsProvider>
+                                            <UserHistoryProvider>
+                                                <UserSubscriptionsProvider>
+                                                    <UserProvider>
+                                                        <UserNotificationsProvider>
+                                                            {children}
+                                                        </UserNotificationsProvider>
+                                                    </UserProvider>
+                                                </UserSubscriptionsProvider>
+                                            </UserHistoryProvider>
+                                        </UserTagsProvider>
+                                    </UserFlamesProvider>
+                                </UserNotesProvider>
+                            </UserFollowingProvider>
+                        </MaintenanceProvider>
                     </UserStoreProvider>
                 </UserSessionPreferencesProvider>
             </UserPreferencesProvider>
