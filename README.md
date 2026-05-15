@@ -1,5 +1,5 @@
 
-## NoteHub versão beta (frontend)
+## NoteHub versão rc (frontend)
 
 #### NoteHub é um projeto open-source que fornece uma interface web para o "Bloco de Notas Social", construída com Next.js + React. A aplicação oferece uma experiência de usuário intuitiva para criar, visualizar, compartilhar e interagir com notas. O projeto segue uma arquitetura moderna com SSR/SSG do Next.js, gerenciamento de estado com React Context e estilização com Tailwind CSS + Sass. Ele foi estruturado para ser simples de entender e fácil de contribuir — perfeito para quem quer praticar desenvolvimento frontend moderno integrado a uma API real.
 
@@ -7,13 +7,13 @@
 
 <div align="center">
   <a href="https://notehub.com.br">
-    <img width="10%" height="10%" src="https://notehub.com.br/imgs/logo.png">
+    <img width="10%" height="10%" src="https://notehub.com.br/imgs/favicon.png">
   </a>
 </div>
 <br>
 <div align="center">
-  <a href="https://github.com/notehubbr/notehub-client/releases/tag/v3.0">
-    <img width="100px" height="25px" src="https://img.shields.io/badge/notehub-3.0-7c3aed">
+  <a href="https://github.com/notehubbr/notehub-client/releases/tag/v3.0.1">
+    <img width="100px" height="25px" src="https://img.shields.io/badge/notehub-3.0.1-7c3aed">
   </a>
 </div>
 
