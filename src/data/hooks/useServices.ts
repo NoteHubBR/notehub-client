@@ -2,6 +2,7 @@ import {
     AuthService,
     CommentService,
     CommentServiceQueries,
+    FeedServiceQueries,
     FlameService,
     FlameServiceQueries,
     HealthService,
@@ -19,6 +20,7 @@ export const useServices = () => {
     const authService = AuthService();
     const userService = UserService();
     const userServiceQueries = UserServiceQueries();
+    const feedServiceQueries = FeedServiceQueries();
     const noteService = NoteService();
     const noteServiceQueries = NoteServiceQueries();
     const flameService = FlameService();
@@ -32,6 +34,7 @@ export const useServices = () => {
         healthService,
         authService,
         userService, userServiceQueries,
+        feedServiceQueries,
         noteService, noteServiceQueries,
         flameService, flameServiceQueries,
         commentService, commentServiceQueries,
