@@ -1,7 +1,7 @@
 import { Comment } from '../comment';
 import { Flame } from '../flame';
 import { LowDetailNote } from '../note';
-import { LowDetailUser, User } from '../user';
+import { LowDetailUser } from '../user';
 
 export enum Event {
     User_Followed = 'User_Followed',
@@ -15,7 +15,7 @@ type FollowEvent = {
     recipient: LowDetailUser;
     actor: LowDetailUser;
     related: LowDetailUser;
-    createdAt: string;
+    created_at: string;
 }
 
 type NoteEvent = {
@@ -23,7 +23,7 @@ type NoteEvent = {
     recipient: LowDetailUser;
     actor: LowDetailUser;
     note: LowDetailNote;
-    createdAt: string;
+    created_at: string;
 };
 
 type FlameEvent = {
@@ -31,7 +31,7 @@ type FlameEvent = {
     recipient: LowDetailUser;
     actor: LowDetailUser;
     flame: Flame;
-    createdAt: string;
+    created_at: string;
 }
 
 type CommentEvent = {
@@ -39,7 +39,7 @@ type CommentEvent = {
     recipient: LowDetailUser;
     actor: LowDetailUser;
     comment: Comment;
-    createdAt: string;
+    created_at: string;
 }
 
 export type FeedEvent =

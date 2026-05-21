@@ -22,8 +22,6 @@ export const Message = ({ user, event, ...rest }: MessageProps) => {
         }
     })()
 
-    console.log(message);
-
     return (
         <>
             <Component.Hovercard ref={ref} user={event.actor} />

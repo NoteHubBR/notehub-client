@@ -32,7 +32,7 @@ export const Item = ({ user, event }: { user: User, event: FeedEvent }) => {
                 <Creator event={event} />
                 <div className="flex flex-col">
                     <Message user={user} event={event} />
-                    <Time time={event.createdAt} />
+                    <Time time={event.created_at} />
                 </div>
             </header>
             <section className="p-3 rounded flex flex-col gap-2 dark:bg-semidark bg-semilight">
