@@ -1,25 +1,25 @@
 'use client';
 
+import { Actions, defaultAction, Event, Store, storeData, User } from "@/core";
 import { createContext, useCallback, useEffect, useState } from "react";
-import { Store, storeData, User } from "@/core";
 
 export interface UserStoreProps {
     store: Store;
     setStore: (data: Partial<Store>, username?: string) => void;
-    setActions: (data: Partial<{ isMenuOpen: boolean, searches: string[] }>, username?: string) => void;
+    setActions: (data: Partial<Actions>, username?: string) => void;
     updateActions: (oldUsername: string, newUsername: string) => void;
     isMenuOpen: (user: User | null) => boolean;
     searches: (user: User | null) => string[];
+    filters: (user: User | null) => Event[];
     isStoreReady: boolean;
 }
 
-const UserStoreContext = createContext<UserStoreProps>({} as any);
+const UserStoreContext = createContext<UserStoreProps>({} as UserStoreProps);
 
-export const UserStoreProvider = (props: any) => {
-
-    const [store, setStore] = useState({} as Store);
+export const UserStoreProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [isReady, setIsReady] = useState<boolean>(false);
+    const [store, setStore] = useState<Store>({} as Store);
 
     const setter = useCallback((data: Partial<Store>, username?: string): void => {
         const stored: Store = JSON.parse(localStorage.getItem('store') ?? '{}') as Store;
@@ -30,7 +30,7 @@ export const UserStoreProvider = (props: any) => {
             actions: {
                 ...stored.actions,
                 [index]: {
-                    ...(stored.actions[index] || { isMenuOpen: false, searches: [] }),
+                    ...(stored.actions[index] || defaultAction),
                     ...data.actions?.[index]
                 }
             }
@@ -39,7 +39,7 @@ export const UserStoreProvider = (props: any) => {
         return setStore(updated);
     }, [])
 
-    const setActions = useCallback((data: Partial<{ isMenuOpen: boolean, searches: string[] }>, username?: string): void => {
+    const setActions = useCallback((data: Partial<Actions>, username?: string): void => {
         return setter({
             actions: {
                 [username ?? 'Guest']: {
@@ -51,7 +51,7 @@ export const UserStoreProvider = (props: any) => {
     }, [store.actions, setter])
 
     const updateActions = useCallback((oldUsername: string, newUsername: string) => {
-        return setStore((prev) => {
+        return setStore((prev: Store) => {
             const { [oldUsername]: oldActions, ...restActions } = prev.actions;
             const newActions = {
                 ...restActions,
@@ -74,6 +74,10 @@ export const UserStoreProvider = (props: any) => {
         return user ? store.actions[user.username].searches : store.actions['Guest'].searches;
     }
 
+    const filters = (user: User | null): Event[] => {
+        return user ? store.actions[user.username].filters : store.actions['Guest'].filters;
+    }
+
     useEffect(() => {
         storeData();
         const store: Store = JSON.parse(localStorage.getItem('store') ?? '{}') as Store;
@@ -89,10 +93,11 @@ export const UserStoreProvider = (props: any) => {
             updateActions,
             isMenuOpen,
             searches,
+            filters,
             isStoreReady: isReady
         }}
         >
-            {props.children}
+            {children}
         </UserStoreContext.Provider>
     )
 
