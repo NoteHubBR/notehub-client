@@ -12,8 +12,10 @@ export const SaveBtn = ({ onSave, ...rest }: Props) => (
             'text-sm text-light',
             'bg-primary',
             'focus-visible:bg-secondary',
-            'hover:bg-secondary'
+            'hover:bg-secondary',
+            'disabled:cursor-not-allowed'
         )}
+        {...rest}
     >
         Definir
     </button>

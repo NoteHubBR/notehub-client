@@ -5,14 +5,16 @@ import { Item } from "./item";
 import { FeedEvent, LowDetailNote } from "@/core";
 import { Skeleton } from "./skeleton";
 import { useEffect, useCallback } from "react";
-import { useServices, useUser } from "@/data/hooks";
+import { useServices, useStore, useUser } from "@/data/hooks";
 
 export const Feed = () => {
 
     const { feedServiceQueries: { useGetFeed } } = useServices();
     const { isMounted, user, token } = useUser();
+    const { filters } = useStore();
 
     const accessToken = token ? token.access_token : 'token';
+    const events = filters(user).map(f => `events=${f}`).join('&');
 
     const {
         data: data,
@@ -20,7 +22,7 @@ export const Feed = () => {
         isFetchingNextPage,
         hasNextPage,
         fetchNextPage,
-    } = useGetFeed(accessToken, undefined, isMounted)
+    } = useGetFeed(accessToken, events, isMounted)
 
     const handleScroll = useCallback(() => {
         if (!hasNextPage || isFetchingNextPage) return;

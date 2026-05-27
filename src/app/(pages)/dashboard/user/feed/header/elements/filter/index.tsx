@@ -1,17 +1,39 @@
+import { Checkbox, Dropdown, events, Footer, Header, HeaderCloseBtn, HeaderTitle, Item, Label, Menu, ResetBtn, SaveBtn } from './elements';
 import { clsx } from 'clsx';
-import { Dropdown, Footer, Header, HeaderCloseBtn, HeaderTitle, Menu, ResetBtn, SaveBtn } from './elements';
+import { Event } from '@/core';
 import { IconFilter, IconX } from '@tabler/icons-react';
 import { useRef, useState } from 'react';
+import { useStore, useUser } from '@/data/hooks';
 
 export const Filter = (props: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
 
+    const { user } = useUser();
+    const { filters, setActions } = useStore();
+
+    const [filterEvents, setFilterEvents] = useState<Event[]>(filters(user));
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const dropdownTrigger = useRef<HTMLButtonElement | null>(null);
 
+    const disableSave: boolean = filterEvents.length === 0;
+
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
     const closeDropdown = () => setIsDropdownOpen(false);
-    const resetEvents = () => { return };
-    const saveEvents = () => setIsDropdownOpen(false);
+
+    const resetEvents = () => setFilterEvents(Object.values(Event));
+
+    const saveEvents = () => {
+        if (disableSave) return;
+        setActions({ filters: filterEvents }, user?.username);
+        setIsDropdownOpen(false);
+    }
+
+    const toggleEvent = (event: Event) => () => {
+        setFilterEvents(prev => prev.includes(event)
+            ? prev.filter(e => e !== event)
+            : [...prev, event]
+        )
+    }
 
     return (
         (
@@ -51,10 +73,28 @@ export const Filter = (props: React.ButtonHTMLAttributes<HTMLButtonElement>) => 
                         <HeaderTitle>Filtro</HeaderTitle>
                         <HeaderCloseBtn icon={IconX} onClose={closeDropdown} />
                     </Header>
-                    <Menu />
+                    <Menu>
+                        {Object.values(events).map((item) => (
+                            <li key={item.event}>
+                                <Label htmlFor={item.event}>
+                                    <Checkbox
+                                        id={item.event}
+                                        event={item.event}
+                                        events={filterEvents}
+                                        onCheck={toggleEvent}
+                                    />
+                                    <Item
+                                        icon={item.icon}
+                                        label={item.label}
+                                        tip={item.tip}
+                                    />
+                                </Label>
+                            </li>
+                        ))}
+                    </Menu>
                     <Footer>
                         <ResetBtn onReset={resetEvents} />
-                        <SaveBtn onSave={saveEvents} />
+                        <SaveBtn disabled={disableSave} onSave={saveEvents} />
                     </Footer>
                 </Dropdown>
             </div>

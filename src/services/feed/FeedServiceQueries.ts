@@ -9,7 +9,7 @@ export const FeedServiceQueries = () => {
     const useGetFeed = (token: string, params?: string, enabled: boolean = true) => {
         return useInfinitePagedQuery<Page<FeedEvent>>({
             keys: ['feed', token, params],
-            function: (page) => service.getFeed(token, `page=${page}`),
+            function: (page) => service.getFeed(token, `${params}&page=${page}`),
             enabled: enabled
         })
     }
