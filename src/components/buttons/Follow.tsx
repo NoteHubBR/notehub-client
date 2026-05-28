@@ -9,11 +9,12 @@ import { useQueryClient } from '@tanstack/react-query';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     user: LowDetailUser;
+    size?: number;
     useIcon?: boolean;
     useText?: boolean;
 }
 
-export const Follow = ({ user, useIcon, useText, className, ...rest }: ButtonProps) => {
+export const Follow = ({ user, size = 20, useIcon, useText, className, ...rest }: ButtonProps) => {
 
     const { userService: { followUser, unfollowUser } } = useServices();
     const qc = useQueryClient();
@@ -101,7 +102,7 @@ export const Follow = ({ user, useIcon, useText, className, ...rest }: ButtonPro
                 className
             )}
         >
-            {useIcon && (reqFollow && <IconUserPlus size={20} /> || reqUnfollow && <IconUserMinus size={20} />)}
+            {useIcon && (reqFollow && <IconUserPlus size={size} /> || reqUnfollow && <IconUserMinus size={size} />)}
             {useText && (reqFollow && 'Seguindo' || reqUnfollow && 'Desseguindo')}
         </div>
     )
@@ -114,7 +115,7 @@ export const Follow = ({ user, useIcon, useText, className, ...rest }: ButtonPro
             onClick={() => unfollow()}
             {...rest}
         >
-            {useIcon && <IconUserMinus size={20} />}
+            {useIcon && <IconUserMinus size={size} />}
             {useText && "Desseguir"}
         </HTMLButton >
     )
@@ -127,7 +128,7 @@ export const Follow = ({ user, useIcon, useText, className, ...rest }: ButtonPro
             onClick={() => unfollow()}
             {...rest}
         >
-            {useIcon && <IconUserCheck size={20} />}
+            {useIcon && <IconUserCheck size={size} />}
             {useText && "Seguindo"}
         </HTMLButton>
     )
@@ -145,7 +146,7 @@ export const Follow = ({ user, useIcon, useText, className, ...rest }: ButtonPro
             onClick={() => follow()}
             {...rest}
         >
-            {useIcon && <IconUserPlus size={20} />}
+            {useIcon && <IconUserPlus size={size} />}
             {useText && "Seguir"}
         </HTMLButton>
     )
