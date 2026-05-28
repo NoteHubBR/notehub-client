@@ -13,7 +13,6 @@ export const Target = ({ event, ...rest }: TargetProps) => {
 
     const related: LowDetailUser | null = (() => {
         switch (event.event) {
-            case Event.User_Followed: return event.related;
             case Event.Note_Created: return event.note.user;
             case Event.Note_Flamed: return event.flame.note.user;
             case Event.Note_Commented: return event.comment.note.user;
@@ -23,19 +22,19 @@ export const Target = ({ event, ...rest }: TargetProps) => {
 
     const target = (() => {
         switch (event.event) {
-            case Event.User_Followed: return `/${event.related.username}`;
             case Event.Note_Created: return `/${event.note.user ? event.note.user.username : 'null'}/${event.note.id}`;
             case Event.Note_Flamed: return `/${event.flame.note.user ? event.flame.note.user.username : 'null'}/${event.flame.note.id}`;
             case Event.Note_Commented: return `/${event.comment.note.user ? event.comment.note.user.username : 'null'}/${event.comment.note.id}`;
+            default: return '';
         }
     })()
 
     const text = (() => {
         switch (event.event) {
-            case Event.User_Followed: return `${event.related.display_name}`;
             case Event.Note_Created: return `${event.note.user ? event.note.user.username : 'null'} / ${event.note.title}`;
             case Event.Note_Flamed: return `${event.flame.note.user ? event.flame.note.user.username : 'null'} / ${event.flame.note.title}`;
             case Event.Note_Commented: return `${event.comment.note.user ? event.comment.note.user.username : 'null'} / ${event.comment.note.title}`;
+            default: return '';
         }
     })()
 

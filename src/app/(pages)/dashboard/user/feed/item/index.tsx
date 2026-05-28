@@ -1,14 +1,8 @@
-import { Element } from "./elements";
 import { Event, FeedEvent, User } from "@/core";
 import { Toggle } from "@/components/buttons";
+import { Article, Header, Section } from './elements';
 
 export const Item = ({ user, event }: { user: User, event: FeedEvent }) => {
-
-    const {
-        Article,
-        Header: { Creator, Message, Time },
-        Section: { Target, Desc }
-    } = Element;
 
     const getRelated = ((event: FeedEvent) => {
         return event.event === Event.User_Followed ? event.related : null;
@@ -26,22 +20,20 @@ export const Item = ({ user, event }: { user: User, event: FeedEvent }) => {
     const related = getRelated(event);
     const note = getNote(event);
 
-    return (
+    if (related) return (
         <Article>
-            <header className="flex items-center gap-3">
-                <Creator event={event} />
-                <div className="flex flex-col">
-                    <Message user={user} event={event} />
-                    <Time time={event.created_at} />
-                </div>
-            </header>
-            <section className="p-3 rounded flex flex-col gap-2 dark:bg-semidark bg-semilight">
-                <Target event={event} />
-                <Desc user={user} event={event} />
-                {related ? <Toggle.Follow user={event.actor} useIcon useText className='!m-0'/> : null}
-                {note ? <Toggle.Flame size={18} note={note} useCount /> : null}
-            </section>
+            <Header user={user} event={event} />
+            <Section.User event={event} related={related} />
         </Article>
     )
+
+    if (note) return (
+        <Article>
+            <Header user={user} event={event} />
+            <Section.Note event={event} note={note} />
+        </Article>
+    )
+
+    return null;
 
 }

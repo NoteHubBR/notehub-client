@@ -1,11 +1,10 @@
 import { Event, FeedEvent, User } from '@/core';
 
 interface DescProps extends React.HTMLAttributes<HTMLParagraphElement> {
-    user: User;
     event: FeedEvent;
 }
 
-export const Desc = ({ user, event, ...rest }: DescProps) => {
+export const Desc = ({ event, ...rest }: DescProps) => {
 
     const desc = (() => {
         switch (event.event) {

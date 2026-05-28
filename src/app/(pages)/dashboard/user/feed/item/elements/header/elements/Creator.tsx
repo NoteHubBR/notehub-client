@@ -30,7 +30,7 @@ export const Creator = ({ event, ...rest }: CreatorProps) => {
                     className="absolute -bottom-1 -right-1
                     p-[2px] rounded-full
                     border-2 dark:border-dark border-light
-                    bg-slate-400"
+                    bg-primary"
                 >
                     {icon}
                 </div>

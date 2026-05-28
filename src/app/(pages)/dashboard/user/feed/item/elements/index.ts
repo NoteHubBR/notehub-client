@@ -1,5 +1,3 @@
-import { Article } from "./Article";
-import { Header } from "./header";
-import { Section } from "./section";
-
-export const Element = { Article, Header, Section };
+export { Article } from './Article';
+export { Header } from './header';
+export { Section } from './section';
