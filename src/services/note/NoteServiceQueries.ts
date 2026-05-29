@@ -7,14 +7,6 @@ export const NoteServiceQueries = () => {
 
     const service = NoteService();
 
-    const useGetFeed = (token: string, enabled: boolean = true) => {
-        return useInfinitePagedQuery<Page<LowDetailNote>>({
-            keys: ['feed', token],
-            function: (page) => service.getFeedNotes(token, `page=${page}`),
-            enabled: enabled
-        })
-    }
-
     const useFindUserTags = (token: string | null, username: string, enabled: boolean = true) => {
         return useGuardedQuery({
             keys: ['userTags', token, username],
@@ -58,7 +50,6 @@ export const NoteServiceQueries = () => {
     return {
         useFindUserTags,
         useFindUserNotes,
-        useGetFeed,
         useSearchNotes,
         useSearchTags,
         useGetNote
