@@ -245,17 +245,19 @@ export const items: Items[] = [
     },
     {
         id: 'feed',
-        keywords: ["feed", "início", "inicio", "principal", "central"],
+        keywords: ["feed", "início", "inicio", "principal", "central", "home", "dashboard"],
         question: 'Feed',
         answer: (
             <>
                 <p>
-                    Seu feed é atualizado sempre que alguém que você segue publica uma nova nota.
+                    Seu feed reúne atualizações de usuários que você segue, incluindo novas notas criadas,
+                    notas curtidas, comentários realizados e novos seguidores.
                 </p>
                 <br />
                 <p>
-                    Em breve, ampliaremos os tipos de conteúdo exibidos e ofereceremos filtros para você personalizar
-                    as atualizações do seu feed.
+                    Você também pode personalizar o conteúdo exibido ativando ou desativando cada tipo de evento
+                    nas opções de filtro do feed. Atualmente, é necessário manter ao menos um filtro ativado,
+                    portanto não é possível desabilitar completamente o feed.
                 </p>
             </>
         )
