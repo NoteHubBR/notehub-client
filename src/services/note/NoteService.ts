@@ -37,15 +37,6 @@ export const NoteService = () => {
         }
     }, [httpGet, handleExpiredToken])
 
-    const getFeedNotes = useCallback(async (token: string, params?: string): Promise<Page<LowDetailNote>> => {
-        const endpoint: string = `/notes/private/following?${params}`;
-        try {
-            return await httpGet(endpoint, { useToken: token });
-        } catch (error: any) {
-            return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useToken: newToken }));
-        }
-    }, [httpGet, handleExpiredToken])
-
     const searchNotes = useCallback(async (parameters?: string): Promise<Page<LowDetailNote>> => {
         try {
             return await httpGet(`/notes/search?${parameters}`);
@@ -111,7 +102,6 @@ export const NoteService = () => {
         getUserNotes,
         findUserTags,
         searchUserNotes,
-        getFeedNotes,
         searchNotes,
         searchTags,
         createNote,

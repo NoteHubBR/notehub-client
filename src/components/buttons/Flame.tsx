@@ -13,6 +13,8 @@ interface FlameProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Flame = ({ size = 24, note, useCount, ...rest }: FlameProps) => {
 
+    if (note.hidden) return null;
+
     const { flameService: { inflameNote, deflameNote } } = useServices();
     const qc = useQueryClient();
 

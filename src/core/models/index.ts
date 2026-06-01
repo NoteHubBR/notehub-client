@@ -8,3 +8,4 @@ export * from './notification';
 export * from './flame';
 export * from './comment';
 export * from './reply';
+export * from './feed';

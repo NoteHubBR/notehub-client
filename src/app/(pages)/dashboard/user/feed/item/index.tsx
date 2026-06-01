@@ -1,30 +1,39 @@
-import { Element } from "./elements";
-import { LowDetailNote } from "@/core";
+import { Event, FeedEvent, User } from "@/core";
 import { Toggle } from "@/components/buttons";
+import { Article, Header, Section } from './elements';
 
-export const Item = ({ note }: { note: LowDetailNote }) => {
+export const Item = ({ user, event }: { user: User, event: FeedEvent }) => {
 
-    const {
-        Article,
-        Header: { Creator, Message, Time },
-        Section: { Target, Desc }
-    } = Element;
+    const getRelated = ((event: FeedEvent) => {
+        return event.event === Event.User_Followed ? event.related : null;
+    })
 
-    if (note.user) return (
+    const getNote = ((event: FeedEvent) => {
+        switch (event.event) {
+            case Event.Note_Created: return event.note;
+            case Event.Note_Flamed: return event.flame.note;
+            case Event.Note_Commented: return event.comment.note;
+            default: return null;
+        }
+    })
+
+    const related = getRelated(event);
+    const note = getNote(event);
+
+    if (related) return (
         <Article>
-            <header className="flex items-center gap-3">
-                <Creator user={note.user} />
-                <div className="flex flex-col">
-                    <Message user={note.user} />
-                    <Time time={note.created_at} />
-                </div>
-            </header>
-            <section className="p-3 rounded flex flex-col gap-2 dark:bg-semidark bg-semilight">
-                <Target note={note} />
-                <Desc>{note.description}</Desc>
-                <Toggle.Flame size={18} note={note} useCount />
-            </section>
+            <Header user={user} event={event} />
+            <Section.User event={event} related={related} />
         </Article>
     )
+
+    if (note) return (
+        <Article>
+            <Header user={user} event={event} />
+            <Section.Note event={event} note={note} />
+        </Article>
+    )
+
+    return null;
 
 }

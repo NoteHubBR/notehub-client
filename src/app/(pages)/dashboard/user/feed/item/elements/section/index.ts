@@ -1,4 +1,4 @@
-import { Desc } from "./Desc";
-import { Target } from "./Target";
+import { Section as User } from './user';
+import { Section as Note } from './note';
 
-export const Section = { Target, Desc };
+export const Section = { User, Note };

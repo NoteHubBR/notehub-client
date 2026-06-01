@@ -2,17 +2,19 @@ import { Empty } from "./empty";
 import { Header } from "./header";
 import { Icon } from "@/components/icons";
 import { Item } from "./item";
-import { LowDetailNote } from "@/core";
+import { FeedEvent, LowDetailNote } from "@/core";
 import { Skeleton } from "./skeleton";
 import { useEffect, useCallback } from "react";
-import { useServices, useUser } from "@/data/hooks";
+import { useServices, useStore, useUser } from "@/data/hooks";
 
 export const Feed = () => {
 
-    const { noteServiceQueries: { useGetFeed } } = useServices();
-    const { isMounted, token } = useUser();
+    const { feedServiceQueries: { useGetFeed } } = useServices();
+    const { isMounted, user, token } = useUser();
+    const { filters } = useStore();
 
     const accessToken = token ? token.access_token : 'token';
+    const events = filters(user).map(f => `events=${f}`).join('&');
 
     const {
         data: data,
@@ -20,7 +22,7 @@ export const Feed = () => {
         isFetchingNextPage,
         hasNextPage,
         fetchNextPage,
-    } = useGetFeed(accessToken, isMounted)
+    } = useGetFeed(accessToken, events, isMounted)
 
     const handleScroll = useCallback(() => {
         if (!hasNextPage || isFetchingNextPage) return;
@@ -35,11 +37,13 @@ export const Feed = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [handleScroll])
 
+    if (!user) return;
+
     if (isLoading) return <Skeleton />;
 
     if (data) {
-        const notes: LowDetailNote[] = data.pages.flatMap(p => p.content) ?? [];
-        if (notes.length === 0) return <Empty />;
+        const events: FeedEvent[] = data.pages.flatMap(p => p.content) ?? [];
+        if (events.length === 0) return <Empty />;
         return (
             <section
                 className="max-w-[777px] inlg:max-w-full w-full my-3 p-3 rounded-[5px]
@@ -48,9 +52,9 @@ export const Feed = () => {
             >
                 <Header />
                 <ul className="flex flex-col gap-4">
-                    {notes.map((note) => (
-                        <li key={note.id}>
-                            <Item note={note} />
+                    {events.map((event, key) => (
+                        <li key={key}>
+                            <Item user={user} event={event} />
                         </li>
                     ))}
                 </ul>
