@@ -26,7 +26,7 @@ export const Changelog = () => {
                             <Scope scope={release.scope} />
                             <Time time={release.date} />
                         </div>
-                        <Change toId={release.version}>{release.summary}</Change>
+                        <Change toId={release.id}>{release.summary}</Change>
                     </Li>
                 ))}
                 <Li><Link /></Li>

@@ -1,14 +1,15 @@
-import { markdown } from '@codemirror/lang-markdown';
 export type ReleaseEntryType = 'sec' | 'feat' | 'fix' | 'docs' | 'style' | 'refactor' | 'perf' | 'test' | 'chore';
 
 export interface ReleaseEntry {
     type: ReleaseEntryType;
     pr: number;
+    merged?: boolean;
     hash: string;
     desc: string;
 }
 
 export interface Release {
+    id: string;
     version: string;
     date: string;
     scope: 'server' | 'client' | 'server & client';
@@ -19,6 +20,24 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        id: '15',
+        version: 'v3.0',
+        date: '1/6/26 9:34',
+        scope: 'server',
+        title: 'Junho 1, 2026',
+        summary: 'Novo Feed',
+        entries: [
+            {
+                type: 'feat',
+                pr: 27,
+                merged: true,
+                hash: 'c6cb87969723edef59d77818486fe976e91fc2f7',
+                desc: 'Novo Feed de atividades com fan-out, filtros por evento e suporte a privacidade de perfil.'
+            }
+        ]
+    },
+    {
+        id: '14',
         version: 'v3.0',
         date: '7/5/26 8:26',
         scope: 'client',
@@ -40,6 +59,7 @@ export const releases: Release[] = [
         ]
     },
     {
+        id: '13',
         version: 'v2.3.1',
         date: '30/4/26 8:36',
         scope: 'client',
@@ -55,6 +75,7 @@ export const releases: Release[] = [
         ]
     },
     {
+        id: '12',
         version: 'v2.2',
         date: '24/4/26 9:05',
         scope: 'server',
@@ -70,6 +91,7 @@ export const releases: Release[] = [
         ]
     },
     {
+        id: '11',
         version: 'v2.1',
         date: '15/4/26 9:17',
         scope: 'server',
@@ -91,6 +113,7 @@ export const releases: Release[] = [
         ]
     },
     {
+        id: '10',
         version: 'v2.0.3',
         date: '25/3/26 9:56',
         scope: 'server',
@@ -106,6 +129,7 @@ export const releases: Release[] = [
         ]
     },
     {
+        id: '9',
         version: 'v2.1',
         date: '10/3/26 4:04',
         scope: 'client',
@@ -145,6 +169,7 @@ export const releases: Release[] = [
         ]
     },
     {
+        id: '8',
         version: 'v2.0.4',
         date: '27/2/26 10:49',
         scope: 'client',
@@ -160,6 +185,7 @@ export const releases: Release[] = [
         ]
     },
     {
+        id: '7',
         version: 'v2.0.2',
         date: '5/1/26 10:35',
         scope: 'server',
@@ -175,6 +201,7 @@ export const releases: Release[] = [
         ]
     },
     {
+        id: '6',
         version: 'v2.0.1',
         date: '17/12/25 11:24',
         scope: 'server',
@@ -190,6 +217,7 @@ export const releases: Release[] = [
         ]
     },
     {
+        id: '5',
         version: 'v2.0',
         date: '12/12/25 14:11',
         scope: 'server',
@@ -205,6 +233,7 @@ export const releases: Release[] = [
         ]
     },
     {
+        id: '4',
         version: 'v1.7',
         date: '8/10/25 14:45',
         scope: 'server',
@@ -226,6 +255,7 @@ export const releases: Release[] = [
         ]
     },
     {
+        id: '3',
         version: 'v1.6.1',
         date: '29/09/25 10:56',
         scope: 'server',
@@ -241,6 +271,7 @@ export const releases: Release[] = [
         ]
     },
     {
+        id: '2',
         version: 'v1.6',
         date: '26/09/25 14:00',
         scope: 'server',
@@ -262,6 +293,7 @@ export const releases: Release[] = [
         ]
     },
     {
+        id: '1',
         version: 'v1.5',
         date: '17/09/25 12:34',
         scope: 'server',
