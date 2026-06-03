@@ -74,6 +74,17 @@ export const MdPreview = ({ isEditing, isPreviewing, markdown, ...rest }: Markdo
             // mark
             '[&_mark]:bg-primary/75 [&_mark]:text-lighter',
             '[&_mark]:p-1 [&_mark]:rounded',
+            // details
+            '[&_details]:px-4 [&_details]:py-2',
+            //summary
+            '[&_summary]:cursor-pointer',
+            '[&_summary]:outline-none',
+            '[&_summary]:font-medium [&_summary]:text-lg',
+            '[&_summary]:transition-colors',
+            'dark:[&_summary]:text-semilight [&_summary]:text-semidark',
+            'dark:hover:[&_summary]:text-secondary hover:[&_summary]:text-primary',
+            'dark:focus-visible:[&_summary]:text-secondary focus-visible:[&_summary]:text-primary',
+            'dark:[&_details[open]_summary]:text-secondary [&_details[open]_summary]:text-primary',
             // containers
             '[&_.warning]:border-l-2 [&_.warning]:border-yellow-500 [&_.warning]:bg-yellow-500/10 [&_.warning]:px-4 [&_.warning]:py-2 [&_.warning]:rounded',
             '[&_.info]:border-l-2 [&_.info]:border-primary [&_.info]:bg-primary/10 [&_.info]:px-4 [&_.info]:py-2 [&_.info]:rounded',
