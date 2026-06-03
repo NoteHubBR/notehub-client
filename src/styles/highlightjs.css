@@ -41,3 +41,7 @@ html.dark .hljs-comment {
 html.dark .hljs-tag {
     color: #7ee787;
 }
+
+html.dark .hljs-subst {
+    color: #79c0ff;
+}
