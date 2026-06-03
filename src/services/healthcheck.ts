@@ -6,7 +6,7 @@ export const HealthService = () => {
 
     const check = async (): Promise<void> => {
         try {
-            return await httpGet('/health', { useProgress: true });
+            return await httpGet('/health');
         } catch (error) {
             throw error;
         }
