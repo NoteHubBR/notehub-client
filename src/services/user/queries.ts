@@ -1,9 +1,7 @@
 import { useGuardedQuery, usePublicQuery } from '../utils';
-import { UserService } from './UserService';
+import { UserService } from './service';
 
-export const UserServiceQueries = () => {
-
-    const service = UserService();
+export const createUserQueries = (service: UserService) => {
 
     const useGetUser = (username: string, enabled: boolean = true) => {
         return useGuardedQuery({

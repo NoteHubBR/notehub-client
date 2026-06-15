@@ -1,4 +1,2 @@
-import { UserService } from "./UserService";
-import { UserServiceQueries } from "./UserServiceQueries";
-
-export { UserService, UserServiceQueries };
+export { createUserService } from "./service";
+export { createUserQueries } from './queries';
