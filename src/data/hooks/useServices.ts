@@ -1,5 +1,4 @@
 import {
-    AuthService,
     CommentService,
     CommentServiceQueries,
     FeedServiceQueries,
@@ -11,15 +10,10 @@ import {
     ReplyService,
     ReplyServiceQueries,
     SponsorshipService,
-    UserService,
-    UserServiceQueries
 } from "@/services";
 
 export const useServices = () => {
     const healthService = HealthService();
-    const authService = AuthService();
-    const userService = UserService();
-    const userServiceQueries = UserServiceQueries();
     const feedServiceQueries = FeedServiceQueries();
     const noteService = NoteService();
     const noteServiceQueries = NoteServiceQueries();
@@ -32,8 +26,6 @@ export const useServices = () => {
     const sponsorshipService = SponsorshipService();
     return {
         healthService,
-        authService,
-        userService, userServiceQueries,
         feedServiceQueries,
         noteService, noteServiceQueries,
         flameService, flameServiceQueries,

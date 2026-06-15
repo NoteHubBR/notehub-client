@@ -3,7 +3,7 @@
 import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Token, User, Cookies, shouldUseUserContext } from "@/core";
-import { useFlames, useFollowing, useHistory, useLoading, useNotes, useServices, useStore, useSubscriptions, useTags } from "../hooks";
+import { useApiTest, useFlames, useFollowing, useHistory, useLoading, useNotes, useServices, useStore, useSubscriptions, useTags } from "../hooks";
 import { usePathname } from "next/navigation";
 
 export interface UserContextProps {
@@ -21,11 +21,14 @@ const UserContext = createContext<UserContextProps>({} as UserContextProps);
 export const UserProvider = (props: any) => {
 
     const {
-        authService: { refreshUser, logoutUser },
-        userService: { getUserDisplayNameHistory, getUserSubscriptions, searchUserFollowing },
         noteService: { getUserNotes, findUserTags },
         flameService: { getUserFlames }
     } = useServices();
+
+    const {
+        authService: { refreshUser, logoutUser },
+        userService: { getUserDisplayNameHistory, getUserSubscriptions, searchUserFollowing },
+    } = useApiTest();
 
     const { setIsLoaded } = useLoading();
     const { isStoreReady, store, setStore, setActions, updateActions } = useStore();

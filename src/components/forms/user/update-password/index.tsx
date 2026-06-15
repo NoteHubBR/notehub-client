@@ -1,14 +1,14 @@
 import { Element } from "./elements";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { handleFieldErrors, handleInvalidTokenFieldError, PasswordUpdateFormData, passwordUpdateFormSchema } from "@/core";
+import { useApiTest, useUser } from "@/data/hooks";
 import { useRouter } from "next/navigation";
-import { useServices, useUser } from "@/data/hooks";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = ({ token }: { token: string }) => {
 
-    const { userService: { updateUserPassword } } = useServices();
+    const { userService: { updateUserPassword } } = useApiTest();
     const { clearUser } = useUser();
 
     const passwordUpdateForm = useForm<PasswordUpdateFormData>({

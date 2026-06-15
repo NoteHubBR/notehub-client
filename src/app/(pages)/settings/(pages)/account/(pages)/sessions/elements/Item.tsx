@@ -2,8 +2,8 @@ import { clsx } from 'clsx';
 import { Disconnect } from './Disconnect';
 import { IconBrandAndroid, IconBrandApple, IconBrandDebian, IconBrandWindows, IconSpy } from '@tabler/icons-react';
 import { Session, toRelativeTime } from '@/core';
+import { useApiTest, useUser } from '@/data/hooks';
 import { useRouter } from 'next/navigation';
-import { useServices, useUser } from '@/data/hooks';
 import { useTransition } from 'react';
 
 interface ItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
@@ -14,7 +14,7 @@ interface ItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
 
 export const Item = ({ device, session, setSessions, ...rest }: ItemProps) => {
 
-    const { authService } = useServices();
+    const { authService } = useApiTest();
 
     const { clearUser } = useUser();
     const [isPending, startTransition] = useTransition();

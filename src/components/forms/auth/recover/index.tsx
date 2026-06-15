@@ -2,14 +2,14 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { handleFieldErrors, RecoverFormData, recoverFormSchema } from "@/core";
 import { IconMail } from "@tabler/icons-react";
+import { useApiTest } from "@/data/hooks";
 import { useRouter } from "next/navigation";
-import { useServices } from "@/data/hooks";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
 
-    const { authService: { sendPasswordChangeRequest } } = useServices();
+    const { authService: { sendPasswordChangeRequest } } = useApiTest();
 
     const recoverForm = useForm<RecoverFormData>({
         resolver: zodResolver(recoverFormSchema)

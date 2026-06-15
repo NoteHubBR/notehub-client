@@ -3,12 +3,12 @@
 import { clsx } from "clsx";
 import { Header } from "../../../Header";
 import { IconSend } from "@tabler/icons-react";
-import { useServices, useUser } from "@/data/hooks";
+import { useApiTest, useUser } from "@/data/hooks";
 import { useState } from "react";
 
 const Page = () => {
 
-    const { authService: { sendPasswordChangeRequest } } = useServices();
+    const { authService: { sendPasswordChangeRequest } } = useApiTest();
     const { user } = useUser();
 
     const [isPending, setIsPending] = useState<boolean>(false);

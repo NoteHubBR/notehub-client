@@ -3,14 +3,14 @@
 import { Icon } from "@/components/icons";
 import { SVG } from "@/components/svgs";
 import { Template } from "@/components/templates";
+import { useApiTest} from "@/data/hooks";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { useServices } from "@/data/hooks";
 import Link from "next/link";
 
 const Page = () => {
 
-    const { userService: { activateUser } } = useServices();
+    const { userService: { activateUser } } = useApiTest();
 
     const params = useParams<{ jwt: string }>();
 

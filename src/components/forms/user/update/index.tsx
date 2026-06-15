@@ -5,9 +5,9 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { forwardRef, useState, useTransition } from "react";
 import { IconX } from "@tabler/icons-react";
+import { useApiTest, useUser } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
-import { useServices, useUser } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -17,7 +17,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 
 export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortalClose, ...rest }, ref) => {
 
-    const { userService: { updateUser } } = useServices();
+    const { userService: { updateUser } } = useApiTest();
     const qc = useQueryClient();
 
     const { token, user, updateUser: editUser } = useUser();

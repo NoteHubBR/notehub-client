@@ -3,16 +3,16 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { handleFieldErrors, LoginFormData, loginFormSchema, Token, User } from "@/core";
 import { IconAt } from "@tabler/icons-react";
+import { useApiTest, useServices, useStore, useUser } from "@/data/hooks";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useServices, useStore, useUser } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 
 export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
 
-    const { authService: { loginUserByDefault, loginUserByGoogle, loginUserByGitHub } } = useServices();
+    const { authService: { loginUserByDefault, loginUserByGoogle, loginUserByGitHub } } = useApiTest();
 
     const { setStore } = useStore();
     const { setUser } = useUser();

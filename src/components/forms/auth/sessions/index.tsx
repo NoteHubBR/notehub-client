@@ -1,7 +1,7 @@
 import { Element } from "./elements";
 import { FindSessionsFormData, findSessionsFormSchema, handleFieldErrors, handleInvalidTokenFieldError, Session } from "@/core";
 import { FormProvider, useForm } from "react-hook-form";
-import { useServices, useUser } from "@/data/hooks";
+import { useApiTest,useUser } from "@/data/hooks";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -11,7 +11,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 
 export const Form = ({ onSuccess, ...rest }: FormProps) => {
 
-    const { authService: { findAllSessions } } = useServices();
+    const { authService: { findAllSessions } } = useApiTest();
 
     const { user, token } = useUser();
 
