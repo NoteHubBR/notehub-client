@@ -8,7 +8,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = ({ token }: { token: string }) => {
 
-    const { userService: { updateUserEmail } } = useApiTest();
+    const {
+        userService: { updateUserEmail },
+        withProgress
+    } = useApiTest();
     const { clearUser } = useUser();
 
     const emailChangeForm = useForm<EmailChangeFormData>({
@@ -29,7 +32,7 @@ export const Form = ({ token }: { token: string }) => {
     const onSubmit = async (data: EmailChangeFormData): Promise<void> => {
         try {
             setIsPending(true);
-            await updateUserEmail(token, data);
+            await withProgress(() => updateUserEmail(token, data));
             if (data.disconnectAll && !data.keepCurrentSession) clearUser();
             return router.push("/");
         } catch (error: unknown) {

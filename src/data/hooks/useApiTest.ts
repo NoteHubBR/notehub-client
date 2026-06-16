@@ -11,15 +11,6 @@ export const useApiTest = () => {
     const { setOnProgress } = useProgress();
     const { token, updateToken } = useUser();
 
-    const withProgress = useMemo(() =>
-        async <T>(fn: () => Promise<T>): Promise<T> => {
-            setOnProgress(true);
-            try { return await fn(); }
-            finally { setOnProgress(false); }
-        },
-        [setOnProgress]
-    )
-
     const api = useMemo(() => createApiClient({
         deviceId: device,
         token: token ? token.access_token : null,
@@ -27,11 +18,20 @@ export const useApiTest = () => {
 
     const services = useMemo(() => ({
         authService: createAuthService(api, updateToken),
-        userService: createUserService(api, updateToken, withProgress),
-    }), [api, updateToken, withProgress]);
+        userService: createUserService(api, updateToken),
+    }), [api, updateToken]);
 
-    const userQueries = createUserQueries(services.userService);
+    const queries = useMemo(() => ({
+        userQueries: createUserQueries(services.userService)
+    }), [services])
 
-    return { ...services, userQueries };
+    const withProgress = useMemo(() =>
+        async <T>(fn: () => Promise<T>): Promise<T> => {
+            setOnProgress(true);
+            try { return await fn(); }
+            finally { setOnProgress(false); }
+        }, [setOnProgress])
+
+    return { ...services, ...queries, withProgress };
 
 }

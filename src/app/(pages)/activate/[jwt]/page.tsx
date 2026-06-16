@@ -3,14 +3,17 @@
 import { Icon } from "@/components/icons";
 import { SVG } from "@/components/svgs";
 import { Template } from "@/components/templates";
-import { useApiTest} from "@/data/hooks";
+import { useApiTest } from "@/data/hooks";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 
 const Page = () => {
 
-    const { userService: { activateUser } } = useApiTest();
+    const {
+        userService: { activateUser },
+        withProgress
+    } = useApiTest();
 
     const params = useParams<{ jwt: string }>();
 
@@ -20,7 +23,7 @@ const Page = () => {
 
     const handleActivateUser = async (token: string) => {
         try {
-            await activateUser(token);
+            await withProgress(() => activateUser(token));
             setIsActive(true);
         } catch {
             setIsActive(false);

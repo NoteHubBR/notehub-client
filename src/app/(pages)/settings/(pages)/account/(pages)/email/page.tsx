@@ -3,12 +3,15 @@
 import { clsx } from "clsx";
 import { Header } from "../../../Header";
 import { IconSend } from "@tabler/icons-react";
-import { useApiTest,useUser } from "@/data/hooks";
+import { useApiTest, useUser } from "@/data/hooks";
 import { useState } from "react";
 
 const Page = () => {
 
-    const { authService: { sendEmailChangeRequest } } = useApiTest();
+    const {
+        authService: { sendEmailChangeRequest },
+        withProgress
+    } = useApiTest();
     const { user } = useUser();
 
     const [isPending, setIsPending] = useState<boolean>(false);
@@ -17,7 +20,7 @@ const Page = () => {
     const handleClick = async () => {
         if (user) {
             setIsPending(true);
-            return await sendEmailChangeRequest({ email: user.email })
+            return await withProgress(() => sendEmailChangeRequest({ email: user.email }))
                 .then(() => {
                     setIsPending(false);
                     setSent(true);

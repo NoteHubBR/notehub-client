@@ -17,7 +17,10 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 
 export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortalClose, ...rest }, ref) => {
 
-    const { userService: { updateUser } } = useApiTest();
+    const {
+        userService: { updateUser },
+        withProgress
+    } = useApiTest();
     const qc = useQueryClient();
 
     const { token, user, updateUser: editUser } = useUser();
@@ -58,7 +61,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
                 if (avatar) newData.avatar = avatar;
                 if (banner) newData.banner = banner;
 
-                const updated = await updateUser(token.access_token, newData);
+                const updated = await withProgress(() => updateUser(token.access_token, newData));
 
                 await Promise.allSettled([
                     shouldUpdateAvatar && deleteImage(user.avatar),

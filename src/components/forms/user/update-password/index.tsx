@@ -8,7 +8,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = ({ token }: { token: string }) => {
 
-    const { userService: { updateUserPassword } } = useApiTest();
+    const {
+        userService: { updateUserPassword },
+        withProgress
+    } = useApiTest();
     const { clearUser } = useUser();
 
     const passwordUpdateForm = useForm<PasswordUpdateFormData>({
@@ -29,7 +32,7 @@ export const Form = ({ token }: { token: string }) => {
     const onSubmit = async (data: PasswordUpdateFormData): Promise<void> => {
         try {
             setIsPending(true);
-            await updateUserPassword(token, data);
+            await withProgress(() => updateUserPassword(token, data));
             if (data.disconnectAll && !data.keepCurrentSession) clearUser();
             return router.push("/");
         } catch (error: unknown) {

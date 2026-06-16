@@ -14,14 +14,17 @@ interface ItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
 
 export const Item = ({ device, session, setSessions, ...rest }: ItemProps) => {
 
-    const { authService } = useApiTest();
+    const {
+        authService: { disconnectSession },
+        withProgress
+    } = useApiTest();
 
     const { clearUser } = useUser();
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
 
     const handleDisconnectSession = () => startTransition(async () => {
-        await authService.disconnectSession(session.id);
+        await withProgress(() => disconnectSession(session.id));
         setSessions((prev) => prev ? prev.filter(s => s.id !== session.id) : null);
         if (device === session.device) {
             clearUser({ skipLogout: true });

@@ -9,7 +9,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
 
-    const { authService: { sendPasswordChangeRequest } } = useApiTest();
+    const {
+        authService: { sendPasswordChangeRequest },
+        withProgress
+    } = useApiTest();
 
     const recoverForm = useForm<RecoverFormData>({
         resolver: zodResolver(recoverFormSchema)
@@ -24,7 +27,7 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
     const onSubmit = async (data: RecoverFormData) => {
         setIsRequesting(true)
         try {
-            await sendPasswordChangeRequest(data);
+            await withProgress(() => sendPasswordChangeRequest(data));
             router.push('/sent')
         } catch (error: any) {
             if (error.response.status === 404) return setError("email", { message: "Conta não encontrada." });

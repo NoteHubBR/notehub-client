@@ -10,7 +10,10 @@ import Link from "next/link";
 
 const Page = () => {
 
-    const { userService: { updateUserVisibility } } = useApiTest();
+    const {
+        userService: { updateUserVisibility },
+        withProgress
+    } = useApiTest();
 
     const [isPending, startTransition] = useTransition();
 
@@ -19,7 +22,7 @@ const Page = () => {
     const handleClick = () => startTransition(async () => {
         if (token && user) {
             updateUser({ profile_private: !user.profile_private });
-            return await updateUserVisibility(token.access_token);
+            return await withProgress(() => updateUserVisibility(token.access_token));
         }
     })
 

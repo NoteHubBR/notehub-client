@@ -28,6 +28,7 @@ export const UserProvider = (props: any) => {
     const {
         authService: { refreshUser, logoutUser },
         userService: { getUserDisplayNameHistory, getUserSubscriptions, searchUserFollowing },
+        withProgress
     } = useApiTest();
 
     const { setIsLoaded } = useLoading();
@@ -89,7 +90,7 @@ export const UserProvider = (props: any) => {
     }, [state.user, updateActions])
 
     const clearUser = useCallback(async ({ skipLogout }: { skipLogout?: boolean } = {}) => {
-        if (!skipLogout) await logoutUser();
+        if (!skipLogout) await withProgress(() => logoutUser());
         setState((prev) => ({ ...prev, token: null, user: null }));
         setStore({ isGuest: true });
         return Cookies.remove('rtoken');
@@ -99,7 +100,7 @@ export const UserProvider = (props: any) => {
         if (fetchingUserRef.current) return fetchingUserRef.current;
         const promise = (async () => {
             try {
-                const { token, user } = await refreshUser();
+                const { token, user } = await withProgress(() => refreshUser());
                 Cookies.set('rtoken', token.refresh_token, token.expires_at);
                 return setUser(token, user);
             } catch {

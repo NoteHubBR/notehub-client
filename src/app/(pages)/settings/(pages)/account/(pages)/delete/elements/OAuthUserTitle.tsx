@@ -5,7 +5,10 @@ import { useState } from "react";
 
 export const OAuthUserTitle = (props: React.HTMLAttributes<HTMLElement>) => {
 
-    const { authService: { sendSecretKeyRequest } } = useApiTest();
+    const {
+        authService: { sendSecretKeyRequest },
+        withProgress
+    } = useApiTest();
     const { user } = useUser();
 
     const [isPending, setIsPending] = useState<boolean>(false);
@@ -14,7 +17,7 @@ export const OAuthUserTitle = (props: React.HTMLAttributes<HTMLElement>) => {
     const handleClick = async () => {
         if (user) {
             setIsPending(true);
-            return await sendSecretKeyRequest({ email: user.email })
+            return await withProgress(() => sendSecretKeyRequest({ email: user.email }))
                 .then(() => {
                     setIsPending(false);
                     setSent(true);

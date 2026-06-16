@@ -8,7 +8,10 @@ import { useState } from "react";
 
 const Page = () => {
 
-    const { authService: { sendPasswordChangeRequest } } = useApiTest();
+    const {
+        authService: { sendPasswordChangeRequest },
+        withProgress
+    } = useApiTest();
     const { user } = useUser();
 
     const [isPending, setIsPending] = useState<boolean>(false);
@@ -17,7 +20,7 @@ const Page = () => {
     const handleClick = async () => {
         if (user) {
             setIsPending(true);
-            return await sendPasswordChangeRequest({ email: user.email })
+            return await withProgress(() => sendPasswordChangeRequest({ email: user.email }))
                 .then(() => {
                     setIsPending(false);
                     setSent(true);

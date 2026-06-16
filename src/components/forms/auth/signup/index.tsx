@@ -2,14 +2,17 @@ import { CreateUserFormData, createUserFormSchema, handleFieldErrors } from "@/c
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconAt, IconMail, IconSignature } from "@tabler/icons-react";
-import { useApiTest} from "@/data/hooks";
+import { useApiTest } from "@/data/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
 
-    const { userService: { createUser } } = useApiTest();
+    const {
+        userService: { createUser },
+        withProgress
+    } = useApiTest();
 
     const createUserForm = useForm<CreateUserFormData>({
         resolver: zodResolver(createUserFormSchema)
@@ -24,7 +27,7 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
     const onSubmit = async (data: CreateUserFormData) => {
         setIsRequesting(true)
         try {
-            await createUser(data);
+            await withProgress(() => createUser(data));
             router.push('/sent')
         } catch (errors) {
             if (Array.isArray(errors)) handleFieldErrors(errors, setError)

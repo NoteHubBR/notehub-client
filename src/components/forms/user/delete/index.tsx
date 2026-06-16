@@ -9,7 +9,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = () => {
 
-    const { userService: { deleteUser } } = useApiTest();
+    const {
+        userService: { deleteUser },
+        withProgress
+    } = useApiTest();
     const qc = useQueryClient();
 
     const { token, user, clearUser } = useUser();
@@ -27,7 +30,7 @@ export const Form = () => {
         if (token && user)
             try {
                 setIsPending(true);
-                await deleteUser(token.access_token, data);
+                await withProgress(() => deleteUser(token.access_token, data));
                 await Promise.all([
                     qc.invalidateQueries({ queryKey: ['user', user.username] }),
                     qc.invalidateQueries({ queryKey: ['searchUsers'] }),
