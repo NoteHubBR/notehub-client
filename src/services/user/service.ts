@@ -2,21 +2,15 @@ import { ApiClient } from '@/api';
 import { createAuthService } from '../auth';
 import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData, EmailChangeFormData, PasswordUpdateFormData, DeleteUserFormData, Subscription, Token } from '@/core';
 
-export const createUserService = (api: ApiClient, updateToken: (token: Token) => void, withProgress?: <T>(fn: () => Promise<T>) => Promise<T>) => {
+export const createUserService = (api: ApiClient, updateToken: (token: Token) => void) => {
 
-    const { handleExpiredToken } = createAuthService(api, updateToken);
-
-    const run = withProgress ?? (<T>(fn: () => Promise<T>) => fn());
-
-    const withRetry = async <T>(token: string | null, fn: (token: string | null) => Promise<T>): Promise<T> => {
-        return run(() => fn(token)).catch((error) => handleExpiredToken(error, (newToken) => run(() => fn(newToken)), updateToken))
-    }
+    const { withRetry } = createAuthService(api, updateToken);
 
     const createUser = async (data: CreateUserFormData): Promise<void> => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { repeatPassword, ...output } = data;
         try {
-            return await run(() => api.post('/users/register', output));
+            return await api.post('/users/register', output);
         } catch (error) {
             throw error;
         }

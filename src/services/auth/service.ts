@@ -36,20 +36,6 @@ export const createAuthService = (api: ApiClient, updateToken: (token: Token) =>
         }
     }
 
-    const handleExpiredToken = async <T>(
-        error: any,
-        fn: (newToken: string) => Promise<T>,
-        onTokenRefreshed: (token: Token) => void
-    ): Promise<T> => {
-        if (error.data && error.data.message === 'Token inválido.') {
-            const { token } = await refreshUser();
-            Cookies.set('rtoken', token.refresh_token, token.expires_at);
-            onTokenRefreshed(token);
-            return fn(token.access_token);
-        }
-        throw error;
-    }
-
     const logoutUser = async (): Promise<void> => {
         try {
             return await api.delete('/auth/logout', undefined, { refreshToken: Cookies.get('rtoken') });
@@ -82,24 +68,42 @@ export const createAuthService = (api: ApiClient, updateToken: (token: Token) =>
         }
     }
 
-    const findAllSessions = async (token: string, data: FindSessionsFormData): Promise<Session[]> => {
-        try {
-            return await api.post('/auth/sessions', data, { token: token });
-        } catch (error) {
-            return handleExpiredToken(
-                error,
-                (newToken) => api.post('/auth/sessions', data, { token: newToken }),
-                updateToken
-            );
-        }
-    }
-
     const disconnectSession = async (id: UUID): Promise<void> => {
         try {
             return await api.delete(`/auth/session/${id}`, undefined);
         } catch (error) {
             throw error;
         }
+    }
+
+    const handleExpiredToken = async <T>(
+        error: any,
+        fn: (newToken: string) => Promise<T>,
+        onTokenRefreshed: (token: Token) => void
+    ): Promise<T> => {
+        if (error.data && error.data.message === 'Token inválido.') {
+            const { token } = await refreshUser();
+            Cookies.set('rtoken', token.refresh_token, token.expires_at);
+            onTokenRefreshed(token);
+            return fn(token.access_token);
+        }
+        throw error;
+    }
+
+    const withRetry = async <T>(
+        token: string | null,
+        fn: (token: string | null) => Promise<T>
+    ): Promise<T> => {
+        try {
+            return await fn(token);
+        } catch (error) {
+            return handleExpiredToken(error, (newToken) => fn(newToken), updateToken
+            )
+        }
+    }
+
+    const findAllSessions = async (token: string, data: FindSessionsFormData): Promise<Session[]> => {
+        return withRetry(token, (token) => api.post('/auth/sessions', data, { token: token }));
     }
 
     return {
@@ -113,7 +117,8 @@ export const createAuthService = (api: ApiClient, updateToken: (token: Token) =>
         sendEmailChangeRequest,
         sendPasswordChangeRequest,
         findAllSessions,
-        disconnectSession
+        disconnectSession,
+        withRetry
     }
 
 }
