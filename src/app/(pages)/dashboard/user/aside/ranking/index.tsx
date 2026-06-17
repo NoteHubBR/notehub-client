@@ -1,11 +1,11 @@
 import { Element } from "./elements"
 import { Skeleton } from "./skeleton";
 import { Toggle } from "@/components/buttons";
-import { useServices } from "@/data/hooks";
+import { useApiTest } from "@/data/hooks";
 
 export const Ranking = () => {
 
-    const { noteServiceQueries: { useSearchNotes } } = useServices();
+    const { noteQueries: { useSearchNotes } } = useApiTest();
 
     const { data: ranking, isLoading } = useSearchNotes('sort=flamesCount,desc&size=3');
 

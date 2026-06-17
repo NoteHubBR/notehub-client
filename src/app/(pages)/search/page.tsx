@@ -3,7 +3,7 @@
 import { buildQueryStrings, LowDetailNote, LowDetailUser } from "@/core";
 import { Device } from "@/components/devices";
 import { Element } from "./elements";
-import { useApiTest, useServices } from "@/data/hooks";
+import { useApiTest } from "@/data/hooks";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -15,8 +15,8 @@ const Page = () => {
     const type = sParams.get('type');
 
     const {
-        noteServiceQueries: { useSearchNotes, useSearchTags }
-    } = useServices();
+        noteQueries: { useSearchNotes, useSearchTags }
+    } = useApiTest();
 
     const { userQueries: { useSearchUsers } } = useApiTest();
 

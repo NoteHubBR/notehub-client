@@ -1,8 +1,8 @@
 import { clsx } from 'clsx';
 import { IconFlame } from '@tabler/icons-react';
 import { LowDetailNote } from '@/core';
+import { useApiTest, useFlames, useUser } from '@/data/hooks';
 import { useCallback, useState } from 'react';
-import { useFlames, useServices, useUser } from '@/data/hooks';
 import { useQueryClient } from '@tanstack/react-query';
 
 interface FlameProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -15,7 +15,7 @@ export const Flame = ({ size = 24, note, useCount, ...rest }: FlameProps) => {
 
     if (note.hidden) return null;
 
-    const { flameService: { inflameNote, deflameNote } } = useServices();
+    const { flameService: { inflameNote, deflameNote } } = useApiTest();
     const qc = useQueryClient();
 
     const { token, user } = useUser();

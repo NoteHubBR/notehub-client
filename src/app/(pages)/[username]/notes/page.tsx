@@ -5,7 +5,7 @@ import { Element } from "./elements";
 import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
 import { Section } from "../components/Section";
 import { useParams, useSearchParams } from "next/navigation";
-import { useUser, useTags, useServices } from "@/data/hooks";
+import { useUser, useTags, useApiTest } from "@/data/hooks";
 
 const Page = () => {
 
@@ -19,7 +19,7 @@ const Page = () => {
     const accessToken = token ? token.access_token : null;
     const isCurrentUser = user ? user.username === username : false;
 
-    const { noteServiceQueries: { useFindUserTags, useFindUserNotes } } = useServices();
+    const { noteQueries: { useFindUserTags, useFindUserNotes } } = useApiTest();
 
     const { data: tagsResponse, isLoading: tagsLoading } = useFindUserTags(
         accessToken,

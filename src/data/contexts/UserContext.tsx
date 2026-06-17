@@ -21,13 +21,10 @@ const UserContext = createContext<UserContextProps>({} as UserContextProps);
 export const UserProvider = (props: any) => {
 
     const {
-        noteService: { getUserNotes, findUserTags },
-        flameService: { getUserFlames }
-    } = useServices();
-
-    const {
         authService: { refreshUser, logoutUser },
         userService: { getUserDisplayNameHistory, getUserSubscriptions, searchUserFollowing },
+        noteService: { getUserNotes, findUserTags },
+        flameService: { getUserFlames },
         withProgress
     } = useApiTest();
 

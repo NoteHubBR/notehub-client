@@ -1,6 +1,5 @@
-import { Event, FeedEvent, User } from "@/core";
-import { Toggle } from "@/components/buttons";
 import { Article, Header, Section } from './elements';
+import { Event, FeedEvent, User } from "@/core";
 
 export const Item = ({ user, event }: { user: User, event: FeedEvent }) => {
 

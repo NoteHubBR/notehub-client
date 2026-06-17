@@ -2,11 +2,7 @@ import {
     CommentService,
     CommentServiceQueries,
     FeedServiceQueries,
-    FlameService,
-    FlameServiceQueries,
     HealthService,
-    NoteService,
-    NoteServiceQueries,
     ReplyService,
     ReplyServiceQueries,
     SponsorshipService,
@@ -15,10 +11,6 @@ import {
 export const useServices = () => {
     const healthService = HealthService();
     const feedServiceQueries = FeedServiceQueries();
-    const noteService = NoteService();
-    const noteServiceQueries = NoteServiceQueries();
-    const flameService = FlameService();
-    const flameServiceQueries = FlameServiceQueries();
     const commentService = CommentService();
     const commentServiceQueries = CommentServiceQueries();
     const replyService = ReplyService();
@@ -27,8 +19,6 @@ export const useServices = () => {
     return {
         healthService,
         feedServiceQueries,
-        noteService, noteServiceQueries,
-        flameService, flameServiceQueries,
         commentService, commentServiceQueries,
         replyService, replyServiceQueries,
         sponsorshipService

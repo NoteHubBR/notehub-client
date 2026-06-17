@@ -1,5 +1,5 @@
 import { createApiClient } from '@/api';
-import { createAuthService, createUserService, createUserQueries } from '@/services';
+import { createAuthService, createUserService, createUserQueries, createNoteService, createNoteQuery, createFlameService, createFlameQuery } from '@/services';
 import { useMemo } from 'react';
 import { useProgress } from './useProgress';
 import { useStore } from './useStore';
@@ -19,10 +19,14 @@ export const useApiTest = () => {
     const services = useMemo(() => ({
         authService: createAuthService(api, updateToken),
         userService: createUserService(api, updateToken),
+        noteService: createNoteService(api, updateToken),
+        flameService: createFlameService(api, updateToken),
     }), [api, updateToken]);
 
     const queries = useMemo(() => ({
-        userQueries: createUserQueries(services.userService)
+        userQueries: createUserQueries(services.userService),
+        noteQueries: createNoteQuery(services.noteService),
+        flameQueries: createFlameQuery(services.flameService),
     }), [services])
 
     const withProgress = useMemo(() =>
