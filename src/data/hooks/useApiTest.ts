@@ -1,5 +1,5 @@
 import { createApiClient } from '@/api';
-import { createAuthService, createUserService, createUserQueries, createNoteService, createNoteQuery, createFlameService, createFlameQuery, createFeedService, createFeedQuery } from '@/services';
+import { createAuthService, createUserService, createUserQueries, createNoteService, createNoteQuery, createFlameService, createFlameQuery, createFeedService, createFeedQuery, createReplyService, createReplyQuery } from '@/services';
 import { useMemo } from 'react';
 import { useProgress } from './useProgress';
 import { useStore } from './useStore';
@@ -22,13 +22,15 @@ export const useApiTest = () => {
         feedService: createFeedService(api, updateToken),
         noteService: createNoteService(api, updateToken),
         flameService: createFlameService(api, updateToken),
-    }), [api, updateToken]);
+        replyService: createReplyService(api, updateToken),
+    }), [api, updateToken])
 
     const queries = useMemo(() => ({
         userQueries: createUserQueries(services.userService),
         feedQueries: createFeedQuery(services.feedService),
         noteQueries: createNoteQuery(services.noteService),
         flameQueries: createFlameQuery(services.flameService),
+        replyQueries: createReplyQuery(services.replyService),
     }), [services])
 
     const withProgress = useMemo(() =>

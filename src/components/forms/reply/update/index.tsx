@@ -5,8 +5,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { IconEdit, IconX } from "@tabler/icons-react";
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import { Menu, MenuButton, MenuItem } from "@/components/menu";
+import { useApiTest } from "@/data/hooks";
 import { useRef, useState, useTransition } from "react";
-import { useServices } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -24,7 +24,7 @@ type RepliesCache = InfiniteData<Page<Reply>>;
 
 export const Form = ({ token, user, note, comment, reply, setReplies, setRepliesCount, setIsReplying, ...rest }: FormProps) => {
 
-    const { replyService: { editReply, deleteReply } } = useServices();
+    const { replyService: { editReply, deleteReply } } = useApiTest();
     const qc = useQueryClient();
 
     const editReplyForm = useForm<CreateReplyFormData>({
