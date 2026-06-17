@@ -1,7 +1,6 @@
 import {
     CommentService,
     CommentServiceQueries,
-    FeedServiceQueries,
     HealthService,
     ReplyService,
     ReplyServiceQueries,
@@ -10,7 +9,6 @@ import {
 
 export const useServices = () => {
     const healthService = HealthService();
-    const feedServiceQueries = FeedServiceQueries();
     const commentService = CommentService();
     const commentServiceQueries = CommentServiceQueries();
     const replyService = ReplyService();
@@ -18,7 +16,6 @@ export const useServices = () => {
     const sponsorshipService = SponsorshipService();
     return {
         healthService,
-        feedServiceQueries,
         commentService, commentServiceQueries,
         replyService, replyServiceQueries,
         sponsorshipService
