@@ -1,2 +1,2 @@
-export * from './FeedService';
-export * from './FeedServiceQueries';
+export { createFeedService } from './service';
+export { createFeedQuery } from './query';

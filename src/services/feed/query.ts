@@ -1,10 +1,8 @@
 import { FeedEvent, Page } from '@/core';
-import { FeedService } from './FeedService';
+import { FeedService } from './service';
 import { useInfinitePagedQuery } from '../utils';
 
-export const FeedServiceQueries = () => {
-
-    const service = FeedService();
+export const createFeedQuery = (service: FeedService) => {
 
     const useGetFeed = (token: string, params?: string, enabled: boolean = true) => {
         return useInfinitePagedQuery<Page<FeedEvent>>({
