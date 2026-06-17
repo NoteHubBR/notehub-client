@@ -1,2 +1,2 @@
-export { FlameService } from "./FlameService";
-export { FlameServiceQueries } from "./FlameServiceQueries";
+export { createFlameService } from './service';
+export { createFlameQuery } from './query';

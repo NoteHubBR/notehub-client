@@ -1,9 +1,7 @@
-import { FlameService } from './FlameService';
+import { FlameService } from './service';
 import { useGuardedQuery } from '../utils';
 
-export const FlameServiceQueries = () => {
-
-    const service = FlameService();
+export const createFlameQuery = (service: FlameService) => {
 
     const useSearchUserFlames = (token: string | null, username: string, parameters?: string, enabled: boolean = true) => {
         return useGuardedQuery({
