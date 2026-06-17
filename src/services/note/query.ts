@@ -1,11 +1,8 @@
-import { LowDetailNote, Page } from '@/core';
-import { NoteService } from './NoteService';
-import { useGuardedQuery, useInfinitePagedQuery, usePublicQuery } from '../utils';
+import { NoteService } from './service';
+import { useGuardedQuery, usePublicQuery } from '../utils';
 import { UUID } from 'crypto';
 
-export const NoteServiceQueries = () => {
-
-    const service = NoteService();
+export const createNoteQuery = (service: NoteService) => {
 
     const useFindUserTags = (token: string | null, username: string, enabled: boolean = true) => {
         return useGuardedQuery({
