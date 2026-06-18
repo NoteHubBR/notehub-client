@@ -2,7 +2,7 @@ import { CreateNoteFormData, createNoteFormSchema, handleFieldErrors } from "@/c
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconEyeClosed, IconMessage, IconMessageOff, IconWorld } from "@tabler/icons-react";
-import { useApiTest, useNotes } from "@/data/hooks";
+import { useApi, useNotes } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -13,7 +13,7 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
     const {
         noteService: { createNote },
         withProgress
-    } = useApiTest();
+    } = useApi();
     const qc = useQueryClient();
 
     const { setNewNote } = useNotes();

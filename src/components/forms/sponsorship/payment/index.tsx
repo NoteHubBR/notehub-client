@@ -2,7 +2,7 @@ import { Amount, Currencies, CurrenciesDropdown, Currency, CurrencySelector, Ico
 import { countries, Country } from "./types";
 import { DonationFormData, donationFormSchema, Token } from "@/core";
 import { FormProvider, useForm } from "react-hook-form";
-import { useApiTest } from "@/data/hooks";
+import { useApi } from "@/data/hooks";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +16,7 @@ export const Form = ({ token, ...rest }: FormProps) => {
     const {
         sponsorshipService: { buySponsorship },
         withProgress
-    } = useApiTest();
+    } = useApi();
 
     const donationForm = useForm<DonationFormData>({
         resolver: zodResolver(donationFormSchema)

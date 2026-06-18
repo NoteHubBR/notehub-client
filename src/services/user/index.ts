@@ -1,2 +1,2 @@
 export { createUserService } from "./service";
-export { createUserQueries } from './queries';
+export { createUserQuery } from './query';

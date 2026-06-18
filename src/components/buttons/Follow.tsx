@@ -3,7 +3,7 @@
 import { clsx } from "clsx";
 import { IconUserCheck, IconUserMinus, IconUserPlus } from "@tabler/icons-react";
 import { LowDetailUser } from "@/core";
-import { useApiTest, useFollowing, useUser } from "@/data/hooks";
+import { useApi, useFollowing, useUser } from "@/data/hooks";
 import { useCallback, useState } from "react";
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -16,7 +16,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Follow = ({ user, size = 20, useIcon, useText, className, ...rest }: ButtonProps) => {
 
-    const { userService: { followUser, unfollowUser } } = useApiTest();
+    const { userService: { followUser, unfollowUser } } = useApi();
     const qc = useQueryClient();
 
     const { token, user: current } = useUser();

@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import { IconFlame } from '@tabler/icons-react';
 import { LowDetailNote } from '@/core';
-import { useApiTest, useFlames, useUser } from '@/data/hooks';
+import { useApi, useFlames, useUser } from '@/data/hooks';
 import { useCallback, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -15,7 +15,7 @@ export const Flame = ({ size = 24, note, useCount, ...rest }: FlameProps) => {
 
     if (note.hidden) return null;
 
-    const { flameService: { inflameNote, deflameNote } } = useApiTest();
+    const { flameService: { inflameNote, deflameNote } } = useApi();
     const qc = useQueryClient();
 
     const { token, user } = useUser();

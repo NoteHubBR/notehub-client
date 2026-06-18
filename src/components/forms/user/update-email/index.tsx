@@ -1,7 +1,7 @@
 import { Element } from "./elements";
 import { EmailChangeFormData, emailChangeFormSchema, handleFieldErrors, handleInvalidTokenFieldError, scrollTo } from "@/core";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { useApiTest, useUser } from "@/data/hooks";
+import { useApi, useUser } from "@/data/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,7 +11,7 @@ export const Form = ({ token }: { token: string }) => {
     const {
         userService: { updateUserEmail },
         withProgress
-    } = useApiTest();
+    } = useApi();
     const { clearUser } = useUser();
 
     const emailChangeForm = useForm<EmailChangeFormData>({

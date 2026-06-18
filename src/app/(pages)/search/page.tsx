@@ -3,7 +3,7 @@
 import { buildQueryStrings, LowDetailNote, LowDetailUser } from "@/core";
 import { Device } from "@/components/devices";
 import { Element } from "./elements";
-import { useApiTest } from "@/data/hooks";
+import { useApi } from "@/data/hooks";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -16,9 +16,9 @@ const Page = () => {
 
     const {
         noteQueries: { useSearchNotes, useSearchTags }
-    } = useApiTest();
+    } = useApi();
 
-    const { userQueries: { useSearchUsers } } = useApiTest();
+    const { userQueries: { useSearchUsers } } = useApi();
 
     const { data: notesData, isLoading: notesLoading, isFetching: notesFetching } = useSearchNotes(query, type === 'notes' || !type);
     const { data: usersData, isLoading: usersLoading, isFetching: usersFetching } = useSearchUsers(query, type === 'users');

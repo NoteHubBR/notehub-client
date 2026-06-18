@@ -2,7 +2,7 @@ import { Card, Countdown, Detail, Details, GoHome, Icon, Navigator, Paragraph, S
 import { IconCash, IconCheck } from "@tabler/icons-react";
 import { SVG } from "@/components/svgs";
 import { Token } from "@/core";
-import { useApiTest, usePref } from "@/data/hooks";
+import { useApi, usePref } from "@/data/hooks";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -16,7 +16,7 @@ export const Main = ({ token, param, ...rest }: MainProps) => {
     const {
         sponsorshipService: { verifyPaymentStatus },
         withProgress
-    } = useApiTest();
+    } = useApi();
 
     const { pref: { useDarkTheme } } = usePref();
 

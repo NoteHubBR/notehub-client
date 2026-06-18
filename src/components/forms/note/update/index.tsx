@@ -2,7 +2,7 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { forwardRef, useState } from "react";
 import { handleFieldErrors, Note, NoteUpdateFormData, noteUpdateFormSchema, Token } from "@/core";
-import { useApiTest, useNotes, useTags } from "@/data/hooks";
+import { useApi, useNotes, useTags } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -19,7 +19,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
     const {
         noteService: { updateNote },
         withProgress
-    } = useApiTest();
+    } = useApi();
     const qc = useQueryClient();
 
     const { updateNote: updateNoteContext } = useNotes();

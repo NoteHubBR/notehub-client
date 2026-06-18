@@ -4,12 +4,12 @@ import { IconAt, IconBalloon, IconBubbleText, IconUsers, IconUsersGroup } from "
 import { Overview } from "./overview";
 import { Section } from "./components/Section";
 import { toSpecificTime } from "@/core";
-import { useApiTest, useUser } from "@/data/hooks";
+import { useApi, useUser } from "@/data/hooks";
 import { useParams } from "next/navigation";
 
 const Page = () => {
 
-    const { userQueries: { useGetUser } } = useApiTest();
+    const { userQueries: { useGetUser } } = useApi();
 
     const params = useParams<{ username: string }>();
 

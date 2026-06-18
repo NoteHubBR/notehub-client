@@ -2,7 +2,7 @@ import { clsx } from 'clsx';
 import { Disconnect } from './Disconnect';
 import { IconBrandAndroid, IconBrandApple, IconBrandDebian, IconBrandWindows, IconSpy } from '@tabler/icons-react';
 import { Session, toRelativeTime } from '@/core';
-import { useApiTest, useUser } from '@/data/hooks';
+import { useApi, useUser } from '@/data/hooks';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 
@@ -17,7 +17,7 @@ export const Item = ({ device, session, setSessions, ...rest }: ItemProps) => {
     const {
         authService: { disconnectSession },
         withProgress
-    } = useApiTest();
+    } = useApi();
 
     const { clearUser } = useUser();
     const [isPending, startTransition] = useTransition();

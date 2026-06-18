@@ -1,7 +1,7 @@
 import { DeleteUserFormData, deleteUserFormSchema, handleFieldErrors } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
-import { useApiTest, useUser } from "@/data/hooks";
+import { useApi, useUser } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -12,7 +12,7 @@ export const Form = () => {
     const {
         userService: { deleteUser },
         withProgress
-    } = useApiTest();
+    } = useApi();
     const qc = useQueryClient();
 
     const { token, user, clearUser } = useUser();

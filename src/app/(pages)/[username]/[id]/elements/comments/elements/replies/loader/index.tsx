@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import { Comment, Reply, Token } from "@/core"
 import { IconArrowForward } from "@tabler/icons-react";
-import { useApiTest } from "@/data/hooks";
+import { useApi } from "@/data/hooks";
 
 interface LoadMoreProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     token: Token | null;
@@ -12,7 +12,7 @@ interface LoadMoreProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Loader = ({ token, isRepliesListOpen, comment, setReplies, ...rest }: LoadMoreProps) => {
 
-    const { replyQueries: { useGetReplies } } = useApiTest();
+    const { replyQueries: { useGetReplies } } = useApi();
 
     const accessToken = token ? token.access_token : null;
     const { fetchNextPage, hasNextPage, isFetchingNextPage } = useGetReplies(accessToken, comment.id, false);

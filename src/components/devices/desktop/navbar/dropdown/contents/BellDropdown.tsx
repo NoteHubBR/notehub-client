@@ -1,13 +1,13 @@
 import { Loading } from "../elements/Loading";
 import { Notification } from "../elements/Notification";
 import { Section } from "../elements/NotificationSection";
-import { useApiTest, useNotifications, useUser } from "@/data/hooks";
+import { useApi, useNotifications, useUser } from "@/data/hooks";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 export const BellDropdown = () => {
 
-    const { userService: { getUserNotifications } } = useApiTest();
+    const { userService: { getUserNotifications } } = useApi();
 
     const { token } = useUser();
 

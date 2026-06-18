@@ -5,7 +5,7 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { forwardRef, useState, useTransition } from "react";
 import { IconX } from "@tabler/icons-react";
-import { useApiTest, useUser } from "@/data/hooks";
+import { useApi, useUser } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,7 +20,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
     const {
         userService: { updateUser },
         withProgress
-    } = useApiTest();
+    } = useApi();
     const qc = useQueryClient();
 
     const { token, user, updateUser: editUser } = useUser();

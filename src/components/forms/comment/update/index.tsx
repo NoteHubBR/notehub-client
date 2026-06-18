@@ -4,7 +4,7 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconEdit, IconX } from "@tabler/icons-react";
 import { Menu, MenuButton, MenuItem } from "@/components/menu";
-import { useApiTest } from "@/data/hooks";
+import { useApi } from "@/data/hooks";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,9 +37,9 @@ export const Form = ({
     setIsRepliesListOpen,
     ...rest }: FormProps) => {
 
-    const { replyQueries: { useGetReplies }, } = useApiTest();
+    const { replyQueries: { useGetReplies }, } = useApi();
 
-    const { commentService: { editComment, deleteComment }, } = useApiTest();
+    const { commentService: { editComment, deleteComment }, } = useApi();
     const qc = useQueryClient();
 
     const editCommentForm = useForm<CreateCommentFormData>({

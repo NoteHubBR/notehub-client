@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { IconCheck, IconDotsVertical, IconEdit, IconTrash, IconX } from "@tabler/icons-react";
 import { Menu, MenuItem } from "@/components/menu";
 import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
-import { useApiTest, useNotes, useTags } from "@/data/hooks";
+import { useApi, useNotes, useTags } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
 import { useShortcuts } from './shortcuts';
@@ -23,7 +23,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
     const { 
         noteService: { updateNoteText, deleteNote },
         withProgress
-    } = useApiTest();
+    } = useApi();
     const qc = useQueryClient();
 
     const { setNoteToFirst, removeNote } = useNotes();

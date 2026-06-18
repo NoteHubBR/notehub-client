@@ -1,7 +1,7 @@
 import { Element } from "./elements";
 import { FindSessionsFormData, findSessionsFormSchema, handleFieldErrors, handleInvalidTokenFieldError, Session } from "@/core";
 import { FormProvider, useForm } from "react-hook-form";
-import { useApiTest, useUser } from "@/data/hooks";
+import { useApi, useUser } from "@/data/hooks";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -14,7 +14,7 @@ export const Form = ({ onSuccess, ...rest }: FormProps) => {
     const {
         authService: { findAllSessions },
         withProgress
-    } = useApiTest();
+    } = useApi();
 
     const { user, token } = useUser();
 

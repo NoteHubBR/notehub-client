@@ -7,14 +7,14 @@ import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
 import { Section } from "../components/Section";
 import { Skeleton } from "./skeleton";
 import { Template } from "@/components/templates";
-import { useApiTest, useUser } from "@/data/hooks";
+import { useApi, useUser } from "@/data/hooks";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { UUID } from "crypto";
 
 const Page = () => {
 
-    const { noteQueries: { useGetNote } } = useApiTest();
+    const { noteQueries: { useGetNote } } = useApi();
 
     const { isMounted, token, user } = useUser();
 

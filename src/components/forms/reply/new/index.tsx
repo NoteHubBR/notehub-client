@@ -4,7 +4,7 @@ import { Component } from "@/components";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
-import { useApiTest } from "@/data/hooks";
+import { useApi } from "@/data/hooks";
 import { useRef, useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -24,7 +24,7 @@ type RepliesCache = InfiniteData<Page<Reply>>;
 
 export const Form = ({ useSelfReference, token, user, comment, isReplying, selfReferenceReply, setReplies, setRepliesCount, setIsReplying, ...rest }: FormProps) => {
 
-    const { replyService: { createReply, createSelfReferenceReply } } = useApiTest();
+    const { replyService: { createReply, createSelfReferenceReply } } = useApi();
     const qc = useQueryClient();
 
     const createReplyForm = useForm<CreateReplyFormData>({

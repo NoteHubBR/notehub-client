@@ -4,12 +4,12 @@ import { Header } from "./header";
 import { Icon } from "@/components/icons";
 import { Item } from "./item";
 import { Skeleton } from "./skeleton";
-import { useApiTest, useStore, useUser } from "@/data/hooks";
+import { useApi, useStore, useUser } from "@/data/hooks";
 import { useEffect, useCallback } from "react";
 
 export const Feed = () => {
 
-    const { feedQueries: { useGetFeed } } = useApiTest();
+    const { feedQueries: { useGetFeed } } = useApi();
     const { isMounted, user, token } = useUser();
     const { filters } = useStore();
 

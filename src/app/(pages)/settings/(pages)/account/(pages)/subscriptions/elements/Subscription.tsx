@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import { Icon } from "@/components/icons";
 import { Subscription as Sub } from "@/core";
-import { useApiTest, useSubscriptions, useUser } from "@/data/hooks";
+import { useApi, useSubscriptions, useUser } from "@/data/hooks";
 import { useTransition } from "react";
 
 interface SubscriptionProps extends React.LiHTMLAttributes<HTMLLIElement> {
@@ -11,7 +11,7 @@ interface SubscriptionProps extends React.LiHTMLAttributes<HTMLLIElement> {
 
 export const Subscription = ({ sub, name, ...rest }: SubscriptionProps) => {
 
-    const { userService: { enableSubscription, disableSubscription } } = useApiTest();
+    const { userService: { enableSubscription, disableSubscription } } = useApi();
 
     const { token } = useUser();
     const { subscriptions, setSubscriptions } = useSubscriptions();

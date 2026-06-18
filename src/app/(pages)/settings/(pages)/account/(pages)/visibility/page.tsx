@@ -4,7 +4,7 @@ import { clsx } from "clsx";
 import { Header } from "../../../Header";
 import { Icon } from "@/components/icons";
 import { scrollTo } from "@/core";
-import { useApiTest, useUser } from "@/data/hooks";
+import { useApi, useUser } from "@/data/hooks";
 import { useTransition } from "react";
 import Link from "next/link";
 
@@ -13,7 +13,7 @@ const Page = () => {
     const {
         userService: { updateUserVisibility },
         withProgress
-    } = useApiTest();
+    } = useApi();
 
     const [isPending, startTransition] = useTransition();
 

@@ -4,7 +4,7 @@ import { buildQueryStrings, handleFieldErrorsMsg } from "@/core";
 import { Element } from "./elements";
 import { IconEyeOff, IconLock, IconUsersGroup } from "@tabler/icons-react";
 import { Section } from "../components/Section";
-import { useApiTest, useUser } from "@/data/hooks";
+import { useApi, useUser } from "@/data/hooks";
 import { useParams, useSearchParams } from "next/navigation";
 
 const Page = () => {
@@ -13,7 +13,7 @@ const Page = () => {
     const sParams = useSearchParams();
     const query = buildQueryStrings(sParams);
 
-    const { userQueries: { useSearchUserFollowers } } = useApiTest();
+    const { userQueries: { useSearchUserFollowers } } = useApi();
 
     const { isMounted, token } = useUser();
 
