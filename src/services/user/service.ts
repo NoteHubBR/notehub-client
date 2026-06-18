@@ -9,19 +9,11 @@ export const createUserService = (api: ApiClient, updateToken: (token: Token) =>
     const createUser = async (data: CreateUserFormData): Promise<void> => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { repeatPassword, ...output } = data;
-        try {
-            return await api.post('/users/register', output);
-        } catch (error) {
-            throw error;
-        }
+        return await api.post('/users/register', output);
     }
 
     const activateUser = async (token: string): Promise<void> => {
-        try {
-            return await api.get('/users/activate', { token: token });
-        } catch (error) {
-            throw error;
-        }
+        return await api.get('/users/activate', { token: token });
     }
 
     const updateUser = (token: string, data: EditUserFormData): Promise<LowDetailUser> => {
@@ -33,22 +25,14 @@ export const createUserService = (api: ApiClient, updateToken: (token: Token) =>
         const endpoint = '/users/change-email';
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { repeatEmail, ...output } = data;
-        try {
-            return await api.patch(endpoint, output, { token: token });
-        } catch (error) {
-            throw error;
-        }
+        return await api.patch(endpoint, output, { token: token });
     }
 
     const updateUserPassword = async (token: string, data: PasswordUpdateFormData): Promise<void> => {
         const endpoint = '/users/change-password';
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { repeatPassword, ...output } = data;
-        try {
-            return await api.patch(endpoint, output, { token: token });
-        } catch (error) {
-            throw error;
-        }
+        return await api.patch(endpoint, output, { token: token });
     }
 
     const updateUserVisibility = (token: string): Promise<void> => {
@@ -57,19 +41,11 @@ export const createUserService = (api: ApiClient, updateToken: (token: Token) =>
     }
 
     const getUser = async (username: string): Promise<LowDetailUser> => {
-        try {
-            return await api.get(`/users/${username}`);
-        } catch (error) {
-            throw error;
-        }
+        return await api.get(`/users/${username}`);
     }
 
     const getUserDisplayNameHistory = async (username: string): Promise<string[]> => {
-        try {
-            return await api.get(`/users/${username}/display-names`);
-        } catch (error) {
-            throw error;
-        }
+        return await api.get(`/users/${username}/display-names`);
     }
 
     const followUser = async (token: string, username: string): Promise<void> => {
@@ -98,11 +74,7 @@ export const createUserService = (api: ApiClient, updateToken: (token: Token) =>
     }
 
     const searchUsers = async (parameters?: string): Promise<Page<LowDetailUser>> => {
-        try {
-            return await api.get(`/users?${parameters}`);
-        } catch (error) {
-            throw error;
-        }
+        return await api.get(`/users?${parameters}`);
     }
 
     const getUserSubscriptions = async (token: string): Promise<Subscription[]> => {

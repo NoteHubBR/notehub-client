@@ -24,20 +24,12 @@ export const createNoteService = (api: ApiClient, updateToken: (token: Token) =>
 
     const searchNotes = async (parameters?: string): Promise<Page<LowDetailNote>> => {
         const endpoint = parameters ? `/notes/search?${parameters}` : '/notes/search';
-        try {
-            return await api.get(endpoint);
-        } catch (error) {
-            throw error;
-        }
+        return await api.get(endpoint);
     }
 
     const searchTags = async (parameters?: string): Promise<Page<LowDetailNote>> => {
         const endpoint = parameters ? `/notes/search/tag?${parameters}` : '/notes/search/tag';
-        try {
-            return await api.get(endpoint);
-        } catch (error) {
-            throw error;
-        }
+        return await api.get(endpoint);
     }
 
     const createNote = async (token: string, data: CreateNoteFormData): Promise<LowDetailNote> => {

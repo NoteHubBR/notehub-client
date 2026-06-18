@@ -5,75 +5,39 @@ import { UUID } from 'crypto';
 export const createAuthService = (api: ApiClient, updateToken: (token: Token) => void) => {
 
     const loginUserByDefault = async (data: LoginFormData): Promise<{ token: Token, user: User }> => {
-        try {
-            return await api.post('/auth/login', data);
-        } catch (error) {
-            throw error;
-        }
+        return await api.post('/auth/login', data);
     }
 
     const loginUserByGoogle = async (token: { token: string }): Promise<{ token: Token, user: User }> => {
-        try {
-            return await api.post('/auth/login/google', token);
-        } catch (error) {
-            throw error;
-        }
+        return await api.post('/auth/login/google', token);
     }
 
     const loginUserByGitHub = async (code: { code: string }): Promise<{ token: Token, user: User }> => {
-        try {
-            return await api.post('/auth/login/github', code);
-        } catch (error) {
-            throw error;
-        }
+        return await api.post('/auth/login/github', code);
     }
 
     const refreshUser = async (): Promise<{ token: Token, user: User }> => {
-        try {
-            return await api.get(`/auth/refresh`, { refreshToken: Cookies.get('rtoken') });
-        } catch (error) {
-            throw error;
-        }
+        return await api.get(`/auth/refresh`, { refreshToken: Cookies.get('rtoken') });
     }
 
     const logoutUser = async (): Promise<void> => {
-        try {
-            return await api.delete('/auth/logout', undefined, { refreshToken: Cookies.get('rtoken') });
-        } catch (error) {
-            throw error;
-        }
+        return await api.delete('/auth/logout', undefined, { refreshToken: Cookies.get('rtoken') });
     }
 
     const sendSecretKeyRequest = async (email: { email: string }): Promise<void> => {
-        try {
-            return await api.post('/auth/secret-key', email);
-        } catch (error) {
-            throw error;
-        }
+        return await api.post('/auth/secret-key', email);
     }
 
     const sendEmailChangeRequest = async (email: { email: string }): Promise<void> => {
-        try {
-            return await api.post('/auth/change-email', email);
-        } catch (error) {
-            throw error;
-        }
+        return await api.post('/auth/change-email', email);
     }
 
     const sendPasswordChangeRequest = async (data: RecoverFormData | { email: string }): Promise<void> => {
-        try {
-            return await api.post('/auth/change-password', data);
-        } catch (error) {
-            throw error;
-        }
+        return await api.post('/auth/change-password', data);
     }
 
     const disconnectSession = async (id: UUID): Promise<void> => {
-        try {
-            return await api.delete(`/auth/session/${id}`, undefined);
-        } catch (error) {
-            throw error;
-        }
+        return await api.delete(`/auth/session/${id}`, undefined);
     }
 
     const handleExpiredToken = async <T>(
@@ -97,8 +61,7 @@ export const createAuthService = (api: ApiClient, updateToken: (token: Token) =>
         try {
             return await fn(token);
         } catch (error) {
-            return handleExpiredToken(error, (newToken) => fn(newToken), updateToken
-            )
+            return handleExpiredToken(error, (newToken) => fn(newToken), updateToken);
         }
     }
 
