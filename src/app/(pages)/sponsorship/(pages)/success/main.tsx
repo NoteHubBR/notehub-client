@@ -2,8 +2,8 @@ import { Card, Countdown, Detail, Details, GoHome, Icon, Navigator, Paragraph, S
 import { IconCash, IconCheck } from "@tabler/icons-react";
 import { SVG } from "@/components/svgs";
 import { Token } from "@/core";
+import { useApiTest, usePref } from "@/data/hooks";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { usePref, useServices } from "@/data/hooks";
 import { useRouter } from "next/navigation";
 
 interface MainProps extends React.HTMLAttributes<HTMLElement> {
@@ -13,7 +13,10 @@ interface MainProps extends React.HTMLAttributes<HTMLElement> {
 
 export const Main = ({ token, param, ...rest }: MainProps) => {
 
-    const { sponsorshipService: { verifyPaymentStatus } } = useServices();
+    const {
+        sponsorshipService: { verifyPaymentStatus },
+        withProgress
+    } = useApiTest();
 
     const { pref: { useDarkTheme } } = usePref();
 
@@ -48,7 +51,7 @@ export const Main = ({ token, param, ...rest }: MainProps) => {
         setStatusWithDealy('pending');
         setCountdown({ success: 36, failed: 60 });
         try {
-            const res = await verifyPaymentStatus(token, param);
+            const res = await withProgress(() => verifyPaymentStatus(token, param));
             if (res.status === 'complete' && res.paymentStatus === 'paid') {
                 setAmountTotalFormatted(res.locale, res.currency, res.amountTotal);
                 return setStatusWithDealy('success');

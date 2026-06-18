@@ -2,9 +2,9 @@ import { Amount, Currencies, CurrenciesDropdown, Currency, CurrencySelector, Ico
 import { countries, Country } from "./types";
 import { DonationFormData, donationFormSchema, Token } from "@/core";
 import { FormProvider, useForm } from "react-hook-form";
+import { useApiTest } from "@/data/hooks";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { useServices } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -13,7 +13,10 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 
 export const Form = ({ token, ...rest }: FormProps) => {
 
-    const { sponsorshipService: { buySponsorship } } = useServices();
+    const {
+        sponsorshipService: { buySponsorship },
+        withProgress
+    } = useApiTest();
 
     const donationForm = useForm<DonationFormData>({
         resolver: zodResolver(donationFormSchema)
@@ -35,9 +38,9 @@ export const Form = ({ token, ...rest }: FormProps) => {
 
     const onSubmit = (data: DonationFormData) => startTransition(async (): Promise<void> => {
         if (token) {
-            await buySponsorship(token.access_token, data)
+            await withProgress(() => buySponsorship(token.access_token, data)
                 .then(res => router.push(res.sessionUrl))
-                .catch(error => setError('amount', { type: 'value', message: error }))
+                .catch(error => setError('amount', { type: 'value', message: error })))
         }
         return;
     })
