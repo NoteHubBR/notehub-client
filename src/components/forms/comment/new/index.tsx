@@ -3,9 +3,9 @@ import { Comment, CreateCommentFormData, createCommentFormSchema, handleFieldErr
 import { Component } from "@/components";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
+import { useApiTest } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRef, useState, useTransition } from "react";
-import { useServices } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -18,7 +18,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 
 export const Form = ({ token, user, note, setComments, setNote, ...rest }: FormProps) => {
 
-    const { commentService: { createComment } } = useServices();
+    const { commentService: { createComment } } = useApiTest();
     const qc = useQueryClient();
 
     const createCommentForm = useForm<CreateCommentFormData>({

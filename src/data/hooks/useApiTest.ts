@@ -1,5 +1,5 @@
 import { createApiClient } from '@/api';
-import { createAuthService, createUserService, createUserQueries, createNoteService, createNoteQuery, createFlameService, createFlameQuery, createFeedService, createFeedQuery, createReplyService, createReplyQuery } from '@/services';
+import { createAuthService, createUserService, createUserQueries, createNoteService, createNoteQuery, createFlameService, createFlameQuery, createFeedService, createFeedQuery, createReplyService, createReplyQuery, createCommentService, createCommentQuery } from '@/services';
 import { useMemo } from 'react';
 import { useProgress } from './useProgress';
 import { useStore } from './useStore';
@@ -22,6 +22,7 @@ export const useApiTest = () => {
         feedService: createFeedService(api, updateToken),
         noteService: createNoteService(api, updateToken),
         flameService: createFlameService(api, updateToken),
+        commentService: createCommentService(api, updateToken),
         replyService: createReplyService(api, updateToken),
     }), [api, updateToken])
 
@@ -30,6 +31,7 @@ export const useApiTest = () => {
         feedQueries: createFeedQuery(services.feedService),
         noteQueries: createNoteQuery(services.noteService),
         flameQueries: createFlameQuery(services.flameService),
+        commentQueries: createCommentQuery(services.commentService),
         replyQueries: createReplyQuery(services.replyService),
     }), [services])
 
