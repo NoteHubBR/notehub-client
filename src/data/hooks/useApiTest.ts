@@ -1,5 +1,5 @@
 import { createApiClient } from '@/api';
-import { createAuthService, createUserService, createUserQueries, createNoteService, createNoteQuery, createFlameService, createFlameQuery, createFeedService, createFeedQuery, createReplyService, createReplyQuery, createCommentService, createCommentQuery, createSponsorshipService } from '@/services';
+import { createAuthService, createUserService, createUserQueries, createNoteService, createNoteQuery, createFlameService, createFlameQuery, createFeedService, createFeedQuery, createReplyService, createReplyQuery, createCommentService, createCommentQuery, createSponsorshipService, createHealthService } from '@/services';
 import { useMemo } from 'react';
 import { useProgress } from './useProgress';
 import { useStore } from './useStore';
@@ -17,6 +17,7 @@ export const useApiTest = () => {
     }), [device, token])
 
     const services = useMemo(() => ({
+        healthService: createHealthService(api),
         authService: createAuthService(api, updateToken),
         userService: createUserService(api, updateToken),
         sponsorshipService: createSponsorshipService(api, updateToken),
