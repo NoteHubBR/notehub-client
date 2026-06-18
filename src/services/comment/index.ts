@@ -1,4 +1,2 @@
-import { CommentService } from "./CommentService";
-import { CommentServiceQueries } from "./CommentServiceQueries";
-
-export { CommentService, CommentServiceQueries };
+export { createCommentService } from './service';
+export { createCommentQuery } from './query';
