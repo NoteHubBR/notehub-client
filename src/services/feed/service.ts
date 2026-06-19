@@ -1,10 +1,8 @@
 import { ApiClient } from '@/api';
-import { createAuthService } from '../auth';
-import { FeedEvent, Page, Token } from '@/core';
+import { FeedEvent, Page } from '@/core';
+import { WithRetry } from '../auth';
 
-export const createFeedService = (api: ApiClient, updateToken: (token: Token) => void) => {
-
-    const { withRetry } = createAuthService(api, updateToken);
+export const createFeedService = (api: ApiClient, withRetry: WithRetry) => {
 
     const getFeed = async (token: string, params?: string): Promise<Page<FeedEvent>> => {
         const endpoint: string = `/feed?${params}`;

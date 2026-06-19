@@ -1,10 +1,8 @@
 import { ApiClient } from '@/api';
-import { createAuthService } from '../auth';
-import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData, EmailChangeFormData, PasswordUpdateFormData, DeleteUserFormData, Subscription, Token } from '@/core';
+import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData, EmailChangeFormData, PasswordUpdateFormData, DeleteUserFormData, Subscription } from '@/core';
+import { WithRetry } from '../auth';
 
-export const createUserService = (api: ApiClient, updateToken: (token: Token) => void) => {
-
-    const { withRetry } = createAuthService(api, updateToken);
+export const createUserService = (api: ApiClient, withRetry: WithRetry) => {
 
     const createUser = async (data: CreateUserFormData): Promise<void> => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

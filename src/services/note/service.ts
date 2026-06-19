@@ -1,11 +1,9 @@
 import { ApiClient } from '@/api';
-import { createAuthService } from '../auth';
-import { CreateNoteFormData, LowDetailNote, Note, NoteTextUpdateFormData, NoteUpdateFormData, Page, Token } from '@/core';
+import { CreateNoteFormData, LowDetailNote, Note, NoteTextUpdateFormData, NoteUpdateFormData, Page } from '@/core';
 import { UUID } from 'crypto';
+import { WithRetry } from '../auth';
 
-export const createNoteService = (api: ApiClient, updateToken: (token: Token) => void) => {
-
-    const { withRetry } = createAuthService(api, updateToken);
+export const createNoteService = (api: ApiClient, withRetry: WithRetry) => {
 
     const getUserNotes = async (token: string): Promise<Page<LowDetailNote>> => {
         const endpoint: string = '/notes/private?size=9999&sort=modifiedAt,desc';

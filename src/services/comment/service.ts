@@ -1,11 +1,9 @@
 import { ApiClient } from '@/api';
-import { Comment, CreateCommentFormData, Page, Token } from "@/core";
-import { createAuthService } from "../auth";
+import { Comment, CreateCommentFormData, Page } from "@/core";
 import { UUID } from "crypto";
+import { WithRetry } from './../auth/service';
 
-export const createCommentService = (api: ApiClient, updateToken: (token: Token) => void) => {
-
-    const { withRetry } = createAuthService(api, updateToken);
+export const createCommentService = (api: ApiClient, withRetry: WithRetry) => {
 
     const createComment = async (token: string, id: UUID, data: CreateCommentFormData): Promise<Comment> => {
         const endpoint = `/notes/${id}/comments/new`;

@@ -16,17 +16,20 @@ export const useApi = () => {
         token: token ? token.access_token : null,
     }), [device, token])
 
-    const services = useMemo(() => ({
-        healthService: createHealthService(api),
-        authService: createAuthService(api, updateToken),
-        userService: createUserService(api, updateToken),
-        sponsorshipService: createSponsorshipService(api, updateToken),
-        feedService: createFeedService(api, updateToken),
-        noteService: createNoteService(api, updateToken),
-        flameService: createFlameService(api, updateToken),
-        commentService: createCommentService(api, updateToken),
-        replyService: createReplyService(api, updateToken),
-    }), [api, updateToken])
+    const services = useMemo(() => {
+        const authService = createAuthService(api, updateToken);
+        return {
+            authService,
+            healthService: createHealthService(api),
+            userService: createUserService(api, authService.withRetry),
+            sponsorshipService: createSponsorshipService(api, authService.withRetry),
+            feedService: createFeedService(api, authService.withRetry),
+            noteService: createNoteService(api, authService.withRetry),
+            flameService: createFlameService(api, authService.withRetry),
+            commentService: createCommentService(api, authService.withRetry),
+            replyService: createReplyService(api, authService.withRetry),
+        }
+    }, [api, updateToken])
 
     const queries = useMemo(() => ({
         userQueries: createUserQuery(services.userService),

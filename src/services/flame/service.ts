@@ -1,11 +1,9 @@
 import { ApiClient } from '@/api';
-import { createAuthService } from "../auth";
-import { Flame, Page, Token } from "@/core";
+import { Flame, Page } from "@/core";
 import { UUID } from "crypto";
+import { WithRetry } from '../auth';
 
-export const createFlameService = (api: ApiClient, updateToken: (token: Token) => void) => {
-
-    const { withRetry } = createAuthService(api, updateToken);
+export const createFlameService = (api: ApiClient, withRetry: WithRetry) => {
 
     const inflameNote = async (token: string, noteId: UUID) => {
         const endpoint = `/flames/${noteId}`;

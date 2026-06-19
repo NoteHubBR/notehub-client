@@ -1,7 +1,7 @@
 import { ApiClient } from '@/api';
-import { createAuthService } from "../auth";
-import { DonationFormData, Token } from "@/core";
+import { DonationFormData } from "@/core";
 import { UUID } from 'crypto';
+import { WithRetry } from '../auth';
 
 type SponsorshipPurchaseReturn = {
     status: string;
@@ -20,9 +20,7 @@ type PurchaseStatusReturn = {
     amountTotal: number;
 }
 
-export const createSponsorshipService = (api: ApiClient, updateToken: (token: Token) => void) => {
-
-    const { withRetry } = createAuthService(api, updateToken);
+export const createSponsorshipService = (api: ApiClient, withRetry: WithRetry) => {
 
     const buySponsorship = async (token: string, data: DonationFormData): Promise<SponsorshipPurchaseReturn> => {
         const endpoint: string = '/payment/stripe/sponsorship';

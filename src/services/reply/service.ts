@@ -1,11 +1,9 @@
 import { ApiClient } from '@/api';
-import { createAuthService } from "../auth";
-import { CreateReplyFormData, Page, Reply, Token } from "@/core";
+import { CreateReplyFormData, Page, Reply } from "@/core";
 import { UUID } from "crypto";
+import { WithRetry } from '../auth';
 
-export const createReplyService = (api: ApiClient, updateToken: (token: Token) => void) => {
-
-    const { withRetry } = createAuthService(api, updateToken);
+export const createReplyService = (api: ApiClient, withRetry: WithRetry) => {
 
     const createReply = async (token: string, id: UUID, data: CreateReplyFormData): Promise<Reply> => {
         const endpoint = `/notes/comments/${id}/replies/new`;

@@ -2,6 +2,8 @@ import { ApiClient } from '@/api';
 import { LoginFormData, Token, User, Cookies, RecoverFormData, Session, FindSessionsFormData } from "@/core";
 import { UUID } from 'crypto';
 
+export type WithRetry = <T>(token: string | null, fn: (token: string | null) => Promise<T>) => Promise<T>;
+
 export const createAuthService = (api: ApiClient, updateToken: (token: Token) => void) => {
 
     const loginUserByDefault = async (data: LoginFormData): Promise<{ token: Token, user: User }> => {
