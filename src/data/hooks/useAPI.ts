@@ -11,25 +11,29 @@ export const useApi = () => {
     const { setOnProgress } = useProgress();
     const { token, updateToken } = useUser();
 
-    const api = useMemo(() => createApiClient({
+    const publicApi = useMemo(() => createApiClient({
+        deviceId: device
+    }), [device])
+
+    const privateApi = useMemo(() => createApiClient({
         deviceId: device,
         token: token ? token.access_token : null,
     }), [device, token])
 
     const services = useMemo(() => {
-        const authService = createAuthService(api, updateToken);
+        const authService = createAuthService(publicApi, privateApi, updateToken);
         return {
             authService,
-            healthService: createHealthService(api),
-            userService: createUserService(api, authService.withRetry),
-            sponsorshipService: createSponsorshipService(api, authService.withRetry),
-            feedService: createFeedService(api, authService.withRetry),
-            noteService: createNoteService(api, authService.withRetry),
-            flameService: createFlameService(api, authService.withRetry),
-            commentService: createCommentService(api, authService.withRetry),
-            replyService: createReplyService(api, authService.withRetry),
+            healthService: createHealthService(publicApi),
+            userService: createUserService(publicApi, privateApi, authService.withRetry),
+            sponsorshipService: createSponsorshipService(privateApi, authService.withRetry),
+            feedService: createFeedService(privateApi, authService.withRetry),
+            noteService: createNoteService(publicApi, privateApi, authService.withRetry),
+            flameService: createFlameService(privateApi, authService.withRetry),
+            commentService: createCommentService(privateApi, authService.withRetry),
+            replyService: createReplyService(privateApi, authService.withRetry),
         }
-    }, [api, updateToken])
+    }, [privateApi, updateToken])
 
     const queries = useMemo(() => ({
         userQueries: createUserQuery(services.userService),

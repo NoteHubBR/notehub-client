@@ -4,42 +4,42 @@ import { UUID } from 'crypto';
 
 export type WithRetry = <T>(token: string | null, fn: (token: string | null) => Promise<T>) => Promise<T>;
 
-export const createAuthService = (api: ApiClient, updateToken: (token: Token) => void) => {
+export const createAuthService = (publicApi: ApiClient, privateApi: ApiClient, updateToken: (token: Token) => void) => {
 
     const loginUserByDefault = async (data: LoginFormData): Promise<{ token: Token, user: User }> => {
-        return await api.post('/auth/login', data);
+        return await publicApi.post('/auth/login', data);
     }
 
     const loginUserByGoogle = async (token: { token: string }): Promise<{ token: Token, user: User }> => {
-        return await api.post('/auth/login/google', token);
+        return await publicApi.post('/auth/login/google', token);
     }
 
     const loginUserByGitHub = async (code: { code: string }): Promise<{ token: Token, user: User }> => {
-        return await api.post('/auth/login/github', code);
+        return await publicApi.post('/auth/login/github', code);
     }
 
     const refreshUser = async (): Promise<{ token: Token, user: User }> => {
-        return await api.get(`/auth/refresh`, { refreshToken: Cookies.get('rtoken') });
+        return await publicApi.get(`/auth/refresh`, { refreshToken: Cookies.get('rtoken') });
     }
 
     const logoutUser = async (): Promise<void> => {
-        return await api.delete('/auth/logout', undefined, { refreshToken: Cookies.get('rtoken') });
+        return await publicApi.delete('/auth/logout', undefined, { refreshToken: Cookies.get('rtoken') });
     }
 
     const sendSecretKeyRequest = async (email: { email: string }): Promise<void> => {
-        return await api.post('/auth/secret-key', email);
+        return await publicApi.post('/auth/secret-key', email);
     }
 
     const sendEmailChangeRequest = async (email: { email: string }): Promise<void> => {
-        return await api.post('/auth/change-email', email);
+        return await publicApi.post('/auth/change-email', email);
     }
 
     const sendPasswordChangeRequest = async (data: RecoverFormData | { email: string }): Promise<void> => {
-        return await api.post('/auth/change-password', data);
+        return await publicApi.post('/auth/change-password', data);
     }
 
     const disconnectSession = async (id: UUID): Promise<void> => {
-        return await api.delete(`/auth/session/${id}`, undefined);
+        return await publicApi.delete(`/auth/session/${id}`, undefined);
     }
 
     const handleExpiredToken = async <T>(
@@ -68,7 +68,7 @@ export const createAuthService = (api: ApiClient, updateToken: (token: Token) =>
     }
 
     const findAllSessions = async (token: string, data: FindSessionsFormData): Promise<Session[]> => {
-        return withRetry(token, (token) => api.post('/auth/sessions', data, { token: token }));
+        return withRetry(token, (token) => privateApi.post('/auth/sessions', data, { token: token }));
     }
 
     return {
@@ -76,7 +76,6 @@ export const createAuthService = (api: ApiClient, updateToken: (token: Token) =>
         loginUserByGoogle,
         loginUserByGitHub,
         refreshUser,
-        handleExpiredToken,
         logoutUser,
         sendSecretKeyRequest,
         sendEmailChangeRequest,
