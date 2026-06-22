@@ -1,9 +1,10 @@
 'use client';
 
-import { createContext, useCallback, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createProgress, createServices } from '@/services';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Token, User, Cookies, shouldUseUserContext } from "@/core";
-import { useApi, useFlames, useFollowing, useHistory, useLoading, useNotes, useStore, useSubscriptions, useTags } from "../hooks";
+import { useFlames, useFollowing, useHistory, useLoading, useNotes, useProgress, useStore, useSubscriptions, useTags } from "../hooks";
 import { usePathname } from "next/navigation";
 
 export interface UserContextProps {
@@ -20,15 +21,8 @@ const UserContext = createContext<UserContextProps>({} as UserContextProps);
 
 export const UserProvider = (props: any) => {
 
-    const {
-        authService: { refreshUser, logoutUser },
-        userService: { getUserDisplayNameHistory, getUserSubscriptions, searchUserFollowing },
-        noteService: { getUserNotes, findUserTags },
-        flameService: { getUserFlames },
-        withProgress
-    } = useApi();
-
     const { setIsLoaded } = useLoading();
+    const { setOnProgress } = useProgress();
     const { isStoreReady, store, setStore, setActions, updateActions } = useStore();
     const { clearHistory, setHistory } = useHistory();
     const { clearFollowing, setFollowing } = useFollowing();
@@ -36,7 +30,6 @@ export const UserProvider = (props: any) => {
     const { clearFlames, setFlames } = useFlames();
     const { clearTags, setTags } = useTags();
     const { clearSubscriptions, setSubscriptions } = useSubscriptions();
-
     const pathname = usePathname();
 
     const fetchingUserRef = useRef<Promise<void> | null>(null);
@@ -63,6 +56,19 @@ export const UserProvider = (props: any) => {
             token: token
         }))
     }, [])
+
+    const {
+        authService: { refreshUser, logoutUser },
+        userService: { getUserDisplayNameHistory, getUserSubscriptions, searchUserFollowing },
+        noteService: { getUserNotes, findUserTags },
+        flameService: { getUserFlames },
+    } = createServices(
+        store.device,
+        state.token ? state.token.access_token : null,
+        updateToken
+    )
+
+    const withProgress = useMemo(() => createProgress(setOnProgress), [setOnProgress])
 
     const updateUser = useCallback((user: Partial<User>) => {
         if (state.user) {
