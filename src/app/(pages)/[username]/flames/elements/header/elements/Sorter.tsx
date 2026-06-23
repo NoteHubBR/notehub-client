@@ -1,5 +1,4 @@
 import { clsx } from "clsx";
-import { useCallback } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
 interface SorterProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -15,12 +14,17 @@ export const Sorter = ({ sParam, val, ...rest }: SorterProps) => {
     const current = sParams.get(sParam);
     const onRoute = val.includes(current);
 
-    const handleParamUpdate = useCallback(() => {
+    const handleParamUpdate = () => {
         const params = new URLSearchParams(sParams);
-        params.set("order", "createdAt");
-        params.set(sParam, val[0] ? val[0] : '');
-        window.history.replaceState(null, '', `${pathname}?${params}`);
-    }, [pathname, sParam, sParams, val])
+        const nextValue = val.find((v): v is string => v !== null) ?? null;
+        if (nextValue) params.set(sParam, nextValue);
+        else params.delete(sParam);
+        const keys = Array.from(params.keys());
+        if (keys.length === 1 && keys[0] === "page") params.delete("page");
+        const nextSearch = params.toString();
+        const newUrl = nextSearch ? `${pathname}?${nextSearch}` : pathname;
+        window.history.replaceState(null, "", newUrl);
+    }
 
     return (
         <li>
