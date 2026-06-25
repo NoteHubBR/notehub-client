@@ -1,0 +1,1 @@
+export { createHealthService } from './service';

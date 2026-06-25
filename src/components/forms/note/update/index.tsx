@@ -2,7 +2,7 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { forwardRef, useState } from "react";
 import { handleFieldErrors, Note, NoteUpdateFormData, noteUpdateFormSchema, Token } from "@/core";
-import { useNotes, useServices, useTags } from "@/data/hooks";
+import { useApi, useNotes, useTags } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -16,7 +16,10 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 
 export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, closeRef, token, note, setNote, ...rest }, ref) => {
 
-    const { noteService: { updateNote } } = useServices();
+    const {
+        noteService: { updateNote },
+        withProgress
+    } = useApi();
     const qc = useQueryClient();
 
     const { updateNote: updateNoteContext } = useNotes();
@@ -34,7 +37,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
         if (token) {
             try {
                 setIsPending(true);
-                await updateNote(token.access_token, note.id, data);
+                await withProgress(() => updateNote(token.access_token, note.id, data));
                 await Promise.all([
                     qc.invalidateQueries({ queryKey: ['userNotes', token.access_token] }),
                     qc.invalidateQueries({ queryKey: ['userTags', token.access_token] }),

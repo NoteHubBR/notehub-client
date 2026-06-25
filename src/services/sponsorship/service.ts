@@ -1,7 +1,7 @@
-import { AuthService } from "../auth";
+import { ApiClient } from '@/api';
 import { DonationFormData } from "@/core";
-import { useAPI } from "@/data/hooks";
 import { UUID } from 'crypto';
+import { WithRetry } from '../auth';
 
 type SponsorshipPurchaseReturn = {
     status: string;
@@ -20,28 +20,16 @@ type PurchaseStatusReturn = {
     amountTotal: number;
 }
 
-export const SponsorshipService = () => {
-
-    const { httpPost, httpGet } = useAPI();
-
-    const handleExpiredToken = AuthService().handleExpiredToken;
+export const createSponsorshipService = (api: ApiClient, withRetry: WithRetry) => {
 
     const buySponsorship = async (token: string, data: DonationFormData): Promise<SponsorshipPurchaseReturn> => {
         const endpoint: string = '/payment/stripe/sponsorship';
-        try {
-            return await httpPost(endpoint, data, { useProgress: true, useToken: token });
-        } catch (error) {
-            return handleExpiredToken(error, (newToken) => httpPost(endpoint, data, { useProgress: true, useToken: newToken }));
-        }
+        return withRetry(token, (token) => api.post(endpoint, data, { token: token }));
     }
 
     const verifyPaymentStatus = async (token: string, sessionId: string): Promise<PurchaseStatusReturn> => {
         const endpoint: string = `/payment/stripe/sponsorship/verify/${sessionId}`;
-        try {
-            return await httpGet(endpoint, { useProgress: true, useToken: token });
-        } catch (error) {
-            return handleExpiredToken(error, (newToken) => httpGet(endpoint, { useProgress: true, useToken: newToken }));
-        }
+        return withRetry(token, (token) => api.post(endpoint, { token: token }));
     }
 
     return { buySponsorship, verifyPaymentStatus };

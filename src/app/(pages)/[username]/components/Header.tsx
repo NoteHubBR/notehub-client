@@ -3,12 +3,12 @@
 import { Desktop } from "./desktop";
 import { Mobile } from "./mobile";
 import { Template } from "@/components/templates";
-import { useHistory, useScreen, useServices, useUser } from "@/data/hooks";
+import { useApi, useHistory, useScreen, useUser } from "@/data/hooks";
 import { useParams } from "next/navigation";
 
 export const Header = () => {
 
-    const { userServiceQueries: { useGetUser, useGetUserDisplayNameHistory } } = useServices();
+    const { userQueries: { useGetUser, useGetUserDisplayNameHistory } } = useApi();
 
     const params = useParams<{ username: string }>();
 

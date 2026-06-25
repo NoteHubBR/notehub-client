@@ -2,14 +2,17 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { handleFieldErrors, RecoverFormData, recoverFormSchema } from "@/core";
 import { IconMail } from "@tabler/icons-react";
+import { useApi } from "@/data/hooks";
 import { useRouter } from "next/navigation";
-import { useServices } from "@/data/hooks";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
 
-    const { authService: { sendPasswordChangeRequest } } = useServices();
+    const {
+        authService: { sendPasswordChangeRequest },
+        withProgress
+    } = useApi();
 
     const recoverForm = useForm<RecoverFormData>({
         resolver: zodResolver(recoverFormSchema)
@@ -24,7 +27,7 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
     const onSubmit = async (data: RecoverFormData) => {
         setIsRequesting(true)
         try {
-            await sendPasswordChangeRequest(data);
+            await withProgress(() => sendPasswordChangeRequest(data));
             router.push('/sent')
         } catch (error: any) {
             if (error.response.status === 404) return setError("email", { message: "Conta não encontrada." });

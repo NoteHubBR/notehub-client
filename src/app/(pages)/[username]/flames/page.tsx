@@ -4,8 +4,8 @@ import { buildQueryStrings, handleFieldErrorsMsg } from "@/core";
 import { Element } from "./elements";
 import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
 import { Section } from "../components/Section";
+import { useApi, useUser } from "@/data/hooks";
 import { useParams, useSearchParams } from "next/navigation";
-import { useServices, useUser } from "@/data/hooks";
 
 const Page = () => {
 
@@ -13,7 +13,7 @@ const Page = () => {
     const sParams = useSearchParams();
     const query = buildQueryStrings(sParams);
 
-    const { flameServiceQueries: { useSearchUserFlames } } = useServices();
+    const { flameQueries: { useSearchUserFlames } } = useApi();
 
     const { isMounted, token } = useUser();
 

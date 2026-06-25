@@ -3,8 +3,8 @@
 import { Component } from '@/components';
 import { createContext, useCallback, useEffect, useState } from 'react';
 import { Template } from '@/components/templates';
-import { useServices } from '../hooks';
 import { ThemeProvider } from './ThemeContext';
+import { useApi } from '../hooks';
 
 interface MaintenanceProps { };
 
@@ -12,7 +12,7 @@ const MaintenanceContext = createContext<MaintenanceProps>({} as MaintenanceProp
 
 export const MaintenanceProvider = (props: any) => {
 
-    const { healthService } = useServices();
+    const { healthService } = useApi();
 
     const [isHealthy, setIsHealthy] = useState<boolean | null>(null);
 

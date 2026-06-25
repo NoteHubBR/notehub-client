@@ -3,15 +3,15 @@
 import { Device } from "@/components/devices";
 import { Loading } from "@/components/devices/desktop/navbar/dropdown/elements/Loading";
 import { Notification } from "@/components/devices/desktop/navbar/dropdown/elements/Notification";
+import { useApi, useNotifications, useScreen, useUser } from "@/data/hooks";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useNotifications, useScreen, useServices, useUser } from "@/data/hooks";
 import Image from "next/image";
 
 const Notifications = () => {
 
     const { onMobile } = useScreen();
 
-    const { userService: { getUserNotifications } } = useServices();
+    const { userService: { getUserNotifications } } = useApi();
 
     const { token } = useUser();
 

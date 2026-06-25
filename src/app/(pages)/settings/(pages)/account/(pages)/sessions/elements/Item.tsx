@@ -2,8 +2,8 @@ import { clsx } from 'clsx';
 import { Disconnect } from './Disconnect';
 import { IconBrandAndroid, IconBrandApple, IconBrandDebian, IconBrandWindows, IconSpy } from '@tabler/icons-react';
 import { Session, toRelativeTime } from '@/core';
+import { useApi, useUser } from '@/data/hooks';
 import { useRouter } from 'next/navigation';
-import { useServices, useUser } from '@/data/hooks';
 import { useTransition } from 'react';
 
 interface ItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
@@ -14,14 +14,17 @@ interface ItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
 
 export const Item = ({ device, session, setSessions, ...rest }: ItemProps) => {
 
-    const { authService } = useServices();
+    const {
+        authService: { disconnectSession },
+        withProgress
+    } = useApi();
 
     const { clearUser } = useUser();
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
 
     const handleDisconnectSession = () => startTransition(async () => {
-        await authService.disconnectSession(session.id);
+        await withProgress(() => disconnectSession(session.id));
         setSessions((prev) => prev ? prev.filter(s => s.id !== session.id) : null);
         if (device === session.device) {
             clearUser({ skipLogout: true });

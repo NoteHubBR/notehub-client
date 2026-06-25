@@ -1,11 +1,9 @@
 import { Page, Reply } from '@/core';
-import { ReplyService } from './ReplyService';
+import { ReplyService } from './service';
 import { useInfinitePagedQuery } from '../utils';
 import { UUID } from 'crypto';
 
-export const ReplyServiceQueries = () => {
-
-    const service = ReplyService();
+export const createReplyQuery = (service: ReplyService) => {
 
     const useGetReplies = (token: string | null, id: UUID, enabled: boolean = true) => {
         return useInfinitePagedQuery<Page<Reply>>({

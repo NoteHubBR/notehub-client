@@ -1,15 +1,18 @@
 import { DeleteUserFormData, deleteUserFormSchema, handleFieldErrors } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
+import { useApi, useUser } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
-import { useServices, useUser } from "@/data/hooks";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = () => {
 
-    const { userService: { deleteUser } } = useServices();
+    const {
+        userService: { deleteUser },
+        withProgress
+    } = useApi();
     const qc = useQueryClient();
 
     const { token, user, clearUser } = useUser();
@@ -27,7 +30,7 @@ export const Form = () => {
         if (token && user)
             try {
                 setIsPending(true);
-                await deleteUser(token.access_token, data);
+                await withProgress(() => deleteUser(token.access_token, data));
                 await Promise.all([
                     qc.invalidateQueries({ queryKey: ['user', user.username] }),
                     qc.invalidateQueries({ queryKey: ['searchUsers'] }),

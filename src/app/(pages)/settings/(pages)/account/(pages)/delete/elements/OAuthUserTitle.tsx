@@ -1,11 +1,14 @@
 import { clsx } from "clsx";
 import { IconSend } from "@tabler/icons-react";
-import { useServices, useUser } from "@/data/hooks";
+import { useApi, useUser } from "@/data/hooks";
 import { useState } from "react";
 
 export const OAuthUserTitle = (props: React.HTMLAttributes<HTMLElement>) => {
 
-    const { authService: { sendSecretKeyRequest } } = useServices();
+    const {
+        authService: { sendSecretKeyRequest },
+        withProgress
+    } = useApi();
     const { user } = useUser();
 
     const [isPending, setIsPending] = useState<boolean>(false);
@@ -14,7 +17,7 @@ export const OAuthUserTitle = (props: React.HTMLAttributes<HTMLElement>) => {
     const handleClick = async () => {
         if (user) {
             setIsPending(true);
-            return await sendSecretKeyRequest({ email: user.email })
+            return await withProgress(() => sendSecretKeyRequest({ email: user.email }))
                 .then(() => {
                     setIsPending(false);
                     setSent(true);

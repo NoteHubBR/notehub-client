@@ -4,9 +4,9 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconEdit, IconX } from "@tabler/icons-react";
 import { Menu, MenuButton, MenuItem } from "@/components/menu";
+import { useApi } from "@/data/hooks";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useQueryClient } from '@tanstack/react-query';
-import { useServices } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -37,10 +37,9 @@ export const Form = ({
     setIsRepliesListOpen,
     ...rest }: FormProps) => {
 
-    const {
-        commentService: { editComment, deleteComment },
-        replyServiceQueries: { useGetReplies }
-    } = useServices();
+    const { replyQueries: { useGetReplies }, } = useApi();
+
+    const { commentService: { editComment, deleteComment }, } = useApi();
     const qc = useQueryClient();
 
     const editCommentForm = useForm<CreateCommentFormData>({

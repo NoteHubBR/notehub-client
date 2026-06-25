@@ -4,13 +4,16 @@ import { clsx } from "clsx";
 import { Header } from "../../../Header";
 import { Icon } from "@/components/icons";
 import { scrollTo } from "@/core";
-import { useServices, useUser } from "@/data/hooks";
+import { useApi, useUser } from "@/data/hooks";
 import { useTransition } from "react";
 import Link from "next/link";
 
 const Page = () => {
 
-    const { userService: { updateUserVisibility } } = useServices();
+    const {
+        userService: { updateUserVisibility },
+        withProgress
+    } = useApi();
 
     const [isPending, startTransition] = useTransition();
 
@@ -19,7 +22,7 @@ const Page = () => {
     const handleClick = () => startTransition(async () => {
         if (token && user) {
             updateUser({ profile_private: !user.profile_private });
-            return await updateUserVisibility(token.access_token);
+            return await withProgress(() => updateUserVisibility(token.access_token));
         }
     })
 

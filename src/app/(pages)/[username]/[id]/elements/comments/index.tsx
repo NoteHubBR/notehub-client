@@ -1,7 +1,7 @@
 import { Comment, Note, Token, User } from "@/core";
 import { Element } from "./elements";
+import { useApi } from "@/data/hooks";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useServices } from "@/data/hooks";
 
 interface CommentsProps {
     token: Token | null;
@@ -12,7 +12,7 @@ interface CommentsProps {
 
 export const Comments = ({ token, user, note, setNote }: CommentsProps) => {
 
-    const { commentServiceQueries: { useGetComments } } = useServices();
+    const { commentQueries: { useGetComments } } = useApi();
 
     const isFetching = useRef<boolean>(false);
     const [comments, setComments] = useState<Comment[]>([]);

@@ -1,1 +1,1 @@
-export * from './SponsorshipService';
+export { createSponsorshipService } from './service';

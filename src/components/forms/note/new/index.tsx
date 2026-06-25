@@ -2,7 +2,7 @@ import { CreateNoteFormData, createNoteFormSchema, handleFieldErrors } from "@/c
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconEyeClosed, IconMessage, IconMessageOff, IconWorld } from "@tabler/icons-react";
-import { useNotes, useServices } from "@/data/hooks";
+import { useApi, useNotes } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -10,7 +10,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = ({ token, username }: { token: string; username: string; }) => {
 
-    const { noteService: { createNote } } = useServices();
+    const {
+        noteService: { createNote },
+        withProgress
+    } = useApi();
     const qc = useQueryClient();
 
     const { setNewNote } = useNotes();
@@ -28,7 +31,7 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
     const onSubmit = async (data: CreateNoteFormData): Promise<void> => {
         try {
             setIsPending(true);
-            const note = await createNote(token, data);
+            const note = await withProgress(() => createNote(token, data));
             await Promise.all([
                 qc.invalidateQueries({ queryKey: ['userNotes', token, username] }),
                 qc.invalidateQueries({ queryKey: ['userTags', token, username] }),

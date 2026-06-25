@@ -3,16 +3,19 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { handleFieldErrors, LoginFormData, loginFormSchema, Token, User } from "@/core";
 import { IconAt } from "@tabler/icons-react";
+import { useApi, useStore, useUser } from "@/data/hooks";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useServices, useStore, useUser } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 
 export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
 
-    const { authService: { loginUserByDefault, loginUserByGoogle, loginUserByGitHub } } = useServices();
+    const {
+        authService: { loginUserByDefault, loginUserByGoogle, loginUserByGitHub },
+        withProgress
+    } = useApi();
 
     const { setStore } = useStore();
     const { setUser } = useUser();
@@ -42,7 +45,7 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
     const onSubmit = async (data: LoginFormData) => {
         setState((prev) => ({ ...prev, isRequesting: true }));
         try {
-            login(await loginUserByDefault(data));
+            login(await withProgress(() => loginUserByDefault(data)));
         } catch (error: any) {
             if (Array.isArray(error)) handleFieldErrors(error, setError);
             if (typeof error === 'object' && 'data' in error && Array.isArray(error.data)) {
@@ -57,7 +60,7 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
         onSuccess: res => {
             const submit = async () => {
                 try {
-                    login(await loginUserByGoogle({ token: res.access_token }));
+                    login(await withProgress(() => loginUserByGoogle({ token: res.access_token })));
                 } catch (errors) {
                     if (Array.isArray(errors)) handleOAuthError(errors, setState);
                 } finally {
@@ -82,7 +85,7 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
             setState((prev) => ({ ...prev, isRequesting: true }));
             const submit = async () => {
                 try {
-                    login(await loginUserByGitHub({ code: code }).finally(() => isFetching.current = false));
+                    login(await withProgress(() => loginUserByGitHub({ code: code })).finally(() => isFetching.current = false));
                 } catch (errors) {
                     if (Array.isArray(errors)) handleOAuthError(errors, setState);
                 } finally {

@@ -1,5 +1,4 @@
-export * from './useAPI';
-export * from './useServices';
+export * from './useApi';
 export * from './usePreferences';
 export * from './useSessionPreferences';
 export * from './useStore';

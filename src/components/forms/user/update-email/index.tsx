@@ -1,14 +1,17 @@
 import { Element } from "./elements";
 import { EmailChangeFormData, emailChangeFormSchema, handleFieldErrors, handleInvalidTokenFieldError, scrollTo } from "@/core";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { useApi, useUser } from "@/data/hooks";
 import { useRouter } from "next/navigation";
-import { useServices, useUser } from "@/data/hooks";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = ({ token }: { token: string }) => {
 
-    const { userService: { updateUserEmail } } = useServices();
+    const {
+        userService: { updateUserEmail },
+        withProgress
+    } = useApi();
     const { clearUser } = useUser();
 
     const emailChangeForm = useForm<EmailChangeFormData>({
@@ -29,7 +32,7 @@ export const Form = ({ token }: { token: string }) => {
     const onSubmit = async (data: EmailChangeFormData): Promise<void> => {
         try {
             setIsPending(true);
-            await updateUserEmail(token, data);
+            await withProgress(() => updateUserEmail(token, data));
             if (data.disconnectAll && !data.keepCurrentSession) clearUser();
             return router.push("/");
         } catch (error: unknown) {

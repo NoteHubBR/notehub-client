@@ -1,9 +1,10 @@
 'use client';
 
-import { createContext, useCallback, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createProgress, createServices } from '@/services';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Token, User, Cookies, shouldUseUserContext } from "@/core";
-import { useFlames, useFollowing, useHistory, useLoading, useNotes, useServices, useStore, useSubscriptions, useTags } from "../hooks";
+import { useFlames, useFollowing, useHistory, useLoading, useNotes, useProgress, useStore, useSubscriptions, useTags } from "../hooks";
 import { usePathname } from "next/navigation";
 
 export interface UserContextProps {
@@ -20,14 +21,8 @@ const UserContext = createContext<UserContextProps>({} as UserContextProps);
 
 export const UserProvider = (props: any) => {
 
-    const {
-        authService: { refreshUser, logoutUser },
-        userService: { getUserDisplayNameHistory, getUserSubscriptions, searchUserFollowing },
-        noteService: { getUserNotes, findUserTags },
-        flameService: { getUserFlames }
-    } = useServices();
-
     const { setIsLoaded } = useLoading();
+    const { setOnProgress } = useProgress();
     const { isStoreReady, store, setStore, setActions, updateActions } = useStore();
     const { clearHistory, setHistory } = useHistory();
     const { clearFollowing, setFollowing } = useFollowing();
@@ -35,7 +30,6 @@ export const UserProvider = (props: any) => {
     const { clearFlames, setFlames } = useFlames();
     const { clearTags, setTags } = useTags();
     const { clearSubscriptions, setSubscriptions } = useSubscriptions();
-
     const pathname = usePathname();
 
     const fetchingUserRef = useRef<Promise<void> | null>(null);
@@ -63,6 +57,19 @@ export const UserProvider = (props: any) => {
         }))
     }, [])
 
+    const {
+        authService: { refreshUser, logoutUser },
+        userService: { getUserDisplayNameHistory, getUserSubscriptions, searchUserFollowing },
+        noteService: { getUserNotes, findUserTags },
+        flameService: { getUserFlames },
+    } = createServices(
+        store.device,
+        state.token ? state.token.access_token : null,
+        updateToken
+    )
+
+    const withProgress = useMemo(() => createProgress(setOnProgress), [setOnProgress])
+
     const updateUser = useCallback((user: Partial<User>) => {
         if (state.user) {
             const { avatar, banner, profile_private, username, display_name, message } = user;
@@ -86,7 +93,7 @@ export const UserProvider = (props: any) => {
     }, [state.user, updateActions])
 
     const clearUser = useCallback(async ({ skipLogout }: { skipLogout?: boolean } = {}) => {
-        if (!skipLogout) await logoutUser();
+        if (!skipLogout) await withProgress(() => logoutUser());
         setState((prev) => ({ ...prev, token: null, user: null }));
         setStore({ isGuest: true });
         return Cookies.remove('rtoken');
@@ -96,7 +103,7 @@ export const UserProvider = (props: any) => {
         if (fetchingUserRef.current) return fetchingUserRef.current;
         const promise = (async () => {
             try {
-                const { token, user } = await refreshUser();
+                const { token, user } = await withProgress(() => refreshUser());
                 Cookies.set('rtoken', token.refresh_token, token.expires_at);
                 return setUser(token, user);
             } catch {

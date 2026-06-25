@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { IconCheck, IconDotsVertical, IconEdit, IconTrash, IconX } from "@tabler/icons-react";
 import { Menu, MenuItem } from "@/components/menu";
 import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
-import { useNotes, useServices, useTags } from "@/data/hooks";
+import { useApi, useNotes, useTags } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
 import { useShortcuts } from './shortcuts';
@@ -20,7 +20,10 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 
 export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) => {
 
-    const { noteService: { updateNoteText, deleteNote } } = useServices();
+    const { 
+        noteService: { updateNoteText, deleteNote },
+        withProgress
+    } = useApi();
     const qc = useQueryClient();
 
     const { setNoteToFirst, removeNote } = useNotes();
@@ -51,7 +54,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
     const onSubmit = async (data: NoteTextUpdateFormData): Promise<void> => {
         if (token) {
             setIsPending(true);
-            await updateNoteText(token.access_token, note.id, data)
+            await withProgress(() => updateNoteText(token.access_token, note.id, data))
                 .then(() => {
                     setIsSubmiting(false);
                     setIsEditing(false);
@@ -69,7 +72,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         if (e) e.stopPropagation();
         if (token) {
             setIsPending(true);
-            await deleteNote(token.access_token, note.id)
+            await withProgress(() => deleteNote(token.access_token, note.id))
                 .then(() => {
                     setIsPending(false);
                     removeTags(note.tags);

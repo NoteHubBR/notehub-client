@@ -1,3 +1,2 @@
-import { AuthService } from "./AuthService";
-
-export { AuthService };
+export { createAuthService } from './service';
+export type { WithRetry } from './service';

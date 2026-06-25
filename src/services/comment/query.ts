@@ -1,11 +1,9 @@
 import { Comment, Page } from '@/core';
-import { CommentService } from './CommentService';
+import { CommentService } from './service';
 import { useInfinitePagedQuery } from '../utils';
 import { UUID } from 'crypto';
 
-export const CommentServiceQueries = () => {
-
-    const service = CommentService();
+export const createCommentQuery = (service: CommentService) => {
 
     const useGetComments = (token: string | null, id: UUID, sort: string, enabled: boolean = true) => {
         return useInfinitePagedQuery<Page<Comment>>({

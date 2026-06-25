@@ -1,15 +1,15 @@
 import { Empty } from "./empty";
+import { FeedEvent } from "@/core";
 import { Header } from "./header";
 import { Icon } from "@/components/icons";
 import { Item } from "./item";
-import { FeedEvent, LowDetailNote } from "@/core";
 import { Skeleton } from "./skeleton";
+import { useApi, useStore, useUser } from "@/data/hooks";
 import { useEffect, useCallback } from "react";
-import { useServices, useStore, useUser } from "@/data/hooks";
 
 export const Feed = () => {
 
-    const { feedServiceQueries: { useGetFeed } } = useServices();
+    const { feedQueries: { useGetFeed } } = useApi();
     const { isMounted, user, token } = useUser();
     const { filters } = useStore();
 

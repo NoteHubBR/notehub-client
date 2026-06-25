@@ -5,9 +5,9 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { forwardRef, useState, useTransition } from "react";
 import { IconX } from "@tabler/icons-react";
+import { useApi, useUser } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
-import { useServices, useUser } from "@/data/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -17,7 +17,10 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 
 export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortalClose, ...rest }, ref) => {
 
-    const { userService: { updateUser } } = useServices();
+    const {
+        userService: { updateUser },
+        withProgress
+    } = useApi();
     const qc = useQueryClient();
 
     const { token, user, updateUser: editUser } = useUser();
@@ -58,7 +61,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
                 if (avatar) newData.avatar = avatar;
                 if (banner) newData.banner = banner;
 
-                const updated = await updateUser(token.access_token, newData);
+                const updated = await withProgress(() => updateUser(token.access_token, newData));
 
                 await Promise.allSettled([
                     shouldUpdateAvatar && deleteImage(user.avatar),

@@ -1,34 +1,30 @@
-import { useCallback, useEffect, useState } from "react";
 import { useDebounce } from "@/data/hooks";
+import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
 export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
 
     const pathname = usePathname();
     const sParams = useSearchParams();
+    const searchParamsString = sParams.toString();
 
-    const [reseted, setReseted] = useState<boolean>(false);
-    const [query, setQuery] = useState<null | string>(sParams.get('q'));
-
+    const currentQ = sParams.get('q') ?? '';
+    const [query, setQuery] = useState(currentQ);
     const debouncedSearch = useDebounce(query);
 
-    const updateURL = useCallback((value: string | null) => {
-        const params = new URLSearchParams(sParams);
-        if (value) {
-            if (reseted) return;
-            if (params.get('page')) {
-                params.delete('page');
-                setReseted(true);
-            }
-            params.set('q', value);
-        }
-        else params.delete('q');
-        window.history.replaceState(null, '', `${pathname}?${params}`);
-    }, [pathname, reseted, sParams])
+    useEffect(() => setQuery(currentQ), [currentQ]);
 
     useEffect(() => {
-        updateURL(debouncedSearch);
-    }, [debouncedSearch, updateURL])
+        if (debouncedSearch === currentQ) return;
+        const params = new URLSearchParams(searchParamsString);
+        if (debouncedSearch) params.set('q', debouncedSearch);
+        else params.delete('q');
+        params.delete('page');
+        const nextSearch = params.toString();
+        const nextUrl = nextSearch ? `${pathname}?${nextSearch}` : pathname;
+        const currentUrl = `${pathname}${window.location.search}`;
+        if (nextUrl !== currentUrl) window.history.replaceState(null, '', nextUrl);
+    }, [debouncedSearch, currentQ, pathname, searchParamsString])
 
     return (
         <li className="flex-1 insm:basis-full">
@@ -39,7 +35,7 @@ export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
                     spellCheck={false}
                     autoCorrect="off"
                     autoCapitalize="off"
-                    value={query ?? ''}
+                    value={query}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
                     className="w-full insm:max-w-[244px] h-full px-2 py-1 rounded-lg
                     border-2 dark:border-neutral-700/50 border-dark/25
