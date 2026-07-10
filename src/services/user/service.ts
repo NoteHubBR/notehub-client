@@ -1,5 +1,5 @@
 import { ApiClient } from '@/api';
-import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData, EmailChangeFormData, PasswordUpdateFormData, DeleteUserFormData, Subscription } from '@/core';
+import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData, EmailChangeFormData, PasswordUpdateFormData, DeleteUserFormData, Subscription, Identities } from '@/core';
 import { WithRetry } from '../token';
 
 export const createUserService = (publicApi: ApiClient, privateApi: ApiClient, withRetry: WithRetry) => {
@@ -40,6 +40,11 @@ export const createUserService = (publicApi: ApiClient, privateApi: ApiClient, w
 
     const getUser = async (username: string): Promise<LowDetailUser> => {
         return await publicApi.get(`/users/${username}`);
+    }
+
+    const getUserIdentities = async (token: string): Promise<Identities> => {
+        const endpoint = '/users/identities';
+        return withRetry(token, (token) => privateApi.get(endpoint, { token: token }));
     }
 
     const getUserDisplayNameHistory = async (username: string): Promise<string[]> => {
@@ -103,6 +108,7 @@ export const createUserService = (publicApi: ApiClient, privateApi: ApiClient, w
         updateUserPassword,
         updateUserVisibility,
         getUser,
+        getUserIdentities,
         getUserDisplayNameHistory,
         followUser,
         unfollowUser,

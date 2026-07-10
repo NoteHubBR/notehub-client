@@ -4,7 +4,7 @@ import { createContext, useCallback, useEffect, useMemo, useRef, useState } from
 import { createProgress, createServices } from '@/services';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Token, User, Cookies, shouldUseUserContext } from "@/core";
-import { useFlames, useFollowing, useHistory, useLoading, useNotes, useProgress, useStore, useSubscriptions, useTags } from "../hooks";
+import { useFlames, useFollowing, useHistory, useIdentities, useLoading, useNotes, useProgress, useStore, useSubscriptions, useTags } from "../hooks";
 import { usePathname } from "next/navigation";
 
 export interface UserContextProps {
@@ -24,6 +24,7 @@ export const UserProvider = (props: any) => {
     const { setIsLoaded } = useLoading();
     const { setOnProgress } = useProgress();
     const { isStoreReady, store, setStore, setActions, updateActions } = useStore();
+    const { clearIdentities, setIdentities } = useIdentities();
     const { clearHistory, setHistory } = useHistory();
     const { clearFollowing, setFollowing } = useFollowing();
     const { clearNotes, setNotes } = useNotes();
@@ -58,8 +59,9 @@ export const UserProvider = (props: any) => {
     }, [])
 
     const {
-        authService: { refreshUser, logoutUser },
-        userService: { getUserDisplayNameHistory, getUserSubscriptions, searchUserFollowing },
+        tokenService: { refreshUser },
+        authService: { logoutUser },
+        userService: { getUserIdentities, getUserDisplayNameHistory, getUserSubscriptions, searchUserFollowing },
         noteService: { getUserNotes, findUserTags },
         flameService: { getUserFlames },
     } = createServices(
@@ -116,21 +118,23 @@ export const UserProvider = (props: any) => {
         return promise;
     }, [refreshUser, setStore, setUser])
 
-    const clearData = useCallback(async () => {
+    const clearData = async () => {
+        clearIdentities();
         clearHistory();
         clearFollowing();
         clearNotes();
         clearFlames();
         clearTags();
         clearSubscriptions();
-    }, [clearFlames, clearFollowing, clearHistory, clearNotes, clearSubscriptions, clearTags])
+    }
 
     const fetchUserData = async (accessToken: string, username: string): Promise<void> => {
         if (fetchingUserDataRef.current) return fetchingUserDataRef.current;
         const promise = (async () => {
             try {
                 await clearData();
-                const [history, following, notes, flames, tags, subscriptions] = await Promise.all([
+                const [identities, history, following, notes, flames, tags, subscriptions] = await Promise.all([
+                    await getUserIdentities(accessToken),
                     await getUserDisplayNameHistory(username),
                     await searchUserFollowing(accessToken, username, 'sort=username,asc&size=9999'),
                     await getUserNotes(accessToken),
@@ -138,6 +142,7 @@ export const UserProvider = (props: any) => {
                     await findUserTags(accessToken, username),
                     await getUserSubscriptions(accessToken)
                 ])
+                setIdentities(identities);
                 setHistory(history);
                 setFollowing(following);
                 setNotes(notes);
