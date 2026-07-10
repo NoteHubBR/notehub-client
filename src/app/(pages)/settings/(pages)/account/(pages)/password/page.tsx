@@ -9,7 +9,7 @@ import { useState } from "react";
 const Page = () => {
 
     const {
-        authService: { sendPasswordChangeRequest },
+        tokenService: { sendPasswordChangeRequest },
         withProgress
     } = useApi();
     const { user } = useUser();

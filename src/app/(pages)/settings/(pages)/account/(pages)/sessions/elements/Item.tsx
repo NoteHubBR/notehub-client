@@ -15,7 +15,7 @@ interface ItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
 export const Item = ({ device, session, setSessions, ...rest }: ItemProps) => {
 
     const {
-        authService: { disconnectSession },
+        tokenService: { disconnectSession },
         withProgress
     } = useApi();
 

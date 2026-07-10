@@ -1,7 +1,7 @@
 import { ApiClient } from '@/api';
 import { CreateReplyFormData, Page, Reply } from "@/core";
 import { UUID } from "crypto";
-import { WithRetry } from '../auth';
+import { WithRetry } from '../token';
 
 export const createReplyService = (api: ApiClient, withRetry: WithRetry) => {
 

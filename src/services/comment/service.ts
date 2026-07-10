@@ -1,7 +1,7 @@
 import { ApiClient } from '@/api';
 import { Comment, CreateCommentFormData, Page } from "@/core";
 import { UUID } from "crypto";
-import { WithRetry } from './../auth/service';
+import { WithRetry } from '../token';
 
 export const createCommentService = (api: ApiClient, withRetry: WithRetry) => {
 

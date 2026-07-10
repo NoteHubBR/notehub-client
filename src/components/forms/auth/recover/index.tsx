@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
 
     const {
-        authService: { sendPasswordChangeRequest },
+        tokenService: { sendPasswordChangeRequest },
         withProgress
     } = useApi();
 

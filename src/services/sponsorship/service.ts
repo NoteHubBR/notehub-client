@@ -1,7 +1,7 @@
 import { ApiClient } from '@/api';
 import { DonationFormData } from "@/core";
 import { UUID } from 'crypto';
-import { WithRetry } from '../auth';
+import { WithRetry } from '../token';
 
 type SponsorshipPurchaseReturn = {
     status: string;

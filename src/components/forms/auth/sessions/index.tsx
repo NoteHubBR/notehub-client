@@ -12,7 +12,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 export const Form = ({ onSuccess, ...rest }: FormProps) => {
 
     const {
-        authService: { findAllSessions },
+        tokenService: { findAllSessions },
         withProgress
     } = useApi();
 

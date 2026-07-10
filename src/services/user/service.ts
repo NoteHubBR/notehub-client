@@ -1,6 +1,6 @@
 import { ApiClient } from '@/api';
 import { CreateUserFormData, Page, LowDetailUser, Notification, EditUserFormData, EmailChangeFormData, PasswordUpdateFormData, DeleteUserFormData, Subscription } from '@/core';
-import { WithRetry } from '../auth';
+import { WithRetry } from '../token';
 
 export const createUserService = (publicApi: ApiClient, privateApi: ApiClient, withRetry: WithRetry) => {
 
