@@ -2,7 +2,7 @@ import { ChangeThemeDropdown } from './options/ChangeTheme';
 import { Component } from '@/components';
 import { Field } from '../elements/Field';
 import { Header } from '../elements/Header';
-import { IconBrandGithub, IconBrandGoogleFilled, IconHelp, IconLogout, IconMessageReport, IconSettings, IconUsers, IconYinYangFilled } from '@tabler/icons-react';
+import { IconHelp, IconLogout, IconMessageReport, IconSettings, IconUsers, IconYinYangFilled } from '@tabler/icons-react';
 import { Section } from '../elements/Section';
 import { usePref, useUser } from '@/data/hooks';
 import { User } from '@/core';
@@ -24,20 +24,6 @@ export const MenuDropdown = ({ user }: { user: User }) => {
                 <Component.Photo user={user} size={50} className="self-start" />
             </Header>
             <Section>
-                {user.host === 'Google' &&
-                    <Field.Link href={'https://myaccount.google.com'} target="_blank" text="Conta do Google">
-                        <IconBrandGoogleFilled size={20} />
-                    </Field.Link>
-                }
-                {user.host === 'GitHub' &&
-                    <Field.Link href={'https://github.com/settings/admin'} target="_blank" text="Conta do GitHub">
-                        <IconBrandGithub size={20} />
-                    </Field.Link>
-                }
-                {/*                 
-                    Carregar contas armazenadas na store em um sub dropdown
-                    <Field.Button text="Mudar de conta" useChevron><IconUsers /></Field.Button> 
-                */}
                 <Field.Link href={'/signin'} text="Mudar de conta"><IconUsers /></Field.Link>
                 <Field.Button text="Sair" onClick={() => clearUser()}><IconLogout /></Field.Button>
             </Section>

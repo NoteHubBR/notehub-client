@@ -19,7 +19,6 @@ const Page = () => {
     <section>
       <Header goBack="/settings/account" title="Informações" />
       <dl className="mt-6 flex flex-col gap-5">
-        <Desc term="Host" desc={user.host} />
         <Desc term="Perfil" desc={user.profile_private ? "Privado" : "Público"} />
         <Desc term="Desenvolvedor" desc={user.dev ? "Sim" : "Não"} />
         <Desc term="Patrocinador" desc={user.sponsor ? "Sim" : "Não"} />

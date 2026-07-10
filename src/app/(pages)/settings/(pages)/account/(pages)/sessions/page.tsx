@@ -5,11 +5,12 @@ import { Header } from '../../../Header';
 import { Item, OAuthUserTitle, UserTitle } from './elements';
 import { Session } from '@/core';
 import { useState } from 'react';
-import { useStore, useUser } from '@/data/hooks';
+import { useIdentities, useStore, useUser } from '@/data/hooks';
 
 const Page = () => {
 
     const { user, token } = useUser();
+    const { identities } = useIdentities();
     const { store: { device } } = useStore();
     const [sessions, setSessions] = useState<Session[] | null>(null);
 
@@ -34,7 +35,7 @@ const Page = () => {
     return (
         <section>
             <Header goBack="/settings/account" title="Acesse suas sessões" />
-            {user.host === 'NoteHub' ? <UserTitle /> : <OAuthUserTitle />}
+            {identities.length < 1 ? <UserTitle /> : <OAuthUserTitle />}
             <Form.Auth.Sessions
                 onSuccess={(data) => {
                     const current = data.find((s) => s.device === device);

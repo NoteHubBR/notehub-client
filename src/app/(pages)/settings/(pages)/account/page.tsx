@@ -3,12 +3,13 @@
 import { Header } from "../Header";
 import { IconBellRingingFilled, IconCancel, IconDevices2, IconEye, IconKey, IconLogout, IconMail, IconUser, IconUsers } from "@tabler/icons-react";
 import { Link } from "./Link";
-import { useScreen, useUser } from "@/data/hooks";
+import { useIdentities, useScreen, useUser } from "@/data/hooks";
 
 const Page = () => {
 
     const { onMobile } = useScreen();
     const { user, clearUser } = useUser();
+    const { identities } = useIdentities();
 
     if (user) return (
         <section>
@@ -19,7 +20,7 @@ const Page = () => {
                     <Link href="/settings/account/info" icon={IconUser}>Informações</Link>
                     <Link href="/settings/account/visibility" icon={IconEye}>Alterar visibilidade</Link>
                     <Link href="/settings/account/email" icon={IconMail}>Alterar email</Link>
-                    {user.host === "NoteHub" &&
+                    {identities.length < 1 &&
                         <>
                             <Link href="/settings/account/password" icon={IconKey}>Alterar senha</Link>
                         </>
