@@ -9,6 +9,7 @@ export * from './UserContext';
 export * from './UserFlamesContext';
 export * from './UserFollowingContext';
 export * from './UserHistoryContext';
+export * from './UserIdentitiesContext';
 export * from './UserNotesContext';
 export * from './UserNotificationsContext';
 export * from './UserPreferencesContext';

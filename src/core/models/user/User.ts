@@ -8,7 +8,6 @@ export interface User {
     avatar: string;
     banner: string;
     message: string;
-    host: string;
     profile_private: boolean;
     dev: boolean;
     sponsor: boolean;

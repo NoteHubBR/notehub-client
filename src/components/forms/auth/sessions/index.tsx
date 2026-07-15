@@ -1,7 +1,7 @@
 import { Element } from "./elements";
 import { FindSessionsFormData, findSessionsFormSchema, handleFieldErrors, handleInvalidTokenFieldError, Session } from "@/core";
 import { FormProvider, useForm } from "react-hook-form";
-import { useApi, useUser } from "@/data/hooks";
+import { useApi, useIdentities, useUser } from "@/data/hooks";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -12,11 +12,12 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 export const Form = ({ onSuccess, ...rest }: FormProps) => {
 
     const {
-        authService: { findAllSessions },
+        tokenService: { findAllSessions },
         withProgress
     } = useApi();
 
     const { user, token } = useUser();
+    const { identities } = useIdentities();
 
     const findSessionsForm = useForm<FindSessionsFormData>({
         resolver: zodResolver(findSessionsFormSchema)
@@ -52,7 +53,7 @@ export const Form = ({ onSuccess, ...rest }: FormProps) => {
             >
                 <Field>
                     <Input name="password" />
-                    <Label htmlFor="password">{user.host === 'NoteHub' ? 'Senha' : 'Chave'}</Label>
+                    <Label htmlFor="password">{identities.length < 1 ? 'Senha' : 'Chave'}</Label>
                 </Field>
                 <Field className='h-12'>
                     <Error name="password" />

@@ -12,6 +12,7 @@ import { createNoteService } from './note';
 import { createReplyQuery } from './reply';
 import { createReplyService } from './reply';
 import { createSponsorshipService } from './sponsorship';
+import { createTokenService } from './token';
 import { createUserQuery } from './user';
 import { createUserService } from './user';
 import { Token } from '@/core';
@@ -29,17 +30,18 @@ export const createProgress = (setOnProgress: (value: boolean) => void) =>
 export const createServices = (device: string, token: string | null, updateToken: (token: Token) => void) => {
     const publicApi = createApiClient({ deviceId: device });
     const privateApi = createApiClient({ deviceId: device, token });
-    const authService = createAuthService(publicApi, privateApi, updateToken);
+    const tokenService = createTokenService(publicApi, privateApi, updateToken);
     return {
-        authService,
+        tokenService,
         healthService: createHealthService(publicApi),
-        userService: createUserService(publicApi, privateApi, authService.withRetry),
-        sponsorshipService: createSponsorshipService(privateApi, authService.withRetry),
-        feedService: createFeedService(privateApi, authService.withRetry),
-        noteService: createNoteService(publicApi, privateApi, authService.withRetry),
-        flameService: createFlameService(privateApi, authService.withRetry),
-        commentService: createCommentService(privateApi, authService.withRetry),
-        replyService: createReplyService(privateApi, authService.withRetry),
+        authService: createAuthService(publicApi),
+        userService: createUserService(publicApi, privateApi, tokenService.withRetry),
+        sponsorshipService: createSponsorshipService(privateApi, tokenService.withRetry),
+        feedService: createFeedService(privateApi, tokenService.withRetry),
+        noteService: createNoteService(publicApi, privateApi, tokenService.withRetry),
+        flameService: createFlameService(privateApi, tokenService.withRetry),
+        commentService: createCommentService(privateApi, tokenService.withRetry),
+        replyService: createReplyService(privateApi, tokenService.withRetry),
     }
 }
 

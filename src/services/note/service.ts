@@ -1,7 +1,7 @@
 import { ApiClient } from '@/api';
 import { CreateNoteFormData, LowDetailNote, Note, NoteTextUpdateFormData, NoteUpdateFormData, Page } from '@/core';
 import { UUID } from 'crypto';
-import { WithRetry } from '../auth';
+import { WithRetry } from '../token';
 
 export const createNoteService = (publicApi: ApiClient, privateApi: ApiClient, withRetry: WithRetry) => {
 

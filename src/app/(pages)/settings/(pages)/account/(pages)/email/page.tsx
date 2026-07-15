@@ -9,7 +9,7 @@ import { useState } from "react";
 const Page = () => {
 
     const {
-        authService: { sendEmailChangeRequest },
+        tokenService: { sendEmailChangeRequest },
         withProgress
     } = useApi();
     const { user } = useUser();

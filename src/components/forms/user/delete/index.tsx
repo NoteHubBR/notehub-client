@@ -1,7 +1,7 @@
 import { DeleteUserFormData, deleteUserFormSchema, handleFieldErrors } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
-import { useApi, useUser } from "@/data/hooks";
+import { useApi, useIdentities, useUser } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -16,6 +16,7 @@ export const Form = () => {
     const qc = useQueryClient();
 
     const { token, user, clearUser } = useUser();
+    const { identities } = useIdentities();
 
     const deleteUserForm = useForm<DeleteUserFormData>({
         resolver: zodResolver(deleteUserFormSchema)
@@ -51,7 +52,7 @@ export const Form = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="px-2 flex flex-col gap-1">
                 <Wrapper>
                     <Label name="password" />
-                    <Input name="password" placeholder={user.host === 'NoteHub' ? 'Digite sua senha' : 'Digite sua chave'} />
+                    <Input name="password" placeholder={identities.length < 1 ? 'Digite sua senha' : 'Digite sua chave'} />
                     <Button disabled={isPending}>
                         Excluir
                     </Button>

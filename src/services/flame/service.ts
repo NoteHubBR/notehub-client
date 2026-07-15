@@ -1,7 +1,7 @@
 import { ApiClient } from '@/api';
 import { Flame, Page } from "@/core";
 import { UUID } from "crypto";
-import { WithRetry } from '../auth';
+import { WithRetry } from '../token';
 
 export const createFlameService = (api: ApiClient, withRetry: WithRetry) => {
 

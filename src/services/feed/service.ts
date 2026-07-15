@@ -1,6 +1,6 @@
 import { ApiClient } from '@/api';
 import { FeedEvent, Page } from '@/core';
-import { WithRetry } from '../auth';
+import { WithRetry } from '../token';
 
 export const createFeedService = (api: ApiClient, withRetry: WithRetry) => {
 
