@@ -20,6 +20,23 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        id: '16',
+        version: 'v3.0.2',
+        date: '13/7/26 9:49',
+        scope: 'server',
+        title: 'Julho 13, 2026',
+        summary: 'Autorizações abertas',
+        entries: [
+            {
+                type: 'feat',
+                pr: 19,
+                merged: true,
+                hash: 'f6e04bd0f37055062e858b46f2246bd931e38ad1',
+                desc: 'Agora é possível entrar com Google ou GitHub usando o mesmo e-mail de uma conta já existente, sem perder dados. Além disso, uma conta pode ter mais de um provedor vinculado ao mesmo tempo.'
+            }
+        ]
+    },
+    {
         id: '15',
         version: 'v3.0',
         date: '1/6/26 9:34',
