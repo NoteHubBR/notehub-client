@@ -12,9 +12,8 @@
 </div>
 <br>
 <div align="center">
-  <a href="https://github.com/notehubbr/notehub-client/releases/tag/v3.5.2">
-    <img width="100px" height="25px" src="https://img.shields.io/badge/notehub-3.5.2-7c3aed">
-  </a>
+  <a href="LICENSE"><img width="100px" height="21px" src="https://img.shields.io/badge/license-MIT-green.svg"></a>
+  <a href="https://github.com/notehubbr/notehub-client/releases/tag/v3.5.2"><img width="100px" height="22px" src="https://img.shields.io/badge/notehub-3.5.2-7c3aed"></a>
 </div>
 
 ## Instalação
@@ -93,7 +92,7 @@
   - Referencie a issue correspondente (ex.: Fixes #12).
 
 ## Licença
-#### Ainda não há licença explícita no repositório.
+#### Este projeto está licenciado sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ## Créditos
 
