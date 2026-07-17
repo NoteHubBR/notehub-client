@@ -22,7 +22,7 @@ const Page = () => {
         }, {})
 
     useEffect(() => {
-        return tryScrollTo();
+        tryScrollTo();
     }, [])
 
     return (

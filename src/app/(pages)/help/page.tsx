@@ -15,7 +15,7 @@ const Page = () => {
         : [] as Items[];
 
     useEffect(() => {
-        return tryScrollTo();
+        tryScrollTo();
     }, [currentId])
 
     const { Header, Input, Li, Question, Answer } = Element;
