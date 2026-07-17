@@ -16,6 +16,11 @@ const createHeaders = (options: RequestOptions): HeadersInit => {
     return headers;
 }
 
+type ApiError = {
+    response: Response;
+    data: any;
+}
+
 const handleResponse = async (response: Response) => {
     if (response.status === 204) return null;
     const text = await response.text();
@@ -23,7 +28,7 @@ const handleResponse = async (response: Response) => {
     try { data = text ? JSON.parse(text) : null; }
     catch { data = text; }
     if (response.ok) return data;
-    throw { response, data };
+    throw { response, data } as ApiError;
 }
 
 const buildUrl = (endpoint: string) => `${baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
@@ -51,3 +56,4 @@ export const createApiClient = (requestOptions: RequestOptions) => {
 }
 
 export type ApiClient = ReturnType<typeof createApiClient>;
+export type { ApiError };

@@ -1,3 +1,4 @@
+import { ApiError } from '@/api';
 import { DeleteUserFormData, deleteUserFormSchema, handleFieldErrors } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
@@ -38,8 +39,9 @@ export const Form = () => {
                 ])
                 clearUser({ skipLogout: true });
                 return router.push("/");
-            } catch (errors: any) {
-                if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
+            } catch (error) {
+                const { data } = error as ApiError;
+                if (Array.isArray(data)) return handleFieldErrors(data, setError);
             } finally {
                 setIsPending(false);
             }

@@ -1,3 +1,4 @@
+import { ApiError } from '@/api';
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { forwardRef, useState } from "react";
@@ -61,8 +62,9 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
                     return null
                 })
                 onPortalClose?.();
-            } catch (errors) {
-                if (Array.isArray(errors)) handleFieldErrors(errors, setError);
+            } catch (error) {
+                const { data } = error as ApiError;
+                if (Array.isArray(data)) handleFieldErrors(data, setError);
             } finally {
                 setIsPending(false);
             }

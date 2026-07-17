@@ -1,3 +1,4 @@
+import { ApiError } from '@/api';
 import { CreateUserFormData, createUserFormSchema, handleFieldErrors } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
@@ -29,8 +30,9 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
         try {
             await withProgress(() => createUser(data));
             router.push('/sent')
-        } catch (errors) {
-            if (Array.isArray(errors)) handleFieldErrors(errors, setError)
+        } catch (error) {
+            const { data } = error as ApiError;
+            if (Array.isArray(data)) handleFieldErrors(data, setError)
         } finally {
             setIsRequesting(false)
         }

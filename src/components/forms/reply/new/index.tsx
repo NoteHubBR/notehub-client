@@ -1,3 +1,4 @@
+import { ApiError } from '@/api';
 import { clsx } from "clsx";
 import { Comment, createCommentFormSchema, CreateReplyFormData, handleFieldErrors, Page, Reply, Token, User } from "@/core";
 import { Component } from "@/components";
@@ -72,8 +73,9 @@ export const Form = ({ useSelfReference, token, user, comment, isReplying, selfR
                     return oldData;
                 }
             )
-        } catch (errors) {
-            if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
+        } catch (error) {
+            const { data } = error as ApiError;
+            if (Array.isArray(data)) return handleFieldErrors(data, setError);
         }
     })
 

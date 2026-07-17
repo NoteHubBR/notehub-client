@@ -1,3 +1,4 @@
+import { ApiError } from '@/api';
 import { Element } from "./elements";
 import { FindSessionsFormData, findSessionsFormSchema, handleFieldErrors, handleInvalidTokenFieldError, Session } from "@/core";
 import { FormProvider, useForm } from "react-hook-form";
@@ -34,10 +35,10 @@ export const Form = ({ onSuccess, ...rest }: FormProps) => {
                 setIsPending(true);
                 const sessions = await withProgress(() => findAllSessions(token.access_token, data));
                 return onSuccess?.(sessions);
-            } catch (error: unknown) {
-                const err = error as { response: Response, data: any };
-                if (Array.isArray(err.data)) return handleFieldErrors(err.data, setError);
-                return handleInvalidTokenFieldError(err.data, setInvalid);
+            } catch (error) {
+                const { data } = error as ApiError;
+                if (Array.isArray(data)) return handleFieldErrors(data, setError);
+                return handleInvalidTokenFieldError(data, setInvalid);
             } finally {
                 setIsPending(false);
             }

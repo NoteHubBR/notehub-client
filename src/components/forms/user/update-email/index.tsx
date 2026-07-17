@@ -1,3 +1,4 @@
+import { ApiError } from '@/api';
 import { Element } from "./elements";
 import { EmailChangeFormData, emailChangeFormSchema, handleFieldErrors, handleInvalidTokenFieldError, scrollTo } from "@/core";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
@@ -35,10 +36,10 @@ export const Form = ({ token }: { token: string }) => {
             await withProgress(() => updateUserEmail(token, data));
             if (data.disconnectAll && !data.keepCurrentSession) clearUser();
             return router.push("/");
-        } catch (error: unknown) {
-            const err = error as { response: Response, data: any };
-            if (Array.isArray(err.data)) return handleFieldErrors(err.data, setError);
-            return handleInvalidTokenFieldError(err.data, setInvalid);
+        } catch (error) {
+            const { data } = error as ApiError;
+            if (Array.isArray(data)) return handleFieldErrors(data, setError);
+            return handleInvalidTokenFieldError(data, setInvalid);
         } finally {
             setIsPending(false);
         }

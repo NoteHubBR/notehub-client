@@ -1,3 +1,4 @@
+import { ApiError } from '@/api';
 import { clsx } from "clsx";
 import { deleteImage, storeImg } from "@/supabase";
 import { EditUserFormData, editUserFormSchema, handleFieldErrors, scrollTo } from "@/core";
@@ -80,12 +81,13 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
                 onPortalClose?.();
                 return router.push(`/${data.username}`);
 
-            } catch (errors) {
+            } catch (error) {
                 await Promise.allSettled([
                     shouldUpdateAvatar && deleteImage(newData.avatar!),
                     shouldUpdateBanner && deleteImage(newData.banner!)
                 ])
-                if (Array.isArray(errors)) handleFieldErrors(errors, setError);
+                const { data } = error as ApiError;
+                if (Array.isArray(data)) handleFieldErrors(data, setError);
             }
         })
     }

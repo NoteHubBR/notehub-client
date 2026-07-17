@@ -1,3 +1,4 @@
+import { ApiError } from '@/api';
 import { Cookies, handleOAuthError } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
@@ -46,11 +47,9 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
         setState((prev) => ({ ...prev, isRequesting: true }));
         try {
             login(await withProgress(() => loginUserByDefault(data)));
-        } catch (error: any) {
-            if (Array.isArray(error)) handleFieldErrors(error, setError);
-            if (typeof error === 'object' && 'data' in error && Array.isArray(error.data)) {
-                handleFieldErrors(error.data, setError);
-            }
+        } catch (error) {
+            const { data } = error as ApiError;
+            if (Array.isArray(data)) handleFieldErrors(data, setError);
         } finally {
             setState((prev) => ({ ...prev, isRequesting: false }));
         }
@@ -61,8 +60,9 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
             const submit = async () => {
                 try {
                     login(await withProgress(() => loginUserByGoogle({ token: res.access_token })));
-                } catch (errors) {
-                    if (Array.isArray(errors)) handleOAuthError(errors, setState);
+                } catch (error) {
+                    const { data } = error as ApiError;
+                    if (Array.isArray(data)) handleOAuthError(data, setState);
                 } finally {
                     setState((prev) => ({ ...prev, isRequesting: false, isGoogleAuthInProgress: false }));
                 }
@@ -86,8 +86,9 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
             const submit = async () => {
                 try {
                     login(await withProgress(() => loginUserByGitHub({ code: code })).finally(() => isFetching.current = false));
-                } catch (errors) {
-                    if (Array.isArray(errors)) handleOAuthError(errors, setState);
+                } catch (error) {
+                    const { data } = error as ApiError;
+                    if (Array.isArray(data)) handleOAuthError(data, setState);
                 } finally {
                     setState((prev) => ({ ...prev, isRequesting: false }));
                 }

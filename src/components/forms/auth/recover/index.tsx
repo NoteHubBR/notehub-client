@@ -1,3 +1,4 @@
+import { ApiError } from '@/api';
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { handleFieldErrors, RecoverFormData, recoverFormSchema } from "@/core";
@@ -29,9 +30,10 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
         try {
             await withProgress(() => sendPasswordChangeRequest(data));
             router.push('/sent')
-        } catch (error: any) {
-            if (error.response.status === 404) return setError("email", { message: "Conta não encontrada." });
-            if (Array.isArray(error)) return handleFieldErrors(error, setError)
+        } catch (error) {
+            const { response, data } = error as ApiError;
+            if (response.status === 404) return setError("email", { message: "Conta não encontrada." });
+            if (Array.isArray(data)) return handleFieldErrors(data, setError);
             return;
         } finally {
             setIsRequesting(false)

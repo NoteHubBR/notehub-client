@@ -1,3 +1,4 @@
+import { ApiError } from '@/api';
 import { CreateNoteFormData, createNoteFormSchema, handleFieldErrors } from "@/core";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
@@ -40,8 +41,9 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
             ])
             setNewNote(note);
             router.push(`/${username}/${note.id}`);
-        } catch (errors) {
-            if (Array.isArray(errors)) handleFieldErrors(errors, setError);
+        } catch (error) {
+            const { data } = error as ApiError;
+            if (Array.isArray(data)) handleFieldErrors(data, setError);
         } finally {
             setIsPending(false);
         }

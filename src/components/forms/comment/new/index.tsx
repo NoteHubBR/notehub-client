@@ -1,3 +1,4 @@
+import { ApiError } from '@/api';
 import { clsx } from "clsx";
 import { Comment, CreateCommentFormData, createCommentFormSchema, handleFieldErrors, Note, Token, User } from "@/core";
 import { Component } from "@/components";
@@ -53,8 +54,9 @@ export const Form = ({ token, user, note, setComments, setNote, ...rest }: FormP
                 if (prev) return { ...prev, comments_count: prev.comments_count + 1 };
                 else return null;
             })
-        } catch (errors) {
-            if (Array.isArray(errors)) return handleFieldErrors(errors, setError);
+        } catch (error) {
+            const { data } = error as ApiError;
+            if (Array.isArray(data)) return handleFieldErrors(data, setError);
         }
     })
 
