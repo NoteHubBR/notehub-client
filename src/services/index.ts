@@ -7,6 +7,7 @@ import { createFeedService } from './feed';
 import { createFlameQuery } from './flame';
 import { createFlameService } from './flame';
 import { createHealthService } from './health';
+import { createMediaService } from './media';
 import { createNoteQuery } from './note';
 import { createNoteService } from './note';
 import { createReplyQuery } from './reply';
@@ -34,6 +35,7 @@ export const createServices = (device: string, token: string | null, updateToken
     return {
         tokenService,
         healthService: createHealthService(publicApi),
+        mediaService: createMediaService(publicApi),
         authService: createAuthService(publicApi),
         userService: createUserService(publicApi, privateApi, tokenService.withRetry),
         sponsorshipService: createSponsorshipService(privateApi, tokenService.withRetry),
