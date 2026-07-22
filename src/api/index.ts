@@ -6,11 +6,11 @@ interface RequestOptions {
     deviceId: string;
 }
 
-const createHeaders = (options: RequestOptions): HeadersInit => {
+const createHeaders = (options: RequestOptions, isFormData: boolean): HeadersInit => {
     const headers: HeadersInit = {
-        'Content-Type': 'application/json',
         'X-Device-Id': options.deviceId,
     }
+    if (!isFormData) headers['Content-Type'] = 'application/json';
     if (options.refreshToken) headers['X-Refresh-Token'] = options.refreshToken;
     if (options.token) headers['Authorization'] = `Bearer ${options.token}`;
     return headers;
@@ -37,10 +37,11 @@ export const createApiClient = (requestOptions: RequestOptions) => {
 
     const request = async (method: string, endpoint: string, body?: unknown, overrides?: Partial<RequestOptions>) => {
         const mergedOptions = overrides ? { ...requestOptions, ...overrides } : requestOptions;
+        const isFormData = body instanceof FormData;
         const response = await fetch(buildUrl(endpoint), {
             method,
-            headers: createHeaders(mergedOptions),
-            body: body ? JSON.stringify(body) : undefined,
+            headers: createHeaders(mergedOptions, isFormData),
+            body: isFormData ? body : body ? JSON.stringify(body) : undefined,
         })
         return handleResponse(response);
     }
