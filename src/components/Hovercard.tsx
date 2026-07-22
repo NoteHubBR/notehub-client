@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { Icon } from './icons';
 import { IconCheck, IconLock, IconWorld } from '@tabler/icons-react';
 import { LowDetailUser, User } from '@/core';
-import { Photo } from './Photo';
+import { Photo } from './medias/avatar';
 import { Toggle } from './buttons';
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { useScreen, useStore } from '@/data/hooks';
