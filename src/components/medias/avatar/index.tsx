@@ -32,6 +32,7 @@ export const Photo = forwardRef<HTMLDivElement, PhotoProps>((props, ref) => {
         user={user}
         size={size}
         className={className}
+        {...rest}
     />
 
     return <Image
@@ -40,6 +41,7 @@ export const Photo = forwardRef<HTMLDivElement, PhotoProps>((props, ref) => {
         user={user}
         size={size}
         className={className}
+        {...rest}
     />
 
 })
