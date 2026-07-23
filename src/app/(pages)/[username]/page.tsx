@@ -28,7 +28,7 @@ const Page = () => {
 
     if (user) return (
         <Section>
-            <header className="py-5 px-8 border-b dark:border-neutral-700/50 border-dark/10">
+            <header className="py-5 px-8 border-b dark:border-light/20 border-dark/20">
                 <h2 className="font-semibold text-xl inmd:text-center">Visão Geral</h2>
             </header>
             <ul className="px-6 insm:px-0 grid grid-cols-2 insm:grid-cols-1 gap-x-6">

@@ -5,10 +5,8 @@ export const Section = ({ className, ...rest }: { className?: string } & React.H
         <section
             className={clsx(
                 'max-w-[999px] w-full min-h-full m-auto rounded-[5px]',
-                'dark:border dark:border-neutral-700/50',
-                'inmd:dark:border-none',
+                'border inmd:border-none dark:border-light/10 border-dark/10',
                 'dark:bg-darker bg-lighter',
-                'drop-shadow-alpha-d-sm',
                 'inmd:drop-shadow-[none]',
                 className
             )}

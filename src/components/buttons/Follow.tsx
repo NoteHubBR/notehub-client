@@ -72,7 +72,6 @@ export const Follow = ({ user, size = 20, useIcon, useText, className, ...rest }
                     ? 'max-w-32 rounded-3xl text-sm font-medium'
                     : 'max-w-24 rounded-3xl text-sm font-medium',
                 'flex items-center justify-center gap-1',
-                'dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm',
                 'transition-all duration-100',
                 className
             )}
@@ -97,7 +96,6 @@ export const Follow = ({ user, size = 20, useIcon, useText, className, ...rest }
                     : 'max-w-24 rounded-3xl text-sm font-medium',
                 'dark:bg-lighter/30 bg-darker/30',
                 'flex items-center justify-center gap-1',
-                'dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm',
                 'transition-all duration-300',
                 className
             )}

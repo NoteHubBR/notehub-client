@@ -5,9 +5,9 @@ export const Skeleton = () => {
 
     const InfoSkeleton = ({ duplicate }: { duplicate?: boolean }) => (
         <div
-            className="border-b p-3
+            className="p-3
+            border-b dark:border-light/20 border-dark/20
             flex items-center gap-3
-            dark:border-neutral-700/50 border-dark/10
             last:border-none last:col-span-2 insm:last:col-span-1"
         >
             <Component.Bone width={44} height={44} rounded="full" />

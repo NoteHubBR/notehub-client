@@ -6,8 +6,8 @@ export const Skeleton = (props: React.HTMLAttributes<HTMLDivElement>) => {
         <div
             className="p-3 rounded
             flex flex-col gap-2
-            dark:bg-dark bg-light
-            dark:drop-shadow-alpha-l-md drop-shadow-alpha-d-md"
+            border dark:border-light/10 border-dark/10
+            dark:bg-dark bg-light"
             {...props}
         >
             <div className="flex items-center gap-3">

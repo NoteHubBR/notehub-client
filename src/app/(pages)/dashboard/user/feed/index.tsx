@@ -47,8 +47,8 @@ export const Feed = () => {
         return (
             <section
                 className="max-w-[777px] inlg:max-w-full w-full my-3 p-3 rounded-[5px]
-                dark:bg-darker bg-lighter
-                dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
+                border dark:border-light/10 border-dark/10
+                dark:bg-darker bg-lighter"
             >
                 <Header />
                 <ul className="flex flex-col gap-4">

@@ -16,8 +16,8 @@ export const Ranking = () => {
     if (ranking) return (
         <section
             className="w-full h-fit p-3 rounded-[5px]
+            border dark:border-light/10 border-dark/10
             dark:bg-darker bg-lighter
-            dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm
             inlg:h-full
             inmd:w-full"
         >

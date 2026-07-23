@@ -138,8 +138,8 @@ export const Hovercard = ({ ref, user }: HovercardProps) => {
             className={clsx(
                 'absolute',
                 'w-[366px] rounded',
+                'border dark:border-light/10 border-dark/10',
                 'dark:bg-darker bg-lighter',
-                'dark:drop-shadow-alpha-l-xs drop-shadow-alpha-d-xs',
                 'after:absolute after:w-3 after:h-3 after:dark:bg-darker after:bg-lighter after:rotate-45',
                 position.direction === 'above' ? 'm-0' : 'mt-4',
                 position.direction === 'above' ? 'after:bottom-0 after:translate-y-1/2' : 'after:top-0 after:-translate-y-1/2',

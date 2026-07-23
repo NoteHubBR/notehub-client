@@ -10,7 +10,7 @@ export const Summary = forwardRef<HTMLSpanElement, SummaryProps>(({ summary, ...
         <div
             className="p-2
             flex items-center justify-between gap-3
-            border-b dark:border-neutral-700/50 border-dark/25
+            border-b dark:border-light/10 border-dark/10
             dark:bg-semidark bg-semilight"
             {...rest}
         >
