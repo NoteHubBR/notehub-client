@@ -1,4 +1,6 @@
-import { forwardRef } from 'react';
+'use client';
+
+import { forwardRef, useEffect, useRef } from 'react';
 import { User } from '@/core';
 
 interface VideoProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -12,6 +14,24 @@ export const Video = forwardRef<HTMLDivElement, VideoProps>((props, ref) => {
 
     const { src, user, size = 30, className, ...rest } = props;
 
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) video.play().catch(() => { });
+                else video.pause();
+            },
+            {
+                threshold: 0.25,
+            }
+        )
+        observer.observe(video);
+        return () => observer.disconnect();
+    }, [])
+
     return (
         <div
             role='img'
@@ -22,8 +42,8 @@ export const Video = forwardRef<HTMLDivElement, VideoProps>((props, ref) => {
             {...rest}
         >
             <video
+                ref={videoRef}
                 src={src}
-                autoPlay
                 loop
                 muted
                 playsInline
