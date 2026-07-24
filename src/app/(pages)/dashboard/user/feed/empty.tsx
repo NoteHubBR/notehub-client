@@ -14,8 +14,8 @@ const Dialog = ({ icon: Icon, title, desc, ...rest }: DialogProps) => (
         aria-describedby="dialogDesc"
         className="py-6
         rounded flex flex-1 items-center justify-center gap-3 
-        dark:bg-dark bg-light
-        dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
+        border dark:border-light/10 border-dark/10
+        dark:bg-dark bg-light"
         {...rest}
     >
         <figure className="w-fit">
@@ -35,8 +35,8 @@ const Dialog = ({ icon: Icon, title, desc, ...rest }: DialogProps) => (
 export const Empty = () => (
     <section
         className="max-w-[777px] inlg:max-w-full w-full my-3 p-3 rounded-[5px]
-        dark:bg-darker bg-lighter
-        dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
+        border dark:border-light/10 border-dark/10
+        dark:bg-darker bg-lighter"
     >
         <Header />
         <Dialog icon={IconMoodPuzzled} title="uai?" desc="Feed vazio." />

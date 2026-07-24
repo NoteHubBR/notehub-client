@@ -4,7 +4,11 @@ import { StoreProps, UploadProps } from "./types";
 import { v4 as uuidv4 } from "uuid";
 import imageCompression from 'browser-image-compression';
 
-const uploadImage = async ({ file, bucket, folder, username }: UploadProps): Promise<string> => {
+const uploadImage = async ({ file, bucket, folder, username, uploadGifAsVideo }: UploadProps): Promise<string> => {
+    if (file.type === 'image/gif') {
+        const res = await uploadGifAsVideo({ file, bucket, folder, username });
+        return res.url;
+    }
     file = file.type === 'image/png' ? await imageCompression(file, { maxSizeMB: 1, }) : file;
     const path = `${folder}/${username}/${uuidv4()}${file.type === 'image/png' ? '.png' : '.gif'}`;
     const { storage } = createSupabaseClient();
@@ -28,14 +32,15 @@ export const deleteImage = async (url: string) => {
 
 }
 
-export const storeImg = async ({ folder, username, blobUrl }: StoreProps): Promise<string | void> => {
+export const storeImg = async ({ folder, username, blobUrl, uploadGifAsVideo }: StoreProps): Promise<string | void> => {
     if (blobUrl) {
         const file = await convertBlobUrlToFile(blobUrl);
         return await uploadImage({
             file: file,
             bucket: "images",
             folder: folder,
-            username: username
+            username: username,
+            uploadGifAsVideo,
         })
     }
     return;

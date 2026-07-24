@@ -14,7 +14,7 @@ export const Info = ({ children, title, subtitle, subtitleClassName, href }: Inf
     return (
         <li className={clsx(
             'flex items-start gap-3 p-3',
-            'border-b dark:border-neutral-700/50 border-dark/10',
+            'border-b dark:border-light/20 border-dark/20',
             'last:border-none last:col-span-2 insm:last:col-span-1',
         )}>
             <figure className="p-2 rounded-full dark:bg-white bg-black dark:text-black text-white">

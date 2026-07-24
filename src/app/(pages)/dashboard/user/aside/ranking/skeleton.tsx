@@ -4,7 +4,7 @@ export const Skeleton = (props: React.HTMLAttributes<HTMLDivElement>) => {
 
     const Note = (props: React.HTMLAttributes<HTMLDivElement>) => (
         <div
-            className="py-3 border-b dark:border-neutral-700 border-neutral-400 first:pt-0 last:pb-0 last:border-none"
+            className="py-3 border-b dark:border-light/20 border-dark/20 first:pt-0 last:pb-0 last:border-none"
             {...props}
         >
             <div className="flex flex-col gap-2">
@@ -21,8 +21,8 @@ export const Skeleton = (props: React.HTMLAttributes<HTMLDivElement>) => {
     return (
         <div
             className="w-full h-fit p-3 rounded-[5px]
+            border dark:border-light/10 border-dark/10
             dark:bg-darker bg-lighter
-            dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm
             inlg:h-full
             inmd:w-full"
             {...props}

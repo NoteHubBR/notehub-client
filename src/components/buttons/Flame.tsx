@@ -65,7 +65,6 @@ export const Flame = ({ size = 24, note, useCount, ...rest }: FlameProps) => {
                 'group',
                 'p-1 rounded-full',
                 'flex items-center',
-                'dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm',
                 'active:scale-110',
                 'transition-all',
                 className
@@ -91,7 +90,6 @@ export const Flame = ({ size = 24, note, useCount, ...rest }: FlameProps) => {
                     'p-1 rounded-full',
                     'flex items-center',
                     'dark:bg-lighter/25 bg-darker/25',
-                    'dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm',
                     'transition-colors duration-300',
                 )}
             >

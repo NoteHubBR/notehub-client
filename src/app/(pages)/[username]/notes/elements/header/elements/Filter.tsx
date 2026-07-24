@@ -4,7 +4,7 @@ export const Filter = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
     <form
         onSubmit={(e: React.FormEvent<HTMLFormElement>) => e.preventDefault()}
         className="flex items-center
-        border-y dark:border-neutral-700/50 border-dark/25
+        border-y dark:border-light/10 border-dark/10
         focus-within:!border-primary
         transition-colors"
     >

@@ -35,7 +35,7 @@ export const Header = ({ tags, ...rest }: HeaderProps) => {
     }, [tags])
 
     return (
-        <header className="pb-4 border-b dark:border-neutral-700/50 border-dark/25" {...rest}>
+        <header className="pb-4 border-b dark:border-light/20 border-dark/20" {...rest}>
             <nav>
                 <ul className="flex items-center justify-between inlg:justify-center gap-2 flex-wrap">
                     <Element.Input placeholder="Encontrar uma nota..." />

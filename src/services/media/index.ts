@@ -1,0 +1,1 @@
+export { createMediaService } from './service';

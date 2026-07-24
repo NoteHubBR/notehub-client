@@ -113,7 +113,7 @@ export const Dropdown = ({ triggerRef, closeRef, ...rest }: DropdownProps) => {
                     'absolute right-0 inmd:right-auto inmd:left-0 insm:center insm:!fixed',
                     'w-60 max-h-[333px] rounded-lg',
                     isOpen ? 'visible top-[120%] !transition-all' : 'invisible top-full transition-none',
-                    'border dark:border-neutral-700/50 border-dark/25',
+                    'border dark:border-light/10 border-dark/10',
                     'dark:bg-dark bg-light',
                 )}
                 {...rest}

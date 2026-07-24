@@ -19,6 +19,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortalClose, ...rest }, ref) => {
 
     const {
+        mediaService: { uploadGifAsVideo },
         userService: { updateUser },
         withProgress
     } = useApi();
@@ -47,10 +48,10 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ closeRef, onPortal
 
                 const [avatarPromise, bannerPromise] = [
                     shouldUpdateAvatar
-                        ? storeImg({ folder: "avatars", username: data.username, blobUrl: data.avatar })
+                        ? storeImg({ folder: "avatars", username: data.username, blobUrl: data.avatar, uploadGifAsVideo })
                         : Promise.resolve(user.avatar),
                     shouldUpdateBanner
-                        ? storeImg({ folder: "banners", username: data.username, blobUrl: data.banner })
+                        ? storeImg({ folder: "banners", username: data.username, blobUrl: data.banner, uploadGifAsVideo })
                         : Promise.resolve(user.banner)
                 ]
 

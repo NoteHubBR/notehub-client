@@ -40,7 +40,7 @@ export const Sorter = ({ orderParam, sortParam, orderValues, sortValues, ...rest
                 className={clsx(
                     'cursor-pointer',
                     'px-3 py-1 rounded-md',
-                    'border', onRoute ? 'border-primary' : 'dark:border-neutral-700/50 border-dark/25',
+                    'border', onRoute ? 'border-primary' : 'dark:border-light/10 border-dark/10',
                     onRoute ? 'bg-primary text-white' : 'dark:bg-dark bg-light hover:dark:bg-semidark hover:bg-semilight',
                     'transition-all'
                 )}

@@ -48,7 +48,7 @@ export const Filter = (props: React.ButtonHTMLAttributes<HTMLButtonElement>) => 
                     className={clsx(
                         'select-none relative',
                         'px-2 py-1 rounded-xl flex items-center gap-1',
-                        'border dark:border-neutral-700/50 border-dark/25',
+                        'border dark:border-light/10 border-dark/10',
                         'dark:bg-dark bg-light',
                         'focus-visible:dark:bg-semidark focus-visible:bg-semilight',
                         'hover:dark:bg-semidark hover:bg-semilight',

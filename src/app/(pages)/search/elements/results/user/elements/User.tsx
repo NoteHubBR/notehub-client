@@ -1,7 +1,7 @@
 import { Component } from "@/components";
 import { Icon } from "@/components/icons";
 import { LowDetailUser } from "@/core";
-import { Photo } from "@/components/Photo";
+import { Photo } from '@/components/medias/avatar';
 import { useRef } from "react";
 import Link from "next/link";
 

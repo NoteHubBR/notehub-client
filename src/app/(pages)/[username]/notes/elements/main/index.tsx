@@ -1,7 +1,7 @@
 import { Element } from "./elements";
 import { Icon } from "@/components/icons";
 import { LowDetailNote } from "@/core";
-import { Photo } from "@/components/Photo";
+import { Photo } from '@/components/medias/avatar';
 import { Toggle } from "@/components/buttons";
 
 interface MainProps extends React.HTMLAttributes<HTMLElement> {

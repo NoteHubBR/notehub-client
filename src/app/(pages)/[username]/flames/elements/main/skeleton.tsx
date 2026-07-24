@@ -5,9 +5,9 @@ export const Skeleton = (props: React.HTMLAttributes<HTMLElement>) => {
     const Div = (props: React.HTMLAttributes<HTMLDivElement>) => (
         <div
             className="p-3
+            border dark:border-light/10 border-dark/10
             flex items-start rounded-lg
-            dark:bg-dark bg-light
-            dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm"
+            dark:bg-dark bg-light"
             {...props}
         >
             <div className="w-full flex flex-col gap-3">

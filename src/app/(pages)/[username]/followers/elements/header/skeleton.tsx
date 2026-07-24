@@ -2,7 +2,7 @@ import { Component } from "@/components";
 
 export const Skeleton = (props: React.HTMLAttributes<HTMLElement>) => {
     return (
-        <header className="py-4 border-b dark:border-neutral-700/50 border-dark/25" {...props}>
+        <header className="py-4 border-b dark:border-light/20 border-dark/20" {...props}>
             <div className="insm:max-w-[244px] mx-auto flex insm:flex-col items-center justify-between gap-2">
                 <div className="w-full flex-1">
                     <Component.Bone width={0} height={30} rounded="lg" className="!w-full" />

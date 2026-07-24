@@ -1,6 +1,6 @@
 import { Icon } from "@/components/icons";
 import { LowDetailUser } from "@/core";
-import { Photo } from "@/components/Photo";
+import { Photo } from '@/components/medias/avatar';
 import Link, { LinkProps } from "next/link";
 
 interface UserProps extends Omit<LinkProps, 'href'> {

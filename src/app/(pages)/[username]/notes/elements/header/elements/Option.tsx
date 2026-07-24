@@ -31,7 +31,7 @@ export const Option = ({ sParam, value, text, ...rest }: OptionProps) => {
         <li
             role="menuitem"
             onClick={handleParamUpdate}
-            className="cursor-pointer p-2 flex items-center gap-3 border-b dark:border-neutral-700/50 border-dark/25 last:border-none hover:dark:bg-semidark/75 hover:bg-semilight/75"
+            className="cursor-pointer p-2 flex items-center gap-3 border-b dark:border-light/10 border-dark/10 last:border-none hover:dark:bg-semidark/75 hover:bg-semilight/75"
             {...rest}
         >
             <span><IconCheck size={15} className={`${!onRoute && "invisible"}`} /></span>
