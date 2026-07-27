@@ -13,7 +13,7 @@
 <br>
 <div align="center">
   <a href="LICENSE"><img width="100px" height="21px" src="https://img.shields.io/badge/license-MIT-green.svg"></a>
-  <a href="https://github.com/notehubbr/notehub-client/releases/tag/v3.5.2"><img width="100px" height="22px" src="https://img.shields.io/badge/notehub-3.5.2-7c3aed"></a>
+  <a href="https://github.com/notehubbr/notehub-client/releases/tag/v3.5.3"><img width="100px" height="22px" src="https://img.shields.io/badge/notehub-3.5.3-7c3aed"></a>
 </div>
 
 ## Instalação

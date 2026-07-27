@@ -20,6 +20,37 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        id: '17',
+        version: 'v3.5.3',
+        date: '24/7/26 10:26',
+        scope: 'client',
+        title: 'Julho 24, 2026',
+        summary: 'FPS Performance',
+        entries: [
+            {
+                type: 'perf',
+                pr: 30,
+                merged: true,
+                hash: '6213df07f22a25f5ea4beac7b753be9799706f55',
+                desc: 'Avatares animados (GIF) enviados na edição de perfil agora são convertidos em vídeo, reduzindo o tamanho do arquivo e o consumo de dados.'
+            },
+            {
+                type: 'perf',
+                pr: 30,
+                merged: true,
+                hash: '755136e3f46518cc2e1e5d41770e5e7488735766',
+                desc: 'Avatares em vídeo pausam automaticamente quando menos de 25% deles está visível na tela, economizando processamento e bateria.'
+            },
+            {
+                type: 'perf',
+                pr: 30,
+                merged: true,
+                hash: '0b8665d49ef47e2bf654f6331f407d03cd3bf815',
+                desc: 'Sombras projetadas foram substituídas por bordas sutis em toda a interface, reduzindo o custo de renderização.'
+            },
+        ]
+    },
+    {
         id: '16',
         version: 'v3.0.2',
         date: '13/7/26 9:49',
