@@ -11,7 +11,7 @@ const Page = () => {
 
     const { username } = useParams<{ username: string }>();
     const sParams = useSearchParams();
-    const query = buildQueryStrings(sParams);
+    const query = buildQueryStrings(sParams, 'createdAt');
 
     const { flameQueries: { useSearchUserFlames } } = useApi();
 
