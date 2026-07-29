@@ -13,7 +13,7 @@ export const Checkbox = ({ event, events, onCheck, ...rest }: Props) => {
             onChange={onCheck(event)}
             checked={isChecked}
             type='checkbox'
-            className='self-start mt-1'
+            className='self-start mt-1 accent-primary'
             {...rest}
         />
     )
