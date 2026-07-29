@@ -21,18 +21,20 @@ const Page = () => {
 
     const { noteQueries: { useFindUserTags, useFindUserNotes } } = useApi();
 
-    const { data: tagsResponse, isLoading: tagsLoading } = useFindUserTags(
-        accessToken,
-        username,
-        isMounted && !isCurrentUser
-    )
-
     const { data: notesResponse, isLoading: notesLoading, isFetching: notesFetching } = useFindUserNotes(
         accessToken,
         username,
         query,
         isMounted
     )
+
+    const { data: tagsResponse, isLoading: isTagsLoading } = useFindUserTags(
+        accessToken,
+        username,
+        isMounted && !isCurrentUser
+    )
+
+    const tagsLoading = isCurrentUser ? currentTags === null : isTagsLoading;
 
     const tags = isCurrentUser ? currentTags : tagsResponse ? tagsResponse.data as string[] : null;
 
