@@ -1,7 +1,8 @@
 'use client';
 
-import { Header, Release, ReleaseDesc, ReleaseOList, ReleaseTitle, ReleaseTopic, ReleaseUList } from "./elements";
+import { Release, ReleaseDesc, ReleaseOList, ReleaseTitle, ReleaseTopic, ReleaseUList } from "./elements";
 import { ReleaseEntryType, releases } from "@/shared";
+import { Template } from '@/components/templates';
 import { tryScrollTo } from "@/core";
 import { useEffect, useState } from "react";
 
@@ -26,38 +27,35 @@ const Page = () => {
     }, [])
 
     return (
-        <main className="max-w-full w-screen insm:px-3 flex flex-col gap-12">
-            <Header />
-            <div className="max-w-[666px] w-full mx-auto pb-24 flex flex-col gap-12">
-                {releases.map((release: ReleaseType, key: number) => {
-                    const grouped = groupByType(release.entries);
-                    return (
-                        <Release key={key} id={release.id}>
-                            <ReleaseTitle scope={release.scope} tag={release.version}>{release.title}</ReleaseTitle>
-                            <ReleaseUList isActive={currentId === release.id}>
-                                {(Object.entries(grouped) as [ReleaseEntryType, Entry[]][]).map(([type, entries]) => (
-                                    <ReleaseTopic key={type} type={type}>
-                                        <ReleaseOList>
-                                            {entries.map((entry: Entry, idx: number) => (
-                                                <ReleaseDesc
-                                                    key={idx}
-                                                    scope={release.scope}
-                                                    pr={entry.pr}
-                                                    merged={entry.merged}
-                                                    hash={entry.hash}
-                                                >
-                                                    {entry.desc}
-                                                </ReleaseDesc>
-                                            ))}
-                                        </ReleaseOList>
-                                    </ReleaseTopic>
-                                ))}
-                            </ReleaseUList>
-                        </Release>
-                    )
-                })}
-            </div>
-        </main>
+        <Template.Legal title='Changelog'>
+            {releases.map((release: ReleaseType, key: number) => {
+                const grouped = groupByType(release.entries);
+                return (
+                    <Release key={key} id={release.id}>
+                        <ReleaseTitle scope={release.scope} tag={release.version}>{release.title}</ReleaseTitle>
+                        <ReleaseUList isActive={currentId === release.id}>
+                            {(Object.entries(grouped) as [ReleaseEntryType, Entry[]][]).map(([type, entries]) => (
+                                <ReleaseTopic key={type} type={type}>
+                                    <ReleaseOList>
+                                        {entries.map((entry: Entry, idx: number) => (
+                                            <ReleaseDesc
+                                                key={idx}
+                                                scope={release.scope}
+                                                pr={entry.pr}
+                                                merged={entry.merged}
+                                                hash={entry.hash}
+                                            >
+                                                {entry.desc}
+                                            </ReleaseDesc>
+                                        ))}
+                                    </ReleaseOList>
+                                </ReleaseTopic>
+                            ))}
+                        </ReleaseUList>
+                    </Release>
+                )
+            })}
+        </Template.Legal>
     )
 
 }

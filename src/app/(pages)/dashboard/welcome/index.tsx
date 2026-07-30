@@ -1,4 +1,4 @@
-import { Brands, Button, ButtonLink } from "./elements";
+import { Brands, Button, ButtonLink, Item, Span } from "./elements";
 import { Icon } from "@/components/icons";
 import { useScreen } from "@/data/hooks";
 
@@ -39,18 +39,18 @@ export const Welcome = (props: React.HTMLAttributes<HTMLElement>) => {
                             <ButtonLink href="/signup" className="bg-primary text-white">
                                 Criar
                             </ButtonLink>
-                            {/* <p className="text-xs">
+                            <p className="text-xs">
                                 Ao se inscrever, você concorda com os
                                 <Span href="/terms" className="ml-1">Termos de Serviço </Span>
                                 {onDesktop && <br />}
                                 e a <Span href="/policy" className="ml-1">Política de Privacidade</Span>, incluindo o
                                 <Span href="/cookies" className="ml-1">Uso de Cookies</Span>.
-                            </p> */}
+                            </p>
                         </section>
                     </div>
                 </section>
             </div>
-            {/* <footer className="p-2">
+            <footer className="p-2">
                 <ul className="w-full mx-auto flex flex-wrap gap-3 justify-center">
                     <Item href="/" className="pointer-events-none select-none">© 2025 lucas-adm</Item>
                     <Item href="https://github.com/notehubbr/notehub-api" target="_blank">Backend</Item>
@@ -61,7 +61,7 @@ export const Welcome = (props: React.HTMLAttributes<HTMLElement>) => {
                     <Item href="/help">Ajuda</Item>
                     <Item href="mailto:suporte@notehub.com.br">Suporte</Item>
                 </ul>
-            </footer> */}
+            </footer>
         </main>
     )
 
