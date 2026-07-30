@@ -18,9 +18,9 @@ export const Legal = ({ title, children, ...rest }: Props) => {
                 useDarkTheme={useDarkTheme}
                 title={title}
             />
-            <div className="max-w-[666px] w-full mx-auto pb-24 flex flex-col gap-12">
+            <article className="max-w-[666px] w-full mx-auto pb-24 flex flex-col gap-12">
                 {children}
-            </div>
+            </article>
         </main>
     )
 

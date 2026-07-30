@@ -27,7 +27,10 @@ export enum Routes {
     CHANGE_PASSWORD = '/change/password',
     NEW = '/new',
     HELP = '/help',
-    CHANGELOG = '/changelog'
+    CHANGELOG = '/changelog',
+    TERMS = '/terms',
+    POLICY = '/policy',
+    COOKIES = '/cookies',
 }
 
 enum NotUserContextRoutes {
@@ -39,7 +42,10 @@ enum NotUserContextRoutes {
     CHANGE_EMAIL = '/change/email',
     CHANGE_PASSWORD = '/change/password',
     HELP = '/help',
-    CHANGELOG = '/changelog'
+    CHANGELOG = '/changelog',
+    TERMS = '/terms',
+    POLICY = '/policy',
+    COOKIES = '/cookies',
 }
 
 enum NotNavbarAndSidebarRoutes {
@@ -53,7 +59,10 @@ enum NotNavbarAndSidebarRoutes {
     CHANGE_EMAIL = '/change/email',
     CHANGE_PASSWORD = '/change/password',
     HELP = '/help',
-    CHANGELOG = '/changelog'
+    CHANGELOG = '/changelog',
+    TERMS = '/terms',
+    POLICY = '/policy',
+    COOKIES = '/cookies',
 }
 
 export const shouldUseUserContext = (pathname: string): boolean => {

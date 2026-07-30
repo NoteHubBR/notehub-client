@@ -1,8 +1,28 @@
 import { Template } from '@/components/templates';
+import { terms } from './terms';
 
 const Page = () => (
     <Template.Legal title='Termos de Serviço'>
-        <p>Termos de Serviço</p>
+        <p className='font-light text-sm dark:text-semilight text-semidark'>
+            Última atualização:<time dateTime="2026-07-30" className='ml-1'>30/07/2026</time>
+        </p>
+        {terms.map((term, key) => (
+            <section
+                key={key}
+                className='flex flex-col gap-3'
+            >
+                <h2
+                    className='w-fit border-b dark:border-light/50 border-dark/50 font-semibold text-xl dark:text-lighter text-darker'
+                >
+                    {term.title}
+                </h2>
+                <p
+                    className='font-normal text-base dark:text-semilight text-semidark'
+                >
+                    {term.description}
+                </p>
+            </section>
+        ))}
     </Template.Legal>
 )
 
