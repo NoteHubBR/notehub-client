@@ -10,7 +10,7 @@ export const Header = () => {
 
     const { userQueries: { useGetUser, useGetUserDisplayNameHistory } } = useApi();
 
-    const params = useParams<{ username: string }>();
+    const params = useParams<{ username: string, name?: string }>();
 
     const { onDesktop, onMobile } = useScreen();
     const { isMounted, user: currentUser } = useUser();
@@ -31,7 +31,10 @@ export const Header = () => {
 
     if (onMobile && isUserLoading) return <Mobile.HeaderSkeleton />;
 
-    if (userData && userData.type === 'notfound') return <Template.Forbidden />
+    if (userData && userData.type === 'notfound') {
+        if (params.name) return null;
+        return <Template.Forbidden />
+    }
 
     if (user && history) {
         if (onDesktop) return <Desktop.Header user={user} history={history} />;

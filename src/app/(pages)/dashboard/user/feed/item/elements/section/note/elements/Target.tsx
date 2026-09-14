@@ -31,9 +31,9 @@ export const Target = ({ event, ...rest }: TargetProps) => {
 
     const text = (() => {
         switch (event.event) {
-            case Event.Note_Created: return event.note.user ? `${event.note.user.username} / ${event.note.name}` : `null / ${event.note.name}`;
-            case Event.Note_Flamed: return event.flame.note.user ? `${event.flame.note.user.username} / ${event.flame.note.name}` : `null / ${event.flame.note.name}`;
-            case Event.Note_Commented: return event.comment.note.user ? `${event.comment.note.user.username} / ${event.comment.note.name}` : `null / ${event.comment.note.name}`;
+            case Event.Note_Created: return event.note.user ? `${event.note.user.username} / ${event.note.name}` : `${event.note.name}`;
+            case Event.Note_Flamed: return event.flame.note.user ? `${event.flame.note.user.username} / ${event.flame.note.name}` : `${event.flame.note.name}`;
+            case Event.Note_Commented: return event.comment.note.user ? `${event.comment.note.user.username} / ${event.comment.note.name}` : `${event.comment.note.name}`;
             default: return '';
         }
     })()
@@ -54,6 +54,19 @@ export const Target = ({ event, ...rest }: TargetProps) => {
                 </Link>
             </header>
         </>
+    )
+
+    return (
+        <header className="flex items-center gap-2">
+            <Component.Photo user={null} size={25} />
+            <Link
+                href={`${target}`}
+                className="font-semibold text-sm hover:underline hover:text-secondary"
+                {...rest}
+            >
+                {text}
+            </Link>
+        </header>
     )
 
 }
