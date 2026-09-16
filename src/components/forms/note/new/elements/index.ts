@@ -5,9 +5,10 @@ import { FileFieldset } from "./FileFieldset";
 import { Info } from "./Info";
 import { InputRadio } from "./InputRadio";
 import { InputText } from "./InputText";
+import { Owner } from './Owner';
 import { Label } from "./Label";
 import { Legend } from "./Legend";
 import { Section } from "./Section";
 import { Submit } from "./Submit";
 
-export const Element = { Section, Fieldset, FileFieldset, Legend, Label, InputText, InputRadio, Error, Count, Info, Submit };
+export const Element = { Section, Fieldset, FileFieldset, Legend, Label, Owner, InputText, InputRadio, Error, Count, Info, Submit };
