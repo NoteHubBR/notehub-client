@@ -45,7 +45,7 @@ export const seedNotes: Record<
     },
     other: {
         author: 'usera',
-        name: 'hnote',
+        name: 'other',
         tags: ['other'],
         flamesCount: 0,
     },
