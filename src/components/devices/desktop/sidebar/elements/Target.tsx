@@ -15,7 +15,7 @@ export const Target = (props: TargetProps) => {
             <Component.Photo user={user} />
             {note
                 ?
-                <span className="text-sm truncate">{note.title}</span>
+                <span className="text-sm truncate">{note.name}</span>
                 :
                 <span className="text-sm truncate">{user.username}</span>
             }

@@ -35,7 +35,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
     const [isPending, setIsPending] = useState<boolean>(false);
 
     const onSubmit = async (data: NoteUpdateFormData): Promise<void> => {
-        if (token) {
+        if (token && note.user) {
             try {
                 setIsPending(true);
                 await withProgress(() => updateNote(token.access_token, note.id, data));
@@ -44,14 +44,14 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
                     qc.invalidateQueries({ queryKey: ['userTags', token.access_token] }),
                     qc.invalidateQueries({ queryKey: ['searchNotes'] }),
                     qc.invalidateQueries({ queryKey: ['searchTags'] }),
-                    qc.invalidateQueries({ queryKey: ['note', token.access_token, note.id] })
+                    qc.invalidateQueries({ queryKey: ['note', token.access_token, note.user.username, note.name] })
                 ])
                 updateNoteContext(note.id, data);
                 setNewTags(data.tags);
                 setNote(prev => {
                     if (prev) return {
                         ...prev,
-                        title: data.title,
+                        name: data.name,
                         description: data.description,
                         tags: data.tags,
                         closed: data.closed,
@@ -89,9 +89,9 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
                 </header>
                 <section className="p-4 border-y dark:border-middark/50 border-midlight/50 dark:bg-darker/50 bg-lighter">
                     <Fieldset className="relative">
-                        <Label htmlFor="title">Título</Label>
-                        <InputText required name="title" defaultValue={note.title} />
-                        <Error field="title" />
+                        <Label htmlFor="name">Título</Label>
+                        <InputText name="name" defaultValue={note.name} />
+                        <Error field="name" />
                     </Fieldset>
                     <Fieldset className="relative">
                         <Label htmlFor="description">Descrição</Label>

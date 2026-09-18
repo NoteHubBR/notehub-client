@@ -4,9 +4,9 @@ import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { IconEyeClosed, IconMessage, IconMessageOff, IconWorld } from "@tabler/icons-react";
 import { useApi, useNotes } from "@/data/hooks";
+import { useMemo, useState } from "react";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Form = ({ token, username }: { token: string; username: string; }) => {
@@ -17,10 +17,16 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
     } = useApi();
     const qc = useQueryClient();
 
-    const { setNewNote } = useNotes();
+    const { notes, setNewNote } = useNotes();
+
+    const schema = useMemo(() =>
+        createNoteFormSchema(notes ? notes.map(note => note.name) : []),
+        [notes]
+    )
 
     const createNoteForm = useForm<CreateNoteFormData>({
-        resolver: zodResolver(createNoteFormSchema)
+        resolver: zodResolver(schema),
+        mode: 'onChange',
     })
 
     const { handleSubmit, setError } = createNoteForm;
@@ -40,7 +46,7 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
                 qc.invalidateQueries({ queryKey: ['searchTags'] })
             ])
             setNewNote(note);
-            router.push(`/${username}/${note.id}`);
+            router.push(`/${username}/${note.name}`);
         } catch (error) {
             const { data } = error as ApiError;
             if (Array.isArray(data)) handleFieldErrors(data, setError);
@@ -49,7 +55,7 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
         }
     }
 
-    const { Section, Fieldset, FileFieldset, Legend, Label, InputText, InputRadio, Error, Info, Submit } = Element;
+    const { Section, Fieldset, FileFieldset, Legend, Label, Owner, InputText, InputRadio, Error, Info, Submit } = Element;
 
     return (
         <FormProvider {...createNoteForm}>
@@ -64,13 +70,16 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
                 </Section>
                 <Section className="gap-3">
                     <Fieldset className="relative">
-                        <Label htmlFor="title" tip="*" className="block">Título</Label>
-                        <InputText autoFocus required name="title" countPosition="half" className="w-1/2 insm:w-full" />
-                        <Error field="title" />
+                        <Label htmlFor="name" tip="*" className="block">Título</Label>
+                        <div className='my-2 flex insm:flex-col items-center insm:items-start gap-2'>
+                            <Owner aria-hidden="true" />
+                            <InputText autoFocus required name="name" />
+                        </div>
+                        <Error field="name" />
                     </Fieldset>
                     <Fieldset className="relative">
                         <Label htmlFor="description" tip="(opcional)" className="block">Descrição</Label>
-                        <InputText name="description" countPosition="full" className="w-full" />
+                        <InputText name="description" />
                         <Error field="description" />
                     </Fieldset>
                 </Section>

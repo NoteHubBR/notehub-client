@@ -56,12 +56,12 @@ export class ApiClient {
 
   async createNote(
     accessToken: string,
-    note: { title: string; tags?: string[]; closed?: boolean; hidden?: boolean }
+    note: { name: string; tags?: string[]; closed?: boolean; hidden?: boolean }
   ): Promise<{ id: string }> {
     const res = await this.ctx.post('notes/new-note', {
       headers: { Authorization: `Bearer ${accessToken}` },
       data: {
-        title: note.title,
+        name: note.name,
         tags: note.tags ?? [],
         closed: note.closed ?? false,
         hidden: note.hidden ?? false,

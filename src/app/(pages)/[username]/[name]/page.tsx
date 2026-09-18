@@ -10,7 +10,6 @@ import { Template } from "@/components/templates";
 import { useApi, useUser } from "@/data/hooks";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { UUID } from "crypto";
 
 const Page = () => {
 
@@ -18,9 +17,9 @@ const Page = () => {
 
     const { isMounted, token, user } = useUser();
 
-    const noteId = useParams<{ username: string; id: UUID }>().id;
+    const { username, name } = useParams<{ username: string; name: string }>();
 
-    const { data: response, isLoading } = useGetNote(token ? token.access_token : null, noteId, isMounted);
+    const { data: response, isLoading } = useGetNote(token ? token.access_token : null, username, name, isMounted);
 
     const [note, setNote] = useState<Note | null>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);

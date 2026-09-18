@@ -3,7 +3,8 @@ import { UUID } from "crypto";
 
 export interface Note {
     id: UUID,
-    title: string;
+    name: string;
+    full_name: string;
     description: string;
     tags: string[];
     user: User | null;

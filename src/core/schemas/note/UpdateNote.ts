@@ -1,10 +1,11 @@
 import { z } from "zod";
 
 export const noteUpdateFormSchema = z.object({
-    title: z
+    name: z
         .string().trim()
-        .min(2, 'Mínimo de 4 caracteres.')
-        .max(48, 'Máximo de 48 caracteres.'),
+        .regex(/^[a-zA-Z0-9_.-]+$/, "Use letras, números, _, . ou -")
+        .min(1, 'Mínimo de 1 caractere.')
+        .max(255, 'Máximo de 255 caracteres.'),
     description: z
         .string().trim()
         .max(255, 'Máximo de 255 caracteres.'),

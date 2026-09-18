@@ -95,7 +95,7 @@ test.describe('User notes page', () => {
         await notesPage.sortFilter.open();
         await notesPage.sortFilter.getOption('option-sort-asc').click();
         await notesPage.orderFilter.open();
-        await notesPage.orderFilter.getOption('option-order-title').click();
+        await notesPage.orderFilter.getOption('option-order-name').click();
         await expect(notesPage.noteArticles.first()).toBeVisible();
         const titles = await notesPage.getFirstTwoTitles();
         expect(titles.length).toBeGreaterThan(0);

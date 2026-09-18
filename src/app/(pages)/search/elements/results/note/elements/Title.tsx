@@ -3,7 +3,11 @@ import { LowDetailNote } from "@/core";
 import Link, { LinkProps } from "next/link";
 
 export const Title = ({ note, ...rest }: { note: LowDetailNote } & Omit<LinkProps, 'href'>) => (
-    <Link href={`/${note.user ? note.user.username : 'user'}/${note.id}`} className="w-fit" {...rest}>
+    <Link
+        href={note.user ? `/${note.user.username}/${note.name}` : `/${note.full_name}`}
+        className="w-fit"
+        {...rest}
+    >
         <h2
             className={clsx(
                 'underline',
@@ -12,7 +16,7 @@ export const Title = ({ note, ...rest }: { note: LowDetailNote } & Omit<LinkProp
                 'transition-colors',
             )}
         >
-            {note.title}
+            {note.name}
         </h2>
     </Link>
 )

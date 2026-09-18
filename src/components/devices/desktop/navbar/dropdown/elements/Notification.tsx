@@ -19,9 +19,8 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
     } = notification;
 
     const getHref = (type: Type): string => {
-        if (type === Type.FOLLOWER) return `/${related.username}`;
-        else if (related === null) return `/user/${target}`;
-        else return `/${related.username}/${target}`;
+        if (type === Type.FOLLOWER) return `/${target}`;
+        return `/notes/${target}`;
     }
 
     const getEmote = (type: Type): React.ElementType => {

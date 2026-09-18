@@ -36,10 +36,10 @@ export const createNoteQuery = (service: NoteService) => {
         })
     }
 
-    const useGetNote = (token: string | null, id: UUID, enabled: boolean = true) => {
+    const useGetNote = (token: string | null, username: string, name: string, enabled: boolean = true) => {
         return useGuardedQuery({
-            keys: ['note', token, id],
-            function: () => service.getNote(token, id),
+            keys: ['note', token, username, name],
+            function: () => service.getNote(token, username, name),
             enabled: enabled
         })
     }

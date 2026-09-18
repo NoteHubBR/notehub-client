@@ -7,7 +7,12 @@ export default async function globalSetup() {
 
     const alreadySeeded = await api.canLogin(seedUsers.usera.username, seedUsers.usera.password);
     if (alreadySeeded) {
-        await api.deleteUser(await api.login('userx', 'userx'), { password: 'userx' });
+        if (await api.canLogin('userx', 'userx')) {
+            await api.deleteUser(
+                await api.login('userx', 'userx'),
+                { password: 'userx' }
+            )
+        }
         console.log('↷ e2e database already seeded, skipping.');
         await api.dispose();
         return;
@@ -34,7 +39,7 @@ export default async function globalSetup() {
     const noteIds: Record<keyof typeof seedNotes, string> = {} as never;
     for (const [key, note] of Object.entries(seedNotes)) {
         const created = await api.createNote(tokens[note.author], {
-            title: note.title,
+            name: note.name,
             tags: note.tags,
             closed: note.closed,
             hidden: note.hidden,

@@ -1,6 +1,6 @@
 interface SeedNote {
     author: 'usera' | 'userb' | 'userc';
-    title: string;
+    name: string;
     tags: string[],
     closed?: boolean;
     hidden?: boolean;
@@ -13,39 +13,39 @@ export const seedNotes: Record<
 > = {
     notea: {
         author: 'usera',
-        title: 'notea',
+        name: 'notea',
         tags: ['taga'],
         flamesCount: 2,
     },
     noteb: {
         author: 'usera',
-        title: 'noteb',
+        name: 'noteb',
         tags: ['tagb'],
         flamesCount: 1,
     },
     notec: {
         author: 'usera',
-        title: 'notec',
+        name: 'notec',
         tags: ['tagc'],
         flamesCount: 0,
     },
     cnote: {
         author: 'usera',
-        title: 'cnote',
+        name: 'cnote',
         tags: [],
         closed: true,
         flamesCount: 0,
     },
     hnote: {
         author: 'usera',
-        title: 'hnote',
+        name: 'hnote',
         tags: [],
         hidden: true,
         flamesCount: 0,
     },
     other: {
         author: 'usera',
-        title: 'hnote',
+        name: 'other',
         tags: ['other'],
         flamesCount: 0,
     },

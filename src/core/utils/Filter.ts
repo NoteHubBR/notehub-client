@@ -6,7 +6,7 @@ export class Filter {
         return notes.filter((note) => {
             const status = note.closed ? 'closed' : 'open';
             const text = `
-                ${note.title}
+                ${note.name}
                 ${note.tags.join(' ').toLowerCase()}
                 ${status}
             `.toLowerCase()

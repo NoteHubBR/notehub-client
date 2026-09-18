@@ -19,11 +19,11 @@ export const Target = ({ note, ...rest }: TargetProps) => {
                     <Component.Photo user={note.user} size={25} />
                 </Link>
                 <Link
-                    href={`/${note.user.username}/${note.id}`}
+                    href={`/${note.user.username}/${note.name}`}
                     className="font-semibold text-sm hover:underline hover:text-secondary"
                     {...rest}
                 >
-                    {note.user.username}  / {note.title}
+                    {note.user.username}  / {note.name}
                 </Link>
             </header>
         </>
@@ -33,11 +33,11 @@ export const Target = ({ note, ...rest }: TargetProps) => {
         <header className="flex items-center gap-2">
             <Component.Photo user={note.user} size={25} />
             <Link
-                href={`/user/${note.id}`}
+                href={`/${note.full_name}`}
                 className="font-semibold text-sm hover:underline hover:text-secondary"
                 {...rest}
             >
-                <span className="line-through">Deletado</span> / {note.title}
+                <span className="line-through">Deletado</span> / {note.name}
             </Link>
         </header>
     )

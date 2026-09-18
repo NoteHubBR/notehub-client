@@ -21,7 +21,7 @@ export const Aside = ({ triggerRef, note, author, currentUser, ...rest }: AsideP
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `${note.title}.txt`;
+        a.download = `${note.name}.txt`;
         a.click();
         URL.revokeObjectURL(url);
     }

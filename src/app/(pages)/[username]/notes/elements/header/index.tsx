@@ -90,7 +90,7 @@ export const Header = ({ tags, ...rest }: HeaderProps) => {
                             <ul className="flex flex-col">
                                 <Element.Option sParam="order" value={["modifiedAt", null]} text="atualização" data-testid="option-order-modifiedAt" />
                                 <Element.Option sParam="order" value={["createdAt"]} text="criação" data-testid="option-order-createdAt" />
-                                <Element.Option sParam="order" value={["title"]} text="título" data-testid="option-order-title" />
+                                <Element.Option sParam="order" value={["name"]} text="título" data-testid="option-order-name" />
                                 <Element.Option sParam="order" value={["flamesCount"]} text="chamas" data-testid="option-order-flamesCount" />
                                 <Element.Option sParam="order" value={["commentsCount"]} text="comentários" data-testid="option-order-commentsCount" />
                             </ul>

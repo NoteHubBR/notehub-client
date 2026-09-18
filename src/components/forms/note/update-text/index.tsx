@@ -20,7 +20,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 
 export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) => {
 
-    const { 
+    const {
         noteService: { updateNoteText, deleteNote },
         withProgress
     } = useApi();
@@ -70,7 +70,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
 
     const handleDeleteNote = async (e?: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
         if (e) e.stopPropagation();
-        if (token) {
+        if (token && note.user) {
             setIsPending(true);
             await withProgress(() => deleteNote(token.access_token, note.id))
                 .then(() => {
@@ -83,7 +83,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                 qc.invalidateQueries({ queryKey: ['userTags', token.access_token] }),
                 qc.invalidateQueries({ queryKey: ['searchNotes'] }),
                 qc.invalidateQueries({ queryKey: ['searchTags'] }),
-                qc.invalidateQueries({ queryKey: ['note', token.access_token, note.id] })
+                qc.invalidateQueries({ queryKey: ['note', token.access_token, note.user.username, note.name] })
             ])
             return router.push(`/${currentUser}/notes`);
         }
@@ -156,7 +156,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                             onClick={togglePreview}
                             isPreviewing={isPreviewing}
                         >
-                            {isEditing ? "Editar" : note.title}
+                            {isEditing ? "Editar" : note.name}
                         </Title>
                         <EditingTitle
                             disabled={isPreviewing}
