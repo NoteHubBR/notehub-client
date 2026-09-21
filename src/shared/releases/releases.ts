@@ -20,6 +20,30 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        id: '18',
+        version: 'v3.1',
+        date: '18/9/26 9:48',
+        scope: 'server & client',
+        title: 'Setembro 18, 2026',
+        summary: 'Endereço próprio para notas',
+        entries: [
+            {
+                type: 'feat',
+                pr: 22,
+                merged: true,
+                hash: '6311fa25c86e767c084e47475f69e263b2c45d48',
+                desc: 'Cada nota agora tem um endereço próprio e fácil de compartilhar.'
+            },
+            {
+                type: 'feat',
+                pr: 22,
+                merged: true,
+                hash: 'b6514ef35170a0a5c6680cc334afae072afec5b0',
+                desc: 'Não é mais possível criar duas notas com o mesmo nome na mesma conta.'
+            },
+        ]
+    },
+    {
         id: '17',
         version: 'v3.5.3',
         date: '24/7/26 10:26',
