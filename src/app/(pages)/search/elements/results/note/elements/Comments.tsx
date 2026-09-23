@@ -9,7 +9,7 @@ export const Comments = ({ note }: { note: LowDetailNote }) => {
 
     return (
         <Link
-            href={`/${user ? user.username : 'user'}/${id}`}
+            href={user ? `/${user.username}/${note.name}` : `/${note.full_name}`}
             className={clsx(
                 isClosed && 'pointer-events-none cursor-not-allowed select-none',
                 'px-2 py-1 rounded-md insm:rounded-full',
