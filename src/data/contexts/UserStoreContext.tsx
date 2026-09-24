@@ -8,6 +8,7 @@ export interface UserStoreProps {
     setStore: (data: Partial<Store>, username?: string) => void;
     setActions: (data: Partial<Actions>, username?: string) => void;
     updateActions: (oldUsername: string, newUsername: string) => void;
+    isCookieConsentGiven: (user: User | null) => boolean;
     isMenuOpen: (user: User | null) => boolean;
     searches: (user: User | null) => string[];
     filters: (user: User | null) => Event[];
@@ -66,6 +67,12 @@ export const UserStoreProvider = ({ children }: { children: React.ReactNode }) =
         })
     }, [])
 
+    const isCookieConsentGiven = (user: User | null): boolean => {
+        return user
+            ? store.actions[user.username].isCookieConsentGiven
+            : store.actions['Guest'].isCookieConsentGiven;
+    }
+
     const isMenuOpen = (user: User | null): boolean => {
         return user ? store.actions[user.username].isMenuOpen : false;
     }
@@ -91,6 +98,7 @@ export const UserStoreProvider = ({ children }: { children: React.ReactNode }) =
             setStore: setter,
             setActions,
             updateActions,
+            isCookieConsentGiven,
             isMenuOpen,
             searches,
             filters,

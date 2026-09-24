@@ -45,6 +45,7 @@ export const UserProvider = (props: any) => {
     const setUser = useCallback((token: Token | null, user: User | null): void => {
         const username = user?.username ?? 'Guest';
         setActions({
+            isCookieConsentGiven: store.actions[username]?.isCookieConsentGiven ?? false,
             isMenuOpen: store.actions[username]?.isMenuOpen ?? false,
             searches: store.actions[username]?.searches ?? []
         }, username)

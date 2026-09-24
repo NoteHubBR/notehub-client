@@ -1,5 +1,6 @@
 import { Banner } from './medias/banner';
 import { Bone } from './Bone';
+import { CookieConsent } from './popups';
 import { Cropper, CropperRef } from './Cropper';
 import { Hovercard } from './Hovercard';
 import { Mock } from './Mock';
@@ -15,6 +16,7 @@ export const Component = {
     SplashScreen,
     ProgressBar,
     TsParticles,
+    CookieConsent,
     Cropper,
     Bone,
     Mock,

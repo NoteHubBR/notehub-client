@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
 const ActionsSchema = z.object({
+    isCookieConsentGiven: z.boolean(),
     isMenuOpen: z.boolean(),
     searches: z.array(z.string()),
     filters: z.array(z.nativeEnum(Event)),
@@ -21,6 +22,7 @@ export type Actions = z.infer<typeof ActionsSchema>;
 export type Store = z.infer<typeof StoreSchema> & { device: UUID | string };
 
 export const defaultAction: Actions = {
+    isCookieConsentGiven: false,
     isMenuOpen: false,
     searches: [],
     filters: Object.values(Event),
@@ -37,6 +39,7 @@ export const defaultStore: Store = {
 }
 
 const mergeAction = (action: Partial<Actions>): Actions => ({
+    isCookieConsentGiven: action.isCookieConsentGiven ?? defaultAction.isCookieConsentGiven,
     isMenuOpen: action.isMenuOpen ?? defaultAction.isMenuOpen,
     searches: action.searches ?? defaultAction.searches,
     filters: action.filters ?? defaultAction.filters,

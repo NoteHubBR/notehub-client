@@ -9,6 +9,7 @@ const layout = (props: any) => {
         <Providers>
             <Component.ProgressBar />
             <Component.SplashScreen />
+            <Component.CookieConsent />
             <Template.Container className="flex flex-col">
                 <Desktop.Navbar />
                 <Mobile.Navbar />
