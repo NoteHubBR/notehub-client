@@ -1,5 +1,6 @@
 import { LoginPage } from '../../pages/auth/signin/signin.page';
-import { test as base, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
+import { test as base, dismissCookieConsent } from '../base.fixture';
 
 type AuthFixtures = {
     authenticatedPage: Page;
@@ -13,9 +14,11 @@ export const test = base.extend<{}, AuthFixtures>({
             const page = await context.newPage();
             const loginPage = new LoginPage(page);
             await loginPage.goto();
-            await loginPage.fill({ identifier: 'usera', password: 'usera', });
+            await dismissCookieConsent(page);
+            await loginPage.fill({ identifier: 'usera', password: 'usera' });
             await loginPage.submit();
             await page.waitForURL('/');
+            await dismissCookieConsent(page);
             await use(page);
             await context.close();
         },

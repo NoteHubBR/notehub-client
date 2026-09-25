@@ -1,5 +1,5 @@
 import { LoginPage } from '../../../../pages';
-import { test } from '@playwright/test';
+import { test } from '../../../../fixtures/base.fixture';
 import type { LoginFormData } from '@/core';
 
 const userA = (overrides?: Partial<LoginFormData>): LoginFormData => ({
