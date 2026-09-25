@@ -1,5 +1,5 @@
-import { expect, test } from '../../../../fixtures/auth';
-import { SearchNotesPage } from '../../../../pages';
+import { expect, test } from '@e2e/fixtures/auth';
+import { SearchNotesPage } from '@e2e/pages';
 
 test.describe.configure({ mode: 'serial' });
 test.describe('Search - notes sorting and filtering', () => {

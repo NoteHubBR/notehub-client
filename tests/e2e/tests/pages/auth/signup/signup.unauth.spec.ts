@@ -1,6 +1,6 @@
-import { expect, test } from '../../../../fixtures/auth';
-import { RegisterPage } from '../../../../pages';
-import { seedUsers } from '../../../../fixtures/seeds';
+import { expect, test } from '@e2e/fixtures/auth';
+import { RegisterPage } from '@e2e/pages';
+import { seedUsers } from '@e2e/fixtures/seeds';
 import type { CreateUserFormData } from '@/core';
 
 const userX = (overrides?: Partial<CreateUserFormData>): CreateUserFormData => ({
@@ -43,7 +43,7 @@ test.describe('User Signup', () => {
         await registerPage.goto();
         await registerPage.fill(data);
         await registerPage.submit();
-        
+
         await registerPage.expectError('username', 'Use letras, números, _, . ou -');
         await registerPage.expectError('repeatPassword', 'Senhas diferentes.');
     })

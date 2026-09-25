@@ -1,7 +1,7 @@
-import { expect, test } from '../../fixtures/auth';
 import { Locator } from '@playwright/test';
-import { seedUsers } from '../../fixtures/seeds';
-import { Sidebar } from '../../components';
+import { seedUsers } from '@e2e/fixtures/seeds';
+import { Sidebar } from '@e2e/components';
+import { test, expect } from '@e2e/fixtures/auth';
 
 test.describe('Sidebar', () => {
 
@@ -25,12 +25,12 @@ test.describe('Sidebar', () => {
     }
 
     test.describe('visibility', () => {
-        
+
         test('should open the sidebar', async () => {
             await sidebar.navbar.click(sidebar.navbar.sidebarButton);
             await expect(sidebar.root).toHaveAttribute('data-state', 'maximized');
         })
-        
+
         test('should close the sidebar', async () => {
             await sidebar.navbar.click(sidebar.navbar.sidebarButton);
             await expect(sidebar.root).toHaveAttribute('data-state', 'minimized');

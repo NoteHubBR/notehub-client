@@ -1,6 +1,6 @@
-import { expect, test } from '../../fixtures/auth';
-import { Navbar } from '../../components';
-import { seedUsers } from '../../fixtures/seeds';
+import { expect, test } from '@e2e/fixtures/auth';
+import { Navbar } from '@e2e/components';
+import { seedUsers } from '@e2e/fixtures/seeds';
 
 test.describe('Navbar - navigation, search, dropdowns and user actions', () => {
 

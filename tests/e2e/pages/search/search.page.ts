@@ -1,5 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test';
-import { Sidebar } from '../../components/sidebar.component';
+import { Sidebar } from '@e2e/components';
 
 export class SearchPage {
 

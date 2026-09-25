@@ -1,5 +1,5 @@
-import { expect, test } from '../../../../fixtures/auth';
-import { SearchUsersPage } from '../../../../pages';
+import { expect, test } from '@e2e/fixtures/auth';
+import { SearchUsersPage } from '@e2e/pages';
 
 test.describe.configure({ mode: 'serial' });
 test.describe('Search - users sorting and filtering', () => {

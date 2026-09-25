@@ -1,5 +1,5 @@
-import { test } from '../../../fixtures/auth';
-import { UserPage } from '../../../pages';
+import { test } from '@e2e/fixtures/auth';
+import { UserPage } from '@e2e/pages';
 
 test.describe('User profile page', () => {
 

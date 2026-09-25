@@ -1,6 +1,6 @@
-import { expect, test } from '../../../../fixtures/auth';
-import { seedUsers } from '../../../../fixtures/seeds';
-import { UserNotesPage } from '../../../../pages';
+import { expect, test } from '@e2e/fixtures/auth';
+import { seedUsers } from '@e2e/fixtures/seeds';
+import { UserNotesPage } from '@e2e/pages';
 
 test.describe('User notes page', () => {
 
