@@ -18,7 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
 
     const noteRoutes = notesPage.content.map(n => ({
-        url: `https://notehub.com.br/${n.user ? n.user.username : 'user'}/notes/${n.id}`,
+        url: `https://notehub.com.br/${n.user ? `${n.user.username}/${n.name}` : n.full_name}`,
         lastModified: parseDate(n.modified_at),
         priority: 0.9,
     }))
@@ -30,6 +30,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { url: 'https://notehub.com.br/help', priority: 0.7 },
         { url: 'https://notehub.com.br/changelog', priority: 0.7 },
         { url: 'https://notehub.com.br/sponsorship', priority: 0.6 },
+        { url: 'https://notehub.com.br/terms', priority: 0.3 },
+        { url: 'https://notehub.com.br/policy', priority: 0.3 },
+        { url: 'https://notehub.com.br/cookies', priority: 0.3 },
         ...userRoutes,
         ...noteRoutes,
     ]
