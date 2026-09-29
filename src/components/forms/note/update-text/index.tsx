@@ -1,10 +1,10 @@
 import { clsx } from 'clsx';
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
-import { IconCheck, IconDotsVertical, IconEdit, IconTrash, IconX } from "@tabler/icons-react";
+import { IconCheck, IconDotsVertical, IconEdit, IconHistory, IconTrash, IconX } from "@tabler/icons-react";
 import { Menu, MenuItem } from "@/components/menu";
 import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
-import { useApi, useNotes, useTags } from "@/data/hooks";
+import { useApi, useDrafts, useNotes, useTags } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from "next/navigation";
 import { useShortcuts } from './shortcuts';
@@ -26,8 +26,11 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
     } = useApi();
     const qc = useQueryClient();
 
+    const { setDrafts, getDraft, removeDraft } = useDrafts();
     const { setNoteToFirst, removeNote } = useNotes();
     const { removeTags } = useTags();
+
+    const draft = getDraft('notes', note.id, note.user ? note.user.username : undefined);
 
     const updateNoteForm = useForm<NoteTextUpdateFormData>({
         resolver: zodResolver(noteTextUpdateFormSchema),
@@ -42,6 +45,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
 
     const [initialText, setInitialText] = useState<string>(note.markdown ?? "");
     const [text, setText] = useState<string>(initialText);
+    const [skipDraft, setSkipDraft] = useState<boolean>(draft ? false : true);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [isPreviewing, setIsPreviewing] = useState<boolean>(false);
@@ -63,6 +67,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                     setIsPreviewing(false);
                     setNoteToFirst(note.id);
                     setIsPending(false);
+                    if (note.user) removeDraft('notes', note.id, note.user.username);
                 })
             return await qc.invalidateQueries({ queryKey: ['note', token.access_token, note.id] });
         }
@@ -77,6 +82,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                     setIsPending(false);
                     removeTags(note.tags);
                     removeNote(note.id);
+                    if (note.user) removeDraft('notes', note.id, note.user.username);
                 })
             await Promise.all([
                 qc.invalidateQueries({ queryKey: ['userNotes', token.access_token] }),
@@ -115,8 +121,36 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
         return;
     }
 
+    const startDraft = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        if (draft) {
+            setSkipDraft(true);
+            setValue('markdown', draft.content);
+            setText(draft.content);
+            setIsEditing(true);
+            setIsPreviewing(false);
+        }
+        return;
+    }
+
+    const saveDraft = (content: string) => {
+        if (isAuthor && note.user) {
+            if (content === initialText) return;
+            setSkipDraft(true);
+            return setDrafts(
+                'notes', {
+                [note.id]: {
+                    content,
+                    savedAt: Date.now()
+                }
+            }, note.user.username)
+        }
+        return;
+    }
+
     const cancelEdit = (e?: React.MouseEvent) => {
         if (e) e.stopPropagation();
+        setSkipDraft(false);
         setValue('markdown', initialText);
         setText(initialText);
         setIsEditing(false);
@@ -169,6 +203,16 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                     </div>
                     {isAuthor &&
                         <div className="flex gap-3">
+                            {skipDraft ? null :
+                                <ActionButton
+                                    type="button"
+                                    onClick={startDraft}
+                                    isEditing={isEditing}
+                                    icon={IconHistory}
+                                    tooltip="Rascunho"
+                                    className="dark:bg-semilight/20 bg-semidark/20 dark:hover:bg-semilight/10 hover:bg-semidark/10"
+                                />
+                            }
                             <ActionButton
                                 type="button"
                                 onClick={cancelEdit}
@@ -248,6 +292,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                 <MdEditor
                     isEditing={isEditing}
                     isPreviewing={isPreviewing}
+                    onDraftChange={saveDraft}
                     setText={setText}
                     value={text}
                 />

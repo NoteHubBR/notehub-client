@@ -1,27 +1,33 @@
 import { clsx } from 'clsx';
 import { NoteTextUpdateFormData } from '@/core';
+import { useDebouncedCallback, usePref } from '@/data/hooks';
 import { useEditor } from './hook';
 import { useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { usePref } from '@/data/hooks';
 
 interface MdEditorProps {
     isEditing: boolean;
     isPreviewing: boolean;
+    onDraftChange: (value: string) => void;
     setText: React.Dispatch<React.SetStateAction<string>>;
     value: string;
 }
 
-export const MdEditor = ({ isEditing, isPreviewing, setText, value }: MdEditorProps) => {
+export const MdEditor = ({ isEditing, isPreviewing, onDraftChange, setText, value }: MdEditorProps) => {
 
     const { setValue } = useFormContext<NoteTextUpdateFormData>();
     const { pref } = usePref();
 
     const editorRef = useRef<HTMLDivElement>(null);
 
+    const debouncedDraftChange = useDebouncedCallback((newValue: string) => {
+        onDraftChange(newValue);
+    }, 800);
+
     const handleChange = (newValue: string) => {
         setText(newValue);
-        setValue('markdown', newValue)
+        setValue('markdown', newValue);
+        debouncedDraftChange(newValue);
     }
 
     const viewRef = useEditor({
