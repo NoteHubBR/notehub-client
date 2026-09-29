@@ -15,5 +15,6 @@ export * from './UserNotificationsContext';
 export * from './UserPreferencesContext';
 export * from './UserSessionPreferencesContext';
 export * from './UserStoreContext';
+export * from './UserDraftsContext';
 export * from './UserSubscriptionsContext';
 export * from './UserTagsContext';
