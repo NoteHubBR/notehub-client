@@ -15,7 +15,6 @@ type UseEditorParams = {
 export function useEditor({ parentRef, value, isDark, onChange, }: UseEditorParams) {
 
     const viewRef = useRef<EditorView | null>(null);
-    const skipNextSyncRef = useRef(false);
 
     useEffect(() => {
         if (!parentRef.current) return;
@@ -31,10 +30,7 @@ export function useEditor({ parentRef, value, isDark, onChange, }: UseEditorPara
                     highlightCompartment.of(buildHighlight(isDark)),
                     EditorView.updateListener.of((update) => {
                         if (!update.docChanged) return;
-
-                        const newValue = update.state.doc.toString();
-                        skipNextSyncRef.current = true;
-                        onChange(newValue);
+                        onChange(update.state.doc.toString());
                     })
                 ]
             }),
@@ -49,6 +45,16 @@ export function useEditor({ parentRef, value, isDark, onChange, }: UseEditorPara
 
     useEffect(() => {
         if (!viewRef.current) return;
+        const current = viewRef.current.state.doc.toString();
+        if (current !== value) {
+            viewRef.current.dispatch({
+                changes: { from: 0, to: current.length, insert: value }
+            })
+        }
+    }, [value])
+
+    useEffect(() => {
+        if (!viewRef.current) return;
         viewRef.current.dispatch({
             effects: [
                 themeCompartment.reconfigure(buildTheme(isDark)),
@@ -56,24 +62,6 @@ export function useEditor({ parentRef, value, isDark, onChange, }: UseEditorPara
             ]
         })
     }, [isDark]);
-
-    useEffect(() => {
-        if (!viewRef.current) return;
-        if (skipNextSyncRef.current) {
-            skipNextSyncRef.current = false;
-            return;
-        }
-        const current = viewRef.current.state.doc.toString();
-        if (current !== value) {
-            viewRef.current.dispatch({
-                changes: {
-                    from: 0,
-                    to: current.length,
-                    insert: value,
-                }
-            })
-        }
-    }, [value])
 
     return viewRef;
 
