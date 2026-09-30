@@ -5,6 +5,7 @@ import { forwardRef, useState } from "react";
 import { handleFieldErrors, Note, NoteUpdateFormData, noteUpdateFormSchema, Token } from "@/core";
 import { useApi, useNotes, useTags } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -34,6 +35,8 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
 
     const [isPending, setIsPending] = useState<boolean>(false);
 
+    const router = useRouter();
+
     const onSubmit = async (data: NoteUpdateFormData): Promise<void> => {
         if (token && note.user) {
             try {
@@ -62,6 +65,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
                     return null
                 })
                 onPortalClose?.();
+                router.push(`/${note.user.username}/${data.name}`);
             } catch (error) {
                 const { data } = error as ApiError;
                 if (Array.isArray(data)) handleFieldErrors(data, setError);
