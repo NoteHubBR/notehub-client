@@ -4,7 +4,7 @@ import { createContext, useCallback, useEffect, useMemo, useRef, useState } from
 import { createProgress, createServices } from '@/services';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Token, User, Cookies, shouldUseUserContext } from "@/core";
-import { useFlames, useFollowing, useHistory, useIdentities, useLoading, useNotes, useProgress, useStore, useSubscriptions, useTags } from "../hooks";
+import { useDrafts, useFlames, useFollowing, useHistory, useIdentities, useLoading, useNotes, useProgress, useStore, useSubscriptions, useTags } from "../hooks";
 import { usePathname } from "next/navigation";
 
 export interface UserContextProps {
@@ -24,6 +24,7 @@ export const UserProvider = (props: any) => {
     const { setIsLoaded } = useLoading();
     const { setOnProgress } = useProgress();
     const { isStoreReady, store, setStore, setActions, updateActions } = useStore();
+    const { isDraftsReady, updateDrafts } = useDrafts();
     const { clearIdentities, setIdentities } = useIdentities();
     const { clearHistory, setHistory } = useHistory();
     const { clearFollowing, setFollowing } = useFollowing();
@@ -76,7 +77,10 @@ export const UserProvider = (props: any) => {
     const updateUser = useCallback((user: Partial<User>) => {
         if (state.user) {
             const { avatar, banner, profile_private, username, display_name, message } = user;
-            if (username) updateActions(state.user.username, username);
+            if (username) {
+                updateActions(state.user.username, username);
+                updateDrafts(state.user.username, username);
+            }
             return setState((prev) => {
                 if (prev.user) return ({
                     ...prev,
@@ -93,7 +97,7 @@ export const UserProvider = (props: any) => {
                 return prev;
             })
         }
-    }, [state.user, updateActions])
+    }, [state.user, updateActions, updateDrafts])
 
     const clearUser = useCallback(async ({ skipLogout }: { skipLogout?: boolean } = {}) => {
         if (!skipLogout) await withProgress(() => logoutUser());
@@ -166,7 +170,7 @@ export const UserProvider = (props: any) => {
 
     useEffect(() => {
         if (state.user) return;
-        if (isStoreReady) init().finally(() => setState((prev) => ({ ...prev, isMounted: true })));
+        if (isStoreReady && isDraftsReady) init().finally(() => setState((prev) => ({ ...prev, isMounted: true })));
     }, [isStoreReady, pathname])
 
     useEffect(() => {

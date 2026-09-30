@@ -3,6 +3,7 @@ export * from './user';
 export * from './page';
 export * from './preferences';
 export * from './store';
+export * from './drafts';
 export * from './note';
 export * from './notification';
 export * from './flame';
