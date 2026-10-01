@@ -20,6 +20,37 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        id: '19',
+        version: 'v3.6.1',
+        date: '30/9/26 9:51',
+        scope: 'client',
+        title: 'Setembro 30, 2026',
+        summary: 'Rascunhos automáticos',
+        entries: [
+            {
+                type: 'feat',
+                pr: 33,
+                merged: true,
+                hash: '508165560cb3046c864e29a47bc772459047d93f',
+                desc: 'Ao sair da edição de uma nota sem salvar, o conteúdo agora é guardado automaticamente como rascunho no navegador. Ao reabrir a nota, restaure-o pelo botão de rascunhos.\n\n· Cada conta tem seus próprios rascunhos.\n· Máximo de 3 rascunhos por conta.\n· O rascunho é salvo 500 ms após a última alteração.\n· Ficam apenas neste navegador: não são sincronizados entre dispositivos e se perdem se os dados do navegador forem limpos.'
+            },
+            {
+                type: 'fix',
+                pr: 33,
+                merged: true,
+                hash: 'ea19036c3c65a9ba8300cc3416ab297325ca8175',
+                desc: 'Renomear uma nota agora redireciona para o novo endereço, em vez de manter a URL antiga.'
+            },
+            {
+                type: 'fix',
+                pr: 33,
+                merged: true,
+                hash: '873ef5e2b942ed9e7eb2a7c3171280d64a4aef4c',
+                desc: 'Atualizar o perfil agora também atualiza o autor das suas notas, evitando links com o username antigo.'
+            }
+        ]
+    },
+    {
         id: '18',
         version: 'v3.1',
         date: '18/9/26 9:48',
