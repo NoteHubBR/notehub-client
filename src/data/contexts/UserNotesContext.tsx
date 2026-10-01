@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useCallback, useMemo, useState } from "react";
-import { LowDetailNote, NoteUpdateFormData, Page } from "@/core";
+import { LowDetailNote, NoteUpdateFormData, Page, User } from "@/core";
 import { UUID } from "crypto";
 
 export interface UserNotesProps {
@@ -11,6 +11,7 @@ export interface UserNotesProps {
     setNewNote: (note: LowDetailNote) => void;
     setNoteToFirst: (id: UUID) => void;
     updateNote: (id: UUID, data: NoteUpdateFormData) => void;
+    updateNotesUser: (data: Partial<User>) => void;
     removeNote: (id: UUID) => void;
     clearNotes: () => void;
 }
@@ -66,6 +67,24 @@ export const UserNotesProvider = (props: any) => {
         })
     }, [])
 
+    const updateNotesUser = useCallback((data: Partial<User>) => {
+        setState((prev) => ({
+            page: prev.page,
+            notes: prev.notes.map((note) => {
+                if (note.user) {
+                    return {
+                        ...note,
+                        user: {
+                            ...note.user,
+                            ...data
+                        }
+                    }
+                }
+                return note;
+            })
+        }))
+    }, [])
+
     const removeNote = useCallback((id: UUID) => {
         setState((prev) => ({
             page: prev.page,
@@ -83,6 +102,7 @@ export const UserNotesProvider = (props: any) => {
             setNewNote: setNewNote,
             setNoteToFirst: setNoteToFirst,
             updateNote: updateNote,
+            updateNotesUser,
             removeNote: removeNote,
             clearNotes: clear
         }}>

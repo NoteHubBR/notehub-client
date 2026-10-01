@@ -28,7 +28,7 @@ export const UserProvider = (props: any) => {
     const { clearIdentities, setIdentities } = useIdentities();
     const { clearHistory, setHistory } = useHistory();
     const { clearFollowing, setFollowing } = useFollowing();
-    const { clearNotes, setNotes } = useNotes();
+    const { clearNotes, setNotes, updateNotesUser } = useNotes();
     const { clearFlames, setFlames } = useFlames();
     const { clearTags, setTags } = useTags();
     const { clearSubscriptions, setSubscriptions } = useSubscriptions();
@@ -81,7 +81,7 @@ export const UserProvider = (props: any) => {
                 updateActions(state.user.username, username);
                 updateDrafts(state.user.username, username);
             }
-            return setState((prev) => {
+            setState((prev) => {
                 if (prev.user) return ({
                     ...prev,
                     user: {
@@ -96,6 +96,7 @@ export const UserProvider = (props: any) => {
                 })
                 return prev;
             })
+            return updateNotesUser(user);
         }
     }, [state.user, updateActions, updateDrafts])
 
