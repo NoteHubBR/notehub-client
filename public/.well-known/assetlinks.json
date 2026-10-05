@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "br.com.notehub.twa",
+      "sha256_cert_fingerprints": [
+        "D8:D5:3B:AE:A0:DE:50:50:AD:D4:B2:42:55:9B:06:41:5F:CD:63:E1:7C:BC:14:84:2E:19:99:EF:5C:E4:26:40"
+      ]
+    }
+  }
+]
