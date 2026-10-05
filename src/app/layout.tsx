@@ -1,7 +1,8 @@
 import "@/styles/globals.css";
 import "@/styles/globals.scss";
 import { Inter } from 'next/font/google';
-import type { Metadata } from "next";
+import { SerwistProvider } from "@serwist/next/react";
+import type { Metadata, Viewport } from "next";
 
 const font = Inter({
   subsets: ['latin']
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   title: "NoteHub",
   description: "Seu bloco de notas social.",
   icons: {
-    icon: "https://notehub.com.br/imgs/favicon.png"
+    icon: "https://notehub.com.br/imgs/favicon256.png"
   },
   openGraph: {
     title: "NoteHub",
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     siteName: "NoteHub",
     images: [
       {
-        url: "https://notehub.com.br/imgs/favicon.png",
+        url: "https://notehub.com.br/imgs/favicon256.png",
         width: 256,
         height: 256,
         alt: "NoteHub Logo",
@@ -33,8 +34,12 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "NoteHub",
     description: "Seu bloco de notas social.",
-    images: ["https://notehub.com.br/imgs/favicon.png"],
+    images: ["https://notehub.com.br/imgs/favicon256.png"],
   }
+};
+
+export const viewport: Viewport = {
+  themeColor: "#000000",
 };
 
 export default function RootLayout({
@@ -45,7 +50,12 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={font.className}>
-        {children}
+        <SerwistProvider
+          swUrl="/sw.js"
+          disable={process.env.NODE_ENV === "development"}
+        >
+          {children}
+        </SerwistProvider>
       </body>
     </html>
   );

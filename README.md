@@ -7,7 +7,7 @@
 
 <div align="center">
   <a href="https://notehub.com.br">
-    <img width="10%" height="10%" src="https://notehub.com.br/imgs/favicon.png">
+    <img width="10%" height="10%" src="https://notehub.com.br/imgs/favicon256.png">
   </a>
 </div>
 <br>
