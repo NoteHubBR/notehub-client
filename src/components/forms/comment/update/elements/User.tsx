@@ -1,5 +1,5 @@
 import { Comment } from "@/core";
-import { Component } from "@/components";
+import { Hovercard, Photo } from "@/components";
 import { useRef } from "react";
 import Link from "next/link";
 
@@ -13,13 +13,13 @@ export const User = ({ comment, ...rest }: UserProps) => {
 
     if (comment.user) return (
         <>
-            <Component.Hovercard ref={ref} user={comment.user} />
+            <Hovercard ref={ref} user={comment.user} />
             <Link ref={ref} href={`/${comment.user.username}`}>
-                <Component.Photo user={comment.user} size={40} {...rest} />
+                <Photo user={comment.user} size={40} {...rest} />
             </Link>
         </>
     )
 
-    return <Component.Photo user={comment.user} size={40} {...rest} />;
+    return <Photo user={comment.user} size={40} {...rest} />;
 
 }

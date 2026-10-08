@@ -1,9 +1,9 @@
 import { ApiError } from '@/api';
 import { clsx } from "clsx";
 import { Comment, CreateCommentFormData, createCommentFormSchema, handleFieldErrors, Note, Token, User } from "@/core";
-import { Component } from "@/components";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
+import { Photo } from "@/components";
 import { useApi } from "@/data/hooks";
 import { useQueryClient } from '@tanstack/react-query';
 import { useRef, useState, useTransition } from "react";
@@ -71,7 +71,7 @@ export const Form = ({ token, user, note, setComments, setNote, ...rest }: FormP
                 className="scroll-mt-[8vh] inmd:scroll-mt-0 py-4"
             >
                 <header className="flex gap-3">
-                    <Component.Photo user={user} size={40} />
+                    <Photo user={user} size={40} />
                     <Fieldset>
                         <Text
                             ref={textareaRef}

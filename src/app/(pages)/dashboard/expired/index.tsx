@@ -1,5 +1,5 @@
-import { Component } from "@/components";
 import { Device } from "@/components/devices";
+import { TsParticles } from "@/components";
 import { useStore } from "@/data/hooks";
 import Link from "next/link";
 
@@ -12,7 +12,7 @@ export const Expired = () => {
     return (
         <main className="relative w-full h-full flex items-center justify-center dark:bg-dark/50 bg-light/50">
             <Device.Mobile.Header.MainHeader />
-            <Component.TsParticles />
+            <TsParticles />
             <section
                 role="dialog"
                 aria-labelledby="dialogTitle"

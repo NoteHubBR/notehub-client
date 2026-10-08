@@ -1,8 +1,6 @@
-import { Component } from "@/components";
+import { Bone } from "@/components";
 
 export const Skeleton = () => {
-
-    const { Bone } = Component;
 
     const Article = () => (
         <div

@@ -1,4 +1,4 @@
-import { Component } from "@/components";
+import { Hovercard, Photo } from '@/components';
 import { LowDetailNote } from "@/core";
 import { useRef } from "react";
 import Link, { LinkProps } from "next/link";
@@ -13,10 +13,10 @@ export const Target = ({ note, ...rest }: TargetProps) => {
 
     if (note.user) return (
         <>
-            <Component.Hovercard ref={ref} user={note.user} />
+            <Hovercard ref={ref} user={note.user} />
             <header className="flex items-center gap-2">
                 <Link ref={ref} href={`/${note.user.username}`}>
-                    <Component.Photo user={note.user} size={25} />
+                    <Photo user={note.user} size={25} />
                 </Link>
                 <Link
                     href={`/${note.user.username}/${note.name}`}
@@ -31,7 +31,7 @@ export const Target = ({ note, ...rest }: TargetProps) => {
 
     return (
         <header className="flex items-center gap-2">
-            <Component.Photo user={note.user} size={25} />
+            <Photo user={note.user} size={25} />
             <Link
                 href={`/${note.full_name}`}
                 className="font-semibold text-sm hover:underline hover:text-secondary"

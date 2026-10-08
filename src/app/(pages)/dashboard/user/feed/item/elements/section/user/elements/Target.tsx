@@ -1,5 +1,5 @@
-import { Component } from "@/components";
 import { Event, FeedEvent, LowDetailUser } from "@/core";
+import { Hovercard, Photo } from "@/components";
 import { Icon } from '@/components/icons';
 import { useRef } from "react";
 import Link, { LinkProps } from "next/link";
@@ -35,10 +35,10 @@ export const Target = ({ event, ...rest }: TargetProps) => {
 
     if (related) return (
         <>
-            <Component.Hovercard ref={ref} user={related} />
+            <Hovercard ref={ref} user={related} />
             <header className="flex items-center gap-2">
                 <Link ref={ref} href={`/${related.username}`} className='relative'>
-                    <Component.Photo user={related} size={44} />
+                    <Photo user={related} size={44} />
                     {related.dev
                         ? <Icon.Dev user={related} size={18} className="bot-mid-center drop-shadow-alpha-d-md" />
                         : <Icon.Sponsor user={related} size={18} className="bot-mid-center drop-shadow-alpha-d-md" />

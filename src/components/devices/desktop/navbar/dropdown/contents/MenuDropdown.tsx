@@ -1,8 +1,8 @@
 import { ChangeThemeDropdown } from './options/ChangeTheme';
-import { Component } from '@/components';
 import { Field } from '../elements/Field';
 import { Header } from '../elements/Header';
 import { IconHelp, IconLogout, IconMessageReport, IconSettings, IconUsers, IconYinYangFilled } from '@tabler/icons-react';
+import { Photo } from '@/components';
 import { Section } from '../elements/Section';
 import { usePref, useUser } from '@/data/hooks';
 import { User } from '@/core';
@@ -21,7 +21,7 @@ export const MenuDropdown = ({ user }: { user: User }) => {
     return (
         <div className='w-[300px]'>
             <Header user={user}>
-                <Component.Photo user={user} size={50} className="self-start" />
+                <Photo user={user} size={50} className="self-start" />
             </Header>
             <Section>
                 <Field.Link href={'/signin'} text="Mudar de conta"><IconUsers /></Field.Link>

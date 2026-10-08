@@ -1,4 +1,4 @@
-import { Component, CropperRef } from "@/components";
+import { Banner as BannerComponent, Cropper, CropperRef } from "@/components";
 import { EditUserFormData, User } from "@/core";
 import { Header } from "./Header";
 import { IconArrowLeft } from "@tabler/icons-react";
@@ -57,7 +57,7 @@ export const Banner = ({ user, onModalOpen, onModalClose, ...rest }: BannerProps
     return (
         <>
             <div className="select-none relative" {...rest}>
-                <Component.Banner src={url} user={user} />
+                <BannerComponent src={url} user={user} />
                 <div className="center flex items-center gap-3">
                     <Upload
                         ref={triggerRef}
@@ -93,7 +93,7 @@ export const Banner = ({ user, onModalOpen, onModalClose, ...rest }: BannerProps
                 >
                     Aplicar
                 </Header>
-                {preview && <Component.Cropper ref={cropperRef} imgSrc={preview} aspect={3 / 1} shape="rect" />}
+                {preview && <Cropper ref={cropperRef} imgSrc={preview} aspect={3 / 1} shape="rect" />}
             </Template.Modal>
         </>
     )

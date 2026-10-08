@@ -1,17 +1,17 @@
-import { Component } from "@/components";
+import { Bone } from "@/components";
 
 export const Skeleton = (props: React.HTMLAttributes<HTMLElement>) => {
 
     const Div = (props: React.HTMLAttributes<HTMLDivElement>) => (
-        <Component.Bone width={192} height={144} rounded="md" {...props}>
+        <Bone width={192} height={144} rounded="md" {...props}>
             <div className="center flex flex-col items-center gap-1">
-                <Component.Bone width={75} height={75} rounded="full" />
-                <Component.Bone width={70} height={25} rounded="md" />
+                <Bone width={75} height={75} rounded="full" />
+                <Bone width={70} height={25} rounded="md" />
             </div>
             <div className="absolute bottom-1 left-1 flex items-center gap-1">
-                <Component.Bone width={40} height={20} rounded="md" />
+                <Bone width={40} height={20} rounded="md" />
             </div>
-        </Component.Bone>
+        </Bone>
     )
 
     return (

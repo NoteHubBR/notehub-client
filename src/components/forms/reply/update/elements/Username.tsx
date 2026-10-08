@@ -1,4 +1,4 @@
-import { Component } from "@/components";
+import { Hovercard } from "@/components";
 import { Reply } from "@/core";
 import { useRef } from "react";
 import Link from "next/link";
@@ -13,7 +13,7 @@ export const Username = ({ reply, ...rest }: UsernameProps) => {
 
     if (reply.user) return (
         <>
-            <Component.Hovercard ref={ref} user={reply.user} />
+            <Hovercard ref={ref} user={reply.user} />
             <Link ref={ref} href={`/${reply.user.username}`} className="min-w-0">
                 <p
                     className="truncate text-sm hover:dark:text-secondary hover:text-primary transition-colors"

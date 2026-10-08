@@ -1,4 +1,4 @@
-import { Component } from "@/components";
+import { Hovercard } from "@/components";
 import { Icon } from "@/components/icons";
 import { LowDetailNote } from "@/core";
 import { Photo } from '@/components/medias/avatar';
@@ -12,11 +12,11 @@ export const Creator = ({ note }: { note: LowDetailNote }) => {
 
     if (note.user) return (
         <>
-            <Component.Hovercard ref={photoRef} user={note.user} />
+            <Hovercard ref={photoRef} user={note.user} />
             <Link ref={photoRef} href={`/${note.user.username}`}>
                 <Photo user={note.user} size={44} className="absolute top-0 left-0" />
             </Link>
-            <Component.Hovercard ref={nameRef} user={note.user} />
+            <Hovercard ref={nameRef} user={note.user} />
             <Link ref={nameRef} href={`/${note.user.username}`}>
                 <h4 className="hover:underline hover:text-secondary">
                     {note.user.dev

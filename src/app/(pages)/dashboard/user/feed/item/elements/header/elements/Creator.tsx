@@ -1,5 +1,5 @@
-import { Component } from "@/components";
 import { Event, FeedEvent } from "@/core";
+import { Hovercard, Photo } from "@/components";
 import { IconFlame, IconMessageCircle, IconNotes, IconUser } from "@tabler/icons-react";
 import { useRef } from "react";
 import Link from "next/link";
@@ -23,9 +23,9 @@ export const Creator = ({ event, ...rest }: CreatorProps) => {
 
     return (
         <>
-            <Component.Hovercard ref={ref} user={event.actor} />
+            <Hovercard ref={ref} user={event.actor} />
             <Link ref={ref} href={`/${event.actor.username}`} className="relative">
-                <Component.Photo user={event.actor} size={40} {...rest} />
+                <Photo user={event.actor} size={40} {...rest} />
                 <div
                     className="absolute -bottom-1 -right-1
                     p-[2px] rounded-full

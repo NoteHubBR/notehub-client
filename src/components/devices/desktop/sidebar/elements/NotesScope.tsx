@@ -1,8 +1,8 @@
 import { Button } from "./Button";
-import { Component } from "@/components";
 import { Filter, LowDetailNote } from "@/core";
 import { Input } from "./Input";
 import { Link } from "./Link";
+import { Photo } from "@/components";
 import { useCallback, useEffect, useState } from "react";
 import { useNotes } from "@/data/hooks";
 
@@ -47,7 +47,7 @@ export const NotesScope = () => {
                     <li key={note.id}>
                         <Link
                             href={note.user ? `/${note.user.username}/${note.name}` : `/${note.full_name}`}
-                            icon={<Component.Photo user={note.user} />}
+                            icon={<Photo user={note.user} />}
                             text={note.name}
                         />
                     </li>

@@ -12,7 +12,7 @@ import { TsParticles } from './TsParticles';
 
 export type { CropperRef };
 
-export const Component = {
+export {
     SplashScreen,
     ProgressBar,
     TsParticles,

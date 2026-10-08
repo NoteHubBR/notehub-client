@@ -1,8 +1,8 @@
 import { clsx } from "clsx";
-import { Component } from "@/components";
 import { Icon } from "@/components/icons";
 import { IconFlame, IconMessageUser, IconUserPlus } from "@tabler/icons-react";
 import { Notification as PropsType, toRelativeTime, Type } from "@/core";
+import { Photo } from "@/components";
 import { useCallback, useState } from "react";
 import Link from "next/link";
 
@@ -57,7 +57,7 @@ export const Notification = ({ notification }: { notification: PropsType }) => {
             <article className="w-full">
                 <section className="flex items-center">
                     <figure className="relative px-2 border-r text-sm dark:border-r-semilight/10 border-r-semidark/10">
-                        <Component.Photo user={from} size={55} />
+                        <Photo user={from} size={55} />
                         {from.dev
                             ? <Icon.Dev
                                 user={from}

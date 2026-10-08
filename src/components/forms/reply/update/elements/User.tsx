@@ -1,4 +1,4 @@
-import { Component } from "@/components";
+import { Hovercard, Photo } from "@/components";
 import { Reply } from "@/core";
 import { useRef } from "react";
 import Link from "next/link";
@@ -13,13 +13,13 @@ export const User = ({ reply, ...rest }: UserProps) => {
 
     if (reply.user) return (
         <>
-            <Component.Hovercard ref={ref} user={reply.user} />
+            <Hovercard ref={ref} user={reply.user} />
             <Link ref={ref} href={`/${reply.user.username}`}>
-                <Component.Photo user={reply.user} size={40} {...rest} />
+                <Photo user={reply.user} size={40} {...rest} />
             </Link>
         </>
     )
 
-    return <Component.Photo user={reply.user} size={40} {...rest} />;
+    return <Photo user={reply.user} size={40} {...rest} />;
 
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import { Component } from '@/components';
 import { createContext, useCallback, useEffect, useState } from 'react';
+import { ProgressBar, SplashScreen } from '@/components';
 import { Template } from '@/components/templates';
 import { ThemeProvider } from './ThemeContext';
 import { useApi } from '../hooks';
@@ -29,8 +29,8 @@ export const MaintenanceProvider = (props: any) => {
 
     if (isHealthy === null) return (
         <ThemeProvider>
-            <Component.SplashScreen />
-            <Component.ProgressBar />
+            <SplashScreen />
+            <ProgressBar />
         </ThemeProvider>
     )
 

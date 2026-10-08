@@ -1,4 +1,4 @@
-import { Component } from "@/components";
+import { Bone } from "@/components";
 
 export const Skeleton = () => (
     <div
@@ -7,12 +7,12 @@ export const Skeleton = () => (
         dark:bg-darker bg-lighter animate-pulse"
     >
         <div className="flex gap-4">
-            <Component.Bone width={77} height={28} rounded="none" />
+            <Bone width={77} height={28} rounded="none" />
         </div>
         <div className="flex gap-4">
-            <Component.Bone width={32} height={32} rounded="full" />
-            <Component.Bone width={32} height={32} rounded="full" />
-            <Component.Bone width={32} height={32} rounded="full" />
+            <Bone width={32} height={32} rounded="full" />
+            <Bone width={32} height={32} rounded="full" />
+            <Bone width={32} height={32} rounded="full" />
         </div>
     </div>
 )

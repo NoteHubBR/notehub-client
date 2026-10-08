@@ -1,13 +1,13 @@
 import { Bell } from "./elements/Bell";
 import { BellDropdown } from "./dropdown/contents/BellDropdown";
 import { Button } from "./elements/Button";
-import { Component } from "@/components";
 import { Dropdown } from "./dropdown";
 import { Icon } from "@/components/icons";
 import { IconPlus } from "@tabler/icons-react";
 import { Input } from "./elements/Input";
 import { Menu } from "./elements/Menu";
 import { MenuDropdown } from "./dropdown/contents/MenuDropdown";
+import { Photo } from "@/components";
 import { User } from "@/core";
 import { useRef } from "react";
 import Link from "next/link";
@@ -46,7 +46,7 @@ export const Navbar = ({ user, ...rest }: { user: User } & React.HTMLAttributes<
                     </Dropdown>
                 </Button>
                 <Button aria-label='Mais opções' ref={menuButton}>
-                    <Component.Photo user={user} size={27} />
+                    <Photo user={user} size={27} />
                     <Dropdown
                         role='menu'
                         aria-label='Opções'

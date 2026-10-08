@@ -1,5 +1,5 @@
-import { Component } from "@/components";
 import { LowDetailNote, LowDetailUser } from "@/core";
+import { Photo } from "@/components";
 
 interface TargetProps extends React.HTMLAttributes<HTMLDivElement> {
     user: LowDetailUser;
@@ -12,7 +12,7 @@ export const Target = (props: TargetProps) => {
 
     return (
         <div className="py-1 px-2 flex items-center gap-3" {...rest}>
-            <Component.Photo user={user} />
+            <Photo user={user} />
             {note
                 ?
                 <span className="text-sm truncate">{note.name}</span>

@@ -1,9 +1,9 @@
-import { Component } from "@/components";
 import { Form } from "@/components/forms";
 import { Icon } from "@/components/icons";
 import { IconBook, IconEdit, IconFlame, IconNotes } from "@tabler/icons-react";
 import { Layout } from "./layout";
 import { LowDetailUser, User } from "@/core";
+import { Photo, PicturePortal } from "@/components";
 import { Template } from "@/components/templates";
 import { Toggle } from "@/components/buttons";
 import { useParams } from "next/navigation";
@@ -32,10 +32,10 @@ export const Header = ({ user, ...rest }: { user: User | LowDetailUser } & React
         >
             <div className="pointer-events-none absolute inset-0 dark:bg-d-gradient bg-l-gradient" />
             <section className="relative z-10 flex flex-col items-center gap-3 ">
-                <Component.Photo ref={photoRef} user={user} size={111} className="cursor-pointer drop-shadow-alpha-d-sm" />
+                <Photo ref={photoRef} user={user} size={111} className="cursor-pointer drop-shadow-alpha-d-sm" />
                 {!user.blocked && user.avatar &&
                     <Template.Portal triggerRef={photoRef} childRef={upscaledPhotoRef} useDefaultClose>
-                        <Component.PicturePortal ref={upscaledPhotoRef} user={user} size={270} className="rounded-full" />
+                        <PicturePortal ref={upscaledPhotoRef} user={user} size={270} className="rounded-full" />
                     </Template.Portal>
                 }
                 <div className="w-full px-3 overflow-hidden flex items-center justify-center gap-3">

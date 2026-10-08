@@ -1,4 +1,4 @@
-import { Component } from "@/components";
+import { Bone } from "@/components";
 
 export const Skeleton = (props: React.HTMLAttributes<HTMLDivElement>) => {
 
@@ -11,19 +11,19 @@ export const Skeleton = (props: React.HTMLAttributes<HTMLDivElement>) => {
             {...props}
         >
             <div className="flex items-center gap-3">
-                <Component.Bone width={40} height={40} rounded="full" />
+                <Bone width={40} height={40} rounded="full" />
                 <div className="flex flex-col gap-2">
-                    <Component.Bone width={180} height={20} rounded="md" />
-                    <Component.Bone width={90} height={16} rounded="md" />
+                    <Bone width={180} height={20} rounded="md" />
+                    <Bone width={90} height={16} rounded="md" />
                 </div>
             </div>
             <div className="p-3 rounded flex flex-col gap-2 dark:bg-semidark bg-semilight">
                 <div className="flex items-center gap-2">
-                    <Component.Bone width={25} height={25} rounded="full" />
-                    <Component.Bone width={200} height={20} rounded="md" />
+                    <Bone width={25} height={25} rounded="full" />
+                    <Bone width={200} height={20} rounded="md" />
                 </div>
-                <Component.Bone width={200} height={20} rounded="md" />
-                <Component.Bone width={23} height={23} rounded="full" />
+                <Bone width={200} height={20} rounded="md" />
+                <Bone width={23} height={23} rounded="full" />
             </div>
         </div>
     )
@@ -37,8 +37,8 @@ export const Skeleton = (props: React.HTMLAttributes<HTMLDivElement>) => {
             {...props}
         >
             <div className="pb-3 flex items-center justify-between">
-                <Component.Bone width={56} height={32} rounded="md" />
-                <Component.Bone width={70} height={32} rounded="xl" />
+                <Bone width={56} height={32} rounded="md" />
+                <Bone width={70} height={32} rounded="xl" />
             </div>
             <div className="flex flex-col gap-4">
                 <Article />

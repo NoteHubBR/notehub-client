@@ -1,9 +1,9 @@
 'use client'
 
-import { Component } from "@/components";
 import { IconHome, IconNotes, IconPlus, IconSearch, IconUserCircle } from "@tabler/icons-react"
 import { Item } from "./elements/Item";
 import { List } from "./elements/List";
+import { Photo } from "@/components";
 import { shouldRenderNavbarAndSidebar } from "@/core";
 import { Skeleton } from "./skeleton";
 import { useLoading, useScreen, useStore, useUser } from "@/data/hooks";
@@ -57,7 +57,7 @@ export const Navbar = () => {
                 <Item href='/search' icon={IconSearch} />
                 <Item href='/new' icon={IconPlus} className="p-1 rounded-full dark:bg-semidark bg-semilight" />
                 <Item href={`/${user.username}/notes`} icon={IconNotes} />
-                <Item href={`/${user.username}`}><Component.Photo user={user} size={24} /></Item>
+                <Item href={`/${user.username}`}><Photo user={user} size={24} /></Item>
             </List>
         </Nav>
     )

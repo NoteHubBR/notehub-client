@@ -1,10 +1,10 @@
 import { ApiError } from '@/api';
 import { clsx } from "clsx";
 import { Comment, createCommentFormSchema, CreateReplyFormData, handleFieldErrors, Page, Reply, Token, User } from "@/core";
-import { Component } from "@/components";
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
+import { Photo } from "@/components";
 import { useApi } from "@/data/hooks";
 import { useRef, useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -89,7 +89,7 @@ export const Form = ({ useSelfReference, token, user, comment, isReplying, selfR
                 className="pl-10 pb-4"
             >
                 <header className="flex gap-3">
-                    <Component.Photo user={user} size={40} />
+                    <Photo user={user} size={40} />
                     <Fieldset>
                         <Text
                             ref={textareaRef}

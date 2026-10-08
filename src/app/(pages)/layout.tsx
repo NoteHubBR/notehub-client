@@ -1,4 +1,4 @@
-import { Component } from '@/components';
+import { CookieConsent, ProgressBar, SplashScreen } from '@/components';
 import { Device } from '@/components/devices';
 import { Providers } from './providers';
 import { Template } from '@/components/templates';
@@ -7,9 +7,9 @@ const layout = (props: any) => {
     const { Desktop, Mobile } = Device;
     return (
         <Providers>
-            <Component.ProgressBar />
-            <Component.SplashScreen />
-            <Component.CookieConsent />
+            <ProgressBar />
+            <SplashScreen />
+            <CookieConsent />
             <Template.Container className="flex flex-col">
                 <Desktop.Navbar />
                 <Mobile.Navbar />

@@ -1,6 +1,6 @@
-import { Component } from "@/components";
 import { Edit, Li, Nav, Title } from "./elements";
 import { IconBook, IconEdit, IconFlame, IconNotes } from "@tabler/icons-react";
+import { Mock } from "@/components";
 import { useState } from "react";
 
 export const Profile = (props: React.HTMLAttributes<HTMLDivElement>) => {
@@ -15,7 +15,7 @@ export const Profile = (props: React.HTMLAttributes<HTMLDivElement>) => {
         >
             <div className="pointer-events-none absolute inset-0 dark:bg-d-gradient bg-l-gradient" />
             <section className="relative z-10 flex flex-col items-center gap-3">
-                <Component.Mock src="/imgs/luazul.png" size={111} className="cursor-pointer drop-shadow-alpha-d-sm" />
+                <Mock src="/imgs/luazul.png" size={111} className="cursor-pointer drop-shadow-alpha-d-sm" />
                 <div className="w-full px-3 flex items-center justify-center gap-3">
                     <Title>Lua Azul</Title>
                     <Edit icon={IconEdit} tooltip="Editar" />

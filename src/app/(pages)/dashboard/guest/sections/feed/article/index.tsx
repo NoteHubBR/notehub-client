@@ -1,5 +1,5 @@
 import { Author, Creator, Desc, Flame, Link, Message, Time } from "./elements";
-import { Component } from "@/components";
+import { Mock } from "@/components";
 
 interface ArticleProps extends React.HTMLAttributes<HTMLElement> {
     photo: string;
@@ -31,7 +31,7 @@ export const Article = ({ photo, author, message, createdAt, title, desc, flames
         </header>
         <section className="p-3 rounded flex flex-col gap-2 dark:bg-semidark bg-semilight">
             <header className="flex items-center gap-2">
-                <Component.Mock src={photo} size={25} />
+                <Mock src={photo} size={25} />
                 <Link>{author} / {title}</Link>
             </header>
             {desc && <Desc>{desc}</Desc>}

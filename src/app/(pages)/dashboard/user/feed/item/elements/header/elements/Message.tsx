@@ -1,5 +1,5 @@
-import { Component } from "@/components";
 import { Event, FeedEvent, User } from "@/core";
+import { Hovercard } from "@/components";
 import { Icon } from "@/components/icons";
 import { useRef } from "react";
 import Link from "next/link";
@@ -24,7 +24,7 @@ export const Message = ({ user, event, ...rest }: MessageProps) => {
 
     return (
         <>
-            <Component.Hovercard ref={ref} user={event.actor} />
+            <Hovercard ref={ref} user={event.actor} />
             <h2 className="text-sm" {...rest}>
                 <span>
                     <Link
