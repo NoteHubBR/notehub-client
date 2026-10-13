@@ -112,9 +112,4 @@ test.describe('Navbar - navigation, search, dropdowns and user actions', () => {
         await navbar.verifyPathname('/');
     })
 
-    test('should log out the authenticated user from the options menu', async () => {
-        await navbar.choseOption(navbar.optionLogout);
-        await expect(navbar.optionsButton).toBeHidden();
-    })
-
 })

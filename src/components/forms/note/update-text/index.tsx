@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import { Element } from "./elements";
 import { FormProvider, useForm } from "react-hook-form";
-import { IconCheck, IconDotsVertical, IconEdit, IconHistory, IconTrash, IconX } from "@tabler/icons-react";
+import { IconArrowsMaximize, IconArrowsMinimize, IconCheck, IconDotsVertical, IconEdit, IconHistory, IconPictureInPicture, IconTrash, IconX } from "@tabler/icons-react";
 import { Menu, MenuItem } from "@/components/menu";
 import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
 import { useApi, useDrafts, useNotes, useTags } from "@/data/hooks";
@@ -12,13 +12,21 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
+    ref: React.RefObject<HTMLFormElement>;
     token: Token | null;
     note: Note;
+    setNote: React.Dispatch<React.SetStateAction<Note | null>>;
     author: string | null;
     currentUser: string | null;
+    fullscreenSupported: boolean;
+    isFullscreen: boolean;
+    toggleFullscreen: () => void;
+    pipWindowSupported: boolean;
+    pipWindow: Window | null;
+    openPiP: (width?: number, height?: number) => Promise<void>
 }
 
-export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) => {
+export const Form = ({ ref, token, note, setNote, author, currentUser, fullscreenSupported, isFullscreen, toggleFullscreen, pipWindowSupported, pipWindow, openPiP, ...rest }: FormProps) => {
 
     const {
         noteService: { updateNoteText, deleteNote },
@@ -62,6 +70,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                 .then(() => {
                     setIsSubmiting(false);
                     setIsEditing(false);
+                    setNote(prev => prev ? { ...prev, markdown: data.markdown } : null);
                     setText(data.markdown);
                     setInitialText(data.markdown);
                     setIsPreviewing(false);
@@ -100,6 +109,12 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
     const closeMenu = () => setIsMenuOpen(false);
 
     const togglePreview = () => setIsPreviewing(prev => !prev);
+
+    const openPictureInPicture = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        openPiP();
+        return;
+    }
 
     const startEdit = (e?: React.MouseEvent) => {
         if (e) e.stopPropagation();
@@ -159,8 +174,11 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
     }
 
     useShortcuts({
+        ref,
         isAuthor,
         isEditing,
+        onFullscreen: toggleFullscreen,
+        onPictureInPicture: openPictureInPicture,
         onStartEdit: startEdit,
         onCancel: cancelEdit,
         onDelete: handleDeleteNote,
@@ -172,20 +190,29 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
     return (
         <FormProvider {...updateNoteForm}>
             <form
+                ref={ref}
                 id="note"
                 onSubmit={handleSubmit(onSubmit)}
                 className={clsx(
                     'scroll-mt-[9vh] inmd:scroll-mt-0',
-                    'relative min-h-[90vh] max-h-[90vh] inmd:min-h-[93.25svh] inmd:max-h-[93.25svh]',
-                    'rounded-[5px] border inmd:dark:border-none dark:border-middark/50 border-midlight/50',
+                    'min-w-0 flex flex-col flex-1 dark:bg-darker bg-lighter',
+                    isFullscreen
+                        ? 'h-screen w-screen'
+                        : [
+                            'relative rounded-[5px] border inmd:dark:border-none dark:border-middark/50 border-midlight/50',
+                            pipWindow
+                                ? 'min-h-screen'
+                                : 'min-h-[90vh] max-h-[90vh] inmd:min-h-[93.25svh] inmd:max-h-[93.25svh]'
+                        ],
                     'flex flex-col flex-1',
                     'dark:bg-darker bg-lighter',
                 )}
                 {...rest}
             >
                 <header className="px-4 inmd:px-2 flex items-center justify-between gap-3 border-b dark:border-middark/50 border-midlight/50">
-                    <div className="insm:overflow-hidden w-fit flex gap-3">
+                    <div className="overflow-hidden w-fit flex gap-3">
                         <Title
+                            title={note.name}
                             disabled={!isPreviewing}
                             onClick={togglePreview}
                             isPreviewing={isPreviewing}
@@ -201,63 +228,89 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                             Visualizar
                         </EditingTitle>
                     </div>
-                    {isAuthor &&
-                        <div className="flex gap-3">
-                            {skipDraft ? null :
-                                <ActionButton
-                                    type="button"
-                                    onClick={startDraft}
-                                    isEditing={isEditing}
-                                    icon={IconHistory}
-                                    tooltip="Rascunho"
-                                    className="dark:bg-semilight/20 bg-semidark/20 dark:hover:bg-semilight/10 hover:bg-semidark/10"
-                                />
-                            }
+                    <div className="flex gap-3">
+                        {skipDraft ? null :
                             <ActionButton
+                                isAuthor={isAuthor}
                                 type="button"
-                                onClick={cancelEdit}
+                                onClick={startDraft}
                                 isEditing={isEditing}
-                                icon={IconX}
-                                tooltip="Cancelar"
+                                icon={IconHistory}
+                                tooltip="Rascunho"
                                 className="dark:bg-semilight/20 bg-semidark/20 dark:hover:bg-semilight/10 hover:bg-semidark/10"
                             />
+                        }
+                        <ActionButton
+                            isAuthor={isAuthor}
+                            type="button"
+                            onClick={cancelEdit}
+                            isEditing={isEditing}
+                            icon={IconX}
+                            tooltip="Cancelar"
+                            className="dark:bg-semilight/20 bg-semidark/20 dark:hover:bg-semilight/10 hover:bg-semidark/10"
+                        />
+                        {fullscreenSupported && !pipWindow ?
                             <ActionButton
+                                skipAuthorityCheck
                                 type="button"
-                                onClick={startSubmit}
-                                isEditing={isEditing}
-                                icon={IconCheck}
-                                tooltip="Salvar"
-                                className="text-white bg-primary hover:bg-secondary"
-                            />
-                            <ActionButton
-                                type="button"
-                                disabled={isPending}
-                                onClick={toggleMenu}
-                                onBlur={closeMenu}
+                                onClick={toggleFullscreen}
                                 isEditing={!isEditing}
-                                icon={IconDotsVertical}
-                                tooltip="Menu"
-                                className="relative dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10"
-                            >
-                                <Menu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}>
-                                    <MenuItem
-                                        onClick={startEdit}
-                                        icon={IconEdit}
-                                        className="dark:hover:text-secondary hover:text-primary"
-                                    >
-                                        Editar
-                                    </MenuItem>
-                                    <MenuItem
-                                        onClick={startDelete}
-                                        icon={IconTrash}
-                                        className="hover:text-red-500"
-                                    >
-                                        Apagar
-                                    </MenuItem>
-                                </Menu>
-                            </ActionButton>
-                        </div>
-                    }
+                                icon={isFullscreen ? IconArrowsMinimize : IconArrowsMaximize}
+                                tooltip={isFullscreen ? "Sair da tela cheia" : "Tela cheia"}
+                                className="dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10"
+                            />
+                            : null
+                        }
+                        {pipWindowSupported && !pipWindow && !isFullscreen
+                            ? <ActionButton
+                                skipAuthorityCheck
+                                type="button"
+                                onClick={openPictureInPicture}
+                                isEditing={!isEditing}
+                                icon={IconPictureInPicture}
+                                tooltip="Picture-in-Picture"
+                                className="dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10"
+                            />
+                            : null
+                        }
+                        <ActionButton
+                            isAuthor={isAuthor}
+                            type="button"
+                            onClick={startSubmit}
+                            isEditing={isEditing}
+                            icon={IconCheck}
+                            tooltip="Salvar"
+                            className="text-white bg-primary hover:bg-secondary"
+                        />
+                        <ActionButton
+                            isAuthor={isAuthor}
+                            type="button"
+                            disabled={isPending}
+                            onClick={toggleMenu}
+                            onBlur={closeMenu}
+                            isEditing={!isEditing}
+                            icon={IconDotsVertical}
+                            tooltip="Menu"
+                            className="relative dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10"
+                        >
+                            <Menu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}>
+                                <MenuItem
+                                    onClick={startEdit}
+                                    icon={IconEdit}
+                                    className="dark:hover:text-secondary hover:text-primary"
+                                >
+                                    Editar
+                                </MenuItem>
+                                <MenuItem
+                                    onClick={startDelete}
+                                    icon={IconTrash}
+                                    className="hover:text-red-500"
+                                >
+                                    Apagar
+                                </MenuItem>
+                            </Menu>
+                        </ActionButton>
+                    </div>
                 </header>
                 <Dialog
                     msg="Tem certeza de que deseja apagar esta nota?"
@@ -287,6 +340,7 @@ export const Form = ({ token, note, author, currentUser, ...rest }: FormProps) =
                 <MdPreview
                     isEditing={isEditing}
                     isPreviewing={isPreviewing}
+                    isFullscreen={isFullscreen}
                     markdown={isPreviewing ? text : initialText}
                 />
                 <MdEditor

@@ -2,7 +2,14 @@ import { clsx } from 'clsx';
 import { IconKeyframeAlignVertical } from '@tabler/icons-react';
 import { useEffect, useRef, useState } from 'react';
 
-export const Navigator = () => {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
+    isFullscreen: boolean;
+    pipWindow: Window | null;
+}
+
+export const Navigator = ({ pipWindow, isFullscreen, ...rest }: Props) => {
+
+    const isHidden = isFullscreen || pipWindow;
 
     const btnRef = useRef<HTMLButtonElement>(null);
     const [isCentered, setIsCentered] = useState(false);
@@ -59,12 +66,25 @@ export const Navigator = () => {
     }, [])
 
     useEffect(() => {
+        if (isHidden) return;
+        return observeNote(setIsCentered);
+    }, [isHidden])
+
+    useEffect(() => {
+        if (isHidden) return;
+        scrollToNote();
+    }, [isHidden])
+
+    useEffect(() => {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, [])
 
+    if (isHidden) return null;
+
     return (
         <div
+            {...rest}
             aria-hidden={isCentered}
             style={{ top: top - 16 }}
             className={clsx(

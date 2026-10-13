@@ -4,16 +4,18 @@ import { useMarkdown } from './hook';
 type MarkdownProps = React.HTMLAttributes<HTMLElement> & {
     isEditing: boolean;
     isPreviewing: boolean;
+    isFullscreen: boolean;
     markdown: string;
 }
 
-export const MdPreview = ({ isEditing, isPreviewing, markdown, ...rest }: MarkdownProps) => (
+export const MdPreview = ({ isEditing, isPreviewing, isFullscreen, markdown, ...rest }: MarkdownProps) => (
     <article
         aria-labelledby='md-title'
         className={clsx(
             // base
             'prose',
-            'max-w-[999px] p-6',
+            isFullscreen ? 'max-w-full' : 'max-w-[999px]',
+            'p-6',
             'overflow-y-auto overscroll-contain inmd:overscroll-auto',
             'scrollbar-desktop inmd:scrollbar-mobile',
             !isEditing || isPreviewing ? 'block' : 'hidden',

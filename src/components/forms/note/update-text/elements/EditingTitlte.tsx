@@ -14,8 +14,8 @@ export const EditingTitle = ({ isPreviewing, isEditing, children, ...rest }: Edi
             'font-medium dark:text-secondary text-primary',
             'after:pointer-events-none after:absolute after:top-full after:h-full after:border-t-2 after:border-primary',
             isEditing
-                ? 'block visible opacity-100'
-                : 'insm:hidden invisible opacity-0',
+                ? 'block'
+                : 'hidden',
             isPreviewing
                 ? 'after:left-0 after:w-full'
                 : 'after:left-0 after:right-0 after:w-0',
@@ -26,7 +26,7 @@ export const EditingTitle = ({ isPreviewing, isEditing, children, ...rest }: Edi
     >
         <span
             className={clsx(
-                'p-2 rounded-lg insm:rounded-none',
+                'p-2',
                 isPreviewing
                     ? 'dark:bg-primary/25 bg-primary/15'
                     : 'dark:hover:bg-semilight/15 hover:bg-semidark/15',

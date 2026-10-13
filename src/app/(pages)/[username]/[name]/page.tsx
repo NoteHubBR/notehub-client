@@ -1,13 +1,14 @@
 'use client';
 
+import { createPortal } from 'react-dom';
 import { Element } from "./elements";
 import { Form } from "@/components/forms";
 import { handleFieldErrorsMsg, Note } from "@/core";
-import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
+import { IconEyeOff, IconLock, IconNotesOff, IconPictureInPicture } from "@tabler/icons-react";
 import { Section } from "../components/Section";
 import { Skeleton } from "./skeleton";
 import { Template } from "@/components/templates";
-import { useApi, useUser } from "@/data/hooks";
+import { useApi, useFullscreen, usePiP, useUser } from "@/data/hooks";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 
@@ -30,7 +31,10 @@ const Page = () => {
         if (response && response.type === 'ok') setNote(response.data);
     }, [response])
 
-    const { Navigator, Aside, Comments, Dialog } = Element;
+    const { ref: ref, isSupported: fullscreenSupported, isFullscreen, toggle: toggleFullscreen, } = useFullscreen<HTMLFormElement>();
+    const { isSupported: pipWindowSupported, open: openPiP, pipWindow } = usePiP();
+
+    const { Navigator, Aside, Comments, Dialog, PipFallback } = Element;
 
     if (isLoading) return <Skeleton />;
 
@@ -69,42 +73,60 @@ const Page = () => {
             return null;
         }
 
-        if (note) return (
-            <section className="max-w-[999px] w-full m-auto pb-64">
-                <Navigator />
-                <section className="flex inlg:flex-col-reverse">
-                    <Template.Portal blur="sm" triggerRef={triggerRef} childRef={childRef} closeRef={closeRef}>
-                        <Form.Note.Update
-                            ref={childRef}
-                            closeRef={closeRef}
+        if (note) {
+            const noteContent = <Form.Note.TextUpdate
+                ref={ref}
+                token={token}
+                note={note}
+                setNote={setNote}
+                author={note.user ? note.user.username : null}
+                currentUser={user ? user.username : null}
+                fullscreenSupported={fullscreenSupported}
+                isFullscreen={isFullscreen}
+                toggleFullscreen={toggleFullscreen}
+                pipWindowSupported={pipWindowSupported}
+                pipWindow={pipWindow}
+                openPiP={openPiP}
+            />
+            return (
+                <section className="max-w-[999px] w-full m-auto pb-64">
+                    <Navigator isFullscreen={isFullscreen} pipWindow={pipWindow} />
+                    <section className="flex inlg:flex-col-reverse">
+                        <Template.Portal blur="sm" triggerRef={triggerRef} childRef={childRef} closeRef={closeRef}>
+                            <Form.Note.Update
+                                ref={childRef}
+                                closeRef={closeRef}
+                                token={token}
+                                note={note}
+                                setNote={setNote}
+                            />
+                        </Template.Portal>
+                        {pipWindow
+                            ?
+                            <>
+                                <PipFallback icon={IconPictureInPicture} />
+                                {createPortal(noteContent, pipWindow.document.body)}
+                            </>
+                            : noteContent
+                        }
+                        <Aside
+                            triggerRef={triggerRef}
+                            note={note}
+                            author={note.user ? note.user.username : null}
+                            currentUser={user ? user.username : null}
+                        />
+                    </section>
+                    <section className="w-[72.5%] inlg:w-full inmd:px-2 py-2">
+                        <Comments
                             token={token}
+                            user={user}
                             note={note}
                             setNote={setNote}
                         />
-                    </Template.Portal>
-                    <Form.Note.TextUpdate
-                        token={token}
-                        note={note}
-                        author={note.user ? note.user.username : null}
-                        currentUser={user ? user.username : null}
-                    />
-                    <Aside
-                        triggerRef={triggerRef}
-                        note={note}
-                        author={note.user ? note.user.username : null}
-                        currentUser={user ? user.username : null}
-                    />
+                    </section>
                 </section>
-                <section className="w-[72.5%] inlg:w-full inmd:px-2 py-2">
-                    <Comments
-                        token={token}
-                        user={user}
-                        note={note}
-                        setNote={setNote}
-                    />
-                </section>
-            </section>
-        )
+            )
+        }
 
     }
 
