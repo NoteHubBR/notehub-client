@@ -20,6 +20,37 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        id: '20',
+        version: 'v3.6.2',
+        date: '13/10/26 8:57',
+        scope: 'client',
+        title: 'Outubro 13, 2026',
+        summary: 'Janela flutuante e tela cheia',
+        entries: [
+            {
+                type: 'style',
+                pr: 34,
+                merged: true,
+                hash: 'c95245ca2d68f9cb739a638f4408bf3202d1fe2b',
+                desc: 'A responsividade do cabeçalho da nota foi melhorada.'
+            },
+            {
+                type: 'feat',
+                pr: 34,
+                merged: true,
+                hash: 'a8e03648ca28ba3434f7d73643222e959688525e',
+                desc: 'Agora é possível abrir uma nota em uma janela flutuante, que fica sobre as outras janelas e aplicativos. Disponível apenas em navegadores com suporte (como Chrome e Edge); nos demais, o botão não é exibido.\n\nAlt+X → Janela flutuante'
+            },
+            {
+                type: 'feat',
+                pr: 34,
+                merged: true,
+                hash: '873f7d0b8ea91e1f7748ebe5641b2cefd785b66d',
+                desc: 'Agora é possível ler uma nota em tela cheia, sem distrações e com o texto ocupando toda a largura da tela.\n\nAlt+Z → Tela cheia'
+            }
+        ]
+    },
+    {
         id: '19',
         version: 'v3.6.1',
         date: '30/9/26 9:51',
