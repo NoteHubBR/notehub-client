@@ -1,16 +1,17 @@
 import { clsx } from 'clsx';
 import { Count } from './Count';
-import { createNoteFormSchemaShape, getSchemaStringConstraints } from '@/core';
+import { CreateNoteFormSchema, getSchemaStringConstraints } from '@/core';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    name: keyof typeof createNoteFormSchemaShape.shape;
+    schema: CreateNoteFormSchema;
+    name: keyof CreateNoteFormSchema['shape'];
 }
 
-export const InputText = ({ name, className, ...rest }: InputProps) => {
+export const InputText = ({ schema, name, className, ...rest }: InputProps) => {
 
     const { register, formState: { errors } } = useFormContext();
-    const { max } = getSchemaStringConstraints(createNoteFormSchemaShape, name);
+    const { max } = getSchemaStringConstraints(schema, name);
     const hasError = errors[name];
 
     const value: string = useWatch({ name, defaultValue: rest.defaultValue ?? '' });

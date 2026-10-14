@@ -1,8 +1,8 @@
-import { createNoteFormSchemaShape } from '@/core';
-import { useFormContext } from "react-hook-form";
+import { CreateNoteFormSchema } from '@/core';
+import { useFormContext } from 'react-hook-form';
 
 interface ErrorProps extends React.HTMLAttributes<HTMLSpanElement> {
-    field: keyof typeof createNoteFormSchemaShape.shape;
+    field: keyof CreateNoteFormSchema['shape'];
 }
 
 export const Error = ({ field, ...rest }: ErrorProps) => {
@@ -14,7 +14,7 @@ export const Error = ({ field, ...rest }: ErrorProps) => {
     if (error) return (
         <p
             data-testid={`error-${field}`}
-            className="pl-1 text-sm font-medium dark:text-red-500 text-red-600"
+            className='pl-1 text-sm font-medium dark:text-red-500 text-red-600'
             {...rest}
         >
             {error.toString()}

@@ -1,12 +1,12 @@
 import { ApiError } from '@/api';
-import { Element } from "./elements";
-import { FormProvider, useForm } from "react-hook-form";
-import { forwardRef, useState } from "react";
-import { handleFieldErrors, Note, NoteUpdateFormData, noteUpdateFormSchema, Token } from "@/core";
-import { useApi, useNotes, useTags } from "@/data/hooks";
+import { createNoteUpdateFormSchema, handleFieldErrors, Note, NoteUpdateFormData, Token } from '@/core';
+import { Element } from './elements';
+import { FormProvider, useForm } from 'react-hook-form';
+import { forwardRef, useMemo, useState } from 'react';
+import { useApi, useNotes, useTags } from '@/data/hooks';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     onPortalClose?: () => void;
@@ -24,11 +24,20 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
     } = useApi();
     const qc = useQueryClient();
 
-    const { updateNote: updateNoteContext } = useNotes();
+    const { notes, updateNote: updateNoteContext } = useNotes();
     const { setNewTags } = useTags();
 
+    const schema = useMemo(() =>
+        createNoteUpdateFormSchema(
+            note.user ? note.user.username : 'user',
+            (notes ?? []).filter((n) => n.id !== note.id).map((n) => n.name),
+        ),
+        [note.user, note.id, notes]
+    )
+
     const updateNoteForm = useForm<NoteUpdateFormData>({
-        resolver: zodResolver(noteUpdateFormSchema)
+        resolver: zodResolver(schema),
+        mode: 'onChange',
     })
 
     const { handleSubmit, setError } = updateNoteForm;
@@ -60,7 +69,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
                         closed: data.closed,
                         hidden: data.hidden,
                         modified: true,
-                        modified_at: "now"
+                        modified_at: 'now'
                     }
                     return null
                 })
@@ -81,54 +90,54 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
         <FormProvider {...updateNoteForm}>
             <form
                 ref={ref}
-                onSubmit={handleSubmit(onSubmit, (errors) => console.log("Erros:", errors))}
-                className="z-[998] center
+                onSubmit={handleSubmit(onSubmit, (errors) => console.log('Erros:', errors))}
+                className='z-[998] center
                 max-w-[500px] w-[95%] mx-auto rounded
                 border dark:border-middark/50 border-midlight/50
-                dark:bg-dark bg-light"
+                dark:bg-dark bg-light'
                 {...rest}
             >
-                <header className="p-4">
+                <header className='p-4'>
                     <h5>Configure sua nota</h5>
                 </header>
-                <section className="p-4 border-y dark:border-middark/50 border-midlight/50 dark:bg-darker/50 bg-lighter">
-                    <Fieldset className="relative">
-                        <Label htmlFor="name">Título</Label>
-                        <InputText name="name" defaultValue={note.name} />
-                        <Error field="name" />
+                <section className='p-4 border-y dark:border-middark/50 border-midlight/50 dark:bg-darker/50 bg-lighter'>
+                    <Fieldset className='relative'>
+                        <Label htmlFor='name'>Título</Label>
+                        <InputText schema={schema} name='name' defaultValue={note.name} />
+                        <Error field='name' />
                     </Fieldset>
-                    <Fieldset className="relative">
-                        <Label htmlFor="description">Descrição</Label>
-                        <InputText name="description" defaultValue={note.description} />
-                        <Error field="description" />
+                    <Fieldset className='relative'>
+                        <Label htmlFor='description'>Descrição</Label>
+                        <InputText schema={schema} name='description' defaultValue={note.description} />
+                        <Error field='description' />
                     </Fieldset>
-                    <Fieldset className="relative">
-                        <Label htmlFor="tags">Tags</Label>
-                        <InputTags name="tags" noteTags={note.tags} />
-                        <Error field="tags" />
-                    </Fieldset>
-                    <Fieldset>
-                        <InputCheck name="closed" defaultChecked={note.closed} />
-                        <Label htmlFor="closed">Fechada</Label>
+                    <Fieldset className='relative'>
+                        <Label htmlFor='tags'>Tags</Label>
+                        <InputTags name='tags' noteTags={note.tags} />
+                        <Error field='tags' />
                     </Fieldset>
                     <Fieldset>
-                        <InputCheck name="hidden" defaultChecked={note.hidden} />
-                        <Label htmlFor="hidden">Oculta</Label>
+                        <InputCheck name='closed' defaultChecked={note.closed} />
+                        <Label htmlFor='closed'>Fechada</Label>
+                    </Fieldset>
+                    <Fieldset>
+                        <InputCheck name='hidden' defaultChecked={note.hidden} />
+                        <Label htmlFor='hidden'>Oculta</Label>
                     </Fieldset>
                 </section>
-                <footer className="p-4 flex items-center gap-3 justify-end">
+                <footer className='p-4 flex items-center gap-3 justify-end'>
                     <Button
                         disabled={isPending}
                         ref={closeRef}
-                        type="button"
-                        className="hover:dark:bg-black hover:bg-white focus-visible:dark:bg-black focus-visible:bg-white"
+                        type='button'
+                        className='hover:dark:bg-black hover:bg-white focus-visible:dark:bg-black focus-visible:bg-white'
                     >
                         Cancelar
                     </Button>
                     <Button
                         disabled={isPending}
-                        type="submit"
-                        className="text-white bg-primary hover:bg-secondary focus-visible:bg-secondary"
+                        type='submit'
+                        className='text-white bg-primary hover:bg-secondary focus-visible:bg-secondary'
                     >
                         Salvar alteração
                     </Button>
