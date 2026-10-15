@@ -9,7 +9,7 @@ export const Button = (props: React.ButtonHTMLAttributes<HTMLButtonElement>) => 
             'text-nowrap text-center text-sm insm:text-xs',
             'text-lighter',
             'bg-primary',
-            'hover:opacity-90 focus:opacity-90 focus-visible:opacity-90 active:opacity-90',
+            'hover:saturate-150 focus:saturate-150 focus-visible:saturate-150 active:saturate-150',
         )}
     />
 )
