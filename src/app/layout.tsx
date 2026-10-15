@@ -21,9 +21,9 @@ export const metadata: Metadata = {
     siteName: "NoteHub",
     images: [
       {
-        url: "https://notehub.com.br/imgs/favicon256.png",
-        width: 256,
-        height: 256,
+        url: "https://notehub.com.br/imgs/favicon512.png",
+        width: 512,
+        height: 512,
         alt: "NoteHub Logo",
       },
     ],
@@ -31,10 +31,10 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "NoteHub",
     description: "Seu bloco de notas social.",
-    images: ["https://notehub.com.br/imgs/favicon256.png"],
+    images: ["https://notehub.com.br/imgs/favicon512.png"],
   }
 };
 
