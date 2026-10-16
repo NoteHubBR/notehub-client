@@ -7,6 +7,7 @@ import {
     ScreenProvider,
     ScreenWidthProvider,
     ThemeProvider,
+    TitleProvider,
     UserDraftsProvider,
     UserFlamesProvider,
     UserFollowingProvider,
@@ -59,6 +60,7 @@ const userProviders: ProviderComponent[] = [
     UserSubscriptionsProvider,
     UserProvider,
     UserNotificationsProvider,
+    TitleProvider,
 ]
 
 const appProviders: ProviderComponent[] = [

@@ -8,7 +8,7 @@ import { IconEyeOff, IconLock, IconNotesOff, IconPictureInPicture } from "@table
 import { Section } from "../components/Section";
 import { Skeleton } from "./skeleton";
 import { Template } from "@/components/templates";
-import { useApi, useFullscreen, usePiP, useUser } from "@/data/hooks";
+import { useApi, useFullscreen, usePiP, useTitle, useUser } from "@/data/hooks";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 
@@ -17,6 +17,7 @@ const Page = () => {
     const { noteQueries: { useGetNote } } = useApi();
 
     const { isMounted, token, user } = useUser();
+    const { setTitle } = useTitle();
 
     const { username, name } = useParams<{ username: string; name: string }>();
 
@@ -28,7 +29,11 @@ const Page = () => {
     const closeRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
-        if (response && response.type === 'ok') setNote(response.data);
+        if (response && response.type === 'ok') {
+            const { user, name } = response.data;
+            setNote(response.data);
+            setTitle(user ? `${user.username}/${name}` : name);
+        }
     }, [response])
 
     const { ref: ref, isSupported: fullscreenSupported, isFullscreen, toggle: toggleFullscreen, } = useFullscreen<HTMLFormElement>();
