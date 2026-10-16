@@ -1,4 +1,5 @@
 export * from './Routes';
+export * from './Routes.titles';
 export * from './FieldError';
 export * from './Filter';
 export * from './Cookies';

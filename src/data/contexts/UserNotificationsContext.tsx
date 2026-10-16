@@ -41,21 +41,12 @@ export const UserNotificationsProvider = (props: any) => {
         })
     }, [user])
 
-    const setTitle = useCallback((count: number): string => {
-        setState((prev) => ({ ...prev, count: count }));
-        const title = `${count > 0 ? `(${count}) NoteHub` : 'NoteHub'}`;
-        return document.title = title;
-    }, [])
-
     useEffect(() => {
-        clearNotifications();
-        if (user) setTitle(user.notifications);
-        else setTitle(0);
-    }, [clearNotifications, setTitle, user])
-
-    useEffect(() => {
-        setTitle(state.count);
-    }, [setTitle, state.count])
+        if (user) return setState((prev) => ({
+            ...prev,
+            count: user.notifications
+        }))
+    }, [user])
 
     return (
         <UserNotificationsContext.Provider value={{
