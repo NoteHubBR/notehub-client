@@ -1,21 +1,22 @@
 import { clsx } from 'clsx';
-import { decrypt, encrypt, Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token, UpdateNotePassphraseFormData, updateNotePassphraseFormSchema } from "@/core"
-import { Element } from "./elements";
-import { FormProvider, useForm } from "react-hook-form";
-import { IconArrowsMaximize, IconArrowsMinimize, IconCheck, IconDotsVertical, IconEdit, IconHistory, IconKey, IconPictureInPicture, IconTrash, IconX } from "@tabler/icons-react";
-import { Menu, MenuItem } from "@/components/menu";
-import { useApi, useDrafts, useNotes, useTags } from "@/data/hooks";
-import { useEffect, useState } from "react";
+import { decrypt, encrypt, Note, NoteSecret, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token, UpdateNotePassphraseFormData, updateNotePassphraseFormSchema } from '@/core'
+import { Element } from './elements';
+import { FormProvider, useForm } from 'react-hook-form';
+import { IconArrowsMaximize, IconArrowsMinimize, IconCheck, IconDotsVertical, IconEdit, IconHistory, IconKey, IconPictureInPicture, IconTrash, IconX } from '@tabler/icons-react';
+import { Menu, MenuItem } from '@/components/menu';
+import { useApi, useDrafts, useNotes, useTags } from '@/data/hooks';
+import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import { useShortcuts } from './shortcuts';
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     ref: React.RefObject<HTMLFormElement>;
     token: Token | null;
-    passphrase: string | null;
-    setPassphrase: React.Dispatch<React.SetStateAction<string | null>>;
+    isLocked: boolean;
+    secret: NoteSecret | null;
+    setSecret: React.Dispatch<React.SetStateAction<NoteSecret | null>>;
     pendingConfiguration: boolean;
     setPendingConfiguration: React.Dispatch<React.SetStateAction<boolean>>;
     onConfiguration: boolean;
@@ -28,6 +29,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     setNote: React.Dispatch<React.SetStateAction<Note | null>>;
     author: string | null;
     currentUser: string | null;
+    displaytext: string;
     fullscreenSupported: boolean;
     isFullscreen: boolean;
     toggleFullscreen: () => void;
@@ -39,8 +41,9 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 export const Form = ({
     ref,
     token,
-    passphrase,
-    setPassphrase,
+    isLocked,
+    secret,
+    setSecret,
     pendingConfiguration,
     onConfiguration,
     setPendingConfiguration,
@@ -53,6 +56,7 @@ export const Form = ({
     setNote,
     author,
     currentUser,
+    displaytext,
     fullscreenSupported,
     isFullscreen,
     toggleFullscreen,
@@ -77,7 +81,7 @@ export const Form = ({
     const updateNoteForm = useForm<NoteTextUpdateFormData>({
         resolver: zodResolver(noteTextUpdateFormSchema),
         defaultValues: {
-            markdown: note.markdown ?? ""
+            markdown: note.markdown ?? ''
         }
     })
 
@@ -96,7 +100,7 @@ export const Form = ({
 
     const isAuthor = author ? author === currentUser : false;
 
-    const [initialText, setInitialText] = useState<string>(note.markdown ?? "");
+    const initialText = displaytext;
     const [text, setText] = useState<string>(initialText);
     const [skipDraft, setSkipDraft] = useState<boolean>(note.encrypted ? true : draft ? false : true);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -108,28 +112,46 @@ export const Form = ({
 
     const router = useRouter();
 
+    const handleDecryption = async (data: UpdateNotePassphraseFormData, e?: React.BaseSyntheticEvent) => {
+        if (e) e.stopPropagation();
+        if (note.markdown) try {
+            const plaintext = await decrypt(note.markdown, data.passphrase);
+            resetPassphraseForm();
+            setSecret({
+                id: note.id,
+                passphrase: data.passphrase,
+                plaintext,
+                cipher: note.markdown,
+            })
+            if (pendingConfiguration) setOnConfiguration(true);
+            if (pendingEdition) { setOnEdition(true); setIsPreviewing(false); }
+            setIsDecrypting(false);
+        } catch {
+            setPassphraseError('passphrase', { message: 'Segredo incorreto.' });
+        }
+    }
+
     const onSubmit = async (data: NoteTextUpdateFormData): Promise<void> => {
         if (token) {
-            if (note.encrypted) if (!passphrase) return startDecryption();
+            if (note.encrypted) if (isLocked) return startDecryption();
             setIsPending(true);
-            await withProgress(async () => updateNoteText(
-                token.access_token,
-                note.id,
-                note.encrypted
-                    ? { ...data, markdown: await encrypt(data.markdown, passphrase!) }
-                    : data
-            )).then(() => {
+            const currentSecret = secret;
+            try {
+                const markdown = currentSecret && note.encrypted
+                    ? await encrypt(data.markdown, currentSecret.passphrase)
+                    : data.markdown;
+                await withProgress(() => updateNoteText(token.access_token, note.id, { ...data, markdown }));
+                if (currentSecret && note.encrypted) setSecret({ ...currentSecret, plaintext: data.markdown, cipher: markdown });
+                setNote(prev => prev ? { ...prev, markdown } : null);
                 setIsSubmitting(false);
                 setOnEdition(false);
-                setNote(prev => prev ? { ...prev, markdown: data.markdown } : null);
-                setText(data.markdown);
-                setInitialText(data.markdown);
                 setIsPreviewing(false);
                 setNoteToFirst(note.id);
-                setIsPending(false);
                 if (note.user) removeDraft('notes', note.id, note.user.username);
-            })
-            return await qc.invalidateQueries({ queryKey: ['note', token.access_token, note.id] });
+                return await qc.invalidateQueries({ queryKey: ['note', token.access_token, note.id] });
+            } finally {
+                setIsPending(false);
+            }
         }
     }
 
@@ -169,36 +191,15 @@ export const Form = ({
 
     const startDecryption = (e?: React.MouseEvent) => {
         if (e) e.stopPropagation();
-        if (passphrase) return;
+        if (secret) return;
         setIsMenuOpen(false);
         setIsDecrypting(true);
         return;
     }
 
-    const handleDecryption = async (data: UpdateNotePassphraseFormData, e?: React.BaseSyntheticEvent) => {
-        if (e) e.stopPropagation();
-        if (note.markdown) try {
-            const decrypted = await decrypt(note.markdown, data.passphrase);
-            resetPassphraseForm();
-            setPassphrase(data.passphrase);
-            setInitialText(decrypted);
-            setText(decrypted);
-            setValue('markdown', decrypted);
-            setNote((prev) => prev ? { ...prev, markdown: decrypted } : null);
-            if (pendingConfiguration) setOnConfiguration(true);
-            if (pendingEdition) {
-                setOnEdition(true);
-                setIsPreviewing(false);
-            }
-            return setIsDecrypting(false);
-        } catch {
-            setPassphraseError('passphrase', { message: 'Segredo incorreto.' });
-        }
-    }
-
     const startEdit = (e?: React.MouseEvent) => {
         if (e) e.stopPropagation();
-        if (note.encrypted) if (!passphrase) {
+        if (note.encrypted) if (!secret) {
             setPendingEdition(true);
             return startDecryption();
         }
@@ -258,6 +259,11 @@ export const Form = ({
     }
 
     useEffect(() => {
+        setText(displaytext);
+        setValue('markdown', displaytext);
+    }, [displaytext])
+
+    useEffect(() => {
         if (pendingConfiguration) startDecryption();
     }, [pendingConfiguration])
 
@@ -286,7 +292,7 @@ export const Form = ({
         <FormProvider {...updateNoteForm}>
             <form
                 ref={ref}
-                id="note"
+                id='note'
                 onSubmit={handleSubmit(onSubmit)}
                 className={clsx(
                     'scroll-mt-[9vh] inmd:scroll-mt-0',
@@ -304,15 +310,15 @@ export const Form = ({
                 )}
                 {...rest}
             >
-                <header className="px-4 inmd:px-2 flex items-center justify-between gap-3 border-b dark:border-middark/50 border-midlight/50">
-                    <div className="overflow-hidden w-fit flex gap-3">
+                <header className='px-4 inmd:px-2 flex items-center justify-between gap-3 border-b dark:border-middark/50 border-midlight/50'>
+                    <div className='overflow-hidden w-fit flex gap-3'>
                         <Title
                             title={note.name}
                             disabled={!isPreviewing}
                             onClick={togglePreview}
                             isPreviewing={isPreviewing}
                         >
-                            {onEdition ? "Editar" : note.name}
+                            {onEdition ? 'Editar' : note.name}
                         </Title>
                         <EditingTitle
                             disabled={isPreviewing}
@@ -323,70 +329,70 @@ export const Form = ({
                             Visualizar
                         </EditingTitle>
                     </div>
-                    <div className="flex gap-3">
+                    <div className='flex gap-3'>
                         {note.encrypted || skipDraft ? null :
                             <ActionButton
                                 isAuthor={isAuthor}
-                                type="button"
+                                type='button'
                                 onClick={startDraft}
                                 isEditing={onEdition}
                                 icon={IconHistory}
-                                tooltip="Rascunho"
-                                className="dark:bg-semilight/20 bg-semidark/20 dark:hover:bg-semilight/10 hover:bg-semidark/10"
+                                tooltip='Rascunho'
+                                className='dark:bg-semilight/20 bg-semidark/20 dark:hover:bg-semilight/10 hover:bg-semidark/10'
                             />
                         }
                         <ActionButton
                             isAuthor={isAuthor}
-                            type="button"
+                            type='button'
                             onClick={cancelEdit}
                             isEditing={onEdition}
                             icon={IconX}
-                            tooltip="Cancelar"
-                            className="dark:bg-semilight/20 bg-semidark/20 dark:hover:bg-semilight/10 hover:bg-semidark/10"
+                            tooltip='Cancelar'
+                            className='dark:bg-semilight/20 bg-semidark/20 dark:hover:bg-semilight/10 hover:bg-semidark/10'
                         />
                         {fullscreenSupported && !pipWindow ?
                             <ActionButton
                                 skipAuthorityCheck
-                                type="button"
+                                type='button'
                                 onClick={toggleFullscreen}
                                 isEditing={!onEdition}
                                 icon={isFullscreen ? IconArrowsMinimize : IconArrowsMaximize}
-                                tooltip={isFullscreen ? "Sair da tela cheia" : "Tela cheia"}
-                                className="dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10"
+                                tooltip={isFullscreen ? 'Sair da tela cheia' : 'Tela cheia'}
+                                className='dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10'
                             />
                             : null
                         }
                         {pipWindowSupported && !pipWindow && !isFullscreen
                             ? <ActionButton
                                 skipAuthorityCheck
-                                type="button"
+                                type='button'
                                 onClick={openPictureInPicture}
                                 isEditing={!onEdition}
                                 icon={IconPictureInPicture}
-                                tooltip="Picture-in-Picture"
-                                className="dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10"
+                                tooltip='Picture-in-Picture'
+                                className='dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10'
                             />
                             : null
                         }
                         <ActionButton
                             isAuthor={isAuthor}
-                            type="button"
+                            type='button'
                             onClick={startSubmit}
                             isEditing={onEdition}
                             icon={IconCheck}
-                            tooltip="Salvar"
-                            className="text-white bg-primary hover:bg-secondary"
+                            tooltip='Salvar'
+                            className='text-white bg-primary hover:bg-secondary'
                         />
                         <ActionButton
                             isAuthor={isAuthor}
-                            type="button"
+                            type='button'
                             disabled={isPending}
                             onClick={toggleMenu}
                             onBlur={closeMenu}
                             isEditing={!onEdition}
                             icon={IconDotsVertical}
-                            tooltip="Menu"
-                            className="relative dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10"
+                            tooltip='Menu'
+                            className='relative dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10'
                         >
                             <Menu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}>
                                 {note.encrypted
@@ -394,7 +400,7 @@ export const Form = ({
                                         onClick={startDecryption}
                                         icon={IconKey}
                                         className={clsx(
-                                            passphrase
+                                            secret
                                                 ? '!cursor-default dark:text-secondary text-primary'
                                                 : 'dark:text-light text-dark',
                                             'dark:hover:text-secondary hover:text-primary',
@@ -407,14 +413,14 @@ export const Form = ({
                                 <MenuItem
                                     onClick={startEdit}
                                     icon={IconEdit}
-                                    className="dark:hover:text-secondary hover:text-primary"
+                                    className='dark:hover:text-secondary hover:text-primary'
                                 >
                                     Editar
                                 </MenuItem>
                                 <MenuItem
                                     onClick={startDelete}
                                     icon={IconTrash}
-                                    className="hover:text-red-500"
+                                    className='hover:text-red-500'
                                 >
                                     Apagar
                                 </MenuItem>
@@ -424,48 +430,48 @@ export const Form = ({
                 </header>
                 <FormProvider {...passphraseForm}>
                     <Dialog
-                        msg="Insira o segredo."
-                        desc="Sua chave secreta não será enviada aos nossos servidores em nenhuma circunstância."
+                        msg='Insira o segredo.'
+                        desc='Sua chave secreta não será enviada aos nossos servidores em nenhuma circunstância.'
                         usePassphrase
-                        opt="Concluir"
-                        type="button"
+                        opt='Concluir'
+                        type='button'
                         isOpen={isDecrypting}
                         setIsOpen={setIsDecrypting}
                         disabled={isPending}
                         onClick={handlePassphraseSubmit(handleDecryption)}
                         onEnter={handlePassphraseSubmit(handleDecryption)}
-                        className="dark:text-secondary text-primary
+                        className='dark:text-secondary text-primary
                         dark:hover:bg-secondary hover:bg-primary
                         dark:focus-visible:bg-secondary focus-visible:bg-primary
-                        dark:disabled:bg-secondary disabled:bg-primary"
+                        dark:disabled:bg-secondary disabled:bg-primary'
                     />
                 </FormProvider>
                 <Dialog
-                    msg="Tem certeza de que deseja apagar esta nota?"
-                    desc="Esta ação é irreversível e todos os dados serão perdidos permanentemente."
-                    opt="Sim, apagar"
-                    type="button"
+                    msg='Tem certeza de que deseja apagar esta nota?'
+                    desc='Esta ação é irreversível e todos os dados serão perdidos permanentemente.'
+                    opt='Sim, apagar'
+                    type='button'
                     isOpen={isDeleting}
                     setIsOpen={setIsDeleting}
                     disabled={isPending}
                     onClick={handleDeleteNote}
-                    className="dark:text-red-500 text-red-600
+                    className='dark:text-red-500 text-red-600
                     dark:hover:bg-red-500 hover:bg-red-600
                     dark:focus-visible:bg-red-500 focus-visible:bg-red-600
-                    dark:disabled:bg-red-500 disabled:bg-red-600"
+                    dark:disabled:bg-red-500 disabled:bg-red-600'
                 />
                 <Dialog
-                    msg="Tem certeza de que deseja atualizar esta nota?"
-                    desc="A atualização sobrescreverá o conteúdo atual. Não é possível desfazer esta operação."
-                    opt="Sim, atualizar"
-                    type="submit"
+                    msg='Tem certeza de que deseja atualizar esta nota?'
+                    desc='A atualização sobrescreverá o conteúdo atual. Não é possível desfazer esta operação.'
+                    opt='Sim, atualizar'
+                    type='submit'
                     isOpen={isSubmitting}
                     setIsOpen={setIsSubmitting}
                     disabled={isPending}
-                    className="dark:text-secondary text-primary
+                    className='dark:text-secondary text-primary
                     dark:hover:bg-secondary hover:bg-primary
                     dark:focus-visible:bg-secondary focus-visible:bg-primary
-                    dark:disabled:bg-secondary disabled:bg-primary"
+                    dark:disabled:bg-secondary disabled:bg-primary'
                 />
                 <MdPreview
                     isEditing={onEdition}

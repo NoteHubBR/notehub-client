@@ -1,6 +1,6 @@
 import { ApiError } from '@/api';
 import { clsx } from 'clsx';
-import { createNoteUpdateFormSchema, encrypt, handleFieldErrors, Note, NoteUpdateFormData, Token } from '@/core';
+import { createNoteUpdateFormSchema, encrypt, handleFieldErrors, Note, NoteSecret, NoteUpdateFormData, Token } from '@/core';
 import { createNoteUpdateFormSchemaRefined } from '@/core/schemas/note/UpdateNote';
 import { Element } from './elements';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -14,13 +14,15 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     onPortalClose?: () => void;
     closeRef?: React.RefObject<HTMLButtonElement>;
     token: Token | null;
-    passphrase: string | null;
-    setPassphrase: React.Dispatch<React.SetStateAction<string | null>>;
+    isLocked: boolean;
+    secret: NoteSecret | null;
+    setSecret: React.Dispatch<React.SetStateAction<NoteSecret | null>>;
     note: Note;
     setNote: React.Dispatch<React.SetStateAction<Note | null>>;
+    plaintext: string;
 }
 
-export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, closeRef, token, passphrase, setPassphrase, note, setNote, ...rest }, ref) => {
+export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, closeRef, token, isLocked, secret, setSecret, note, setNote, plaintext, ...rest }, ref) => {
 
     const {
         noteService: { updateNote },
@@ -62,52 +64,48 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
 
     const router = useRouter();
 
-    const onSubmit = async (data: NoteUpdateFormData): Promise<void> => {
-        if (token && note.user) {
-            if (note.encrypted) if (!passphrase) return setError(
-                'passphrase',
-                { message: 'Descriptografe a nota.' },
-            )
-            try {
-                setIsPending(true);
-                const { passphrase, ...rest } = data;
-                const payload = rest.encrypted
-                    ? { ...rest, markdown: await encrypt(rest.markdown ?? '', passphrase!) }
-                    : rest;
-                await withProgress(() => updateNote(token.access_token, note.id, payload));
-                await Promise.all([
-                    qc.invalidateQueries({ queryKey: ['userNotes', token.access_token] }),
-                    qc.invalidateQueries({ queryKey: ['userTags', token.access_token] }),
-                    qc.invalidateQueries({ queryKey: ['searchNotes'] }),
-                    qc.invalidateQueries({ queryKey: ['searchTags'] }),
-                    qc.invalidateQueries({ queryKey: ['note', token.access_token, note.user.username, note.name] })
-                ])
-                if (data.passphrase) setPassphrase(data.passphrase);
-                updateNoteContext(note.id, payload);
-                setNewTags(payload.tags);
-                setNote(prev => {
-                    if (prev) return {
-                        ...prev,
-                        name: payload.name,
-                        description: payload.description,
-                        markdown: rest.markdown,
-                        tags: payload.tags,
-                        closed: payload.closed,
-                        hidden: payload.hidden,
-                        encrypted: payload.encrypted,
-                        modified: true,
-                        modified_at: 'now'
-                    }
-                    return null
-                })
-                onPortalClose?.();
-                return router.push(`/${note.user.username}/${payload.name}`);
-            } catch (error) {
-                const { data } = error as ApiError;
-                if (Array.isArray(data)) handleFieldErrors(data, setError);
-            } finally {
-                setIsPending(false);
+    const onSubmit = async (data: NoteUpdateFormData) => {
+        if (!token || !note.user) return;
+        if (isLocked) return setError('passphrase', { message: 'Descriptografe a nota.' });
+        setIsPending(true);
+        const { passphrase: next, ...fields } = data;
+        try {
+            const encryptionChanged =
+                fields.encrypted !== note.encrypted ||
+                (fields.encrypted && next !== (secret ? secret.passphrase : null));
+            let markdown = note.markdown;
+            let nextSecret: NoteSecret | null | undefined;
+            if (encryptionChanged) {
+                if (fields.encrypted) {
+                    markdown = await encrypt(plaintext, next!);
+                    nextSecret = { id: note.id, passphrase: next!, plaintext, cipher: markdown };
+                } else {
+                    markdown = plaintext;
+                    nextSecret = null;
+                }
             }
+            await withProgress(() => updateNote(token.access_token, note.id, { ...fields, markdown }));
+            setNote(prev => prev
+                ? { ...prev, ...fields, markdown, modified: true, modified_at: 'now' }
+                : null
+            )
+            if (nextSecret !== undefined) setSecret(nextSecret);
+            updateNoteContext(note.id, { ...fields, markdown });
+            setNewTags(fields.tags);
+            await Promise.all([
+                qc.invalidateQueries({ queryKey: ['userNotes', token.access_token] }),
+                qc.invalidateQueries({ queryKey: ['userTags', token.access_token] }),
+                qc.invalidateQueries({ queryKey: ['searchNotes'] }),
+                qc.invalidateQueries({ queryKey: ['searchTags'] }),
+                qc.invalidateQueries({ queryKey: ['note', token.access_token, note.user.username, note.name] })
+            ])
+            onPortalClose?.();
+            router.push(`/${note.user.username}/${fields.name}`);
+        } catch (error) {
+            const { data } = error as ApiError;
+            if (Array.isArray(data)) handleFieldErrors(data, setError);
+        } finally {
+            setIsPending(false);
         }
     }
 
@@ -157,7 +155,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
                     </Fieldset>
                     <Fieldset className='relative'>
                         <Label htmlFor='passphrase'>Criptografia</Label>
-                        <InputPassword name='passphrase' defaultValue={passphrase ?? undefined} />
+                        <InputPassword name='passphrase' defaultValue={secret ? secret.passphrase : undefined} />
                         <Error field='passphrase' />
                     </Fieldset>
                     <Fieldset>

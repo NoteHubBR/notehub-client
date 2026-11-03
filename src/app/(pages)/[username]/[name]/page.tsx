@@ -1,16 +1,16 @@
 'use client';
 
 import { createPortal } from 'react-dom';
-import { decrypt, handleFieldErrorsMsg, Note } from "@/core";
-import { Element } from "./elements";
-import { Form } from "@/components/forms";
-import { IconEyeOff, IconLock, IconNotesOff, IconPictureInPicture } from "@tabler/icons-react";
-import { Section } from "../components/Section";
-import { Skeleton } from "./skeleton";
-import { Template } from "@/components/templates";
-import { useApi, useFullscreen, usePiP, useTitle, useUser } from "@/data/hooks";
-import { useEffect, useRef, useState } from "react";
-import { useParams } from "next/navigation";
+import { Element } from './elements';
+import { Form } from '@/components/forms';
+import { handleFieldErrorsMsg, Note, NoteSecret } from '@/core';
+import { IconEyeOff, IconLock, IconNotesOff, IconPictureInPicture } from '@tabler/icons-react';
+import { Section } from '../components/Section';
+import { Skeleton } from './skeleton';
+import { Template } from '@/components/templates';
+import { useApi, useFullscreen, usePiP, useTitle, useUser } from '@/data/hooks';
+import { useEffect, useRef, useState } from 'react';
+import { useParams } from 'next/navigation';
 
 const Page = () => {
 
@@ -24,45 +24,55 @@ const Page = () => {
     const { data: response, isLoading } = useGetNote(token ? token.access_token : null, username, name, isMounted);
 
     const [note, setNote] = useState<Note | null>(null);
-    const [passphrase, setPassphrase] = useState<string | null>(null);
+    const [secret, setSecret] = useState<NoteSecret | null>(null);
     const [pendingConfiguration, setPendingConfiguration] = useState<boolean>(false);
     const [onConfiguration, setOnConfiguration] = useState<boolean>(false);
     const [pendingEdition, setPendingEdition] = useState<boolean>(false);
     const [onEdition, setOnEdition] = useState<boolean>(false);
-    const passphraseRef = useRef<string | null>(null);
-    passphraseRef.current = passphrase;
     const triggerRef = useRef<HTMLButtonElement>(null);
     const childRef = useRef<HTMLFormElement>(null);
     const closeRef = useRef<HTMLButtonElement>(null);
 
+    const isLocked = note ?
+        note.encrypted ?
+            secret ?
+                false :
+                true :
+            false :
+        false;
+
+    const plaintext: string | null = note ?
+        note.encrypted ?
+            secret ?
+                secret.plaintext :
+                null :
+            note.markdown :
+        null;
+
+    const displaytext: string | null = note ?
+        note.encrypted ?
+            secret ?
+                secret.plaintext :
+                note.markdown :
+            note.markdown :
+        null;
+
+
     const enterConfiguration = () => {
         if (!note) return;
-        if (note.encrypted) if (!passphrase) return setPendingConfiguration(true);
+        if (note.encrypted) if (isLocked) return setPendingConfiguration(true);
         setOnConfiguration(true);
     }
 
     useEffect(() => {
-        if (response && response.type === 'ok') {
-            let cancelled = false;
-            (async () => {
-                let note = response.data;
-                const secret = passphraseRef.current;
-                if (note.encrypted && note.markdown && secret) {
-                    try {
-                        note = {
-                            ...note,
-                            markdown: await decrypt(note.markdown, secret),
-                        }
-                    } catch {
-                        setPassphrase(null);
-                    }
-                }
-                if (cancelled) return;
-                setNote(note);
-                setTitle(note.user ? `${note.user.username}/${note.name}` : note.name);
-            })();
-            return () => { cancelled = true };
-        }
+        if (!response || response.type !== 'ok') return;
+        const note = response.data;
+        setNote(note);
+        setTitle(note.user ? `${note.user.username}/${note.name}` : note.name);
+        setSecret(prev => prev && note.encrypted && prev.id === note.id && prev.cipher === note.markdown
+            ? prev
+            : null
+        )
     }, [response])
 
     const { ref: ref, isSupported: fullscreenSupported, isFullscreen, toggle: toggleFullscreen, } = useFullscreen<HTMLFormElement>();
@@ -75,11 +85,11 @@ const Page = () => {
     if (response) {
 
         if (response.type === 'notfound') return (
-            <Section className="p-6 flex items-center justify-center">
+            <Section className='p-6 flex items-center justify-center'>
                 <Dialog
                     icon={IconNotesOff}
-                    title="404"
-                    desc="Nota não encontrada."
+                    title='404'
+                    desc='Nota não encontrada.'
                 />
             </Section>
         )
@@ -87,20 +97,20 @@ const Page = () => {
         if (response.type === 'forbidden') {
             const { notCurrent, notMutual } = handleFieldErrorsMsg(response.data);
             if (notCurrent) return (
-                <Section className="p-6 flex items-center justify-center">
+                <Section className='p-6 flex items-center justify-center'>
                     <Dialog
                         icon={IconEyeOff}
-                        title="Nota oculta"
-                        desc="Nome auto explicativo."
+                        title='Nota oculta'
+                        desc='Nome auto explicativo.'
                     />
                 </Section>
             )
             if (notMutual) return (
-                <Section className="p-6 flex items-center justify-center">
+                <Section className='p-6 flex items-center justify-center'>
                     <Dialog
                         icon={IconLock}
-                        title="Perfil privado"
-                        desc="Necessário que ambos de vocês se sigam."
+                        title='Perfil privado'
+                        desc='Necessário que ambos de vocês se sigam.'
                     />
                 </Section>
             )
@@ -111,8 +121,9 @@ const Page = () => {
             const noteContent = <Form.Note.TextUpdate
                 ref={ref}
                 token={token}
-                passphrase={passphrase}
-                setPassphrase={setPassphrase}
+                isLocked={isLocked}
+                secret={secret}
+                setSecret={setSecret}
                 pendingConfiguration={pendingConfiguration}
                 setPendingConfiguration={setPendingConfiguration}
                 onConfiguration={onConfiguration}
@@ -125,6 +136,7 @@ const Page = () => {
                 setNote={setNote}
                 author={note.user ? note.user.username : null}
                 currentUser={user ? user.username : null}
+                displaytext={displaytext as string}
                 fullscreenSupported={fullscreenSupported}
                 isFullscreen={isFullscreen}
                 toggleFullscreen={toggleFullscreen}
@@ -133,11 +145,11 @@ const Page = () => {
                 openPiP={openPiP}
             />
             return (
-                <section className="max-w-[999px] w-full m-auto pb-64">
+                <section className='max-w-[999px] w-full m-auto pb-64'>
                     <Navigator isFullscreen={isFullscreen} pipWindow={pipWindow} />
-                    <section className="flex inlg:flex-col-reverse">
+                    <section className='flex inlg:flex-col-reverse'>
                         <Template.Portal
-                            blur="sm"
+                            blur='sm'
                             triggerRef={triggerRef}
                             childRef={childRef}
                             closeRef={closeRef}
@@ -149,10 +161,12 @@ const Page = () => {
                                 ref={childRef}
                                 closeRef={closeRef}
                                 token={token}
-                                passphrase={passphrase}
-                                setPassphrase={setPassphrase}
+                                isLocked={isLocked}
+                                secret={secret}
+                                setSecret={setSecret}
                                 note={note}
                                 setNote={setNote}
+                                plaintext={plaintext as string}
                             />
                         </Template.Portal>
                         {pipWindow
@@ -171,7 +185,7 @@ const Page = () => {
                             isEditing={onEdition}
                         />
                     </section>
-                    <section className="w-[72.5%] inlg:w-full inmd:px-2 py-2">
+                    <section className='w-[72.5%] inlg:w-full inmd:px-2 py-2'>
                         <Comments
                             token={token}
                             user={user}
