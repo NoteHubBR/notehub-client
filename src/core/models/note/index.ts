@@ -1,3 +1,4 @@
-import { Note, LowDetailNote } from "./Note";
+import { Note, LowDetailNote } from './Note';
+import { NoteSecret } from './NoteSecret';
 
-export type { Note, LowDetailNote };
+export type { Note, LowDetailNote, NoteSecret };
