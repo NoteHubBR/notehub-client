@@ -19,4 +19,4 @@ export interface Note {
     flames_count: number;
 }
 
-export type LowDetailNote = Omit<Note, 'markdown' | 'encrypted'>;
+export type LowDetailNote = Omit<Note, 'markdown'>;
