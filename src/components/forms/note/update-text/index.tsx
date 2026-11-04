@@ -1,10 +1,10 @@
 import { clsx } from 'clsx';
-import { decrypt, encrypt, Note, NoteSecret, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token, UpdateNotePassphraseFormData, updateNotePassphraseFormSchema } from '@/core'
 import { Element } from './elements';
 import { FormProvider, useForm } from 'react-hook-form';
 import { IconArrowsMaximize, IconArrowsMinimize, IconCheck, IconDotsVertical, IconEdit, IconHistory, IconKey, IconPictureInPicture, IconTrash, IconX } from '@tabler/icons-react';
 import { Menu, MenuItem } from '@/components/menu';
-import { useApi, useDrafts, useNotes, useTags } from '@/data/hooks';
+import { Note, NoteSecret, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token, UpdateNotePassphraseFormData, updateNotePassphraseFormSchema } from '@/core'
+import { useApi, useCrypto, useDrafts, useNotes, useTags } from '@/data/hooks';
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -108,7 +108,10 @@ export const Form = ({
     const [isPreviewing, setIsPreviewing] = useState<boolean>(false);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+    const { isCrypting, encrypt, decrypt } = useCrypto();
     const [isPending, setIsPending] = useState<boolean>(false);
+    const busy = isPending || isCrypting;
 
     const router = useRouter();
 
@@ -386,7 +389,7 @@ export const Form = ({
                         <ActionButton
                             isAuthor={isAuthor}
                             type='button'
-                            disabled={isPending}
+                            disabled={busy}
                             onClick={toggleMenu}
                             onBlur={closeMenu}
                             isEditing={!onEdition}
@@ -433,11 +436,11 @@ export const Form = ({
                         msg='Insira o segredo.'
                         desc='Sua chave secreta não será enviada aos nossos servidores em nenhuma circunstância.'
                         usePassphrase
-                        opt='Concluir'
+                        opt={isCrypting ? 'Concluindo...' : 'Concluir'}
                         type='button'
                         isOpen={isDecrypting}
                         setIsOpen={setIsDecrypting}
-                        disabled={isPending}
+                        disabled={busy}
                         onClick={handlePassphraseSubmit(handleDecryption)}
                         onEnter={handlePassphraseSubmit(handleDecryption)}
                         className='dark:text-secondary text-primary
@@ -449,11 +452,11 @@ export const Form = ({
                 <Dialog
                     msg='Tem certeza de que deseja apagar esta nota?'
                     desc='Esta ação é irreversível e todos os dados serão perdidos permanentemente.'
-                    opt='Sim, apagar'
+                    opt={busy ? 'Apagando...' : 'Sim, apagar'}
                     type='button'
                     isOpen={isDeleting}
                     setIsOpen={setIsDeleting}
-                    disabled={isPending}
+                    disabled={busy}
                     onClick={handleDeleteNote}
                     className='dark:text-red-500 text-red-600
                     dark:hover:bg-red-500 hover:bg-red-600
@@ -463,11 +466,11 @@ export const Form = ({
                 <Dialog
                     msg='Tem certeza de que deseja atualizar esta nota?'
                     desc='A atualização sobrescreverá o conteúdo atual. Não é possível desfazer esta operação.'
-                    opt='Sim, atualizar'
+                    opt={isCrypting ? 'Criptografando...' : isPending ? 'Atualizando...' : 'Sim, atualizar'}
                     type='submit'
                     isOpen={isSubmitting}
                     setIsOpen={setIsSubmitting}
-                    disabled={isPending}
+                    disabled={busy}
                     className='dark:text-secondary text-primary
                     dark:hover:bg-secondary hover:bg-primary
                     dark:focus-visible:bg-secondary focus-visible:bg-primary

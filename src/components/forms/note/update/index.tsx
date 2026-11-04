@@ -1,11 +1,11 @@
 import { ApiError } from '@/api';
 import { clsx } from 'clsx';
-import { createNoteUpdateFormSchema, encrypt, handleFieldErrors, Note, NoteSecret, NoteUpdateFormData, Token } from '@/core';
+import { createNoteUpdateFormSchema, handleFieldErrors, Note, NoteSecret, NoteUpdateFormData, planEncryption, Token } from '@/core';
 import { createNoteUpdateFormSchemaRefined } from '@/core/schemas/note/UpdateNote';
 import { Element } from './elements';
 import { FormProvider, useForm } from 'react-hook-form';
 import { forwardRef, useMemo, useState } from 'react';
-import { useApi, useNotes, useTags } from '@/data/hooks';
+import { useApi, useCrypto, useNotes, useTags } from '@/data/hooks';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -60,7 +60,9 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
 
     const { handleSubmit, setError } = updateNoteForm;
 
+    const { isCrypting, encrypt } = useCrypto();
     const [isPending, setIsPending] = useState<boolean>(false);
+    const busy = isPending || isCrypting;
 
     const router = useRouter();
 
@@ -70,21 +72,18 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
         setIsPending(true);
         const { passphrase: next, ...fields } = data;
         try {
-            const encryptionChanged =
-                fields.encrypted !== note.encrypted ||
-                (fields.encrypted && next !== (secret ? secret.passphrase : null));
-            let markdown = note.markdown;
-            let nextSecret: NoteSecret | null | undefined;
-            if (encryptionChanged) {
-                if (fields.encrypted) {
-                    markdown = await encrypt(plaintext, next!);
-                    nextSecret = { id: note.id, passphrase: next!, plaintext, cipher: markdown };
-                } else {
-                    markdown = plaintext;
-                    nextSecret = null;
-                }
-            }
-            await withProgress(() => updateNote(token.access_token, note.id, { ...fields, markdown }));
+            const { markdown, nextSecret } = await planEncryption({
+                note,
+                secret,
+                plaintext,
+                encrypted: fields.encrypted,
+                passphrase: next, encrypt,
+            })
+            await withProgress(() => updateNote(
+                token.access_token,
+                note.id,
+                { ...fields, markdown }
+            ))
             setNote(prev => prev
                 ? { ...prev, ...fields, markdown, modified: true, modified_at: 'now' }
                 : null
@@ -173,7 +172,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
                 </section>
                 <footer className='p-4 flex items-center gap-3 justify-end'>
                     <Button
-                        disabled={isPending}
+                        disabled={busy}
                         ref={closeRef}
                         type='button'
                         className='hover:dark:bg-black hover:bg-white focus-visible:dark:bg-black focus-visible:bg-white'
@@ -181,11 +180,16 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
                         Cancelar
                     </Button>
                     <Button
-                        disabled={isPending}
+                        disabled={busy}
                         type='submit'
                         className='text-white bg-primary hover:bg-secondary focus-visible:bg-secondary'
                     >
-                        Salvar alteração
+                        {isCrypting
+                            ? 'Criptografando…'
+                            : isPending
+                                ? 'Salvando…'
+                                : 'Salvar alteração'
+                        }
                     </Button>
                 </footer>
             </form>

@@ -1,9 +1,9 @@
 import { ApiError } from '@/api';
-import { CreateNoteFormData, createNoteFormSchema, createNoteFormSchemaRefined, encrypt, handleFieldErrors } from '@/core';
+import { CreateNoteFormData, createNoteFormSchema, createNoteFormSchemaRefined, handleFieldErrors } from '@/core';
 import { Element } from './elements';
 import { FormProvider, useForm } from 'react-hook-form';
 import { IconEyeClosed, IconMessage, IconMessageOff, IconWorld } from '@tabler/icons-react';
-import { useApi, useNotes } from '@/data/hooks';
+import { useApi, useCrypto, useNotes } from '@/data/hooks';
 import { useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -36,7 +36,9 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
 
     const { handleSubmit, setError } = createNoteForm;
 
+    const { isCrypting, encrypt } = useCrypto();
     const [isPending, setIsPending] = useState<boolean>(false);
+    const busy = isPending || isCrypting;
 
     const router = useRouter();
 
@@ -116,7 +118,14 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
                 </Section>
                 <Section className='flex-1'>
                     <Info />
-                    <Submit disabled={isPending}>Criar nota</Submit>
+                    <Submit disabled={busy}>
+                        {isCrypting
+                            ? 'Criptografando…'
+                            : isPending
+                                ? 'Criando…'
+                                : 'Criar nota'
+                        }
+                    </Submit>
                 </Section>
             </form>
         </FormProvider>
