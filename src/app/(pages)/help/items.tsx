@@ -4,9 +4,36 @@ export interface Items {
     question: string;
     answer: React.ReactNode;
     useSupport?: boolean;
+    new?: boolean;
 }
 
 export const items: Items[] = [
+    {
+        id: 'shortcuts',
+        keywords: ['atalho', 'atalhos', 'shortcuts', 'teclas',],
+        question: 'Atalhos',
+        answer: (
+            <>
+                <p>
+                    Os atalhos do teclado permitem navegar e interagir com a aplicação de forma mais eficiente.
+                    Diálogos para confirmação de ação não aparecem quando um atalho é utilizado, portanto, tenha cuidado ao utilizá-los.
+                </p>
+                <br />
+                <p>Atalhos disponíveis para notas:</p>
+                <ul className='list-disc list-inside my-2 [&_strong]:dark:text-secondary [&_strong]:text-primary'>
+                    <li><strong>Ctrl + Alt + C</strong> {'->'} Centralizar</li>
+                    <li><strong>Alt + Z</strong> {'->'} Tela Cheia</li>
+                    <li><strong>Alt + X</strong> {'->'} Picture-in-Picture</li>
+                    <li><strong>Alt + C</strong> {'->'} Descriptografar</li>
+                    <li><strong>Ctrl + E</strong> {'->'} Editar</li>
+                    <li>{'(Editando)'} <strong>Ctrl + Q</strong> {'->'} Cancelar edição</li>
+                    <li>{'(Editando)'} <strong>Ctrl + S</strong> {'->'} Salvar Edição</li>
+                    <li><strong>Ctrl + D</strong> {'->'} Deletar</li>
+                </ul>
+            </>
+        ),
+        new: true
+    },
     {
         id: 'language',
         keywords: ["language", "idioma", "linguagem", "português", "portugues", "tempo", "gmt", "hora"],
@@ -202,6 +229,29 @@ export const items: Items[] = [
                 </p>
             </>
         )
+    },
+    {
+        id: 'encryptedNotes',
+        keywords: ['encryptednotes', 'encrypted', 'secret', 'passphrase', 'notes', 'notas', 'criptografadas', 'criptografia', 'segurança', 'segredo', 'secreta', 'senha'],
+        question: 'Notas criptografadas',
+        answer: (
+            <>
+                <p>
+                    Notas criptografadas são públicas por padrão, salvo quando marcadas como ocultas.
+                    Seu conteúdo é protegido por um segredo e só pode ser acessado por quem o possui.
+                    A criptografia é realizada localmente no navegador.
+                </p>
+
+                <br />
+
+                <p>
+                    O segredo não é armazenado nem transmitido aos nossos servidores ou logs.
+                    Caso seja perdido, o conteúdo não poderá ser recuperado.
+                    Recomendamos armazená-lo em local seguro.
+                </p>
+            </>
+        ),
+        new: true
     },
     {
         id: 'hiddenNotes',
