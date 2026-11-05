@@ -6,13 +6,14 @@ interface ShortcutsProps {
     isEditing: boolean;
     onFullscreen: () => void;
     onPictureInPicture: () => void;
+    onStartDecryption: () => void;
     onStartEdit: () => void;
     onCancel: () => void;
     onDelete: () => void;
     onSave: () => void;
 }
 
-export const useShortcuts = ({ ref, isAuthor, isEditing, onFullscreen, onPictureInPicture, onStartEdit, onCancel, onDelete, onSave }: ShortcutsProps) => {
+export const useShortcuts = ({ ref, isAuthor, isEditing, onFullscreen, onPictureInPicture, onStartDecryption, onStartEdit, onCancel, onDelete, onSave }: ShortcutsProps) => {
 
     const scrollToNote = () => {
         const noteEl = document.getElementById('note');
@@ -24,19 +25,26 @@ export const useShortcuts = ({ ref, isAuthor, isEditing, onFullscreen, onPicture
     }
 
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
-        if (!e.altKey) return;
-        switch (e.key.toLowerCase()) {
-            case "c": e.preventDefault(); scrollToNote(); break;
+        const isCtrl = e.ctrlKey || e.metaKey;
+        const isAlt = e.altKey;
+        if (isCtrl && isAlt) switch (e.code) {
+            case "KeyC": e.preventDefault(); scrollToNote(); break;
+            default: break;
+        }
+        if (!isCtrl && isAlt) switch (e.key.toLowerCase()) {
             case "z": e.preventDefault(); onFullscreen(); break;
             case "x": e.preventDefault(); onPictureInPicture(); break;
+            default: break;
         }
+        return;
     }
 
     const handleAuthorKeyDown = (e: KeyboardEvent) => {
         if (!isAuthor) return;
         const isCtrl = e.ctrlKey || e.metaKey;
-        if (!isCtrl) return;
-        switch (e.key.toLowerCase()) {
+        const isAlt = e.altKey;
+        if (isCtrl && isAlt) return;
+        if (isCtrl && !isAlt) switch (e.key.toLowerCase()) {
             case "e":
                 if (!isEditing) { e.preventDefault(); onStartEdit(); } break;
             case "q":
@@ -45,7 +53,14 @@ export const useShortcuts = ({ ref, isAuthor, isEditing, onFullscreen, onPicture
                 if (!isEditing) { e.preventDefault(); onDelete(); } break;
             case "s":
                 if (isEditing) { e.preventDefault(); onSave(); } break;
+            default: break;
         }
+        if (!isCtrl && isAlt) switch (e.key.toLowerCase()) {
+            case "c":
+                if (!isEditing) { e.preventDefault(); onStartDecryption(); } break;
+            default: break;
+        }
+        return;
     }
 
     useEffect(() => {

@@ -194,10 +194,12 @@ export const Form = ({
 
     const startDecryption = (e?: React.MouseEvent) => {
         if (e) e.stopPropagation();
-        if (secret) return;
-        setIsMenuOpen(false);
-        setIsDecrypting(true);
-        return;
+        if (note.encrypted) {
+            if (secret) return;
+            setIsMenuOpen(false);
+            setIsDecrypting(true);
+            return;
+        }
     }
 
     const startEdit = (e?: React.MouseEvent) => {
@@ -283,6 +285,7 @@ export const Form = ({
         isEditing: onEdition,
         onFullscreen: toggleFullscreen,
         onPictureInPicture: openPictureInPicture,
+        onStartDecryption: startDecryption,
         onStartEdit: startEdit,
         onCancel: cancelEdit,
         onDelete: handleDeleteNote,
