@@ -25,7 +25,8 @@ export const ActionButton = ({ skipAuthorityCheck = false, isAuthor = false, isE
                 role='tooltip'
                 className={clsx(
                     'z-10 pointer-events-none select-none whitespace-nowrap',
-                    'absolute left-1/2 -translate-x-1/2 inmd:-translate-x-[60%] top-[150%]',
+                    'absolute left-1/2 top-[150%] -translate-x-1/2',
+                    'inlg:left-auto inlg:right-0 inlg:translate-x-0',
                     'p-2 rounded-full',
                     'font-medium text-xs text-white',
                     'bg-neutral-500',

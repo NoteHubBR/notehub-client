@@ -380,6 +380,25 @@ export const Form = ({
                             />
                             : null
                         }
+                        {note.encrypted
+                            ? <ActionButton
+                                disabled={secret ? secret.passphrase ? true : false : false}
+                                skipAuthorityCheck
+                                type='button'
+                                onClick={startDecryption}
+                                isEditing={!onEdition}
+                                icon={IconKey}
+                                tooltip={secret ? 'Descriptografada' : 'Descriptografar'}
+                                className={clsx(
+                                    'disabled:cursor-default',
+                                    secret
+                                        ? 'dark:text-secondary text-primary'
+                                        : 'dark:text-light text-dark',
+                                    'dark:hover:text-secondary hover:text-primary',
+                                )}
+                            />
+                            : null
+                        }
                         <ActionButton
                             isAuthor={isAuthor}
                             type='button'
@@ -401,21 +420,6 @@ export const Form = ({
                             className='relative dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10'
                         >
                             <Menu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}>
-                                {note.encrypted
-                                    ? <MenuItem
-                                        onClick={startDecryption}
-                                        icon={IconKey}
-                                        className={clsx(
-                                            secret
-                                                ? '!cursor-default dark:text-secondary text-primary'
-                                                : 'dark:text-light text-dark',
-                                            'dark:hover:text-secondary hover:text-primary',
-                                        )}
-                                    >
-                                        Criptografia
-                                    </MenuItem>
-                                    : null
-                                }
                                 <MenuItem
                                     onClick={startEdit}
                                     icon={IconEdit}

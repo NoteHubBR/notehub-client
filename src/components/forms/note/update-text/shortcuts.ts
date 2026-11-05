@@ -34,6 +34,8 @@ export const useShortcuts = ({ ref, isAuthor, isEditing, onFullscreen, onPicture
         if (!isCtrl && isAlt) switch (e.key.toLowerCase()) {
             case "z": e.preventDefault(); onFullscreen(); break;
             case "x": e.preventDefault(); onPictureInPicture(); break;
+            case "c":
+                if (!isEditing) { e.preventDefault(); onStartDecryption(); } break;
             default: break;
         }
         return;
@@ -53,11 +55,6 @@ export const useShortcuts = ({ ref, isAuthor, isEditing, onFullscreen, onPicture
                 if (!isEditing) { e.preventDefault(); onDelete(); } break;
             case "s":
                 if (isEditing) { e.preventDefault(); onSave(); } break;
-            default: break;
-        }
-        if (!isCtrl && isAlt) switch (e.key.toLowerCase()) {
-            case "c":
-                if (!isEditing) { e.preventDefault(); onStartDecryption(); } break;
             default: break;
         }
         return;
