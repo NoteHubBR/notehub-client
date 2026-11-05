@@ -6,10 +6,11 @@ interface QuestionProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     currentId: string;
     setCurrentId: React.Dispatch<React.SetStateAction<string>>;
     hash: string;
+    new?: boolean;
     children: React.ReactNode;
 }
 
-export const Question = ({ currentId, setCurrentId, hash, children, ...rest }: QuestionProps) => {
+export const Question = ({ currentId, setCurrentId, hash, new: isNew, children, ...rest }: QuestionProps) => {
 
     const isActive: boolean = hash === currentId;
 
@@ -34,7 +35,14 @@ export const Question = ({ currentId, setCurrentId, hash, children, ...rest }: Q
             )}
             {...rest}
         >
-            <h2 className="text-lg flex items-center gap-3">{children}</h2>
+            <h2 className="text-lg flex items-center gap-1">
+                {children}
+                {isNew && (
+                    <span className='text-xs dark:text-secondary text-primary font-semibold'>
+                        {'(novo)'}
+                    </span>
+                )}
+            </h2>
             <IconPlus
                 size={24}
                 className={clsx(
