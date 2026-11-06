@@ -108,7 +108,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
         }
     }
 
-    const { Fieldset, Label, InputText, InputTags, InputPassword, InputCheck, Error, Button } = Element;
+    const { Button, Error, Input, Label, Fieldset, } = Element;
 
     return (
         <FormProvider {...updateNoteForm}>
@@ -139,34 +139,34 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({ onPortalClose, clo
                 )}>
                     <Fieldset className='relative'>
                         <Label htmlFor='name'>Título</Label>
-                        <InputText schema={schema} name='name' defaultValue={note.name} autoFocus />
+                        <Input.Text schema={schema} name='name' defaultValue={note.name} autoFocus />
                         <Error field='name' />
                     </Fieldset>
                     <Fieldset className='relative'>
                         <Label htmlFor='description'>Descrição</Label>
-                        <InputText schema={schema} name='description' defaultValue={note.description} />
+                        <Input.Text schema={schema} name='description' defaultValue={note.description} />
                         <Error field='description' />
                     </Fieldset>
                     <Fieldset className='relative'>
                         <Label htmlFor='tags'>Tags</Label>
-                        <InputTags name='tags' noteTags={note.tags} />
+                        <Input.Tags name='tags' noteTags={note.tags} />
                         <Error field='tags' />
                     </Fieldset>
                     <Fieldset className='relative'>
                         <Label htmlFor='passphrase'>Criptografia</Label>
-                        <InputPassword name='passphrase' defaultValue={secret ? secret.passphrase : undefined} />
+                        <Input.Password name='passphrase' defaultValue={secret ? secret.passphrase : undefined} />
                         <Error field='passphrase' />
                     </Fieldset>
                     <Fieldset>
-                        <InputCheck name='encrypted' defaultChecked={note.encrypted} />
+                        <Input.Check name='encrypted' defaultChecked={note.encrypted} />
                         <Label htmlFor='encrypted'>Criptografada</Label>
                     </Fieldset>
                     <Fieldset>
-                        <InputCheck name='closed' defaultChecked={note.closed} />
+                        <Input.Check name='closed' defaultChecked={note.closed} />
                         <Label htmlFor='closed'>Fechada</Label>
                     </Fieldset>
                     <Fieldset>
-                        <InputCheck name='hidden' defaultChecked={note.hidden} />
+                        <Input.Check name='hidden' defaultChecked={note.hidden} />
                         <Label htmlFor='hidden'>Oculta</Label>
                     </Fieldset>
                 </section>

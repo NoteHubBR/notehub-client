@@ -1,16 +1,23 @@
-import { Count } from "./Count";
-import { Error } from "./Error";
-import { Fieldset } from "./Fieldset";
-import { EncryptionFieldset } from "./EncryptionFieldset";
-import { FileFieldset } from "./FileFieldset";
-import { Info } from "./Info";
-import { InputPassword } from './InputPassword';
-import { InputRadio } from "./InputRadio";
-import { InputText } from "./InputText";
+import { Count } from './Count';
+import { Error } from './Error';
+import { Fieldset } from './Fieldset';
+import { Info } from './Info';
+import { Input } from './Input';
+import { Label } from './Label';
+import { Legend } from './Legend';
 import { Owner } from './Owner';
-import { Label } from "./Label";
-import { Legend } from "./Legend";
-import { Section } from "./Section";
-import { Submit } from "./Submit";
+import { Section } from './Section';
+import { Submit } from './Submit';
 
-export const Element = { Section, Fieldset, EncryptionFieldset, FileFieldset, Legend, Label, Owner, InputPassword, InputText, InputRadio, Error, Count, Info, Submit };
+export const Element = {
+    Count,
+    Error,
+    Fieldset,
+    Info,
+    Input,
+    Label,
+    Legend,
+    Owner,
+    Section,
+    Submit,
+}

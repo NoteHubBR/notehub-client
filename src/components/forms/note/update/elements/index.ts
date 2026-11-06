@@ -1,25 +1,19 @@
-import { Button } from "./Button";
-import { Error } from "./Error";
-import { Fieldset } from "./Fieldset";
-import { InputCheck } from "./InputCheck";
-import { InputTags } from "./InputTags";
-import { InputText } from "./InputText";
-import { InputPassword } from './InputPassword';
-import { Label } from "./Label";
-import { Tag } from "./Tag";
-import { TagsList } from "./TagsList";
-import { TagsListItem } from "./TagsListItem";
+import { Button } from './Button';
+import { Error } from './Error';
+import { Fieldset } from './Fieldset';
+import { Label } from './Label';
+import { Tag } from './Tag';
+import { TagsList } from './TagsList';
+import { TagsListItem } from './TagsListItem';
+import {Input} from './Input';
 
 export const Element = {
+    Button,
+    Error,
     Fieldset,
+    Input,
     Label,
-    InputText,
-    InputTags,
-    InputPassword,
     Tag,
     TagsList,
     TagsListItem,
-    InputCheck,
-    Error,
-    Button
 }

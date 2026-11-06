@@ -1,10 +1,8 @@
 import { clsx } from 'clsx';
 import { CreateNoteFormData } from '@/core';
 import { Error } from './Error';
-import { Fieldset } from './Fieldset';
 import { IconKey, IconWorld } from '@tabler/icons-react';
-import { InputPassword } from './InputPassword';
-import { InputRadio } from './InputRadio';
+import { Input } from './Input';
 import { Label } from './Label';
 import { Legend } from './Legend';
 import { useWatch } from 'react-hook-form';
@@ -15,17 +13,17 @@ export const EncryptionFieldset = (props: React.FieldsetHTMLAttributes<HTMLField
 
     return (
         <>
-            <Fieldset
+            <fieldset
                 {...props}
                 className='p-2 pb-4 rounded-md border dark:border-middark border-midlight'
             >
                 <Legend tip='(opcional)'>Criptografia</Legend>
-                <InputRadio id='encryptedFalse' name='encrypted' value='false' defaultChecked />
+                <Input.Radio id='encryptedFalse' name='encrypted' value='false' defaultChecked />
                 <Label htmlFor='encryptedFalse' icon={IconWorld} className='cursor-pointer mr-3'>Não</Label>
-                <InputRadio id='encryptedTrue' name='encrypted' value='true' />
+                <Input.Radio id='encryptedTrue' name='encrypted' value='true' />
                 <Label htmlFor='encryptedTrue' icon={IconKey} className='cursor-pointer'>Sim</Label>
-            </Fieldset>
-            <Fieldset
+            </fieldset>
+            <fieldset
                 className={clsx(
                     'relative overflow-hidden',
                     '-mt-1 pl-6 ',
@@ -37,9 +35,9 @@ export const EncryptionFieldset = (props: React.FieldsetHTMLAttributes<HTMLField
                 )}
             >
                 <Label htmlFor='passphrase' tip='*' className='block'>Segredo</Label>
-                <InputPassword name='passphrase' className='my-1' />
+                <Input.Password name='passphrase' className='my-1' />
                 <Error field='passphrase' />
-            </Fieldset>
+            </fieldset>
         </>
     )
 

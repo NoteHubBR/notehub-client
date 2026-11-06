@@ -66,7 +66,7 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
         }
     }
 
-    const { Section, Fieldset, EncryptionFieldset, FileFieldset, Legend, Label, Owner, InputPassword, InputText, InputRadio, Error, Info, Submit } = Element;
+    const { Error, Fieldset, Info, Input, Label, Legend, Owner, Submit, Section, } = Element;
 
     return (
         <FormProvider {...createNoteForm}>
@@ -84,37 +84,37 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
                         <Label htmlFor='name' tip='*' className='block'>Título</Label>
                         <div className='my-2 flex insm:flex-col items-center insm:items-start gap-2'>
                             <Owner aria-hidden='true' />
-                            <InputText schema={schema} autoFocus name='name' />
+                            <Input.Text schema={schema} autoFocus name='name' />
                         </div>
                         <Error field='name' />
                     </Fieldset>
                     <Fieldset className='relative'>
                         <Label htmlFor='description' tip='(opcional)' className='block'>Descrição</Label>
-                        <InputText schema={schema} name='description' className='my-1' />
+                        <Input.Text schema={schema} name='description' className='my-1' />
                         <Error field='description' />
                     </Fieldset>
                 </Section>
                 <Section className='gap-3'>
-                    <EncryptionFieldset />
+                    <Fieldset.Encryption />
                     <Fieldset className='p-2 pb-4 rounded-md border dark:border-middark border-midlight'>
                         <Legend tip='*'>Visiblidade</Legend>
-                        <InputRadio id='hiddenFalse' name='hidden' value='false' defaultChecked />
+                        <Input.Radio id='hiddenFalse' name='hidden' value='false' defaultChecked />
                         <Label htmlFor='hiddenFalse' icon={IconWorld} className='cursor-pointer mr-3'>Pública</Label>
-                        <InputRadio id='hiddenTrue' name='hidden' value='true' />
+                        <Input.Radio id='hiddenTrue' name='hidden' value='true' />
                         <Label htmlFor='hiddenTrue' icon={IconEyeClosed} className='cursor-pointer'>Oculta</Label>
                     </Fieldset>
                     <Fieldset className='p-2 pb-4 rounded-md border dark:border-middark border-midlight'>
                         <Legend tip='*'>Comentários</Legend>
-                        <InputRadio id='closedFalse' name='closed' value='false' defaultChecked />
+                        <Input.Radio id='closedFalse' name='closed' value='false' defaultChecked />
                         <Label htmlFor='closedFalse' icon={IconMessage} className='cursor-pointer mr-3'>Abertos</Label>
-                        <InputRadio id='closedTrue' name='closed' value='true' />
+                        <Input.Radio id='closedTrue' name='closed' value='true' />
                         <Label htmlFor='closedTrue' icon={IconMessageOff} className='cursor-pointer'>Fechados</Label>
                     </Fieldset>
                 </Section>
                 <Section>
-                    <FileFieldset name='markdown'>
+                    <Fieldset.File name='markdown'>
                         <Legend tip='(opcional)'>Carregar nota</Legend>
-                    </FileFieldset>
+                    </Fieldset.File>
                 </Section>
                 <Section className='flex-1'>
                     <Info />
