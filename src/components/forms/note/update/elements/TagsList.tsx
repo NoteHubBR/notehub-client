@@ -9,9 +9,8 @@ export const TagsList = ({ filteredTags, ...rest }: TagsListProps) => (
         className={clsx(
             'z-10 overflow-y-auto absolute top-full left-1/2 -translate-x-1/2',
             'scrollbar-mobile',
-            'w-full max-h-[200px] rounded',
+            'w-full max-h-[188px] rounded',
             'border',
-            '',
             'opacity-0 peer-focus-within:opacity-100',
             filteredTags.length > 0
                 ? [
