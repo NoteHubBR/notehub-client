@@ -7,9 +7,10 @@ import { useState } from 'react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     name: keyof CreateNoteFormSchema['shape'];
+    enabled: boolean;
 }
 
-export const InputPassword = ({ name, className, ...rest }: InputProps) => {
+export const InputPassword = ({ name, className, enabled, ...rest }: InputProps) => {
 
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const { register, formState: { errors } } = useFormContext();
@@ -21,6 +22,7 @@ export const InputPassword = ({ name, className, ...rest }: InputProps) => {
         <>
             <div className='peer flex'>
                 <input
+                    disabled={!enabled}
                     id={name}
                     {...register(name)}
                     type={isVisible ? 'text' : 'password'}
@@ -40,6 +42,7 @@ export const InputPassword = ({ name, className, ...rest }: InputProps) => {
                     {...rest}
                 />
                 <button
+                    disabled={!enabled}
                     type='button'
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => setIsVisible(prev => !prev)}

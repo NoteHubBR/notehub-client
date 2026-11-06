@@ -35,7 +35,7 @@ export const EncryptionFieldset = (props: React.FieldsetHTMLAttributes<HTMLField
                 )}
             >
                 <Label htmlFor='passphrase' tip='*' className='block'>Segredo</Label>
-                <Input.Password name='passphrase' className='my-1' />
+                <Input.Password name='passphrase' enabled={needsEncryption} className='my-1' />
                 <Error field='passphrase' />
             </fieldset>
         </>
