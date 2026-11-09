@@ -1,4 +1,5 @@
 import { ApiClient } from './api';
+import { encrypt } from '@/core';
 import { seedNotes, seedUsers } from './seeds';
 
 export default async function globalSetup() {
@@ -43,6 +44,10 @@ export default async function globalSetup() {
             tags: note.tags,
             closed: note.closed,
             hidden: note.hidden,
+            encrypted: note.encrypted,
+            markdown: note.encrypted
+                ? await encrypt(note.markdown!, note.passphrase!)
+                : undefined,
         })
         noteIds[key as keyof typeof seedNotes] = created.id;
     }
