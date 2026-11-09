@@ -41,20 +41,9 @@ export class UserPage {
         await expect(this.page).toHaveURL(seedUsers.usera.username);
     }
 
-    private async waitForResponse(action: () => Promise<void>, url: string) {
-        const [response] = await Promise.all([
-            this.page.waitForResponse((res) =>
-                res.url().includes(url) && res.ok()),
-            action(),
-        ])
-        return response;
-    }
-
     async openAndWaitForProfile() {
-        await this.waitForResponse(
-            () => this.open(),
-            `users/${seedUsers.usera.username}`
-        )
+        await this.open();
+        await this.expectProfileLoaded();
     }
 
     async expectProfileLoaded() {

@@ -1,4 +1,5 @@
 import { expect, Locator, Page } from '@playwright/test';
+import type { Request } from '@playwright/test';
 
 export class NotePage {
 
@@ -9,6 +10,12 @@ export class NotePage {
     readonly pipButton: Locator;
     readonly pipFallback: Locator;
     readonly cancelButton: Locator;
+    readonly preview: Locator;
+    readonly decryptButton: Locator;
+    readonly passphraseDialog: Locator;
+    readonly passphraseInput: Locator;
+    readonly passphraseError: Locator;
+    readonly markdownEditor: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -18,11 +25,49 @@ export class NotePage {
         this.pipButton = page.getByRole('button', { name: 'Picture-in-Picture', exact: true });
         this.pipFallback = page.getByRole('status').filter({ hasText: 'Nota aberta na janela flutuante' });
         this.cancelButton = this.form.getByRole('button', { name: 'Cancelar', exact: true });
+        this.preview = page.locator('article.prose');
+        this.decryptButton = this.form.getByRole('button', { name: 'Descriptografar', exact: true });
+        this.passphraseDialog = page.getByRole('dialog');
+        this.passphraseInput = this.passphraseDialog.locator('#passphrase');
+        this.passphraseError = page.getByTestId('error-passphrase');
+        this.markdownEditor = page.locator('.cm-content');
     }
 
     async goto(username: string, name: string) {
         await this.page.goto(`/${username}/${name}`);
         await expect(this.form).toBeVisible();
+    }
+
+    async openDecryptionDialog() {
+        await this.decryptButton.click();
+    }
+
+    async submitPassphrase(passphrase: string) {
+        await this.passphraseInput.fill(passphrase);
+        await this.passphraseDialog.getByRole('button', { name: 'Concluir', exact: true }).click();
+    }
+
+    async decryptWithPassphrase(passphrase: string, plaintext: string) {
+        await this.submitPassphrase(passphrase);
+        await expect(this.passphraseDialog).toBeHidden();
+        await expect(this.preview).toContainText(plaintext);
+    }
+
+    async startEditing() {
+        await this.page.keyboard.press('Control+e');
+        await expect(this.markdownEditor).toBeVisible();
+    }
+
+    async fillMarkdown(markdown: string) {
+        await this.markdownEditor.fill(markdown);
+    }
+
+    async saveMarkdownWithShortcut(): Promise<Request> {
+        const request = this.page.waitForRequest((request) =>
+            request.method() === 'PATCH' && request.url().includes('/change-markdown')
+        );
+        await this.page.keyboard.press('Control+s');
+        return request;
     }
 
     async expectFullscreen(active: boolean) {

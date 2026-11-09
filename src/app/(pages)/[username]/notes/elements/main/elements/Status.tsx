@@ -23,23 +23,23 @@ export const Status = ({ note, className, ...rest }: { note: LowDetailNote; } & 
     if (note.encrypted && note.hidden) return (
         <>
             <Span className='right-8' {...rest}>
-                <IconEyeOff size={20} />
+                <IconEyeOff size={20} data-testid="note-status-hidden" />
             </Span>
             <Span {...rest}>
-                <IconKey size={20} />
+                <IconKey size={20} data-testid="note-status-encrypted" />
             </Span>
         </>
     )
 
     if (note.encrypted) return (
         <Span {...rest}>
-            <IconKey size={20} />
+            <IconKey size={20} data-testid="note-status-encrypted" />
         </Span>
     )
 
     if (note.hidden) return (
         <Span {...rest}>
-            <IconEyeOff size={20} />
+            <IconEyeOff size={20} data-testid="note-status-hidden" />
         </Span>
     )
 

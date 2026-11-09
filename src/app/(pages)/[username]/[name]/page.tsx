@@ -136,7 +136,7 @@ const Page = () => {
                 setNote={setNote}
                 author={note.user ? note.user.username : null}
                 currentUser={user ? user.username : null}
-                displaytext={displaytext as string}
+                displaytext={displaytext ?? ''}
                 fullscreenSupported={fullscreenSupported}
                 isFullscreen={isFullscreen}
                 toggleFullscreen={toggleFullscreen}
