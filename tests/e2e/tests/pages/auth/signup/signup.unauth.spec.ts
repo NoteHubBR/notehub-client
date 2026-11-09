@@ -33,7 +33,7 @@ test.describe('User Signup', () => {
         await registerPage.fill(data);
         await registerPage.submit();
 
-        await registerPage.expectError('username', 'Use letras, números, _, . ou -');
+        await registerPage.expectError('username', 'Use letras, números e _ . - como separadores.');
     })
 
     test('should display zod error when passwords do not match', async ({ page }) => {
@@ -44,7 +44,7 @@ test.describe('User Signup', () => {
         await registerPage.fill(data);
         await registerPage.submit();
 
-        await registerPage.expectError('username', 'Use letras, números, _, . ou -');
+        await registerPage.expectError('username', 'Use letras, números e _ . - como separadores.');
         await registerPage.expectError('repeatPassword', 'Senhas diferentes.');
     })
 
