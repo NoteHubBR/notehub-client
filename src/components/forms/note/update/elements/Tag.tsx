@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import { IconX } from "@tabler/icons-react";
 
 interface TagProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -12,12 +13,15 @@ export const Tag = ({ tags, tag, setSelectedTags, ...rest }: TagProps) => {
 
     return (
         <div
-            className="whitespace-nowrap w-fit pl-2 rounded-full
-            flex items-center gap-1
-            border dark:border-secondary/25 border-primary
-            font-semibold text-xs dark:text-secondary text-primary
-            dark:bg-secondary/25 bg-primary/10
-            hover:!text-white dark:hover:bg-secondary hover:bg-primary"
+            className={clsx(
+                'whitespace-nowrap w-fit pl-2 rounded-full',
+                'flex items-center gap-1',
+                'border dark:border-secondary/25 border-primary',
+                'font-semibold text-xs dark:text-secondary text-primary',
+                'dark:bg-secondary/25 bg-primary/10',
+                'hover:!text-white dark:hover:bg-secondary hover:bg-primary',
+                'focus-within:!text-white dark:focus-within:bg-secondary focus-within:bg-primary',
+            )}
             {...rest}
         >
             <span className="cursor-default">
@@ -26,7 +30,11 @@ export const Tag = ({ tags, tag, setSelectedTags, ...rest }: TagProps) => {
             <button
                 type="button"
                 onClick={handleClick}
-                className="p-1 rounded-full text-white dark:bg-secondary bg-primary"
+                className={clsx(
+                    'p-1 rounded-full',
+                    'text-white ',
+                    'dark:bg-secondary bg-primary',
+                )}
             >
                 <IconX size={15} />
             </button>

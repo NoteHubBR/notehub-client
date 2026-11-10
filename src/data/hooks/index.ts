@@ -1,4 +1,5 @@
 export * from './useApi';
+export * from './useCrypto';
 export * from './useDebounce';
 export * from './useDrafts';
 export * from './useFlames';

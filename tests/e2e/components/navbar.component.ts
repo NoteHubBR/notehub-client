@@ -1,5 +1,4 @@
 import { Page, Locator, expect } from '@playwright/test';
-import { Sidebar } from './sidebar.component';
 
 export class Navbar {
 
@@ -29,7 +28,7 @@ export class Navbar {
 
     constructor(page: Page) {
         this.page = page;
-        this.root = page.getByRole('navigation', {name: 'Navegação principal'});
+        this.root = page.getByRole('navigation', { name: 'Navegação principal' });
         this.sidebarButton = this.root.getByRole('button', { name: 'Abrir menu' });
         this.homeButton = this.root.getByRole('link', { name: 'Início' });
         this.inputSearch = this.root.getByPlaceholder('Pesquisar');

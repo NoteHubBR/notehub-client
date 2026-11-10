@@ -1,3 +1,5 @@
+import { clsx } from 'clsx';
+
 interface ActionProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     icon: React.ElementType;
     action: string | number;
@@ -6,14 +8,19 @@ interface ActionProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 export const Action = ({ icon: Icon, action, ...rest }: ActionProps) => (
     <span className="text-sm flex items-center gap-2">
         <button
-            className="w-fit p-1 rounded-full
-                text-white
-                flex items-center justify-center
-                dark:bg-lighter/25 bg-darker/25
-                dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm
-                dark:hover:bg-primary hover:bg-primary
-                active:scale-110
-                transition-all"
+            className={clsx(
+                'w-fit p-1 rounded-full',
+                'text-white',
+                'flex items-center justify-center',
+                'dark:bg-lighter/25 bg-darker/25',
+                'dark:drop-shadow-alpha-l-sm drop-shadow-alpha-d-sm',
+                'dark:hover:bg-primary hover:bg-primary',
+                'active:scale-110',
+                'disabled:!cursor-default disabled:!pointer-events-none',
+                'disabled:dark:!text-semilight disabled:!text-semidark',
+                'disabled:dark:!bg-dark disabled:!bg-light',
+                'transition-all',
+            )}
             {...rest}
         >
             <Icon size={18} />

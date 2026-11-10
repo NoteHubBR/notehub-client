@@ -16,7 +16,26 @@ export const createNoteFormSchema = (username: User['username'], existingNames: 
     closed: z
         .enum(['true', 'false'])
         .transform((value) => value === 'true'),
+    encrypted: z
+        .enum(['true', 'false'])
+        .transform((value) => value === 'true'),
+    passphrase: z
+        .string()
+        .optional()
 })
 
+export const createNoteFormSchemaRefined = (username: User['username'], existingNames: string[] = []) =>
+    createNoteFormSchema(username, existingNames)
+        .superRefine((data, ctx) => {
+            if (data.encrypted && !data.passphrase) {
+                ctx.addIssue({
+                    code: 'custom',
+                    path: ['passphrase'],
+                    message: 'Informe o segredo.',
+                })
+            }
+        })
+
 export type CreateNoteFormSchema = ReturnType<typeof createNoteFormSchema>;
-export type CreateNoteFormData = z.infer<CreateNoteFormSchema>;
+export type CreateNoteFormSchemaRefined = ReturnType<typeof createNoteFormSchemaRefined>;
+export type CreateNoteFormData = z.infer<CreateNoteFormSchemaRefined>;

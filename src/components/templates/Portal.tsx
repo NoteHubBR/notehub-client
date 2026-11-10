@@ -11,30 +11,34 @@ interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
     childRef: React.RefObject<HTMLElement>;
     closeRef?: React.RefObject<HTMLButtonElement>;
     useDefaultClose?: boolean;
+    action?: () => void;
+    customState?: boolean;
+    setCustomState?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Portal = ({ blur, triggerRef, childRef, closeRef, useDefaultClose, ...rest }: PortalProps) => {
+export const Portal = ({ blur, triggerRef, childRef, closeRef, useDefaultClose, action, customState, setCustomState, ...rest }: PortalProps) => {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const handleClickOutside = useCallback((event: MouseEvent) => {
         if (childRef.current && !childRef.current.contains(event.target as Node)) {
-            return setIsOpen(false);
+            setCustomState ? setCustomState(false) : setIsOpen(false);
         }
     }, [childRef])
 
     const handleClickOnTrigger = useCallback(() => {
+        if (action) return action();
         return setIsOpen(true);
-    }, [])
+    }, [action])
 
     const handleClickOnClose = useCallback((e: MouseEvent) => {
         if (closeRef && closeRef.current?.contains(e.target as HTMLButtonElement)) {
-            return setIsOpen(false);
+            setCustomState ? setCustomState(false) : setIsOpen(false);
         }
     }, [closeRef])
 
     const handleClickEscape = useCallback((event: KeyboardEvent) => {
-        if (event.key === 'Escape') return setIsOpen(false);
+        if (event.key === 'Escape') setCustomState ? setCustomState(false) : setIsOpen(false);
     }, [])
 
     useEffect(() => {
@@ -64,10 +68,10 @@ export const Portal = ({ blur, triggerRef, childRef, closeRef, useDefaultClose, 
     }, [isOpen]);
 
     const childrenWithProp = cloneElement(rest.children as React.ReactElement, {
-        onPortalClose: () => setIsOpen(false)
+        onPortalClose: () => setCustomState ? setCustomState(false) : setIsOpen(false)
     })
 
-    if (isOpen) return createPortal(
+    if (isOpen || customState) return createPortal(
         <section
             className={clsx(
                 'z-[998] fixed top-0 left-0',

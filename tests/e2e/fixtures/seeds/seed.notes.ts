@@ -1,14 +1,17 @@
 interface SeedNote {
     author: 'usera' | 'userb' | 'userc';
     name: string;
-    tags: string[],
+    tags: string[];
     closed?: boolean;
     hidden?: boolean;
+    encrypted?: boolean;
+    markdown?: string;
+    passphrase?: string;
     flamesCount: number;
 }
 
 export const seedNotes: Record<
-    'notea' | 'noteb' | 'notec' | 'cnote' | 'hnote' | 'other',
+    'notea' | 'noteb' | 'notec' | 'cnote' | 'hnote' | 'other' | 'encrypted',
     SeedNote
 > = {
     notea: {
@@ -41,6 +44,15 @@ export const seedNotes: Record<
         name: 'hnote',
         tags: [],
         hidden: true,
+        flamesCount: 0,
+    },
+    encrypted: {
+        author: 'usera',
+        name: 'enote',
+        tags: [],
+        encrypted: true,
+        markdown: 'enote',
+        passphrase: 'passphrase',
         flamesCount: 0,
     },
     other: {

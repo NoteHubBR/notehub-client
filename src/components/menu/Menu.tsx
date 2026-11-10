@@ -30,7 +30,7 @@ export const Menu = ({ isMenuOpen, setIsMenuOpen, className, children, ...rest }
                 'flex flex-col',
                 'dark:bg-dark bg-light',
                 isMenuOpen
-                    ? 'max-h-32 border dark:border-middark/50 border-midlight/50 transition-all duration-300'
+                    ? 'max-h-48 border dark:border-middark/50 border-midlight/50 transition-all duration-300'
                     : 'max-h-0 border-0',
                 className
             )}

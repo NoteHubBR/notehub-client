@@ -1,5 +1,5 @@
 import { expect, test } from '@e2e/fixtures/auth';
-import { seedUsers } from '@e2e/fixtures/seeds';
+import { seedNotes, seedUsers } from '@e2e/fixtures/seeds';
 import { UserNotesPage } from '@e2e/pages';
 
 test.describe('User notes page', () => {
@@ -57,12 +57,25 @@ test.describe('User notes page', () => {
         for (const c of comments) expect(c.toLowerCase()).toContain('fechado');
     })
 
-    test('should display only closed notes when filtered by type "hidden"', async () => {
+    test('should display only encrypted notes when filtered by type "encrypted"', async () => {
+        await notesPage.about.click();
+        await notesPage.notes.click();
+        await notesPage.typeFilter.open();
+        await notesPage.typeFilter.getOption('option-type-encrypted').click();
+        await expect(notesPage.noteArticles.first()).toBeVisible();
+        const totalNotes = await notesPage.noteArticles.count();
+        const encryptedNotes = await notesPage.encryptedStatusIcons.count();
+        expect(totalNotes).toBeGreaterThan(0);
+        expect(encryptedNotes).toBe(totalNotes);
+        await expect(notesPage.noteArticle(seedNotes.encrypted.name)).toBeVisible();
+    })
+
+    test('should display only hidden notes when filtered by type "hidden"', async () => {
         await notesPage.typeFilter.open();
         await notesPage.typeFilter.getOption('option-type-hidden').click();
         await expect(notesPage.noteArticles.first()).toBeVisible();
         const totalNotes = await notesPage.noteArticles.count();
-        const hiddenNotes = await notesPage.noteSVGS.count();
+        const hiddenNotes = await notesPage.hiddenStatusIcons.count();
         expect(totalNotes).toBeGreaterThan(0);
         expect(hiddenNotes).toBe(totalNotes);
     })

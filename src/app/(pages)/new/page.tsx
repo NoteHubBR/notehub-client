@@ -1,5 +1,6 @@
 'use client';
 
+import { clsx } from 'clsx';
 import { Form } from "@/components/forms";
 import { Skeleton } from "./skeleton";
 import { Unauthorized } from "./unauthorized";
@@ -14,14 +15,17 @@ const Page = () => {
     if (!token || !user) return <Unauthorized />;
 
     return (
-        <section className="w-full h-full p-8 inmd:p-0 flex items-center justify-center dark:bg-dark bg-light">
-            <div
-                className="max-w-[666px] w-full h-[90%] p-8 rounded
-                inmd:max-w-full inmd:h-full inmd:p-4 inmd:border-0
-                border dark:border-middark border-midlight
-                flex flex-col
-                dark:bg-darker bg-lighter"
-            >
+        <section className="w-full h-full flex items-center justify-center dark:bg-dark bg-light">
+            <div className={clsx(
+                'overflow-y-auto overscroll-contain inmd:overscroll-auto',
+                'scrollbar-desktop inmd:scrollbar-mobile',
+                'max-w-[666px] inmd:max-w-full w-full',
+                'min-h-[90vh] max-h-[90vh] inmd:min-h-[93.25svh] inmd:max-h-[93.25svh]',
+                'px-8 py-6 inmd:p-4 rounded',
+                'border inmd:border-0 dark:border-middark border-midlight',
+                'flex flex-col',
+                'dark:bg-darker bg-lighter',
+            )}>
                 <header>
                     <h1 className="w-fit font-semibold text-xl">Criar nova nota</h1>
                 </header>

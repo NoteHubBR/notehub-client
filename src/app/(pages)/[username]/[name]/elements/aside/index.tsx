@@ -8,15 +8,17 @@ interface AsideProps extends React.HTMLAttributes<HTMLElement> {
     note: Note;
     author: string | null;
     currentUser: string | null;
+    isEditing: boolean;
 }
 
-export const Aside = ({ triggerRef, note, author, currentUser, ...rest }: AsideProps) => {
+export const Aside = ({ triggerRef, note, author, currentUser, isEditing, ...rest }: AsideProps) => {
 
     const isAuthor = author === currentUser;
 
     const { Settings, Time, Author, Tags, Action } = Element;
 
     const download = () => {
+        if (!note.markdown) return;
         const blob = new Blob([note.markdown], { type: "text/plain" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
@@ -26,7 +28,9 @@ export const Aside = ({ triggerRef, note, author, currentUser, ...rest }: AsideP
         URL.revokeObjectURL(url);
     }
 
-    const copy = async () => await navigator.clipboard.writeText(note.markdown);
+    const copy = async () => {
+        if (note.markdown) return await navigator.clipboard.writeText(note.markdown);
+    }
 
     const scrollToCommentBox = () => {
         const commentWrapperEl = document.getElementById("comment-wrapper");
@@ -39,7 +43,7 @@ export const Aside = ({ triggerRef, note, author, currentUser, ...rest }: AsideP
         <aside className="max-w-[275px] inlg:max-w-full w-full inmd:dark:bg-darker inmd:bg-lighter" {...rest}>
             <header className="px-4 flex items-center justify-between border-y border-transparent dark:border-b-middark/50 border-b-midlight/50">
                 <h3 className="py-3 inlg:py-2">Sobre</h3>
-                {isAuthor && <Settings ref={triggerRef} />}
+                {isAuthor && !isEditing && <Settings ref={triggerRef} />}
             </header>
             <section className="px-4 pt-4 flex flex-col gap-4">
                 <Time note={note} />
@@ -48,8 +52,8 @@ export const Aside = ({ triggerRef, note, author, currentUser, ...rest }: AsideP
                 {note.tags.length > 0 && <Tags note={note} />}
             </section>
             <footer className="px-4 py-6 flex flex-col inlg:flex-row gap-4 insm:gap-2">
-                <Action icon={IconDownload} action="Baixar" onClick={download} />
-                <Action icon={IconCopy} action="Copiar" onClick={copy} />
+                <Action disabled={!note.markdown} icon={IconDownload} action="Baixar" onClick={download} />
+                <Action disabled={!note.markdown} icon={IconCopy} action="Copiar" onClick={copy} />
                 <Toggle.Flame size={18} note={note} useCount />
                 <Action
                     icon={note.closed ? IconMessageCircleOff : IconMessageCircle}

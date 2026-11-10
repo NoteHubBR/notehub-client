@@ -12,7 +12,8 @@ export class UserNotesPage extends SearchableListPage {
     readonly noteArticles: Locator;
     readonly noteCommentsCount: Locator;
     readonly noteFlamesCount: Locator;
-    readonly noteSVGS: Locator;
+    readonly hiddenStatusIcons: Locator;
+    readonly encryptedStatusIcons: Locator;
     readonly noteTags: Locator;
     readonly noteCommentsLabel: Locator;
 
@@ -60,9 +61,14 @@ export class UserNotesPage extends SearchableListPage {
         this.noteArticles = page.locator('article');
         this.noteCommentsCount = page.getByTestId('comment-count');
         this.noteFlamesCount = page.getByTestId('flame-count');
-        this.noteSVGS = page.locator('article header svg');
+        this.hiddenStatusIcons = page.getByTestId('note-status-hidden');
+        this.encryptedStatusIcons = page.getByTestId('note-status-encrypted');
         this.noteTags = page.locator('article nav ul li a');
         this.noteCommentsLabel = page.locator('footer a');
+    }
+
+    noteArticle(name: string): Locator {
+        return this.noteArticles.filter({ hasText: name });
     }
 
     async getTagOptionsTexts(): Promise<string[]> {

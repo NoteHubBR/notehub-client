@@ -37,7 +37,7 @@ const Page = () => {
                             ?
                             filteredItems.map((item) => (
                                 <Li key={item.id} id={item.id}>
-                                    <Question currentId={currentId} setCurrentId={setCurrentId} hash={item.id}>{item.question}</Question>
+                                    <Question currentId={currentId} setCurrentId={setCurrentId} hash={item.id} new={item.new}>{item.question}</Question>
                                     <Answer currentId={currentId} hash={item.id} useSupport={item.useSupport}>
                                         {item.answer}
                                     </Answer>
@@ -46,7 +46,7 @@ const Page = () => {
                             :
                             items.map((item) => (
                                 <Li key={item.id} id={item.id}>
-                                    <Question currentId={currentId} setCurrentId={setCurrentId} hash={item.id}>{item.question}</Question>
+                                    <Question currentId={currentId} setCurrentId={setCurrentId} hash={item.id} new={item.new}>{item.question}</Question>
                                     <Answer currentId={currentId} hash={item.id} useSupport={item.useSupport}>
                                         {item.answer}
                                     </Answer>

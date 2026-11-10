@@ -17,6 +17,6 @@ export const Count = ({ current, max, className, ...rest }: CountProps) => (
         )}
         {...rest}
     >
-        {`${current}/${max}`}
+        {max ? `${current}/${max}` : `${current}`}
     </span>
 )

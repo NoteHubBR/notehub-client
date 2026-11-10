@@ -1,23 +1,35 @@
 import { clsx } from 'clsx';
-import { Element } from "./elements";
-import { FormProvider, useForm } from "react-hook-form";
-import { IconArrowsMaximize, IconArrowsMinimize, IconCheck, IconDotsVertical, IconEdit, IconHistory, IconPictureInPicture, IconTrash, IconX } from "@tabler/icons-react";
-import { Menu, MenuItem } from "@/components/menu";
-import { Note, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token } from "@/core"
-import { useApi, useDrafts, useNotes, useTags } from "@/data/hooks";
+import { Element } from './elements';
+import { FormProvider, useForm } from 'react-hook-form';
+import { IconArrowsMaximize, IconArrowsMinimize, IconCheck, IconDotsVertical, IconEdit, IconHistory, IconKey, IconPictureInPicture, IconTrash, IconX } from '@tabler/icons-react';
+import { Menu, MenuItem } from '@/components/menu';
+import { Note, NoteSecret, NoteTextUpdateFormData, noteTextUpdateFormSchema, Token, UpdateNotePassphraseFormData, updateNotePassphraseFormSchema } from '@/core'
+import { useApi, useCrypto, useDrafts, useNotes, useTags } from '@/data/hooks';
+import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import { useShortcuts } from './shortcuts';
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     ref: React.RefObject<HTMLFormElement>;
     token: Token | null;
+    isLocked: boolean;
+    secret: NoteSecret | null;
+    setSecret: React.Dispatch<React.SetStateAction<NoteSecret | null>>;
+    pendingConfiguration: boolean;
+    setPendingConfiguration: React.Dispatch<React.SetStateAction<boolean>>;
+    onConfiguration: boolean;
+    setOnConfiguration: React.Dispatch<React.SetStateAction<boolean>>;
+    pendingEdition: boolean;
+    setPendingEdition: React.Dispatch<React.SetStateAction<boolean>>;
+    onEdition: boolean;
+    setOnEdition: React.Dispatch<React.SetStateAction<boolean>>;
     note: Note;
     setNote: React.Dispatch<React.SetStateAction<Note | null>>;
     author: string | null;
     currentUser: string | null;
+    displaytext: string;
     fullscreenSupported: boolean;
     isFullscreen: boolean;
     toggleFullscreen: () => void;
@@ -26,7 +38,33 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     openPiP: (width?: number, height?: number) => Promise<void>
 }
 
-export const Form = ({ ref, token, note, setNote, author, currentUser, fullscreenSupported, isFullscreen, toggleFullscreen, pipWindowSupported, pipWindow, openPiP, ...rest }: FormProps) => {
+export const Form = ({
+    ref,
+    token,
+    isLocked,
+    secret,
+    setSecret,
+    pendingConfiguration,
+    onConfiguration,
+    setPendingConfiguration,
+    setOnConfiguration,
+    pendingEdition,
+    setPendingEdition,
+    onEdition,
+    setOnEdition,
+    note,
+    setNote,
+    author,
+    currentUser,
+    displaytext,
+    fullscreenSupported,
+    isFullscreen,
+    toggleFullscreen,
+    pipWindowSupported,
+    pipWindow,
+    openPiP,
+    ...rest
+}: FormProps) => {
 
     const {
         noteService: { updateNoteText, deleteNote },
@@ -43,42 +81,80 @@ export const Form = ({ ref, token, note, setNote, author, currentUser, fullscree
     const updateNoteForm = useForm<NoteTextUpdateFormData>({
         resolver: zodResolver(noteTextUpdateFormSchema),
         defaultValues: {
-            markdown: note.markdown ?? ""
+            markdown: note.markdown ?? ''
         }
     })
 
     const { handleSubmit, setValue } = updateNoteForm;
 
+    const passphraseForm = useForm<UpdateNotePassphraseFormData>({
+        resolver: zodResolver(updateNotePassphraseFormSchema),
+        defaultValues: { passphrase: '' },
+    })
+
+    const {
+        handleSubmit: handlePassphraseSubmit,
+        setError: setPassphraseError,
+        reset: resetPassphraseForm,
+    } = passphraseForm;
+
     const isAuthor = author ? author === currentUser : false;
 
-    const [initialText, setInitialText] = useState<string>(note.markdown ?? "");
+    const initialText = displaytext;
     const [text, setText] = useState<string>(initialText);
-    const [skipDraft, setSkipDraft] = useState<boolean>(draft ? false : true);
+    const [skipDraft, setSkipDraft] = useState<boolean>(note.encrypted ? true : draft ? false : true);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [isDecrypting, setIsDecrypting] = useState<boolean>(false);
     const [isPreviewing, setIsPreviewing] = useState<boolean>(false);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
-    const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+    const { isCrypting, encrypt, decrypt } = useCrypto();
     const [isPending, setIsPending] = useState<boolean>(false);
+    const busy = isPending || isCrypting;
 
     const router = useRouter();
 
+    const handleDecryption = async (data: UpdateNotePassphraseFormData, e?: React.BaseSyntheticEvent) => {
+        if (e) e.stopPropagation();
+        if (note.markdown) try {
+            const plaintext = await decrypt(note.markdown, data.passphrase);
+            resetPassphraseForm();
+            setSecret({
+                id: note.id,
+                passphrase: data.passphrase,
+                plaintext,
+                cipher: note.markdown,
+            })
+            if (pendingConfiguration) setOnConfiguration(true);
+            if (pendingEdition) { setOnEdition(true); setIsPreviewing(false); }
+            setIsDecrypting(false);
+        } catch {
+            setPassphraseError('passphrase', { message: 'Segredo incorreto.' });
+        }
+    }
+
     const onSubmit = async (data: NoteTextUpdateFormData): Promise<void> => {
         if (token) {
+            if (note.encrypted) if (isLocked) return startDecryption();
             setIsPending(true);
-            await withProgress(() => updateNoteText(token.access_token, note.id, data))
-                .then(() => {
-                    setIsSubmiting(false);
-                    setIsEditing(false);
-                    setNote(prev => prev ? { ...prev, markdown: data.markdown } : null);
-                    setText(data.markdown);
-                    setInitialText(data.markdown);
-                    setIsPreviewing(false);
-                    setNoteToFirst(note.id);
-                    setIsPending(false);
-                    if (note.user) removeDraft('notes', note.id, note.user.username);
-                })
-            return await qc.invalidateQueries({ queryKey: ['note', token.access_token, note.id] });
+            const currentSecret = secret;
+            try {
+                const markdown = currentSecret && note.encrypted
+                    ? await encrypt(data.markdown, currentSecret.passphrase)
+                    : data.markdown;
+                await withProgress(() => updateNoteText(token.access_token, note.id, { ...data, markdown }));
+                if (currentSecret && note.encrypted) setSecret({ ...currentSecret, plaintext: data.markdown, cipher: markdown });
+                setNote(prev => prev ? { ...prev, markdown } : null);
+                setIsSubmitting(false);
+                setOnEdition(false);
+                setIsPreviewing(false);
+                setNoteToFirst(note.id);
+                if (note.user) removeDraft('notes', note.id, note.user.username);
+                return await qc.invalidateQueries({ queryKey: ['note', token.access_token, note.id] });
+            } finally {
+                setIsPending(false);
+            }
         }
     }
 
@@ -116,16 +192,29 @@ export const Form = ({ ref, token, note, setNote, author, currentUser, fullscree
         return;
     }
 
+    const startDecryption = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        if (note.encrypted) {
+            if (secret) return;
+            setIsMenuOpen(false);
+            setIsDecrypting(true);
+            return;
+        }
+    }
+
     const startEdit = (e?: React.MouseEvent) => {
         if (e) e.stopPropagation();
-        setIsEditing(true);
+        if (note.encrypted) if (!secret) {
+            setPendingEdition(true);
+            return startDecryption();
+        }
+        setOnEdition(true);
         setIsPreviewing(false);
-        return;
     }
 
     const startSubmit = (e?: React.MouseEvent) => {
         if (e) e.stopPropagation();
-        setIsSubmiting(true);
+        setIsSubmitting(true);
         return;
     }
 
@@ -142,13 +231,14 @@ export const Form = ({ ref, token, note, setNote, author, currentUser, fullscree
             setSkipDraft(true);
             setValue('markdown', draft.content);
             setText(draft.content);
-            setIsEditing(true);
+            setOnEdition(true);
             setIsPreviewing(false);
         }
         return;
     }
 
     const saveDraft = (content: string) => {
+        if (note.encrypted) return;
         if (isAuthor && note.user) {
             if (content === initialText) return;
             setSkipDraft(true);
@@ -168,17 +258,34 @@ export const Form = ({ ref, token, note, setNote, author, currentUser, fullscree
         setSkipDraft(false);
         setValue('markdown', initialText);
         setText(initialText);
-        setIsEditing(false);
+        setOnEdition(false);
         setIsPreviewing(false);
         return;
     }
 
+    useEffect(() => {
+        setText(displaytext);
+        setValue('markdown', displaytext);
+    }, [displaytext])
+
+    useEffect(() => {
+        if (pendingConfiguration) startDecryption();
+    }, [pendingConfiguration])
+
+    useEffect(() => {
+        if (!isDecrypting) {
+            setPendingConfiguration(false);
+            setPendingEdition(false);
+        }
+    }, [isDecrypting])
+
     useShortcuts({
         ref,
         isAuthor,
-        isEditing,
+        isEditing: onEdition,
         onFullscreen: toggleFullscreen,
         onPictureInPicture: openPictureInPicture,
+        onStartDecryption: startDecryption,
         onStartEdit: startEdit,
         onCancel: cancelEdit,
         onDelete: handleDeleteNote,
@@ -191,7 +298,7 @@ export const Form = ({ ref, token, note, setNote, author, currentUser, fullscree
         <FormProvider {...updateNoteForm}>
             <form
                 ref={ref}
-                id="note"
+                id='note'
                 onSubmit={handleSubmit(onSubmit)}
                 className={clsx(
                     'scroll-mt-[9vh] inmd:scroll-mt-0',
@@ -209,102 +316,123 @@ export const Form = ({ ref, token, note, setNote, author, currentUser, fullscree
                 )}
                 {...rest}
             >
-                <header className="px-4 inmd:px-2 flex items-center justify-between gap-3 border-b dark:border-middark/50 border-midlight/50">
-                    <div className="overflow-hidden w-fit flex gap-3">
+                <header className='px-4 inmd:px-2 flex items-center justify-between gap-3 border-b dark:border-middark/50 border-midlight/50'>
+                    <div className='overflow-hidden w-fit flex gap-3'>
                         <Title
                             title={note.name}
                             disabled={!isPreviewing}
                             onClick={togglePreview}
                             isPreviewing={isPreviewing}
                         >
-                            {isEditing ? "Editar" : note.name}
+                            {onEdition ? 'Editar' : note.name}
                         </Title>
                         <EditingTitle
                             disabled={isPreviewing}
                             onClick={togglePreview}
                             isPreviewing={isPreviewing}
-                            isEditing={isEditing}
+                            isEditing={onEdition}
                         >
                             Visualizar
                         </EditingTitle>
                     </div>
-                    <div className="flex gap-3">
-                        {skipDraft ? null :
+                    <div className='flex gap-3'>
+                        {note.encrypted || skipDraft ? null :
                             <ActionButton
                                 isAuthor={isAuthor}
-                                type="button"
+                                type='button'
                                 onClick={startDraft}
-                                isEditing={isEditing}
+                                isEditing={onEdition}
                                 icon={IconHistory}
-                                tooltip="Rascunho"
-                                className="dark:bg-semilight/20 bg-semidark/20 dark:hover:bg-semilight/10 hover:bg-semidark/10"
+                                tooltip='Rascunho'
+                                className='dark:bg-semilight/20 bg-semidark/20 dark:hover:bg-semilight/10 hover:bg-semidark/10'
                             />
                         }
                         <ActionButton
                             isAuthor={isAuthor}
-                            type="button"
+                            type='button'
                             onClick={cancelEdit}
-                            isEditing={isEditing}
+                            isEditing={onEdition}
                             icon={IconX}
-                            tooltip="Cancelar"
-                            className="dark:bg-semilight/20 bg-semidark/20 dark:hover:bg-semilight/10 hover:bg-semidark/10"
+                            tooltip='Cancelar'
+                            className='dark:bg-semilight/20 bg-semidark/20 dark:hover:bg-semilight/10 hover:bg-semidark/10'
                         />
                         {fullscreenSupported && !pipWindow ?
                             <ActionButton
                                 skipAuthorityCheck
-                                type="button"
+                                type='button'
                                 onClick={toggleFullscreen}
-                                isEditing={!isEditing}
+                                isEditing={!onEdition}
                                 icon={isFullscreen ? IconArrowsMinimize : IconArrowsMaximize}
-                                tooltip={isFullscreen ? "Sair da tela cheia" : "Tela cheia"}
-                                className="dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10"
+                                tooltip={isFullscreen ? 'Sair da tela cheia' : 'Tela cheia'}
+                                className='dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10'
                             />
                             : null
                         }
                         {pipWindowSupported && !pipWindow && !isFullscreen
                             ? <ActionButton
                                 skipAuthorityCheck
-                                type="button"
+                                type='button'
                                 onClick={openPictureInPicture}
-                                isEditing={!isEditing}
+                                isEditing={!onEdition}
                                 icon={IconPictureInPicture}
-                                tooltip="Picture-in-Picture"
-                                className="dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10"
+                                tooltip='Picture-in-Picture'
+                                className='dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10'
+                            />
+                            : null
+                        }
+                        {note.encrypted
+                            ? <ActionButton
+                                disabled={secret ? secret.passphrase ? true : false : false}
+                                skipAuthorityCheck
+                                type='button'
+                                onClick={startDecryption}
+                                isEditing={!onEdition}
+                                icon={IconKey}
+                                tooltip={secret ? 'Descriptografada' : 'Descriptografar'}
+                                className={clsx(
+                                    'disabled:cursor-default',
+                                    secret
+                                        ? 'dark:text-secondary text-primary'
+                                        : 'dark:text-light text-dark',
+                                    'dark:hover:text-secondary hover:text-primary',
+                                )}
                             />
                             : null
                         }
                         <ActionButton
                             isAuthor={isAuthor}
-                            type="button"
+                            type='button'
                             onClick={startSubmit}
-                            isEditing={isEditing}
+                            isEditing={onEdition}
                             icon={IconCheck}
-                            tooltip="Salvar"
-                            className="text-white bg-primary hover:bg-secondary"
+                            tooltip='Salvar'
+                            className='text-white bg-primary hover:bg-secondary'
                         />
                         <ActionButton
                             isAuthor={isAuthor}
-                            type="button"
-                            disabled={isPending}
+                            type='button'
+                            disabled={busy}
                             onClick={toggleMenu}
                             onBlur={closeMenu}
-                            isEditing={!isEditing}
+                            isEditing={!onEdition}
                             icon={IconDotsVertical}
-                            tooltip="Menu"
-                            className="relative dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10"
+                            tooltip='Menu'
+                            className='relative dark:hover:bg-semilight/10 hover:bg-semidark/10 dark:focus:bg-semilight/10 focus:bg-semidark/10'
                         >
                             <Menu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}>
                                 <MenuItem
                                     onClick={startEdit}
+                                    onMouseDown={(e) => e.preventDefault()}
                                     icon={IconEdit}
-                                    className="dark:hover:text-secondary hover:text-primary"
+                                    className='dark:hover:text-secondary hover:text-primary'
                                 >
                                     Editar
                                 </MenuItem>
                                 <MenuItem
                                     onClick={startDelete}
+                                    onMouseDown={(e) => e.preventDefault()}
                                     icon={IconTrash}
-                                    className="hover:text-red-500"
+                                    className='hover:text-red-500'
                                 >
                                     Apagar
                                 </MenuItem>
@@ -312,39 +440,59 @@ export const Form = ({ ref, token, note, setNote, author, currentUser, fullscree
                         </ActionButton>
                     </div>
                 </header>
+                <FormProvider {...passphraseForm}>
+                    <Dialog
+                        msg='Insira o segredo.'
+                        desc='Sua chave secreta não será enviada aos nossos servidores em nenhuma circunstância.'
+                        usePassphrase
+                        opt={isCrypting ? 'Concluindo...' : 'Concluir'}
+                        type='button'
+                        isOpen={isDecrypting}
+                        setIsOpen={setIsDecrypting}
+                        disabled={busy}
+                        onClick={handlePassphraseSubmit(handleDecryption)}
+                        onEnter={handlePassphraseSubmit(handleDecryption)}
+                        className='dark:text-secondary text-primary
+                        dark:hover:bg-secondary hover:bg-primary
+                        dark:focus-visible:bg-secondary focus-visible:bg-primary
+                        dark:disabled:bg-secondary disabled:bg-primary'
+                    />
+                </FormProvider>
                 <Dialog
-                    msg="Tem certeza de que deseja apagar esta nota?"
-                    desc="Esta ação é irreversível e todos os dados serão perdidos permanentemente."
-                    opt="Sim, apagar"
-                    type="button"
+                    msg='Tem certeza de que deseja apagar esta nota?'
+                    desc='Esta ação é irreversível e todos os dados serão perdidos permanentemente.'
+                    opt={busy ? 'Apagando...' : 'Sim, apagar'}
+                    type='button'
                     isOpen={isDeleting}
                     setIsOpen={setIsDeleting}
-                    disabled={isPending}
+                    disabled={busy}
                     onClick={handleDeleteNote}
-                    className="dark:text-red-500 text-red-600
+                    className='dark:text-red-500 text-red-600
                     dark:hover:bg-red-500 hover:bg-red-600
-                    dark:disabled:bg-red-500 disabled:bg-red-600"
+                    dark:focus-visible:bg-red-500 focus-visible:bg-red-600
+                    dark:disabled:bg-red-500 disabled:bg-red-600'
                 />
                 <Dialog
-                    msg="Tem certeza de que deseja atualizar esta nota?"
-                    desc="A atualização sobrescreverá o conteúdo atual. Não é possível desfazer esta operação."
-                    opt="Sim, atualizar"
-                    type="submit"
-                    isOpen={isSubmiting}
-                    setIsOpen={setIsSubmiting}
-                    disabled={isPending}
-                    className="dark:text-secondary text-primary
+                    msg='Tem certeza de que deseja atualizar esta nota?'
+                    desc='A atualização sobrescreverá o conteúdo atual. Não é possível desfazer esta operação.'
+                    opt={isCrypting ? 'Criptografando...' : isPending ? 'Atualizando...' : 'Sim, atualizar'}
+                    type='submit'
+                    isOpen={isSubmitting}
+                    setIsOpen={setIsSubmitting}
+                    disabled={busy}
+                    className='dark:text-secondary text-primary
                     dark:hover:bg-secondary hover:bg-primary
-                    dark:disabled:bg-secondary disabled:bg-primary"
+                    dark:focus-visible:bg-secondary focus-visible:bg-primary
+                    dark:disabled:bg-secondary disabled:bg-primary'
                 />
                 <MdPreview
-                    isEditing={isEditing}
+                    isEditing={onEdition}
                     isPreviewing={isPreviewing}
                     isFullscreen={isFullscreen}
                     markdown={isPreviewing ? text : initialText}
                 />
                 <MdEditor
-                    isEditing={isEditing}
+                    isEditing={onEdition}
                     isPreviewing={isPreviewing}
                     onDraftChange={saveDraft}
                     setText={setText}

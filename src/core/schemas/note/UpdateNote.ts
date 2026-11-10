@@ -4,9 +4,18 @@ import { z } from 'zod';
 
 export const createNoteUpdateFormSchema = (username: User['username'], existingNames: string[] = []) => z.object({
     name: buildNameField(username, existingNames),
-    description: z.string().trim().max(255, 'Máximo de 255 caracteres.'),
+    description: z
+        .string().trim()
+        .max(255, 'Máximo de 255 caracteres.'),
+    markdown: z
+        .string()
+        .nullable(),
     hidden: z.boolean(),
     closed: z.boolean(),
+    encrypted: z.boolean(),
+    passphrase: z
+        .string()
+        .optional(),
     tags: z
         .array(z.string().trim()
             .min(2, 'Mínimo de 2 caracteres por tag.')
@@ -16,5 +25,18 @@ export const createNoteUpdateFormSchema = (username: User['username'], existingN
         .default([] as string[]),
 })
 
+export const createNoteUpdateFormSchemaRefined = (username: User['username'], existingNames: string[] = []) =>
+    createNoteUpdateFormSchema(username, existingNames)
+        .superRefine((data, ctx) => {
+            if (data.encrypted && !data.passphrase) {
+                ctx.addIssue({
+                    code: 'custom',
+                    path: ['passphrase'],
+                    message: 'Informe o segredo.',
+                })
+            }
+        })
+
 export type NoteUpdateFormSchema = ReturnType<typeof createNoteUpdateFormSchema>;
-export type NoteUpdateFormData = z.infer<NoteUpdateFormSchema>;
+export type NoteUpdateFormSchemaRefined = ReturnType<typeof createNoteUpdateFormSchemaRefined>;
+export type NoteUpdateFormData = z.infer<NoteUpdateFormSchemaRefined>;

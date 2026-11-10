@@ -56,6 +56,7 @@ export const Header = ({ tags, ...rest }: HeaderProps) => {
                                 <Element.Option sParam="type" value={[null]} text="todos" data-testid="option-type-all" />
                                 <Element.Option sParam="type" value={["open"]} text="aberta" data-testid="option-type-open" />
                                 <Element.Option sParam="type" value={["closed"]} text="fechada" data-testid="option-type-closed" />
+                                <Element.Option sParam="type" value={["encrypted"]} text="criptografada" data-testid="option-type-encrypted" />
                                 {current && <Element.Option sParam="type" value={["hidden"]} text="oculta" data-testid="option-type-hidden" />}
                             </ul>
                         </Element.Dropdown>
