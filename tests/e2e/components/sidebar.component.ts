@@ -44,7 +44,13 @@ export class Sidebar {
     }
 
     async navigateTo(text: string) {
-        await this.link(text).click();
+        let target = this.link(text);
+        if (await target.count() === 0 && await this.root.getAttribute('data-state') === 'maximized') {
+            await this.navbar.sidebarButton.click();
+            await expect(this.root).toHaveAttribute('data-state', 'minimized');
+            target = this.link(text);
+        }
+        await target.click();
     }
 
     async verifyPathname(expectedPath: string, toHavePath: boolean = true) {
