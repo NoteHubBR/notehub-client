@@ -16,6 +16,10 @@ export class NotePage {
     readonly passphraseInput: Locator;
     readonly passphraseError: Locator;
     readonly markdownEditor: Locator;
+    readonly settingsButton: Locator;
+    readonly configurationForm: Locator;
+    readonly commentBox: Locator;
+    readonly commentClosedMessage: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -31,6 +35,10 @@ export class NotePage {
         this.passphraseInput = this.passphraseDialog.locator('#passphrase');
         this.passphraseError = page.getByTestId('error-passphrase');
         this.markdownEditor = page.locator('.cm-content');
+        this.settingsButton = page.locator('aside header button');
+        this.configurationForm = page.locator('form').filter({ has: page.locator('#hidden') });
+        this.commentBox = page.locator('#comment-wrapper');
+        this.commentClosedMessage = this.commentBox.getByText('A nota está fechada para novas interações.');
     }
 
     async goto(username: string, name: string) {
@@ -60,6 +68,50 @@ export class NotePage {
 
     async fillMarkdown(markdown: string) {
         await this.markdownEditor.fill(markdown);
+    }
+
+    async openConfiguration() {
+        await this.settingsButton.click();
+        await expect(this.configurationForm).toBeVisible();
+    }
+
+    async setDescription(description: string) {
+        await this.configurationForm.locator('#description').fill(description);
+    }
+
+    async expectHiddenSetting(hidden: boolean) {
+        await expect(this.configurationForm.locator('#hidden')).toBeChecked({ checked: hidden });
+    }
+
+    async expectEncryptionSetting(encrypted: boolean) {
+        await expect(this.configurationForm.locator('#encrypted')).toBeChecked({ checked: encrypted });
+    }
+
+    async expectClosedSetting(closed: boolean) {
+        await expect(this.configurationForm.locator('#closed')).toBeChecked({ checked: closed });
+    }
+
+    async closeConfiguration() {
+        await this.configurationForm.getByRole('button', { name: 'Cancelar', exact: true }).click();
+        await expect(this.configurationForm).toBeHidden();
+    }
+
+    async saveConfiguration() {
+        await this.configurationForm.getByRole('button', { name: 'Salvar alteração', exact: true }).click();
+        await expect(this.configurationForm).toBeHidden();
+    }
+
+    async openDeleteConfirmation() {
+        await this.form.getByRole('button', { name: 'Menu', exact: true }).click();
+        await this.page.getByRole('menuitem', { name: 'Apagar', exact: true }).click();
+        return this.page.getByRole('dialog').filter({ hasText: 'Tem certeza de que deseja apagar esta nota?' });
+    }
+
+    async deleteAndConfirm(username: string) {
+        const dialog = await this.openDeleteConfirmation();
+        await expect(dialog).toBeVisible();
+        await dialog.getByRole('button', { name: 'Sim, apagar', exact: true }).click();
+        await expect(this.page).toHaveURL(new RegExp(`/${username}/notes$`));
     }
 
     async saveMarkdownWithShortcut(): Promise<Request> {
