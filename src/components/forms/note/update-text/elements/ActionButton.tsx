@@ -11,36 +11,42 @@ interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
 export const ActionButton = ({ skipAuthorityCheck = false, isAuthor = false, isEditing, icon: Icon, tooltip, className, children, ...rest }: ActionButtonProps) => {
 
     if (skipAuthorityCheck || isAuthor) return (
-        <button
+        <span
             className={clsx(
-                'disabled:cursor-not-allowed',
-                'group relative p-1 rounded-full',
-                'transition-colors',
-                isEditing ? 'block' : 'hidden',
-                className
+                'relative',
+                isEditing ? 'inline-flex' : 'hidden'
             )}
-            {...rest}
         >
-            <span
-                role='tooltip'
+            <button
                 className={clsx(
-                    'z-10 pointer-events-none select-none whitespace-nowrap',
-                    'absolute left-1/2 top-[150%] -translate-x-1/2',
-                    'inlg:left-auto inlg:right-0 inlg:translate-x-0',
-                    'p-2 rounded-full',
-                    'font-medium text-xs text-white',
-                    'bg-neutral-500',
-                    'opacity-0',
-                    'group-hover:opacity-100',
-                    'group-focus:opacity-0',
-                    'transition-opacity',
+                    'disabled:cursor-not-allowed',
+                    'group relative p-1 rounded-full',
+                    'transition-colors',
+                    className
                 )}
+                {...rest}
             >
-                {tooltip}
-            </span>
-            <Icon size={20} />
+                <span
+                    role='tooltip'
+                    className={clsx(
+                        'z-10 pointer-events-none select-none whitespace-nowrap',
+                        'absolute left-1/2 top-[150%] -translate-x-1/2',
+                        'inlg:left-auto inlg:right-0 inlg:translate-x-0',
+                        'p-2 rounded-full',
+                        'font-medium text-xs text-white',
+                        'bg-neutral-500',
+                        'opacity-0',
+                        'group-hover:opacity-100',
+                        'group-focus:opacity-0',
+                        'transition-opacity',
+                    )}
+                >
+                    {tooltip}
+                </span>
+                <Icon size={20} />
+            </button>
             {children}
-        </button >
+        </span>
     )
 
     return null;

@@ -422,6 +422,7 @@ export const Form = ({
                             <Menu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}>
                                 <MenuItem
                                     onClick={startEdit}
+                                    onMouseDown={(e) => e.preventDefault()}
                                     icon={IconEdit}
                                     className='dark:hover:text-secondary hover:text-primary'
                                 >
@@ -429,6 +430,7 @@ export const Form = ({
                                 </MenuItem>
                                 <MenuItem
                                     onClick={startDelete}
+                                    onMouseDown={(e) => e.preventDefault()}
                                     icon={IconTrash}
                                     className='hover:text-red-500'
                                 >
