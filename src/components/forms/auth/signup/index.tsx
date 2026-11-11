@@ -57,7 +57,7 @@ export const Form = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
                     <Element.Error field="email" />
                 </Element.Field>
                 <Element.Field>
-                    <Element.Label htmlFor="username" tooltip="O tamanho deve estar entre 2 e 12 caracteres, apenas letras, números, _ e .">Usuário</Element.Label>
+                    <Element.Label htmlFor="username" tooltip="O tamanho deve estar entre 2 e 24 caracteres.">Usuário</Element.Label>
                     <Element.Input name="username" type="text" required icon={<IconAt title="@" />} />
                     <Element.Error field="username" />
                 </Element.Field>

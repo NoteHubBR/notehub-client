@@ -27,24 +27,23 @@ test.describe('User Signup', () => {
 
     test('should display zod error for username with invalid character', async ({ page }) => {
         const registerPage = new RegisterPage(page);
-        const data = userX({ username: 'user*a' });
+        const data = userX({ username: 'usera*' });
 
         await registerPage.goto();
         await registerPage.fill(data);
         await registerPage.submit();
 
-        await registerPage.expectError('username', 'Use letras, números e _ . - como separadores.');
+        await registerPage.expectError('username', 'Apenas letras, números, ., _ ou -.');
     })
 
     test('should display zod error when passwords do not match', async ({ page }) => {
         const registerPage = new RegisterPage(page);
-        const data = userX({ username: 'user*a', repeatPassword: 'userxyz' });
+        const data = userX({ username: 'usera', repeatPassword: 'userxyz' });
 
         await registerPage.goto();
         await registerPage.fill(data);
         await registerPage.submit();
 
-        await registerPage.expectError('username', 'Use letras, números e _ . - como separadores.');
         await registerPage.expectError('repeatPassword', 'Senhas diferentes.');
     })
 

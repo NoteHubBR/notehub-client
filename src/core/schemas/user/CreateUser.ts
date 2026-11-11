@@ -1,4 +1,5 @@
 import { noForbiddenWords } from '@/core/utils';
+import { validateName } from '../utils';
 import { z } from 'zod';
 
 export const createUserFormSchema = z.object({
@@ -7,12 +8,9 @@ export const createUserFormSchema = z.object({
         .email('Email inválido.'),
     username: noForbiddenWords('Não pode')(z
         .string().trim().toLowerCase()
-        .regex(
-            /^[a-z0-9]+([._-][a-z0-9]+)*$/,
-            'Use letras, números e _ . - como separadores.'
-        )
         .min(2, 'Mínimo de 2 caracteres.')
-        .max(24, 'Máximo de 24 caracteres.')),
+        .max(24, 'Máximo de 24 caracteres.'))
+        .superRefine((value, ctx) => validateName(value, ctx)),
     displayName: noForbiddenWords('Não pode')(z
         .string().trim()
         .min(2, 'Mínimo de 2 caracteres.')

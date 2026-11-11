@@ -43,10 +43,34 @@ test.describe('New note page', () => {
         await expect(page).toHaveURL(new RegExp(`/${username}/notes$`));
     })
 
-    test('should show a validation error for an invalid title', async () => {
+    test('should show a validation error for an name that already exists', async () => {
+        await newNotePage.fill('notea');
+        await newNotePage.submit();
+        await newNotePage.expectFieldError('name', 'Nome já existe.');
+    })
+
+    test('should show a validation error for an invalid title with spaces', async () => {
+        await newNotePage.fill('note with spaces');
+        await newNotePage.submit();
+        await newNotePage.expectFieldError('name', 'Não use espaços.');
+    })
+
+    test('should show a validation error for an invalid title with symbols', async () => {
+        await newNotePage.fill('note!');
+        await newNotePage.submit();
+        await newNotePage.expectFieldError('name', 'Apenas letras, números, ., _ ou -.');
+    })
+
+    test('should show a validation error for an invalid title with symbols at the beginning and end', async () => {
         await newNotePage.fill('---');
         await newNotePage.submit();
-        await newNotePage.expectFieldError('name', 'Apenas letras, números, _ e .');
+        await newNotePage.expectFieldError('name', 'Sem símbolos no início ou fim.');
+    })
+
+    test('should show a validation error for consecutive symbols', async () => {
+        await newNotePage.fill('note..name');
+        await newNotePage.submit();
+        await newNotePage.expectFieldError('name', 'Não use símbolos consecutivos.');
     })
 
     test('should create a note with default public, open and unencrypted settings', async ({ authenticatedPage: page }) => {

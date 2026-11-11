@@ -1,4 +1,4 @@
-import { buildNameField } from './utils';
+import { buildNameField } from '../utils';
 import { User } from '@/core/models';
 import { z } from 'zod';
 
