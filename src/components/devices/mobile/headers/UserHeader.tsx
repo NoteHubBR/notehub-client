@@ -1,5 +1,5 @@
 import { Icon } from "@/components/icons";
-import { IconBell, IconSearch, IconSettings } from "@tabler/icons-react";
+import { IconBell, IconLogs, IconSearch, IconSettings } from "@tabler/icons-react";
 import { useNotifications } from "@/data/hooks";
 import NextLink, { LinkProps } from "next/link";
 
@@ -24,6 +24,7 @@ export const Header = (props: React.HTMLAttributes<HTMLElement>) => {
             {...props}
         >
             <Icon.Logo width={77} height={0} className="mr-auto" />
+            <Link href="/changelog"><IconLogs /></Link>
             <Link href="/settings"><IconSettings /></Link>
             <Link href="/m/notifications">
                 <IconBell />

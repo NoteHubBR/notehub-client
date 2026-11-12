@@ -1,3 +1,6 @@
+import { scrollTo } from '@/core';
+import Link from 'next/link';
+
 export type ReleaseEntryType = 'sec' | 'feat' | 'fix' | 'docs' | 'style' | 'refactor' | 'perf' | 'test' | 'chore';
 
 export interface ReleaseEntry {
@@ -5,7 +8,7 @@ export interface ReleaseEntry {
     pr: number;
     merged?: boolean;
     hash: string;
-    desc: string;
+    desc: React.ReactNode;
 }
 
 export interface Release {
@@ -19,6 +22,78 @@ export interface Release {
 }
 
 export const releases: Release[] = [
+    {
+        id: '21',
+        version: 'v3.7',
+        date: '10/11/26 15:59',
+        scope: 'client',
+        title: 'Novembro 10, 2026',
+        summary: 'Notas criptografadas com age-encryption',
+        entries: [
+            {
+                type: 'sec',
+                pr: 35,
+                merged: true,
+                hash: 'c5dd1aa06cfe9effa20e0f6d6d3bada7b8a7b18f',
+                desc: 'Novo sistema de criptografia de notas baseado em frase-senha. O conteúdo é criptografado e descriptografado diretamente no seu navegador, então só quem tem a frase-senha consegue ler.'
+            },
+            {
+                type: 'sec',
+                pr: 35,
+                merged: true,
+                hash: 'f93055f325613e919f98fd26efff21532baa3494',
+                desc: 'Agora é possível criptografar uma nota já na criação, definindo uma frase-senha no formulário de nova nota.'
+            },
+            {
+                type: 'sec',
+                pr: 35,
+                merged: true,
+                hash: '08282389bace32c93edb42775920985033ef4816',
+                desc: 'Notas criptografadas exigem a frase-senha para serem lidas. Qualquer pessoa com acesso à frase-senha correta pode descriptografá-la.'
+            },
+            {
+                type: 'sec',
+                pr: 35,
+                merged: true,
+                hash: '5198cfb0c1319e2e142c54d68b98264b5f6a1cbc',
+                desc: 'Adicione ou remova a criptografia de uma nota existente a qualquer momento, nas configurações da nota.'
+            },
+            {
+                type: 'feat',
+                pr: 35,
+                merged: true,
+                hash: 'a839d90600fb29a057498cbe8e80772a04fa5601',
+                desc: 'Novo atalho de teclado para descriptografar uma nota rapidamente.'
+            },
+            {
+                type: 'feat',
+                pr: 35,
+                merged: true,
+                hash: 'b134bbd31c33308be20ff72194f88b4933914704',
+                desc: (
+                    <>
+                        A página de ajuda ganhou duas novas seções:
+                        <br />
+                        <br />
+                        <Link
+                            href='/help'
+                            onClick={scrollTo('shortcuts')}
+                            className='underline dark:text-secondary text-primary'
+                        >
+                            Atalhos
+                        </Link>,
+                        <Link
+                            href='/help'
+                            onClick={scrollTo('encryptedNotes')}
+                            className='ml-1 underline dark:text-secondary text-primary'
+                        >
+                            Notas criptografadas
+                        </Link>
+                    </>
+                )
+            },
+        ]
+    },
     {
         id: '20',
         version: 'v3.6.2',
