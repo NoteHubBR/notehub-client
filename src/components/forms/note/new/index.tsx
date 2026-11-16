@@ -97,7 +97,7 @@ export const Form = ({ token, username }: { token: string; username: string; }) 
                 <Section className='gap-3'>
                     <Fieldset.Encryption />
                     <Fieldset className='p-2 pb-4 rounded-md border dark:border-middark border-midlight'>
-                        <Legend tip='*'>Visiblidade</Legend>
+                        <Legend tip='*'>Visibilidade</Legend>
                         <Input.Radio id='hiddenFalse' name='hidden' value='false' defaultChecked />
                         <Label htmlFor='hiddenFalse' icon={IconWorld} className='cursor-pointer mr-3'>Pública</Label>
                         <Input.Radio id='hiddenTrue' name='hidden' value='true' />
