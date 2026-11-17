@@ -1,19 +1,21 @@
 'use client';
 
-import { buildQueryStrings, handleFieldErrorsMsg } from "@/core";
+import { buildQueryStrings, handleFieldErrorsMsg, parseNoteParams, queryLocalNotes } from "@/core";
 import { Element } from "./elements";
 import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
 import { Section } from "../components/Section";
+import { useMemo } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { useUser, useTags, useApi } from "@/data/hooks";
+import { useUser, useTags, useNotes, useApi } from "@/data/hooks";
 
 const Page = () => {
 
     const { username } = useParams<{ username: string }>();
     const sParams = useSearchParams();
-    const query = buildQueryStrings(sParams);
+    const search = sParams.toString();
 
     const { isMounted, token, user } = useUser();
+    const { notes: currentNotes } = useNotes();
     const { tags: currentTags } = useTags();
 
     const accessToken = token ? token.access_token : null;
@@ -21,22 +23,32 @@ const Page = () => {
 
     const { noteQueries: { useFindUserTags, useFindUserNotes } } = useApi();
 
-    const { data: notesResponse, isLoading: notesLoading, isFetching: notesFetching } = useFindUserNotes(
+    const { data: remoteNotesResponse, isLoading: remoteNotesLoading, isFetching: remoteNotesFetching } = useFindUserNotes(
         accessToken,
         username,
-        query,
-        isMounted
+        buildQueryStrings(sParams),
+        isMounted && !isCurrentUser,
     )
 
-    const { data: tagsResponse, isLoading: isTagsLoading } = useFindUserTags(
+    const { data: remoteTagsResponse, isLoading: remoteTagsLoading } = useFindUserTags(
         accessToken,
         username,
-        isMounted && !isCurrentUser
+        isMounted && !isCurrentUser,
     )
 
-    const tagsLoading = isCurrentUser ? currentTags === null : isTagsLoading;
+    const localNotes = useMemo(() => {
+        if (!isCurrentUser) return null;
+        return queryLocalNotes(currentNotes, parseNoteParams(new URLSearchParams(search)));
+    }, [isCurrentUser, currentNotes, search])
 
-    const tags = isCurrentUser ? currentTags : tagsResponse ? tagsResponse.data as string[] : null;
+    const notesResponse = isCurrentUser
+        ? localNotes ? { type: 'ok' as const, data: localNotes } : null
+        : remoteNotesResponse;
+    const notesLoading = isCurrentUser ? false : remoteNotesLoading;
+    const notesFetching = isCurrentUser ? false : remoteNotesFetching;
+
+    const tags = isCurrentUser ? currentTags : remoteTagsResponse ? remoteTagsResponse.data as string[] : null;
+    const tagsLoading = isCurrentUser ? currentTags === null : remoteTagsLoading;
 
     if (notesLoading || tagsLoading) return (
         <Section className="p-4">

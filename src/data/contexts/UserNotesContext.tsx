@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useCallback, useMemo, useState } from "react";
-import { LowDetailNote, NoteUpdateFormData, Page, User } from "@/core";
+import { LowDetailNote, NoteUpdateFormData, Page, toNewDate, User } from "@/core";
 import { UUID } from "crypto";
 
 export interface UserNotesProps {
@@ -56,7 +56,7 @@ export const UserNotesProvider = (props: any) => {
 
     const updateNote = useCallback((id: UUID, data: NoteUpdateFormData) => {
         setState(prev => {
-            const updatedNotes = prev.notes.map(note => note.id === id ? { ...note, ...data } : note);
+            const updatedNotes = prev.notes.map(note => note.id === id ? { ...note, ...data, modified_at: toNewDate(new Date()) } : note);
             const idx = updatedNotes.findIndex(note => note.id === id);
             if (idx < 0) return prev;
             const [noteToMove] = updatedNotes.splice(idx, 1);
