@@ -1,24 +1,44 @@
 'use client';
 
-import { buildQueryStrings, handleFieldErrorsMsg } from "@/core";
+import { buildQueryStrings, FOLLOWING_QUERY, handleFieldErrorsMsg, queryLocal } from "@/core";
 import { Element } from "./elements";
 import { IconEyeOff, IconLock, IconUsersGroup } from "@tabler/icons-react";
 import { Section } from "../components/Section";
-import { useApi, useUser } from "@/data/hooks";
+import { useApi, useFollowing, useLoading, useUser } from "@/data/hooks";
+import { useMemo } from 'react';
 import { useParams, useSearchParams } from "next/navigation";
 
 const Page = () => {
 
     const { username } = useParams<{ username: string }>();
     const sParams = useSearchParams();
-    const query = buildQueryStrings(sParams);
+    const search = sParams.toString();
 
     const { userQueries: { useSearchUserFollowing } } = useApi();
+    const { isMounted, token, user } = useUser();
+    const { users: currentFollowing } = useFollowing();
+    const { isLoaded } = useLoading();
 
-    const { isMounted, token } = useUser();
 
-    const accessToken = token ? token.access_token : null;
-    const { data: response, isLoading, isFetching } = useSearchUserFollowing(accessToken, username, query, isMounted);
+    const isCurrentUser = user ? user.username === username : false;
+
+    const { data: remoteResponse, isLoading: remoteLoading, isFetching: remoteFetching } = useSearchUserFollowing(
+        token ? token.access_token : null,
+        username,
+        buildQueryStrings(sParams),
+        isMounted && !isCurrentUser,
+    )
+
+    const localFollowing = useMemo(() => {
+        if (!isCurrentUser) return null;
+        return queryLocal(FOLLOWING_QUERY, currentFollowing, new URLSearchParams(search));
+    }, [isCurrentUser, currentFollowing, search])
+
+    const response = isCurrentUser
+        ? localFollowing ? { type: 'ok' as const, data: localFollowing } : null
+        : remoteResponse;
+    const isLoading = isCurrentUser ? !isLoaded : remoteLoading;
+    const isFetching = isCurrentUser ? false : remoteFetching;
 
     if (isLoading) return (
         <Section className="p-4">
