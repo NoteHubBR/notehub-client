@@ -1,48 +1,18 @@
-import { LowDetailNote, Page } from "@/core";
+import { Flame, LowDetailNote, LowDetailUser, Page } from '@/core';
 
 const PAGE_SIZE = 20;
-const TYPES = ['open', 'closed', 'encrypted', 'hidden'] as const;
-const ORDERS = ['modifiedAt', 'createdAt', 'name', 'flamesCount', 'commentsCount'] as const;
 
-type NoteType = typeof TYPES[number];
-type NoteOrder = typeof ORDERS[number];
-
-interface NoteParams {
-    q: string;
-    type: NoteType | null;
-    tag: string | null;
-    order: NoteOrder;
-    sort: 'asc' | 'desc';
-    page: number;
+interface LocalQuerySpec<T, O extends string> {
+    defaultOrder: O;
+    orders: Record<O, (a: T, b: T) => number>;
+    searchText: (item: T) => string;
+    types?: Record<string, (item: T) => boolean>;
+    tag?: (item: T, tag: string) => boolean;
+    tiebreak?: (a: T, b: T) => number;
+    size?: number;
 }
 
-const TYPE_PREDICATE: Record<NoteType, (n: LowDetailNote) => boolean> = {
-    open: (n) => !n.closed,
-    closed: (n) => n.closed,
-    encrypted: (n) => n.encrypted,
-    hidden: (n) => n.hidden,
-}
-
-const ORDER_FIELD = {
-    modifiedAt: 'modified_at',
-    createdAt: 'created_at',
-    name: 'name',
-    flamesCount: 'flames_count',
-    commentsCount: 'comments_count',
-} as const satisfies Record<NoteOrder, keyof LowDetailNote>;
-
-export const parseNoteParams = (sp: URLSearchParams): NoteParams => {
-    const pick = <T extends string>(value: string | null, allowed: readonly T[]): T | null => allowed.includes(value as T) ? (value as T) : null;
-    const page = Number(sp.get('page'));
-    return {
-        q: sp.get('q')?.trim() ?? '',
-        type: pick(sp.get('type'), TYPES),
-        tag: sp.get('tag'),
-        order: pick(sp.get('order'), ORDERS) ?? 'modifiedAt',
-        sort: sp.get('sort') === 'asc' ? 'asc' : 'desc',
-        page: Number.isInteger(page) && page > 1 ? page - 1 : 0,
-    }
-}
+const has = (obj: object, key: string) => Object.prototype.hasOwnProperty.call(obj, key);
 
 const normalizeQuery = (s: string) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
 
@@ -54,42 +24,85 @@ const parseDate = (value: string): number => {
     return new Date(year, m - 1, d, h, min).getTime();
 }
 
-const compare = (a: LowDetailNote, b: LowDetailNote, field: keyof LowDetailNote): number => {
-    const DATE_FIELDS = new Set<keyof LowDetailNote>(['created_at', 'modified_at']);
-    if (field === 'name') return a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' });
-    if (DATE_FIELDS.has(field)) return parseDate(a[field] as string) - parseDate(b[field] as string);
-    return (a[field] as number) - (b[field] as number);
+const compareText = (a: string, b: string) => a.localeCompare(b, 'pt-BR', { sensitivity: 'base' });
+
+export const NOTES_QUERY: LocalQuerySpec<LowDetailNote, 'modifiedAt' | 'createdAt' | 'name' | 'flamesCount' | 'commentsCount'> = {
+    defaultOrder: 'modifiedAt',
+    orders: {
+        modifiedAt: (a, b) => parseDate(a.modified_at) - parseDate(b.modified_at),
+        createdAt: (a, b) => parseDate(a.created_at) - parseDate(b.created_at),
+        name: (a, b) => compareText(a.name, b.name),
+        flamesCount: (a, b) => a.flames_count - b.flames_count,
+        commentsCount: (a, b) => a.comments_count - b.comments_count,
+    },
+    searchText: (n) => `${n.name} ${n.description} ${n.tags.join(' ')}`,
+    types: {
+        open: (n) => !n.closed,
+        closed: (n) => n.closed,
+        encrypted: (n) => n.encrypted,
+        hidden: (n) => n.hidden,
+    },
+    tag: (n, tag) => n.tags.includes(tag),
+    tiebreak: (a, b) => parseDate(b.created_at) - parseDate(a.created_at),
 }
 
-export const queryLocalNotes = (
-    notes: LowDetailNote[],
-    params: NoteParams,
-    size: number = PAGE_SIZE
-): Page<LowDetailNote> => {
+export const FLAMES_QUERY: LocalQuerySpec<Flame, 'createdAt'> = {
+    defaultOrder: 'createdAt',
+    orders: {
+        createdAt: (a, b) => parseDate(a.created_at) - parseDate(b.created_at),
+    },
+    searchText: (f) => `${f.note.name} ${f.note.description} ${f.note.tags.join(' ')}`,
+}
 
-    const q = normalizeQuery(params.q);
-    const field = ORDER_FIELD[params.order];
-    const dir = params.sort === 'asc' ? 1 : -1;
-    const typeFn = params.type ? TYPE_PREDICATE[params.type] : null;
+export const FOLLOWING_QUERY: LocalQuerySpec<LowDetailUser, 'followersCount' | 'username'> = {
+    defaultOrder: 'followersCount',
+    orders: {
+        followersCount: (a, b) => a.followers_count - b.followers_count,
+        username: (a, b) => compareText(a.username, b.username),
+    },
+    searchText: (u) => `${u.username} ${u.display_name}`,
+    tiebreak: (a, b) => compareText(a.username, b.username),
+}
 
-    const filtered = notes
-        .filter((n) => !typeFn || typeFn(n))
-        .filter((n) => !params.tag || n.tags.includes(params.tag))
-        .filter((n) => !q || normalizeQuery(`${n.name} ${n.description} ${n.tags.join(' ')}`).includes(q))
-        .sort((a, b) => dir * compare(a, b, field) || compare(b, a, 'created_at'));
+export const queryLocal = <T, O extends string>(
+    spec: LocalQuerySpec<T, O>,
+    items: T[],
+    sp: URLSearchParams,
+): Page<T> => {
+
+    const size = spec.size ?? PAGE_SIZE;
+    const q = normalizeQuery(sp.get('q')?.trim() ?? '');
+
+    const rawOrder = sp.get('order');
+    const order = rawOrder !== null && has(spec.orders, rawOrder) ? (rawOrder as O) : spec.defaultOrder;
+    const compare = spec.orders[order];
+    const dir = sp.get('sort') === 'asc' ? 1 : -1;
+
+    const rawType = sp.get('type');
+    const typeFn = rawType !== null && spec.types && has(spec.types, rawType) ? spec.types[rawType] : null;
+    const tag = sp.get('tag');
+
+    const rawPage = Number(sp.get('page'));
+    const page = Number.isInteger(rawPage) && rawPage > 1 ? rawPage - 1 : 0;
+
+    const filtered = items
+        .filter((i) => !typeFn || typeFn(i))
+        .filter((i) => !tag || !spec.tag || spec.tag(i, tag))
+        .filter((i) => !q || normalizeQuery(spec.searchText(i)).includes(q))
+        .sort((a, b) => dir * compare(a, b) || (spec.tiebreak?.(a, b) ?? 0));
 
     const totalElements = filtered.length;
     const totalPages = Math.ceil(totalElements / size);
-    const start = params.page * size;
+    const start = page * size;
 
     return {
         content: filtered.slice(start, start + size),
         totalElements,
         totalPages,
         size,
-        page: params.page,
-        first: params.page === 0,
-        last: params.page >= totalPages - 1,
+        page,
+        first: page === 0,
+        last: page >= totalPages - 1,
     }
 
 }

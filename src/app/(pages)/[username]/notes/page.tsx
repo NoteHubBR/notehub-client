@@ -1,12 +1,12 @@
 'use client';
 
-import { buildQueryStrings, handleFieldErrorsMsg, parseNoteParams, queryLocalNotes } from "@/core";
+import { buildQueryStrings, handleFieldErrorsMsg, NOTES_QUERY, queryLocal } from "@/core";
 import { Element } from "./elements";
 import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
 import { Section } from "../components/Section";
 import { useMemo } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { useUser, useTags, useNotes, useApi } from "@/data/hooks";
+import { useUser, useTags, useNotes, useApi, useLoading } from "@/data/hooks";
 
 const Page = () => {
 
@@ -17,6 +17,7 @@ const Page = () => {
     const { isMounted, token, user } = useUser();
     const { notes: currentNotes } = useNotes();
     const { tags: currentTags } = useTags();
+    const { isLoaded } = useLoading();
 
     const accessToken = token ? token.access_token : null;
     const isCurrentUser = user ? user.username === username : false;
@@ -38,13 +39,13 @@ const Page = () => {
 
     const localNotes = useMemo(() => {
         if (!isCurrentUser) return null;
-        return queryLocalNotes(currentNotes, parseNoteParams(new URLSearchParams(search)));
+        return queryLocal(NOTES_QUERY, currentNotes, new URLSearchParams(search));
     }, [isCurrentUser, currentNotes, search])
 
     const notesResponse = isCurrentUser
         ? localNotes ? { type: 'ok' as const, data: localNotes } : null
         : remoteNotesResponse;
-    const notesLoading = isCurrentUser ? false : remoteNotesLoading;
+    const notesLoading = isCurrentUser ? !isLoaded : remoteNotesLoading;
     const notesFetching = isCurrentUser ? false : remoteNotesFetching;
 
     const tags = isCurrentUser ? currentTags : remoteTagsResponse ? remoteTagsResponse.data as string[] : null;
