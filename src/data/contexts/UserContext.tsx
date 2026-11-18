@@ -35,7 +35,7 @@ export const UserProvider = (props: any) => {
     const pathname = usePathname();
 
     const fetchingUserRef = useRef<Promise<void> | null>(null);
-    const fetchingUserDataRef = useRef<Promise<void> | null>(null);
+    const fetchingUserDataRef = useRef<{ id: string; promise: Promise<void> } | null>(null);
     const [queryClient] = useState(() => new QueryClient());
     const [state, setState] = useState({
         isMounted: false,
@@ -134,8 +134,13 @@ export const UserProvider = (props: any) => {
         clearSubscriptions();
     }
 
-    const fetchUserData = async (accessToken: string, username: string): Promise<void> => {
-        if (fetchingUserDataRef.current) return fetchingUserDataRef.current;
+    const fetchUserData = async (
+        accessToken: Token['access_token'],
+        id: User['id'],
+        username: User['username']
+    ): Promise<void> => {
+        const running = fetchingUserDataRef.current;
+        if (running && running.id === id) return running.promise; // snapshot só para o dedupe
         const promise = (async () => {
             try {
                 await clearData();
@@ -148,6 +153,7 @@ export const UserProvider = (props: any) => {
                     await findUserTags(accessToken, username),
                     await getUserSubscriptions(accessToken)
                 ])
+                if (fetchingUserDataRef.current && fetchingUserDataRef.current.id !== id) return;
                 setIdentities(identities);
                 setHistory(history);
                 setFollowing(following);
@@ -155,12 +161,14 @@ export const UserProvider = (props: any) => {
                 setFlames(flames);
                 setTags(tags);
                 setSubscriptions(subscriptions);
-                return;
             } finally {
-                setIsLoaded(true);
+                if (fetchingUserDataRef.current?.id === id) {
+                    fetchingUserDataRef.current = null;
+                    setIsLoaded(true);
+                }
             }
         })()
-        fetchingUserDataRef.current = promise;
+        fetchingUserDataRef.current = { id, promise };
         return promise;
     }
 
@@ -174,14 +182,13 @@ export const UserProvider = (props: any) => {
         if (isStoreReady && isDraftsReady) init().finally(() => setState((prev) => ({ ...prev, isMounted: true })));
     }, [isStoreReady, pathname])
 
+    const uId = state.user ? state.user.id : null;
+
     useEffect(() => {
-        const fetchData = async () => {
-            const { token, user } = state;
-            if (!token || !user) return;
-            await fetchUserData(token.access_token, user.username);
-        }
-        fetchData();
-    }, [state.user])
+        const { token, user } = state;
+        if (!token || !user) return;
+        fetchUserData(token.access_token, user.id, user.username);
+    }, [uId])
 
     return (
         <UserContext.Provider value={{
