@@ -22,7 +22,7 @@ export const Follow = ({ user, size = 20, useIcon, useText, className, ...rest }
     const { token, user: current } = useUser();
     const { users, setNewFollowing, removeFollowing } = useFollowing();
 
-    const isFollowing = users.some((u) => u.username === user.username);
+    const isFollowing = users ? users.some((u) => u.username === user.username) : false;
 
     const [hovering, setHovering] = useState<boolean>(false);
     const [requesting, setRequesting] = useState<boolean>(false);
@@ -66,6 +66,7 @@ export const Follow = ({ user, size = 20, useIcon, useText, className, ...rest }
 
     const HTMLButton = ({ className, ...rest }: { className?: string } & React.HTMLAttributes<HTMLButtonElement>) => (
         <button
+            disabled={users === null}
             className={clsx(
                 'w-full m-auto py-2',
                 useText && useIcon

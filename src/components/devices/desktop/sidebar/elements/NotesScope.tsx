@@ -10,7 +10,7 @@ export const NotesScope = () => {
 
     const { notes } = useNotes();
 
-    const sliced = notes.slice(0, 6);
+    const sliced = notes ? notes.slice(0, 6) : [];
 
     const [state, setState] = useState({
         list: [] as LowDetailNote[],
@@ -19,18 +19,18 @@ export const NotesScope = () => {
 
     const { list, isSearching } = state;
 
-    const isExpanded = list.length === notes.length;
+    const isExpanded = notes ? list.length === notes.length : true;
 
     const toggleList = useCallback(() => {
         setState((prev) => ({
             ...prev,
-            list: isExpanded ? sliced : notes,
+            list: isExpanded ? sliced : (notes ?? []),
         }));
     }, [isExpanded, notes, sliced]);
 
     const findBy = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const query = e.target.value;
-        const filtered = new Filter().findNotes(query, notes);
+        const filtered = new Filter().findNotes(query, notes ?? []);
         setState({
             isSearching: query.length > 0,
             list: query.length < 1 ? sliced : filtered,
@@ -53,7 +53,7 @@ export const NotesScope = () => {
                     </li>
                 )}
             </ul>
-            {!isSearching && notes.length > sliced.length &&
+            {!isSearching && ((notes ? notes.length : 0) > sliced.length) &&
                 <Button
                     className="w-fit flex items-center gap-3 py-1 cursor-pointer hover:text-secondary transition-colors"
                     text={isExpanded ? "Mostrar menos" : "Mostrar mais"}

@@ -11,14 +11,14 @@ export const FollowingScope = () => {
 
     const { users: following } = useFollowing();
 
-    const sliced = following.slice(0, 6);
+    const sliced = following ? following.slice(0, 6) : [];
 
     const [listState, setListState] = useState<LowDetailUser[]>(sliced);
 
-    const isExpanded = listState.length === following.length;
+    const isExpanded = following ? listState.length === following.length : true;
 
     const toggleList = useCallback(() => {
-        setListState(isExpanded ? sliced : following);
+        setListState(isExpanded ? sliced : (following ?? []));
     }, [following, sliced, isExpanded]);
 
     useEffect(() => { setListState(sliced) }, [following]);
@@ -38,7 +38,7 @@ export const FollowingScope = () => {
                     </li>
                 ))}
             </ul>
-            {following.length > sliced.length && (
+            {(following ? following.length : 0) > sliced.length && (
                 <div className={clsx(
                     'cursor-pointer',
                     'rounded-md',

@@ -21,7 +21,7 @@ export const Flame = ({ size = 24, note, useCount, ...rest }: FlameProps) => {
     const { token, user } = useUser();
     const { flames, setNewFlame, removeFlame } = useFlames();
 
-    const inFlames = flames.some((f => f.note.id === note.id));
+    const inFlames = flames ? flames.some((f => f.note.id === note.id)) : false;
 
     const [count, setCount] = useState<number>(note.flames_count);
     const [hovering, setHovering] = useState<boolean>(false);
@@ -61,6 +61,7 @@ export const Flame = ({ size = 24, note, useCount, ...rest }: FlameProps) => {
 
     const Button = ({ className, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
         <button
+            disabled={flames === null}
             className={clsx(
                 'group',
                 'p-1 rounded-full',
