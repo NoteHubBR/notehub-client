@@ -4,7 +4,7 @@ import { buildQueryStrings, FOLLOWING_QUERY, handleFieldErrorsMsg, queryLocal } 
 import { Element } from "./elements";
 import { IconEyeOff, IconLock, IconUsersGroup } from "@tabler/icons-react";
 import { Section } from "../components/Section";
-import { useApi, useFollowing, useLoading, useUser } from "@/data/hooks";
+import { useApi, useFollowing, useUser } from "@/data/hooks";
 import { useMemo } from 'react';
 import { useParams, useSearchParams } from "next/navigation";
 
@@ -17,7 +17,6 @@ const Page = () => {
     const { userQueries: { useSearchUserFollowing } } = useApi();
     const { isMounted, token, user } = useUser();
     const { users: currentFollowing } = useFollowing();
-    const { isLoaded } = useLoading();
 
 
     const isCurrentUser = user ? user.username === username : false;
@@ -30,14 +29,14 @@ const Page = () => {
     )
 
     const localFollowing = useMemo(() => {
-        if (!isCurrentUser) return null;
+        if (!isCurrentUser || !currentFollowing) return null;
         return queryLocal(FOLLOWING_QUERY, currentFollowing, new URLSearchParams(search));
     }, [isCurrentUser, currentFollowing, search])
 
     const response = isCurrentUser
         ? localFollowing ? { type: 'ok' as const, data: localFollowing } : null
         : remoteResponse;
-    const isLoading = isCurrentUser ? !isLoaded : remoteLoading;
+    const isLoading = isCurrentUser ? currentFollowing === null : remoteLoading;
     const isFetching = isCurrentUser ? false : remoteFetching;
 
     if (isLoading) return (

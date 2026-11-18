@@ -4,7 +4,7 @@ import { buildQueryStrings, FLAMES_QUERY, handleFieldErrorsMsg, queryLocal } fro
 import { Element } from "./elements";
 import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
 import { Section } from "../components/Section";
-import { useApi, useFlames, useLoading, useUser } from "@/data/hooks";
+import { useApi, useFlames, useUser } from "@/data/hooks";
 import { useMemo } from 'react';
 import { useParams, useSearchParams } from "next/navigation";
 
@@ -18,7 +18,6 @@ const Page = () => {
 
     const { isMounted, token, user } = useUser();
     const { flames: currentFlames } = useFlames();
-    const { isLoaded } = useLoading();
 
     const isCurrentUser = user ? user.username === username : false;
 
@@ -30,14 +29,14 @@ const Page = () => {
     )
 
     const localFlames = useMemo(() => {
-        if (!isCurrentUser) return null;
+        if (!isCurrentUser || !currentFlames) return null;
         return queryLocal(FLAMES_QUERY, currentFlames, new URLSearchParams(search));
     }, [isCurrentUser, currentFlames, search])
 
     const response = isCurrentUser
         ? localFlames ? { type: 'ok' as const, data: localFlames } : null
         : remoteResponse;
-    const isLoading = isCurrentUser ? !isLoaded : remoteLoading;
+    const isLoading = isCurrentUser ? currentFlames === null : remoteLoading;
     const isFetching = isCurrentUser ? false : remoteFetching;
 
     if (isLoading) return (
