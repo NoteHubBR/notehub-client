@@ -135,7 +135,7 @@ export const Form = ({
     }
 
     const onSubmit = async (data: NoteTextUpdateFormData): Promise<void> => {
-        if (token) {
+        if (token && note.user) {
             if (note.encrypted) if (isLocked) return startDecryption();
             setIsPending(true);
             const currentSecret = secret;
@@ -150,8 +150,8 @@ export const Form = ({
                 setOnEdition(false);
                 setIsPreviewing(false);
                 setNoteToFirst(note.id);
-                if (note.user) removeDraft('notes', note.id, note.user.username);
-                return await qc.invalidateQueries({ queryKey: ['note', token.access_token, note.id] });
+                removeDraft('notes', note.id, note.user.username);
+                return await qc.invalidateQueries({ queryKey: ['note', token.access_token, note.user.username, note.name] });
             } finally {
                 setIsPending(false);
             }
