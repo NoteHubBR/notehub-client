@@ -1,28 +1,43 @@
 'use client';
 
-import { buildQueryStrings, handleFieldErrorsMsg } from "@/core";
+import { buildQueryStrings, FLAMES_QUERY, handleFieldErrorsMsg, queryLocal } from "@/core";
 import { Element } from "./elements";
 import { IconEyeOff, IconLock, IconNotesOff } from "@tabler/icons-react";
 import { Section } from "../components/Section";
-import { useApi, useUser } from "@/data/hooks";
+import { useApi, useFlames, useUser } from "@/data/hooks";
+import { useMemo } from 'react';
 import { useParams, useSearchParams } from "next/navigation";
 
 const Page = () => {
 
     const { username } = useParams<{ username: string }>();
     const sParams = useSearchParams();
-    const query = buildQueryStrings(sParams, 'createdAt');
+    const search = sParams.toString();
 
     const { flameQueries: { useSearchUserFlames } } = useApi();
 
-    const { isMounted, token } = useUser();
+    const { isMounted, token, user } = useUser();
+    const { flames: currentFlames } = useFlames();
 
-    const { data: response, isLoading, isFetching } = useSearchUserFlames(
+    const isCurrentUser = user ? user.username === username : false;
+
+    const { data: remoteResponse, isLoading: remoteLoading, isFetching: remoteFetching } = useSearchUserFlames(
         token ? token.access_token : null,
         username,
-        query,
-        isMounted
+        buildQueryStrings(sParams, 'createdAt'),
+        isMounted && !isCurrentUser,
     )
+
+    const localFlames = useMemo(() => {
+        if (!isCurrentUser || !currentFlames) return null;
+        return queryLocal(FLAMES_QUERY, currentFlames, new URLSearchParams(search));
+    }, [isCurrentUser, currentFlames, search])
+
+    const response = isCurrentUser
+        ? localFlames ? { type: 'ok' as const, data: localFlames } : null
+        : remoteResponse;
+    const isLoading = isCurrentUser ? currentFlames === null : remoteLoading;
+    const isFetching = isCurrentUser ? false : remoteFetching;
 
     if (isLoading) return (
         <Section className="p-4">

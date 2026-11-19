@@ -5,46 +5,54 @@ import { Flame, LowDetailNote, Note, Page } from "@/core";
 
 interface UserFlamesProps {
     page: Omit<Page<Flame>, 'content'>;
-    flames: Flame[] | [];
+    flames: null | Flame[];
     clearFlames: () => void;
     setFlames: (page: Page<Flame>) => void;
     setNewFlame: (flame: Flame) => void;
     removeFlame: (note: Note | LowDetailNote) => void;
 }
 
-const UserFlamesContext = createContext<UserFlamesProps>({} as any);
+interface State {
+    page: Omit<Page<Flame>, 'content'>;
+    flames: null | Flame[];
+}
 
-export const UserFlamesProvider = (props: any) => {
+const initialState: State = {
+    page: {} as State['page'],
+    flames: null,
+}
 
-    const initialState = {
-        page: {} as Omit<Page<Flame>, 'content'>,
-        flames: [] as Flame[]
-    }
+const UserFlamesContext = createContext<UserFlamesProps>({} as UserFlamesProps);
+
+export const UserFlamesProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [state, setState] = useState(initialState);
 
-    const clear = useCallback((): void => { return setState(initialState) }, []);
+    const clear = useCallback((): void => setState(initialState), []);
 
     const setter = useCallback((page: Page<Flame>): void => {
         const { content, ...rest } = page;
-        return setState((prev) => ({
+        setState((prev) => ({
             page: rest,
-            flames: [...prev.flames, ...content]
+            flames: [...(prev.flames ?? []), ...content],
         }))
     }, [])
 
     const setNewFlame = useCallback((flame: Flame) => {
-        return setState((prev) => ({
+        setState((prev) => ({
             page: prev.page,
-            flames: [flame, ...prev.flames]
+            flames: [flame, ...(prev.flames ?? [])],
         }))
     }, [])
 
     const remove = useCallback((note: Note | LowDetailNote) => {
-        return setState((prev) => ({
-            page: prev.page,
-            flames: prev.flames.filter((f) => f.note.id !== note.id)
-        }))
+        return setState((prev) => {
+            if (!prev.flames) return prev;
+            return {
+                page: prev.page,
+                flames: prev.flames.filter((f) => f.note.id !== note.id),
+            }
+        })
     }, [])
 
     return (
@@ -54,9 +62,9 @@ export const UserFlamesProvider = (props: any) => {
             clearFlames: clear,
             setFlames: setter,
             setNewFlame: setNewFlame,
-            removeFlame: remove
+            removeFlame: remove,
         }}>
-            {props.children}
+            {children}
         </UserFlamesContext.Provider>
     )
 

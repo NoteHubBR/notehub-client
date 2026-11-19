@@ -38,6 +38,7 @@ export const UserTagsProvider = (props: any) => {
     const removeTags = useCallback((tags: string[]): void => {
         setState(prev => {
             if (prev.tags === null) return prev;
+            if (notes === null) return prev;
             const tagCount = new Map<string, number>();
             notes.forEach(note => {
                 note.tags.forEach(tag => {

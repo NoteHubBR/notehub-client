@@ -108,3 +108,8 @@ export function toISODate(dateString: string): string {
     const fullYear = 2000 + year;
     return `${fullYear}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`;
 }
+
+export const toNewDate = (date: Date): string => {
+    const p = (n: number) => String(n).padStart(2, '0');
+    return `${date.getDate()}/${date.getMonth() + 1}/${String(date.getFullYear()).slice(-2)} ${p(date.getHours())}:${p(date.getMinutes())}`;
+}
