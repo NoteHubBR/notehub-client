@@ -166,7 +166,7 @@ const Page = () => {
                                 setSecret={setSecret}
                                 note={note}
                                 setNote={setNote}
-                                plaintext={plaintext as string}
+                                plaintext={plaintext ?? ''}
                             />
                         </Template.Portal>
                         {pipWindow
