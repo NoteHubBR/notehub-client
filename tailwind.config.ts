@@ -91,6 +91,12 @@ const config: Config = {
         'background-spin': 'background-spin 3s linear infinite',
         'shiny': 'shiny 2211ms linear infinite',
       },
+      backgroundImage: {
+        'encrypted-dark': `radial-gradient(ellipse 111px 1px at 50% 100%, rgb(var(--primary)), ${colors.neutral[800]})`,
+        'encrypted': `radial-gradient(ellipse 111px 1px at 50% 100%, rgb(var(--secondary)), ${colors.neutral[200]})`,
+        'hidden-dark': `radial-gradient(ellipse 111px 1px at 50% 100%, rgb(var(--inverted)), ${colors.neutral[800]})`,
+        'hidden': `radial-gradient(ellipse 111px 1px at 50% 100%, rgb(var(--inverted)), ${colors.neutral[200]})`,
+      },
     },
   },
   plugins: [
