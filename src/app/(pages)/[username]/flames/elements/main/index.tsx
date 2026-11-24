@@ -17,9 +17,10 @@ export const Main = ({ flames, ...rest }: MainProps) => {
     return (
         <main className="my-4 flex flex-1 flex-col gap-3" {...rest}>
             {flames.map((flame) => (
-                <Section key={flame.note.id}>
-                    <article className="w-full flex flex-col gap-3">
-                        <header className="relative pl-14 flex flex-col gap-1">
+                <Section key={flame.note.id} note={flame.note}>
+                    <article className="relative w-full flex flex-col gap-3">
+                        <Status note={flame.note} />
+                        <header className="pl-14 flex flex-col gap-1">
                             <Photo user={flame.note.user} size={44} className="absolute top-0 left-0" />
                             <PlainText className={`flex gap-1 ${!flame.note.user && 'line-through'}`}>
                                 {flame.note.user && (
@@ -30,9 +31,8 @@ export const Main = ({ flames, ...rest }: MainProps) => {
                                 {flame.note.user ? flame.note.user.display_name : 'Deletado'}
                             </PlainText>
                             <Time flame={flame} />
-                            <Status note={flame.note} />
                         </header>
-                        <main className="-mt-1 pl-14 insm:pl-0 flex flex-col gap-1">
+                        <main className="relative z-20 -mt-1 pl-14 insm:pl-0 flex flex-col gap-1">
                             <Title note={flame.note} />
                             {flame.note.description && <PlainText className="text-sm">{flame.note.description}</PlainText>}
                             {flame.note.tags.length > 0 &&
