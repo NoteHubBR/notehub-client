@@ -1,12 +1,23 @@
-import { clsx } from "clsx";
+import { clsx } from 'clsx';
+import { LowDetailNote } from '@/core';
 
-export const Section = ({ className, ...rest }: React.HTMLAttributes<HTMLElement>) => (
+interface Props extends React.HTMLAttributes<HTMLElement> {
+    note: LowDetailNote
+}
+
+export const Section = ({ note, className, ...rest }: Props) => (
     <section
         className={clsx(
             'p-3',
             'border dark:border-light/10 border-dark/10',
             'flex items-start rounded-lg',
-            'dark:bg-dark bg-light',
+            note.encrypted || note.hidden
+                ? note.encrypted && note.hidden
+                    ? 'dark:bg-darker bg-lighter'
+                    : note.encrypted
+                        ? 'dark:bg-encrypted-dark bg-encrypted'
+                        : 'dark:bg-hidden-dark bg-hidden'
+                : 'dark:bg-dark bg-light',
             className
         )}
         {...rest}

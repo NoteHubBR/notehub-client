@@ -17,9 +17,10 @@ export const Main = ({ notes, ...rest }: MainProps) => {
     return (
         <main className="my-4 flex flex-1 flex-col gap-3" {...rest}>
             {notes.map((note) => (
-                <Section key={note.id}>
-                    <article className="w-full flex flex-col gap-3">
-                        <header className="relative pl-14 flex flex-col gap-1">
+                <Section key={note.id} note={note}>
+                    <article className="relative w-full flex flex-col gap-3">
+                        <Status note={note} />
+                        <header className="pl-14 flex flex-col gap-1">
                             <Photo user={note.user} size={44} className="absolute top-0 left-0" />
                             <PlainText className={`flex gap-1 ${!note.user && 'line-through'}`}>
                                 {note.user && (
@@ -30,9 +31,8 @@ export const Main = ({ notes, ...rest }: MainProps) => {
                                 {note.user ? note.user.display_name : 'Deletado'}
                             </PlainText>
                             <Time note={note} />
-                            <Status note={note} />
                         </header>
-                        <main className="-mt-1 pl-14 insm:pl-0 flex flex-col gap-1">
+                        <main className="relative z-20 -mt-1 pl-14 insm:pl-0 flex flex-col gap-1">
                             <Title note={note} />
                             {note.description && <PlainText className="text-sm">{note.description}</PlainText>}
                             {note.tags.length > 0 &&
