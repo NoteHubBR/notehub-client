@@ -7,7 +7,7 @@ const Span = ({ children, className, ...rest }: React.HTMLAttributes<HTMLSpanEle
         {...rest}
         className={clsx(
             'z-10 center',
-            'inmd:left-auto inmd:-right-1 inmd:top-4',
+            'inmd:translate-x-0 inmd:translate-y-0 inmd:left-auto inmd:right-6 inmd:top-3',
             'dark:text-middark text-midlight',
             className
         )}
@@ -19,19 +19,19 @@ const Span = ({ children, className, ...rest }: React.HTMLAttributes<HTMLSpanEle
 export const Status = ({ note, className, ...rest }: { note: LowDetailNote; } & React.HTMLAttributes<HTMLSpanElement>) => {
 
     if (note.encrypted && note.hidden) return (
-        <Span className={className} {...rest}>
+        <Span {...rest}>
             <IconEyeDotted size={36} data-testid='note-status-encrypted-and-hidden' />
         </Span>
     )
 
     if (note.encrypted) return (
-        <Span className={className} {...rest}>
+        <Span {...rest}>
             <IconEyeKey size={36} data-testid='note-status-encrypted' />
         </Span>
     )
 
     if (note.hidden) return (
-        <Span className={className} {...rest}>
+        <Span {...rest}>
             <IconEyeX size={36} data-testid='note-status-hidden' />
         </Span>
     )

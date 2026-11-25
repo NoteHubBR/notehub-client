@@ -12,16 +12,16 @@ export { Skeleton as main } from './skeleton';
 
 export const Main = ({ flames, ...rest }: MainProps) => {
 
-    const { Section, PlainText, Time, Status, Title, Tags, Tag, Comments } = Element;
+    const { Section, Article, PlainText, Time, Status, Title, Tags, Tag, Comments } = Element;
 
     return (
         <main className="my-4 flex flex-1 flex-col gap-3" {...rest}>
             {flames.map((flame) => (
                 <Section key={flame.note.id} note={flame.note}>
-                    <article className="relative w-full flex flex-col gap-3">
+                    <Article note={flame.note}>
                         <Status note={flame.note} />
                         <header className="pl-14 flex flex-col gap-1">
-                            <Photo user={flame.note.user} size={44} className="absolute top-0 left-0" />
+                            <Photo user={flame.note.user} size={44} className="absolute top-3 left-3" />
                             <PlainText className={`flex gap-1 ${!flame.note.user && 'line-through'}`}>
                                 {flame.note.user && (
                                     flame.note.user.dev
@@ -47,7 +47,7 @@ export const Main = ({ flames, ...rest }: MainProps) => {
                             <Comments note={flame.note} />
                             <Toggle.Flame size={20} note={flame.note} useCount />
                         </footer>
-                    </article>
+                    </Article>
                 </Section>
             ))}
         </main>

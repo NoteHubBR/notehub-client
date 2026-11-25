@@ -12,16 +12,16 @@ export { Skeleton as main } from './skeleton';
 
 export const Main = ({ notes, ...rest }: MainProps) => {
 
-    const { Section, PlainText, Time, Status, Title, Tags, Tag, Comments } = Element;
+    const { Section, Article, PlainText, Time, Status, Title, Tags, Tag, Comments } = Element;
 
     return (
         <main className="my-4 flex flex-1 flex-col gap-3" {...rest}>
             {notes.map((note) => (
                 <Section key={note.id} note={note}>
-                    <article className="relative w-full flex flex-col gap-3">
+                    <Article note={note}>
                         <Status note={note} />
                         <header className="pl-14 flex flex-col gap-1">
-                            <Photo user={note.user} size={44} className="absolute top-0 left-0" />
+                            <Photo user={note.user} size={44} className="absolute top-3 left-3" />
                             <PlainText className={`flex gap-1 ${!note.user && 'line-through'}`}>
                                 {note.user && (
                                     note.user.dev
@@ -47,7 +47,7 @@ export const Main = ({ notes, ...rest }: MainProps) => {
                             <Comments note={note} />
                             <Toggle.Flame size={20} note={note} useCount />
                         </footer>
-                    </article>
+                    </Article>
                 </Section>
             ))}
         </main>

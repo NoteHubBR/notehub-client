@@ -7,7 +7,7 @@ const Span = ({ children, className, ...rest }: React.HTMLAttributes<HTMLSpanEle
         {...rest}
         className={clsx(
             'z-10 center',
-            'inmd:left-auto inmd:-right-1 inmd:top-4',
+            'inmd:translate-x-0 inmd:translate-y-0 inmd:left-auto inmd:right-6 inmd:top-3',
             'dark:text-middark text-midlight',
             className
         )}

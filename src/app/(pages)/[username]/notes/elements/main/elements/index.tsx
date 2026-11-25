@@ -1,3 +1,4 @@
+import { Article } from './Article';
 import { Comments } from "./Comments";
 import { PlainText } from "./PlainText";
 import { Section } from "./Section";
@@ -7,4 +8,14 @@ import { Tags } from "./Tags";
 import { Time } from "./Time";
 import { Title } from "./Title";
 
-export const Element = { Section, PlainText, Time, Status, Title, Tags, Tag, Comments };
+export const Element = {
+    Article,
+    Comments,
+    PlainText,
+    Section,
+    Status,
+    Tag,
+    Tags,
+    Time,
+    Title,
+}
