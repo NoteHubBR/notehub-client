@@ -14,6 +14,7 @@ export class UserNotesPage extends SearchableListPage {
     readonly noteFlamesCount: Locator;
     readonly hiddenStatusIcons: Locator;
     readonly encryptedStatusIcons: Locator;
+    readonly ghostStatusIcons: Locator;
     readonly noteTags: Locator;
     readonly noteCommentsLabel: Locator;
 
@@ -61,8 +62,9 @@ export class UserNotesPage extends SearchableListPage {
         this.noteArticles = page.locator('article');
         this.noteCommentsCount = page.getByTestId('comment-count');
         this.noteFlamesCount = page.getByTestId('flame-count');
-        this.hiddenStatusIcons = page.getByTestId('note-status-hidden');
-        this.encryptedStatusIcons = page.getByTestId('note-status-encrypted');
+        this.hiddenStatusIcons = this.noteArticles.getByTestId('note-status-hidden');
+        this.encryptedStatusIcons = this.noteArticles.getByTestId('note-status-encrypted');
+        this.ghostStatusIcons = this.noteArticles.getByTestId('note-status-encrypted-and-hidden');
         this.noteTags = page.locator('article nav ul li a');
         this.noteCommentsLabel = page.locator('footer a');
     }

@@ -1,6 +1,6 @@
 import { Flame, LowDetailNote, LowDetailUser, Page } from '@/core';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 25;
 
 interface LocalQuerySpec<T, O extends string> {
     defaultOrder: O;
@@ -37,10 +37,10 @@ export const NOTES_QUERY: LocalQuerySpec<LowDetailNote, 'modifiedAt' | 'createdA
     },
     searchText: (n) => `${n.name} ${n.description} ${n.tags.join(' ')}`,
     types: {
-        open: (n) => !n.closed,
-        closed: (n) => n.closed,
-        encrypted: (n) => n.encrypted,
-        hidden: (n) => n.hidden,
+        open: (n) => !n.encrypted && !n.hidden,
+        encrypted: (n) => n.encrypted && !n.hidden,
+        hidden: (n) => n.hidden && !n.encrypted,
+        ghost: (n) => n.encrypted && n.hidden,
     },
     tag: (n, tag) => n.tags.includes(tag),
     tiebreak: (a, b) => parseDate(b.created_at) - parseDate(a.created_at),

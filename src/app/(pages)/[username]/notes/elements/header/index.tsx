@@ -53,11 +53,11 @@ export const Header = ({ tags, ...rest }: HeaderProps) => {
                         >
                             <Element.Summary ref={closeTypeRef} dataTestId="close-type-menu" summary="Selecione o tipo" />
                             <ul className="flex flex-col">
-                                <Element.Option sParam="type" value={[null]} text="todos" data-testid="option-type-all" />
-                                <Element.Option sParam="type" value={["open"]} text="aberta" data-testid="option-type-open" />
-                                <Element.Option sParam="type" value={["closed"]} text="fechada" data-testid="option-type-closed" />
-                                <Element.Option sParam="type" value={["encrypted"]} text="criptografada" data-testid="option-type-encrypted" />
-                                {current && <Element.Option sParam="type" value={["hidden"]} text="oculta" data-testid="option-type-hidden" />}
+                                {current && <Element.Option sParam="type" value={[null]} text="Todas" data-testid="option-type-all" />}
+                                <Element.Option sParam="type" value={current ? ["open"] : [null]} text="Abertas" data-testid="option-type-open" />
+                                <Element.Option sParam="type" value={["encrypted"]} text="criptografadas" data-testid="option-type-encrypted" />
+                                {current && <Element.Option sParam="type" value={["hidden"]} text="ocultas" data-testid="option-type-hidden" />}
+                                {current && <Element.Option sParam="type" value={["ghost"]} text="fantasmas" data-testid="option-type-ghost" />}
                             </ul>
                         </Element.Dropdown>
                     </Element.Select>

@@ -140,7 +140,7 @@ export const UserProvider = (props: any) => {
         username: User['username']
     ): Promise<void> => {
         const running = fetchingUserDataRef.current;
-        if (running && running.id === id) return running.promise; // snapshot só para o dedupe
+        if (running && running.id === id) return running.promise;
         const promise = (async () => {
             try {
                 await clearData();
@@ -149,7 +149,7 @@ export const UserProvider = (props: any) => {
                     await getUserDisplayNameHistory(username),
                     await searchUserFollowing(accessToken, username, 'sort=username,asc&size=9999'),
                     await getUserNotes(accessToken),
-                    await getUserFlames(accessToken, username, 'size=9999'),
+                    await getUserFlames(accessToken),
                     await findUserTags(accessToken, username),
                     await getUserSubscriptions(accessToken)
                 ])

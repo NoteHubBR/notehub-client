@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 
 type MapValueFn = (raw: string) => string | null;
 
@@ -41,6 +41,8 @@ export class FilterDropdown {
         if (await this.selectButton.getAttribute('aria-expanded') !== 'true') {
             await this.selectButton.click();
         }
+        await expect(this.selectButton).toHaveAttribute('aria-expanded', 'true');
+        await expect(this.menu).toHaveAttribute('aria-hidden', 'false');
     }
 
     async close() {
@@ -48,7 +50,7 @@ export class FilterDropdown {
     }
 
     getOption(testId: string): Locator {
-        return this.options.and(this.page.getByTestId(testId));
+        return this.menu.getByTestId(testId);
     }
 
     async getOptionsTexts(): Promise<string[]> {
@@ -56,15 +58,18 @@ export class FilterDropdown {
     }
 
     async testAllOptions(expectParams: (expected: Record<string, string | null>) => Promise<void>) {
-        const count = await this.options.count();
-        for (let i = 0; i < count; i++) {
+        const testIds = await this.options.evaluateAll((options) =>
+            options.map((option) => option.getAttribute('data-testid')).filter((id): id is string => id !== null)
+        );
+        for (const testId of testIds) {
             await this.open();
-            const option = this.options.nth(i);
-            const testId = await option.getAttribute('data-testid');
+            const option = this.getOption(testId);
             const raw = testId?.replace(this.testIdPrefix, '') ?? '';
             const paramValue = this.mapValue(raw);
             await option.click();
             await expectParams({ [this.paramName]: paramValue });
+            await this.page.keyboard.press('Escape');
+            await expect(this.menu).toHaveAttribute('aria-hidden', 'true');
         }
     }
 

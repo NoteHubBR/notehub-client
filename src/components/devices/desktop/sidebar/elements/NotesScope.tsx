@@ -48,6 +48,7 @@ export const NotesScope = () => {
                         <Link
                             href={note.user ? `/${note.user.username}/${note.name}` : `/${note.full_name}`}
                             icon={<Photo user={note.user} />}
+                            useBlur={note.hidden}
                             text={note.name}
                         />
                     </li>

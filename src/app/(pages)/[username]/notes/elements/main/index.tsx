@@ -12,15 +12,16 @@ export { Skeleton as main } from './skeleton';
 
 export const Main = ({ notes, ...rest }: MainProps) => {
 
-    const { Section, PlainText, Time, Status, Title, Tags, Tag, Comments } = Element;
+    const { Section, Article, PlainText, Time, Status, Title, Tags, Tag, Comments } = Element;
 
     return (
         <main className="my-4 flex flex-1 flex-col gap-3" {...rest}>
             {notes.map((note) => (
-                <Section key={note.id}>
-                    <article className="w-full flex flex-col gap-3">
-                        <header className="relative pl-14 flex flex-col gap-1">
-                            <Photo user={note.user} size={44} className="absolute top-0 left-0" />
+                <Section key={note.id} note={note}>
+                    <Article note={note}>
+                        <Status note={note} />
+                        <header className="pl-14 flex flex-col gap-1">
+                            <Photo user={note.user} size={44} className="absolute top-3 left-3" />
                             <PlainText className={`flex gap-1 ${!note.user && 'line-through'}`}>
                                 {note.user && (
                                     note.user.dev
@@ -30,9 +31,8 @@ export const Main = ({ notes, ...rest }: MainProps) => {
                                 {note.user ? note.user.display_name : 'Deletado'}
                             </PlainText>
                             <Time note={note} />
-                            <Status note={note} />
                         </header>
-                        <main className="-mt-1 pl-14 insm:pl-0 flex flex-col gap-1">
+                        <main className="relative z-20 -mt-1 pl-14 insm:pl-0 flex flex-col gap-1">
                             <Title note={note} />
                             {note.description && <PlainText className="text-sm">{note.description}</PlainText>}
                             {note.tags.length > 0 &&
@@ -47,7 +47,7 @@ export const Main = ({ notes, ...rest }: MainProps) => {
                             <Comments note={note} />
                             <Toggle.Flame size={20} note={note} useCount />
                         </footer>
-                    </article>
+                    </Article>
                 </Section>
             ))}
         </main>

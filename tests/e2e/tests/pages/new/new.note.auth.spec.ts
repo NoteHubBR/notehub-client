@@ -1,5 +1,5 @@
 import { expect, test } from '@e2e/fixtures/auth';
-import { NewNotePage, NotePage } from '@e2e/pages';
+import { NewNotePage, NotePage, UserNotesPage } from '@e2e/pages';
 import { randomUUID } from 'crypto';
 import { seedUsers } from '@e2e/fixtures/seeds';
 
@@ -195,6 +195,26 @@ test.describe('New note page', () => {
         await notePage.closeConfiguration();
         await notePage.deleteAndConfirm(username);
         createdNote = null;
+    })
+
+    test('should classify a hidden encrypted note as a ghost', async ({ authenticatedPage: page }) => {
+        const name = title();
+        createdNote = { name, encrypted: true, passphrase };
+        await newNotePage.fill(name, { encrypted: true, hidden: true, passphrase });
+        await newNotePage.submit();
+        await newNotePage.expectCreated(username, name);
+        await expect(notePage.decryptButton).toBeVisible();
+        await expect(page.getByRole('button', { name: 'Inflamar' })).toBeVisible();
+
+        const notesPage = new UserNotesPage(page);
+        await page.goto(`/${username}/notes`);
+        await notesPage.typeFilter.open();
+        await notesPage.typeFilter.getOption('option-type-ghost').click();
+        const ghostNote = notesPage.noteArticle(name);
+        await expect(ghostNote).toBeVisible();
+        await expect(notesPage.noteArticle('notea')).toHaveCount(0);
+        await expect(ghostNote.getByTestId('note-status-encrypted-and-hidden')).toBeVisible();
+        await expect(notesPage.ghostStatusIcons.first()).toBeVisible();
     })
 
 })

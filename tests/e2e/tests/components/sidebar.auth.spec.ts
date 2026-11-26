@@ -80,6 +80,19 @@ test.describe('Sidebar', () => {
             await sidebar.verifyAriaCurrent(sidebar.notesItems.first());
         })
 
+        test('should blur hidden note names in the sidebar', async () => {
+            if (await sidebar.root.getAttribute('data-state') === 'minimized') {
+                await sidebar.navbar.sidebarButton.click();
+                await expect(sidebar.root).toHaveAttribute('data-state', 'maximized');
+            }
+            await sidebar.navigateTo('Você');
+            await expect(sidebar.filter).toBeVisible();
+            await sidebar.fillFilter('hnote');
+            const hiddenNote = sidebar.notesList.getByRole('link').filter({ hasText: 'hnote' });
+            await expect(hiddenNote.locator('span').last()).toHaveClass(/\bblur\b/);
+            await sidebar.fillFilter('');
+        })
+
     })
 
 })

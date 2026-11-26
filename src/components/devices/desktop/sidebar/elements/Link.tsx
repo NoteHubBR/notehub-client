@@ -9,14 +9,26 @@ interface LinkProps extends NextLinkProps {
     user?: User | LowDetailUser;
     icon?: React.ReactNode;
     useBadge?: 'dev' | 'sponsor' | 'none';
+    useBlur?: boolean;
     text?: string;
     strong?: boolean;
     reverse?: boolean;
 }
 
+const Span = ({ useBlur, className, ...rest }: { useBlur?: boolean } & React.HTMLAttributes<HTMLSpanElement>) => (
+    <span
+        className={clsx(
+            'text-center truncate',
+            useBlur ? 'blur' : 'blur-none',
+            className,
+        )}
+        {...rest}
+    />
+)
+
 export const Link = (props: LinkProps) => {
 
-    const { user, icon, text, strong, reverse, useBadge, ...rest } = props;
+    const { user, icon, text, strong, reverse, useBadge, useBlur, ...rest } = props;
 
     const { user: current } = useUser();
     const pathname = usePathname();
@@ -32,10 +44,6 @@ export const Link = (props: LinkProps) => {
             : href === userRoute
                 ? pathname === userRoute
                 : pathname === href || pathname.startsWith(`${href}/`);
-
-    const Span = ({ className, ...rest }: { className?: string } & React.HTMLAttributes<HTMLSpanElement>) => {
-        return <span className={`text-center truncate ${className}`} {...rest} />
-    }
 
     return (
         <div className={clsx(
@@ -59,18 +67,18 @@ export const Link = (props: LinkProps) => {
                         {user && useBadge === 'none' && null}
                         {strong
                             ?
-                            <strong><Span className="text-md">{text}</Span></strong>
+                            <strong><Span useBlur={useBlur} className="text-md">{text}</Span></strong>
                             :
-                            <Span className="text-sm">{text}</Span>
+                            <Span useBlur={useBlur} className="text-sm">{text}</Span>
                         }
                     </>
                     :
                     <>
                         {strong
                             ?
-                            <strong><Span className="text-md">{text}</Span></strong>
+                            <strong><Span useBlur={useBlur} className="text-md">{text}</Span></strong>
                             :
-                            <Span className="text-sm">{text}</Span>
+                            <Span useBlur={useBlur} className="text-sm">{text}</Span>
                         }
                         {icon && icon}
                     </>
