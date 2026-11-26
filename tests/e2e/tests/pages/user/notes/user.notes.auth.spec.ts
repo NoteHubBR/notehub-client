@@ -46,38 +46,67 @@ test.describe('User notes page', () => {
         await notesPage.sortFilter.testAllOptions((expected) => notesPage.expectParams(expected));
     })
 
-    test('should display only closed notes when filtered by type "closed"', async () => {
+    test('should include notes with closed comments among open notes', async () => {
         await notesPage.about.click();
         await notesPage.notes.click();
         await notesPage.typeFilter.open();
-        await notesPage.typeFilter.getOption('option-type-closed').click();
-        await expect(notesPage.noteArticles.first()).toBeVisible();
-        const comments = await notesPage.getArticlesCommentsLabel();
-        expect(comments.length).toBeGreaterThan(0);
-        for (const c of comments) expect(c.toLowerCase()).toContain('fechado');
+        await notesPage.typeFilter.getOption('option-type-open').click();
+        const closedNote = notesPage.noteArticle(seedNotes.cnote.name);
+        await expect(closedNote).toBeVisible();
+        await expect(closedNote.getByText('Fechado')).toBeVisible();
     })
 
     test('should display only encrypted notes when filtered by type "encrypted"', async () => {
-        await notesPage.about.click();
-        await notesPage.notes.click();
+        await notesPage.goto(`/${seedUsers.usera.username}/notes?q=note`);
+        await expect(notesPage.noteArticle(seedNotes.notea.name)).toBeVisible();
+        await expect(notesPage.noteArticle(seedNotes.encrypted.name)).toBeVisible();
         await notesPage.typeFilter.open();
         await notesPage.typeFilter.getOption('option-type-encrypted').click();
-        await expect(notesPage.noteArticles.first()).toBeVisible();
+        await notesPage.expectParams({ type: 'encrypted' });
+        await expect(notesPage.noteArticle(seedNotes.encrypted.name)).toBeVisible();
+        await expect(notesPage.noteArticle(seedNotes.notea.name)).toHaveCount(0);
         const totalNotes = await notesPage.noteArticles.count();
         const encryptedNotes = await notesPage.encryptedStatusIcons.count();
         expect(totalNotes).toBeGreaterThan(0);
         expect(encryptedNotes).toBe(totalNotes);
-        await expect(notesPage.noteArticle(seedNotes.encrypted.name)).toBeVisible();
     })
 
     test('should display only hidden notes when filtered by type "hidden"', async () => {
+        await notesPage.goto(`/${seedUsers.usera.username}/notes?q=note`);
+        await expect(notesPage.noteArticle(seedNotes.notea.name)).toBeVisible();
+        await expect(notesPage.noteArticle(seedNotes.hnote.name)).toBeVisible();
         await notesPage.typeFilter.open();
         await notesPage.typeFilter.getOption('option-type-hidden').click();
-        await expect(notesPage.noteArticles.first()).toBeVisible();
+        await notesPage.expectParams({ type: 'hidden' });
+        await expect(notesPage.noteArticle(seedNotes.hnote.name)).toBeVisible();
+        await expect(notesPage.noteArticle(seedNotes.notea.name)).toHaveCount(0);
         const totalNotes = await notesPage.noteArticles.count();
         const hiddenNotes = await notesPage.hiddenStatusIcons.count();
         expect(totalNotes).toBeGreaterThan(0);
         expect(hiddenNotes).toBe(totalNotes);
+    })
+
+    test('should reveal a hidden note after a long press without opening it', async () => {
+        await notesPage.goto(`/${seedUsers.usera.username}/notes?q=note`);
+        await expect(notesPage.noteArticle(seedNotes.notea.name)).toBeVisible();
+        await notesPage.typeFilter.open();
+        await notesPage.typeFilter.getOption('option-type-hidden').click();
+        const hiddenNote = notesPage.noteArticle(seedNotes.hnote.name);
+        await expect(hiddenNote).toBeVisible();
+        await expect(notesPage.noteArticle(seedNotes.notea.name)).toHaveCount(0);
+
+        const currentUrl = notesPage.page.url();
+        await hiddenNote.hover();
+        await notesPage.page.mouse.down();
+        await expect(hiddenNote).toHaveClass(/blur-none/);
+        await notesPage.page.mouse.up();
+        await expect(notesPage.page).toHaveURL(currentUrl);
+    })
+
+    test('should offer a separate type for notes that are both hidden and encrypted', async () => {
+        await notesPage.typeFilter.open();
+        await expect(notesPage.typeFilter.getOption('option-type-ghost')).toHaveText('fantasmas');
+        await expect(notesPage.typeFilter.getOption('option-type-closed')).toHaveCount(0);
     })
 
     test('should display only tags that match the search input', async () => {
@@ -96,10 +125,10 @@ test.describe('User notes page', () => {
 
     test('should display only notes containing the selected tag', async () => {
         await notesPage.tagFilter.getOption('option-tag-other').click();
-        await expect(notesPage.noteArticles.first()).toBeVisible();
-        const tags = await notesPage.getArticlesTags();
-        expect(tags.length).toBeGreaterThan(0);
-        for (const t of tags) expect(t.toLowerCase()).toContain('other');
+        await expect.poll(async () => {
+            const tags = await notesPage.getArticlesTags();
+            return tags.length > 0 && tags.every((tag) => tag.toLowerCase().includes('other'));
+        }).toBeTruthy();
     })
 
     test('should sort notes alphabetically by title', async () => {
@@ -109,47 +138,63 @@ test.describe('User notes page', () => {
         await notesPage.sortFilter.getOption('option-sort-asc').click();
         await notesPage.orderFilter.open();
         await notesPage.orderFilter.getOption('option-order-name').click();
-        await expect(notesPage.noteArticles.first()).toBeVisible();
-        const titles = await notesPage.getFirstTwoTitles();
-        expect(titles.length).toBeGreaterThan(0);
-        const sortedTitles = [...titles].sort((a, b) => a.localeCompare(b, 'pt-BR', { sensitivity: 'base' }))
-        expect(titles).toEqual(sortedTitles);
+        await expect.poll(async () => {
+            const titles = await notesPage.getArticlesTitles(2);
+            if (titles.length < 2) return false;
+            return titles[0].localeCompare(titles[1], 'pt-BR', { sensitivity: 'base' }) <= 0;
+        }).toBeTruthy();
     })
 
     test('should sort notes by comment count in descending order', async () => {
+        await notesPage.goto(`/${seedUsers.usera.username}/notes`);
         await notesPage.orderFilter.open();
         await notesPage.orderFilter.getOption('option-order-commentsCount').click();
-        await expect(notesPage.noteArticles.first()).toBeVisible();
-        const [first, second] = await notesPage.getFirstTwoCommentsCount();
-        expect(first).toBeGreaterThanOrEqual(second);
+        await expect.poll(async () => {
+            const [first, second] = await notesPage.getCommentsCount(2);
+            return first !== undefined && second !== undefined && first >= second;
+        }).toBeTruthy();
     })
 
     test('should sort notes by flame count in descending order', async () => {
+        await notesPage.goto(`/${seedUsers.usera.username}/notes`);
         await notesPage.orderFilter.open();
         await notesPage.orderFilter.getOption('option-order-flamesCount').click();
-        await expect(notesPage.noteArticles.first()).toBeVisible();
-        const [first, second] = await notesPage.getFirstTwoFlamesCount();
-        expect(first).toBeGreaterThanOrEqual(second);
+        await expect.poll(async () => {
+            const [first, second] = await notesPage.getFlamesCount(2);
+            return first !== undefined && second !== undefined && first >= second;
+        }).toBeTruthy();
     })
 
     test('should display oldest notes first', async () => {
-        await notesPage.about.click();
-        await notesPage.notes.click();
+        await notesPage.goto(`/${seedUsers.usera.username}/notes`);
+        await notesPage.orderFilter.open();
+        await notesPage.orderFilter.getOption('option-order-createdAt').click();
         await notesPage.sortFilter.open();
         await notesPage.sortFilter.getOption('option-sort-asc').click();
-        await expect(notesPage.noteArticles.first()).toBeVisible();
-        const [first, second] = await notesPage.getFirstTwoTimestamps();
-        expect(new Date(first).getTime()).toBeLessThanOrEqual(new Date(second).getTime());
+        await notesPage.expectParams({ order: 'createdAt', sort: 'asc' });
+        await expect.poll(async () => {
+            const timestamps = await notesPage.getTimestamps();
+            if (timestamps.length < 2) return false;
+            return timestamps.every((timestamp, index) =>
+                index === 0 || new Date(timestamps[index - 1]).getTime() <= new Date(timestamp).getTime()
+            );
+        }).toBeTruthy();
     })
 
     test('should display newest notes first', async () => {
-        await notesPage.about.click();
-        await notesPage.notes.click();
+        await notesPage.goto(`/${seedUsers.usera.username}/notes`);
+        await notesPage.orderFilter.open();
+        await notesPage.orderFilter.getOption('option-order-createdAt').click();
         await notesPage.sortFilter.open();
         await notesPage.sortFilter.getOption('option-sort-desc').click();
-        await expect(notesPage.noteArticles.first()).toBeVisible();
-        const [first, second] = await notesPage.getFirstTwoTimestamps();
-        expect(new Date(first).getTime()).toBeGreaterThanOrEqual(new Date(second).getTime());
+        await notesPage.expectParams({ order: 'createdAt', sort: 'desc' });
+        await expect.poll(async () => {
+            const timestamps = await notesPage.getTimestamps();
+            if (timestamps.length < 2) return false;
+            return timestamps.every((timestamp, index) =>
+                index === 0 || new Date(timestamps[index - 1]).getTime() >= new Date(timestamp).getTime()
+            );
+        }).toBeTruthy();
     })
 
     test('should display search results when a search term is entered', async () => {
