@@ -237,7 +237,7 @@ export const items: Items[] = [
         answer: (
             <>
                 <p>
-                    Notas criptografadas são públicas por padrão, salvo quando marcadas como ocultas.
+                    Notas criptografadas são públicas por padrão. Quando também são ocultas, tornam-se notas fantasmas.
                     Seu conteúdo é protegido por um segredo e só pode ser acessado por quem o possui.
                     A criptografia é realizada localmente no navegador.
                 </p>
@@ -255,9 +255,44 @@ export const items: Items[] = [
     },
     {
         id: 'hiddenNotes',
-        keywords: ["hiddennotes", "hidden", "notes", "notas", "ocultas", "privadas"],
+        keywords: ['hiddennotes', 'hidden', 'notes', 'notas', 'ocultas', 'privadas', 'blur', 'borrado', 'desfoque', 'revelar', 'longpress'],
         question: 'Notas ocultas',
-        answer: <><p>Notas ocultas são visíveis apenas para quem as criou, embora contabilizem na contagem total de notas.</p></>
+        answer: (
+            <>
+                <p>
+                    Notas ocultas são visíveis apenas para quem as criou, e não contabilizam na contagem total de notas.
+                </p>
+                <br />
+                <p>
+                    Nas listagens, o conteúdo de uma nota oculta aparece desfocado para evitar exposição acidental.
+                    Para revelá-lo, mantenha o clique (ou o toque) pressionado sobre a nota. Repetir este processo aplicará o desfoque outra vez.
+                    Ao soltar, a nota não é aberta.
+                </p>
+            </>
+        ),
+        new: true
+    },
+    {
+        id: 'ghostNotes',
+        keywords: [
+            'encryptednotes', 'encrypted', 'secret', 'passphrase', 'notes', 'notas', 'criptografadas', 'criptografia', 'segurança', 'segredo', 'secreta', 'senha',
+            'hiddennotes', 'hidden', 'notes', 'notas', 'ocultas', 'privadas',
+            'ghostnotes', 'ghost', 'notes', 'notas', 'fantasmas',
+        ],
+        question: 'Notas fantasmas',
+        answer: (
+            <>
+                <p>
+                    Notas fantasmas são notas que são, ao mesmo tempo, <strong>ocultas</strong> e <strong>criptografadas</strong>.
+                    Elas seguem as regras de ambos os tipos: consulte <em>Notas ocultas</em> e <em>Notas criptografadas</em> para mais detalhes.
+                </p>
+                <br />
+                <p>
+                    No seu perfil, elas aparecem em um filtro próprio ("fantasmas") e não são listadas junto com as notas ocultas ou criptografadas.
+                </p>
+            </>
+        ),
+        new: true
     },
     {
         id: 'closedNotes',

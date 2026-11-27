@@ -23,6 +23,58 @@ export interface Release {
 
 export const releases: Release[] = [
     {
+        id: '22',
+        version: 'v3.7.1',
+        date: '26/11/26 17:22',
+        scope: 'client',
+        title: 'Novembro 26, 2026',
+        summary: 'Notas borradas e fantasmagóricas',
+        entries: [
+            {
+                type: 'feat',
+                pr: 37,
+                merged: true,
+                hash: '1d9308f0f5fc8fc9b8cf877740b7d4022d97f3dc',
+                desc: 'Notas que são ao mesmo tempo criptografadas e ocultas agora são chamadas de fantasmas: \nNão aparecem em listagens públicas e têm o conteúdo protegido por segredo. \nE você pode filtrá-las pelo tipo "fantasmas" no seu perfil.'
+            },
+            {
+                type: 'feat',
+                pr: 37,
+                merged: true,
+                hash: '93aa3cd35ecd37661c3a6a73093a3b0091f9d885',
+                desc: 'Agora é possível inflamar notas ocultas.'
+            },
+            {
+                type: 'style',
+                pr: 37,
+                merged: true,
+                hash: '02fb7de221575fc39de06c3e4d48324afb08c6a3',
+                desc: 'Notas criptografadas, ocultas e fantasmas agora têm um destaque visual próprio na listagem do seu perfil.'
+            },
+            {
+                type: 'style',
+                pr: 37,
+                merged: true,
+                hash: 'fb57ce0bad703168af041847cd05a86e75022bd0',
+                desc: (
+                    <>
+                        Notas ocultas agora aparecem desfocadas nas listagens e na barra lateral.
+                        Na página de perfil basta manter o clique ou toque pressionado sobre a nota para revelar o conteúdo borrado.
+                        <br />
+                        <br />
+                        <Link
+                            href='/help'
+                            onClick={scrollTo('hiddenNotes')}
+                            className='underline dark:text-secondary text-primary'
+                        >
+                            Saiba mais
+                        </Link>
+                    </>
+                )
+            },
+        ]
+    },
+    {
         id: '21',
         version: 'v3.7',
         date: '10/11/26 15:59',
